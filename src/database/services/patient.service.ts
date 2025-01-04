@@ -19,7 +19,8 @@ export class PatientService {
   ): Promise<void> {
     try {
       await Database.query(
-        'INSERT INTO patients (name, age, phone, email, address) VALUES (name, age, phone, email, address)'
+        'INSERT INTO patients (name, age, phone, email, address) VALUES ($1, $2, $3, $4, $5)',
+        [name, age, phone, email, address]
       );
     } catch (error) {
       console.error('Error adding patient:', error);
@@ -53,7 +54,7 @@ export class PatientService {
 
   static async deletePatient(patientId: number): Promise<void> {
     try {
-      await Database.query('DELETE FROM patients WHERE patient_id = patientId', [patientId]);
+      await Database.query('DELETE FROM patients WHERE patient_id = $1', [patientId]);
     } catch (error) {
       console.error('Error deleting patient:', error);
       throw new Error('Failed to delete patient. Please try again later.');

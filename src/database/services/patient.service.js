@@ -26,7 +26,7 @@ class PatientService {
     static addPatient(name, age, phone, email, address) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.query('INSERT INTO patients (name, age, phone, email, address) VALUES ($1, $2, $3, $4, $5)', [name, age, phone, email, address]);
+                yield database_1.Database.query('INSERT INTO patients (name, age, phone, email, address) VALUES (name, age, phone, email, address)');
             }
             catch (error) {
                 console.error('Error adding patient:', error);
@@ -56,7 +56,7 @@ class PatientService {
     static deletePatient(patientId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.query('DELETE FROM patients WHERE patient_id = $1', [patientId]);
+                yield database_1.Database.query('DELETE FROM patients WHERE patient_id = patientId', [patientId]);
             }
             catch (error) {
                 console.error('Error deleting patient:', error);
