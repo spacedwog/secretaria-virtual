@@ -1,6 +1,7 @@
 import readlineSync from 'readline-sync';
 import { PatientService } from '../database/services/patient.service';
 import { Database } from '../database/database';
+import { generateReport } from '../reports/reportGenerator';
 
 // Função para exibir o menu principal
 async function showMenu() {
@@ -30,6 +31,9 @@ async function showMenu() {
         await deletePatient();
         break;
       case '5':
+        await scheduleAppointment();
+        break;
+      case '6':
         console.log('Saindo do sistema...');
         break;
       default:
