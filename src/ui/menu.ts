@@ -31,9 +31,6 @@ async function showMenu() {
         await deletePatient();
         break;
       case '5':
-        await scheduleAppointment();
-        break;
-      case '6':
         console.log('Saindo do sistema...');
         break;
       default:
