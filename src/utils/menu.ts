@@ -1,78 +1,165 @@
 import { gerarRelatorioJSON, gerarRelatorioHTML, gerarRelatorioPDF } from './relatorios'; // Importa as funções de relatório
 
-// Função para inserir paciente (exemplo básico)
-export const inserirPaciente = (nome: string, telefone: string, email: string, dataNascimento: string) => {
-    console.log(`Inserindo paciente: ${nome}`);
-    // Lógica para inserir paciente no banco de dados
-    // Exemplo de query para inserir no banco (ajustar conforme sua estrutura)
-    const query = `INSERT INTO pacientes (nome, telefone, email, data_nascimento) VALUES (?, ?, ?, ?)`;
-    connection.query(query, [nome, telefone, email, dataNascimento], (err, result) => {
-        if (err) {
-            console.error('Erro ao inserir paciente:', err);
-        } else {
-            console.log(`Paciente ${nome} inserido com sucesso!`);
-        }
-    });
-};
+class SecretariaVirtual {
+    private pacientes: any[] = []; // Lista de pacientes
+    private consultas: any[] = []; // Lista de consultas
 
-// Função para agendar consulta (exemplo básico)
-export const agendarConsulta = (pacienteId: number, dataConsulta: string) => {
-    console.log(`Agendando consulta para o paciente ID: ${pacienteId} na data ${dataConsulta}`);
-    // Lógica para agendar consulta no banco de dados
-    // Exemplo de query para agendar a consulta (ajustar conforme sua estrutura)
-    const query = `INSERT INTO consultas (paciente_id, data_consulta) VALUES (?, ?)`;
-    connection.query(query, [pacienteId, dataConsulta], (err, result) => {
-        if (err) {
-            console.error('Erro ao agendar consulta:', err);
-        } else {
-            console.log(`Consulta agendada com sucesso para o paciente ${pacienteId}`);
-        }
-    });
-};
-
-// Função para exibir relatórios (chama as funções de gerar relatório)
-export const exibirRelatorios = () => {
-    console.log('Exibindo relatórios...');
-    gerarRelatorioJSON();
-    gerarRelatorioHTML();
-    gerarRelatorioPDF();
-};
-
-// Menu principal da aplicação
-export const menu = () => {
-    console.log('Bem-vindo ao Sistema de Secretária Virtual!');
-    console.log('1. Inserir Paciente');
-    console.log('2. Agendar Consulta');
-    console.log('3. Exibir Relatórios');
-    console.log('4. Sair');
-    
-    // Lógica para capturar a escolha do usuário
-    const prompt = require('prompt-sync')();
-    const escolha = prompt('Escolha uma opção: ');
-
-    switch (escolha) {
-        case '1':
-            const nome = prompt('Nome do Paciente: ');
-            const telefone = prompt('Telefone: ');
-            const email = prompt('Email: ');
-            const dataNascimento = prompt('Data de Nascimento (YYYY-MM-DD): ');
-            inserirPaciente(nome, telefone, email, dataNascimento);
-            break;
-        case '2':
-            const pacienteId = parseInt(prompt('ID do Paciente: '), 10);
-            const dataConsulta = prompt('Data da Consulta (YYYY-MM-DD): ');
-            agendarConsulta(pacienteId, dataConsulta);
-            break;
-        case '3':
-            exibirRelatorios();
-            break;
-        case '4':
-            console.log('Saindo...');
-            process.exit();
-            break;
-        default:
-            console.log('Opção inválida. Tente novamente.');
-            menu();
-            break;
+    // Getters e Setters para pacientes
+    public getPacientes(): any[] {
+        return this.pacientes;
     }
-};
+
+    public setPacientes(pacientes: any[]): void {
+        this.pacientes = pacientes;
+    }
+
+    // Getters e Setters para consultas
+    public getConsultas(): any[] {
+        return this.consultas;
+    }
+
+    public setConsultas(consultas: any[]): void {
+        this.consultas = consultas;
+    }
+
+    // Getter e Setter para nome do paciente
+    private nome: string = '';
+    public getNome(): string {
+        return this.nome;
+    }
+    public setNome(nome: string): void {
+        this.nome = nome;
+    }
+
+    // Getter e Setter para telefone do paciente
+    private telefone: string = '';
+    public getTelefone(): string {
+        return this.telefone;
+    }
+    public setTelefone(telefone: string): void {
+        this.telefone = telefone;
+    }
+
+    // Getter e Setter para email do paciente
+    private email: string = '';
+    public getEmail(): string {
+        return this.email;
+    }
+    public setEmail(email: string): void {
+        this.email = email;
+    }
+
+    // Getter e Setter para data de nascimento do paciente
+    private dataNascimento: string = '';
+    public getDataNascimento(): string {
+        return this.dataNascimento;
+    }
+    public setDataNascimento(dataNascimento: string): void {
+        this.dataNascimento = dataNascimento;
+    }
+
+    // Getter e Setter para ID do paciente
+    private pacienteId: number = 0;
+    public getPacienteId(): number {
+        return this.pacienteId;
+    }
+    public setPacienteId(pacienteId: number): void {
+        this.pacienteId = pacienteId;
+    }
+
+    // Getter e Setter para data da consulta
+    private dataConsulta: string = '';
+    public getDataConsulta(): string {
+        return this.dataConsulta;
+    }
+    public setDataConsulta(dataConsulta: string): void {
+        this.dataConsulta = dataConsulta;
+    }
+
+    // Função para inserir paciente (exemplo básico)
+    private inserirPaciente(): void {
+        console.log(`Inserindo paciente: ${this.getNome()}`);
+        // Lógica para inserir paciente no banco de dados (simulação)
+        const paciente = {
+            nome: this.getNome(),
+            telefone: this.getTelefone(),
+            email: this.getEmail(),
+            dataNascimento: this.getDataNascimento(),
+        };
+        this.pacientes.push(paciente);  // Adicionando o paciente à lista
+        console.log(`Paciente ${this.getNome()} inserido com sucesso!`);
+    }
+
+    // Função para agendar consulta (exemplo básico)
+    private agendarConsulta(): void {
+        console.log(`Agendando consulta para o paciente ID: ${this.getPacienteId()} na data ${this.getDataConsulta()}`);
+        // Lógica para agendar consulta no banco de dados (simulação)
+        const consulta = {
+            pacienteId: this.getPacienteId(),
+            dataConsulta: this.getDataConsulta(),
+        };
+        this.consultas.push(consulta);  // Adicionando a consulta à lista
+        console.log(`Consulta agendada com sucesso para o paciente ${this.getPacienteId()}`);
+    }
+
+    // Função para exibir relatórios (chama as funções de gerar relatório)
+    private exibirRelatorios(): void {
+        console.log('Exibindo relatórios...');
+        gerarRelatorioJSON();
+        gerarRelatorioHTML();
+        gerarRelatorioPDF();
+    }
+
+    // Menu principal da aplicação (interação com o usuário)
+    public exibirMenu(): void {
+        const prompt = require('prompt-sync')();
+        let opcao = '';
+
+        do {
+            console.log('Bem-vindo ao Sistema de Secretária Virtual!');
+            console.log('1. Inserir Paciente');
+            console.log('2. Agendar Consulta');
+            console.log('3. Exibir Relatórios');
+            console.log('4. Sair');
+            
+            opcao = prompt('Escolha uma opção: ');
+
+            switch (opcao) {
+                case '1':
+                    this.setNome(prompt('Nome do Paciente: '));
+                    this.setTelefone(prompt('Telefone: '));
+                    this.setEmail(prompt('Email: '));
+                    this.setDataNascimento(prompt('Data de Nascimento (YYYY-MM-DD): '));
+                    this.inserirPaciente();
+                    break;
+                case '2':
+                    this.setPacienteId(parseInt(prompt('ID do Paciente: '), 10));
+                    this.setDataConsulta(prompt('Data da Consulta (YYYY-MM-DD): '));
+                    this.agendarConsulta();
+                    break;
+                case '3':
+                    this.exibirRelatorios();
+                    break;
+                case '4':
+                    console.log('Saindo...');
+                    break;
+                default:
+                    console.log('Opção inválida. Tente novamente.');
+            }
+        } while (opcao !== '4');
+    }
+}
+
+// Criando uma instância da classe e executando o menu
+const secretaria = new SecretariaVirtual();
+secretaria.exibirMenu();
+
+// Exemplo de uso dos getters e setters
+console.log("Pacientes:", secretaria.getPacientes());
+secretaria.setPacientes([{
+    nome: "Maria",
+    telefone: "987654321",
+    email: "maria@example.com",
+    dataNascimento: "1985-04-12"
+}]);
+console.log("Pacientes atualizados:", secretaria.getPacientes());
