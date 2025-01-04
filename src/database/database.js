@@ -9,19 +9,42 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.pool = void 0;
-exports.query = query;
-const pg_1 = require("pg"); // Usando PostgreSQL como exemplo de banco de dados
-exports.pool = new pg_1.Pool({
-    user: 'user', // Substitua com seu usuário do banco de dados
-    host: 'localhost',
-    database: 'secretaria_virtual',
-    password: '6z2h1j3k9F!', // Substitua com sua senha
-    port: 5432,
-});
-function query(text, params) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const res = yield exports.pool.query(text, params);
-        return res.rows;
-    });
+exports.Database = void 0;
+const pg_1 = require("pg");
+class Database {
+    // Inicializa o pool de conexões
+    static init() {
+        if (!this.pool) {
+            this.pool = new pg_1.Pool({
+                user: 'postgres', // Substitua pelo seu usuário do banco
+                host: 'localhost',
+                database: 'secretaria_virtual',
+                password: 'sua_senha', // Substitua pela sua senha
+                port: 5432,
+            });
+        }
+        return this.pool;
+    }
+    // Executa uma consulta ao banco
+    static query(sql, params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield this.init().query(sql, params);
+                return result.rows;
+            }
+            catch (error) {
+                console.error('Erro na consulta ao banco de dados:', error.message);
+                throw error;
+            }
+        });
+    }
+    // Fecha todas as conexões
+    static close() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.pool) {
+                yield this.pool.end();
+            }
+        });
+    }
 }
+exports.Database = Database;

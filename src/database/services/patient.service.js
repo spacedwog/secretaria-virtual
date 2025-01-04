@@ -9,18 +9,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllPatients = getAllPatients;
-exports.createPatient = createPatient;
+exports.PatientService = void 0;
 const database_1 = require("../database");
-function getAllPatients() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const patients = yield (0, database_1.query)('SELECT * FROM patients');
-        return patients;
-    });
+class PatientService {
+    static listPatients() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield database_1.Database.query('SELECT * FROM patients');
+        });
+    }
+    static addPatient(name, age, phone, email, address) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.Database.query('INSERT INTO patients (name, age, phone, email, address) VALUES ($1, $2, $3, $4, $5)', [name, age, phone, email, address]);
+        });
+    }
+    static editPatient(patientId, fieldsToUpdate) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const columns = Object.keys(fieldsToUpdate);
+            const values = Object.values(fieldsToUpdate);
+            const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
+            const query = `UPDATE patients SET ${setClause} WHERE patient_id = $${columns.length + 1}`;
+            yield database_1.Database.query(query, [...values, patientId]);
+        });
+    }
+    static deletePatient(patientId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield database_1.Database.query('DELETE FROM patients WHERE patient_id = $1', [patientId]);
+        });
+    }
 }
-function createPatient(patient) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const result = yield (0, database_1.query)('INSERT INTO patients (name, age, phone, email, appointment_date) VALUES ($1, $2, $3, $4, $5) RETURNING *', [patient.name, patient.age, patient.phone, patient.email, patient.appointmentDate]);
-        return result[0];
-    });
-}
+exports.PatientService = PatientService;
