@@ -1,5 +1,7 @@
 "use strict";
+// src/utils/menu.ts
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SecretariaVirtual = void 0;
 const relatorios_1 = require("./relatorios"); // Importa as funções de relatório
 class SecretariaVirtual {
     constructor() {
@@ -135,15 +137,4 @@ class SecretariaVirtual {
         } while (opcao !== '4');
     }
 }
-// Criando uma instância da classe e executando o menu
-const secretaria = new SecretariaVirtual();
-secretaria.exibirMenu();
-// Exemplo de uso dos getters e setters
-console.log("Pacientes:", secretaria.getPacientes());
-secretaria.setPacientes([{
-        nome: "Maria",
-        telefone: "987654321",
-        email: "maria@example.com",
-        dataNascimento: "1985-04-12"
-    }]);
-console.log("Pacientes atualizados:", secretaria.getPacientes());
+exports.SecretariaVirtual = SecretariaVirtual;

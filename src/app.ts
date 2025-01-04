@@ -1,34 +1,25 @@
-import readlineSync from 'readline-sync';
 // src/app.ts
-// Remova a extensão .ts ao importar módulos.
-import { inserirPaciente, agendarConsulta, exibirRelatorios } from './utils/menu';
 
-const menu = () => {
-    const opcao = readlineSync.question(`
-    1. Inserir paciente
-    2. Agendar consulta
-    3. Exibir relatórios
-    4. Sair
-    Selecione uma opção: `);
+import { SecretariaVirtual } from './utils/menu';  // Importa a classe SecretariaVirtual
 
-    switch (opcao) {
-        case '1':
-            inserirPaciente();
-            break;
-        case '2':
-            agendarConsulta();
-            break;
-        case '3':
-            exibirRelatorios();
-            break;
-        case '4':
-            console.log('Saindo...');
-            process.exit();
-            break;
-        default:
-            console.log('Opção inválida!');
-            menu();
-    }
-};
+// Criando uma instância da classe
+const secretaria = new SecretariaVirtual();
 
-menu();
+// Exibindo o menu para interação com o usuário
+secretaria.exibirMenu();
+
+// Usando os métodos de inserir paciente, agendar consulta e exibir relatórios
+// Você pode utilizar os métodos após a criação da instância de secretaria
+
+// Exemplo de uso dos métodos da classe SecretariaVirtual:
+secretaria.setNome('João Silva');
+secretaria.setTelefone('123456789');
+secretaria.setEmail('joao@example.com');
+secretaria.setDataNascimento('1980-12-01');
+secretaria.inserirPaciente();
+
+secretaria.setPacienteId(1);
+secretaria.setDataConsulta('2025-01-10');
+secretaria.agendarConsulta();
+
+secretaria.exibirRelatorios();
