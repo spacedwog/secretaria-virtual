@@ -3,7 +3,7 @@ import { Database } from '../database';
 export class PatientService {
   static async listPatients(): Promise<any[]> {
     try {
-      return await Database.query("SELECT * FROM `patients`");
+      return await Database.query("SELECT * FROM patients");
     } catch (error) {
       console.error('Error listing patients:', error);
       throw new Error('Failed to list patients. Please try again later.');
