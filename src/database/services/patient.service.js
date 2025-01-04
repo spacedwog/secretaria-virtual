@@ -15,7 +15,7 @@ class PatientService {
     static listPatients() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield database_1.Database.query('SELECT * FROM patients');
+                return yield database_1.Database.query("SELECT * FROM 'patients'");
             }
             catch (error) {
                 console.error('Error listing patients:', error);
