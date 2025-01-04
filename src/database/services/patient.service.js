@@ -14,26 +14,54 @@ const database_1 = require("../database");
 class PatientService {
     static listPatients() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield database_1.Database.query('SELECT * FROM patients');
+            try {
+                return yield database_1.Database.query('SELECT * FROM patients');
+            }
+            catch (error) {
+                console.error('Error listing patients:', error);
+                throw new Error('Failed to list patients. Please try again later.');
+            }
         });
     }
     static addPatient(name, age, phone, email, address) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.Database.query('INSERT INTO patients (name, age, phone, email, address) VALUES ($1, $2, $3, $4, $5)', [name, age, phone, email, address]);
+            try {
+                yield database_1.Database.query('INSERT INTO patients (name, age, phone, email, address) VALUES ($1, $2, $3, $4, $5)', [name, age, phone, email, address]);
+            }
+            catch (error) {
+                console.error('Error adding patient:', error);
+                throw new Error('Failed to add patient. Please check the input data and try again.');
+            }
         });
     }
     static editPatient(patientId, fieldsToUpdate) {
         return __awaiter(this, void 0, void 0, function* () {
-            const columns = Object.keys(fieldsToUpdate);
-            const values = Object.values(fieldsToUpdate);
-            const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
-            const query = `UPDATE patients SET ${setClause} WHERE patient_id = $${columns.length + 1}`;
-            yield database_1.Database.query(query, [...values, patientId]);
+            try {
+                const columns = Object.keys(fieldsToUpdate);
+                const values = Object.values(fieldsToUpdate);
+                if (columns.length === 0) {
+                    throw new Error('No fields provided for update.');
+                }
+                const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
+                const query = `UPDATE patients SET ${setClause} WHERE patient_id = $${columns.length + 1}`;
+                console.log('Executing query:', query);
+                yield database_1.Database.query(query, [...values, patientId]);
+            }
+            catch (error) {
+                console.error('Error editing patient:', error);
+                throw new Error('Failed to edit patient. Please check the input data and try again.');
+            }
         });
     }
     static deletePatient(patientId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield database_1.Database.query('DELETE FROM patients WHERE patient_id = $1', [patientId]);
+            try {
+                yield database_1.Database.query('DELETE FROM patients WHERE patient_id = $1', [patientId]);
+            }
+            catch (error) {
+                console.error('Error deleting patient:', error);
+                throw new Error('Failed to delete patient. Please try again later.');
+            }
         });
     }
 }
