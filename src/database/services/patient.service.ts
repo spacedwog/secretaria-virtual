@@ -2,7 +2,8 @@ import { Database } from '../database';
 
 export class PatientService {
   static async listPatients(): Promise<any[]> {
-    try {
+    try {     
+      await Database.init(); // Certifique-se de inicializar a conexão
       const result = await Database.query("SELECT * FROM patients");
       return result;  // O MySQL retornará os dados no formato esperado
     } catch (error) {
