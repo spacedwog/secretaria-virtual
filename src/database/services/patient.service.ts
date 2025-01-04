@@ -40,11 +40,12 @@ export class PatientService {
         throw new Error('No fields provided for update.');
       }
 
-      const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
-      const query = `UPDATE patients SET ${setClause} WHERE patient_id = $${columns.length + 1}`;
-      
+      // Adjust the placeholder syntax for MySQL (use `?` instead of `$1`, `$2`, etc.)
+      const setClause = columns.map((col) => `${col} = ?`).join(', ');
+      const query = `UPDATE patients SET ${setClause} WHERE patient_id = ?`;
+
       console.log('Executing query:', query);
-      
+
       await Database.query(query, [...values, patientId]);
     } catch (error) {
       console.error('Error editing patient:', error);
@@ -54,7 +55,7 @@ export class PatientService {
 
   static async deletePatient(patientId: number): Promise<void> {
     try {
-      await Database.query('DELETE FROM patients WHERE patient_id = $1', [patientId]);
+      await Database.query('DELETE FROM patients WHERE patient_id = ?', [patientId]);
     } catch (error) {
       console.error('Error deleting patient:', error);
       throw new Error('Failed to delete patient. Please try again later.');
