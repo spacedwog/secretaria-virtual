@@ -10,8 +10,8 @@ export class Database {
         user: 'postgres',
         host: 'localhost',
         database: 'secretaria_virtual',
-        password: 'sua_senha', // Substitua por sua senha
-        port: 5432,
+        password: '6z2h1j3k9F!', // Substitua por sua senha
+        port: 3306,
       });
     }
     return this.pool;
@@ -24,7 +24,8 @@ export class Database {
       const result = await this.init().query(sql, params);
       return result.rows;
     } catch (error) {
-      console.error('Erro na consulta ao banco de dados:', error.message);
+      console.error('Erro na consulta ao banco de dados:', error);
+      restartConnection();
       throw error;
     }
   }
@@ -36,7 +37,7 @@ export class Database {
         await this.pool.end();
         console.log('Conexão com o banco de dados encerrada.');
       } catch (error) {
-        console.error('Erro ao fechar a conexão com o banco de dados:', error.message);
+        console.error('Erro ao fechar a conexão com o banco de dados:', error);
       }
     }
   }
