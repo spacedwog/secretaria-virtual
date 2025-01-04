@@ -1,33 +1,27 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.gerarRelatorioHTML = exports.gerarRelatorioJSON = void 0;
 // src/utils/relatorios.ts
-const database_1 = __importDefault(require("../database"));
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
-const gerarRelatorioJSON = () => {
-    database_1.default.query('SELECT * FROM pacientes', (err, results) => {
+import connection from '../database';
+import fs from 'fs';
+import path from 'path';
+
+export const gerarRelatorioJSON = () => {
+    connection.query('SELECT * FROM pacientes', (err, results) => {
         if (err) {
             console.error('Erro ao gerar relatório JSON:', err);
             return;
         }
         // Verifique se o 'results' é um array antes de usar o map
         if (Array.isArray(results)) {
-            const filePath = path_1.default.join(__dirname, '../output/consulta.json');
-            fs_1.default.writeFileSync(filePath, JSON.stringify(results, null, 2));
+            const filePath = path.join(__dirname, '../output/consulta.json');
+            fs.writeFileSync(filePath, JSON.stringify(results, null, 2));
             console.log('Relatório JSON gerado em consulta.json');
-        }
-        else {
+        } else {
             console.error('O formato de dados retornado não é um array');
         }
     });
 };
-exports.gerarRelatorioJSON = gerarRelatorioJSON;
-const gerarRelatorioHTML = () => {
-    database_1.default.query('SELECT * FROM pacientes', (err, results) => {
+
+export const gerarRelatorioHTML = () => {
+    connection.query('SELECT * FROM pacientes', (err, results) => {
         if (err) {
             console.error('Erro ao gerar relatório HTML:', err);
             return;
@@ -46,7 +40,7 @@ const gerarRelatorioHTML = () => {
                                 <th>Email</th>
                                 <th>Data de Nascimento</th>
                             </tr>
-                            ${results.map((paciente) => `
+                            ${results.map((paciente: any) => `
                                 <tr>
                                     <td>${paciente.id}</td>
                                     <td>${paciente.nome}</td>
@@ -59,13 +53,11 @@ const gerarRelatorioHTML = () => {
                     </body>
                 </html>
             `;
-            const filePath = path_1.default.join(__dirname, '../output/consulta.html');
-            fs_1.default.writeFileSync(filePath, htmlContent);
+            const filePath = path.join(__dirname, '../output/consulta.html');
+            fs.writeFileSync(filePath, htmlContent);
             console.log('Relatório HTML gerado em consulta.html');
-        }
-        else {
+        } else {
             console.error('O formato de dados retornado não é um array');
         }
     });
 };
-exports.gerarRelatorioHTML = gerarRelatorioHTML;

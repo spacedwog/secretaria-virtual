@@ -4,7 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const readline_sync_1 = __importDefault(require("readline-sync"));
-const menu_ts_1 = require("./utils/menu.ts");
+// src/app.ts
+// Remova a extensão .ts ao importar módulos.
+const menu_1 = require("./utils/menu");
 const menu = () => {
     const opcao = readline_sync_1.default.question(`
     1. Inserir paciente
@@ -14,13 +16,13 @@ const menu = () => {
     Selecione uma opção: `);
     switch (opcao) {
         case '1':
-            (0, menu_ts_1.inserirPaciente)();
+            (0, menu_1.inserirPaciente)();
             break;
         case '2':
-            (0, menu_ts_1.agendarConsulta)();
+            (0, menu_1.agendarConsulta)();
             break;
         case '3':
-            (0, menu_ts_1.exibirRelatorios)();
+            (0, menu_1.exibirRelatorios)();
             break;
         case '4':
             console.log('Saindo...');
