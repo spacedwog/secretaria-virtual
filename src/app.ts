@@ -1,5 +1,5 @@
 import readlineSync from 'readline-sync';
-import { inserirPaciente, exibirRelatorios, agendarConsulta } from './utils';
+import { inserirPaciente, exibirRelatorios, agendarConsulta } from './utils/menu.ts';
 
 const menu = () => {
     const opcao = readlineSync.question(`
