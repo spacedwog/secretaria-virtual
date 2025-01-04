@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllPatients = getAllPatients;
 exports.createPatient = createPatient;
-const database_1 = require("../database/database");
+const database_1 = require("../database");
 function getAllPatients() {
     return __awaiter(this, void 0, void 0, function* () {
         const patients = yield (0, database_1.query)('SELECT * FROM patients');
