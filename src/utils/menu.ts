@@ -1,5 +1,8 @@
 import readlineSync from 'readline-sync';
-import { inserirPaciente, agendarConsulta, exibirRelatorios } from './relatorios';
+// src/utils/menu.ts
+import { inserirPaciente, agendarConsulta, exibirRelatorios } from './relatorios'; // Verifique se o caminho está correto
+
+export { inserirPaciente, agendarConsulta, exibirRelatorios }; // Exporte as funções para que possam ser usadas em outros arquivos.
 
 export const menu = () => {
     const opcao = readlineSync.question(`

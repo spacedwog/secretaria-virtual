@@ -1,5 +1,7 @@
 import readlineSync from 'readline-sync';
-import { inserirPaciente, exibirRelatorios, agendarConsulta } from './utils/menu.ts';
+// src/app.ts
+// Remova a extensão .ts ao importar módulos.
+import { inserirPaciente, agendarConsulta, exibirRelatorios } from './utils/menu';
 
 const menu = () => {
     const opcao = readlineSync.question(`
