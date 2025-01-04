@@ -49,7 +49,7 @@ async function listPatients() {
       console.log(`ID: ${patient.patient_id}, Nome: ${patient.name}, Idade: ${patient.age}, Telefone: ${patient.phone}`);
     });
   } catch (err) {
-    console.error('Erro ao listar pacientes:', err.message);
+    console.error('Erro ao listar pacientes:', err);
   }
 }
 
