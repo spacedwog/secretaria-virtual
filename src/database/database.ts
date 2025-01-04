@@ -7,7 +7,7 @@ export class Database {
   static init() {
     if (!this.pool) {
       this.pool = new Pool({
-        user: 'postgres',
+        user: 'mysql',
         host: 'localhost',
         database: 'secretaria_virtual',
         password: '6z2h1j3k9F!', // Substitua por sua senha
