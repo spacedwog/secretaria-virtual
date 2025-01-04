@@ -1,5 +1,5 @@
 import readlineSync from 'readline-sync';
-import { PatientService } from '../database/services/patientService';
+import { PatientService } from '../database/services/patient.service';
 import { Database } from '../database/database';
 
 // Função para exibir o menu principal

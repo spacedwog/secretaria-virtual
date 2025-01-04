@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = require("./database/database");
 const readline_sync_1 = __importDefault(require("readline-sync"));
-const patientService_1 = require("./database/services/patientService");
+const patient_service_1 = require("./database/services/patient.service");
 // Função para exibir o menu principal
 function showMenu() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -54,7 +54,7 @@ function showMenu() {
 function listPatients() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const patients = yield patientService_1.PatientService.listPatients();
+            const patients = yield patient_service_1.PatientService.listPatients();
             console.log('\n--- Lista de Pacientes ---');
             patients.forEach((patient) => {
                 console.log(`ID: ${patient.patient_id}, Nome: ${patient.name}, Idade: ${patient.age}, Telefone: ${patient.phone}`);
@@ -74,7 +74,7 @@ function addPatient() {
             const phone = readline_sync_1.default.question('Telefone: ');
             const email = readline_sync_1.default.question('Email: ');
             const address = readline_sync_1.default.question('Endereco: ');
-            yield patientService_1.PatientService.addPatient(name, age, phone, email, address);
+            yield patient_service_1.PatientService.addPatient(name, age, phone, email, address);
             console.log('Paciente adicionado com sucesso!');
         }
         catch (err) {
@@ -104,7 +104,7 @@ function editPatient() {
             if (address)
                 fieldsToUpdate.address = address;
             if (Object.keys(fieldsToUpdate).length > 0) {
-                yield patientService_1.PatientService.editPatient(patientId, fieldsToUpdate);
+                yield patient_service_1.PatientService.editPatient(patientId, fieldsToUpdate);
                 console.log('Paciente atualizado com sucesso!');
             }
             else {
@@ -121,7 +121,7 @@ function deletePatient() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const patientId = parseInt(readline_sync_1.default.question('ID do paciente a ser excluido: '), 10);
-            yield patientService_1.PatientService.deletePatient(patientId);
+            yield patient_service_1.PatientService.deletePatient(patientId);
             console.log('Paciente excluido com sucesso!');
         }
         catch (err) {
