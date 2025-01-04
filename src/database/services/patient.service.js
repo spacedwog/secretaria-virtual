@@ -42,8 +42,9 @@ class PatientService {
                 if (columns.length === 0) {
                     throw new Error('No fields provided for update.');
                 }
-                const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
-                const query = `UPDATE patients SET ${setClause} WHERE patient_id = $${columns.length + 1}`;
+                // Adjust the placeholder syntax for MySQL (use `?` instead of `$1`, `$2`, etc.)
+                const setClause = columns.map((col) => `${col} = ?`).join(', ');
+                const query = `UPDATE patients SET ${setClause} WHERE patient_id = ?`;
                 console.log('Executing query:', query);
                 yield database_1.Database.query(query, [...values, patientId]);
             }
@@ -56,7 +57,7 @@ class PatientService {
     static deletePatient(patientId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.query('DELETE FROM patients WHERE patient_id = $1', [patientId]);
+                yield database_1.Database.query('DELETE FROM patients WHERE patient_id = ?', [patientId]);
             }
             catch (error) {
                 console.error('Error deleting patient:', error);
