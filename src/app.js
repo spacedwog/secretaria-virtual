@@ -60,7 +60,9 @@ function listPatients() {
                 console.log(`ID: ${patient.patient_id}, Nome: ${patient.name}, Idade: ${patient.age}, Telefone: ${patient.phone}`);
             });
         }
-        catch (err) {
+        catch (exception) { }
+        err;
+        {
             console.error('Erro ao listar pacientes:', err.message);
         }
     });
@@ -77,7 +79,9 @@ function addPatient() {
             yield patient_service_1.PatientService.addPatient(name, age, phone, email, address);
             console.log('Paciente adicionado com sucesso!');
         }
-        catch (err) {
+        catch (exception) { }
+        err;
+        {
             console.error('Erro ao adicionar paciente:', err.message);
         }
     });
@@ -111,7 +115,9 @@ function editPatient() {
                 console.log('Nenhuma alteracao foi feita.');
             }
         }
-        catch (err) {
+        catch (exception) { }
+        err;
+        {
             console.error('Erro ao editar paciente:', err.message);
         }
     });
@@ -124,7 +130,9 @@ function deletePatient() {
             yield patient_service_1.PatientService.deletePatient(patientId);
             console.log('Paciente excluido com sucesso!');
         }
-        catch (err) {
+        catch (exception) { }
+        err;
+        {
             console.error('Erro ao excluir paciente:', err.message);
         }
     });
@@ -136,7 +144,9 @@ function deletePatient() {
         yield showMenu();
         console.log('Sistema encerrado.');
     }
-    catch (err) {
+    catch (exception) { }
+    err;
+    {
         console.error('Erro fatal na aplicação:', err.message);
         yield database_1.Database.close(); // Garante que a conexão será encerrada em caso de erro
     }

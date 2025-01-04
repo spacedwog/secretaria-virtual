@@ -48,7 +48,7 @@ async function listPatients() {
     patients.forEach((patient) => {
       console.log(`ID: ${patient.patient_id}, Nome: ${patient.name}, Idade: ${patient.age}, Telefone: ${patient.phone}`);
     });
-  } catch (exception err) {
+  } catch (err) {
     console.error('Erro ao listar pacientes:', err.message);
   }
 }
@@ -64,7 +64,7 @@ async function addPatient() {
 
     await PatientService.addPatient(name, age, phone, email, address);
     console.log('Paciente adicionado com sucesso!');
-  } catch (exception err) {
+  } catch (err) {
     console.error('Erro ao adicionar paciente:', err.message);
   }
 }
@@ -96,7 +96,7 @@ async function editPatient() {
     } else {
       console.log('Nenhuma alteracao foi feita.');
     }
-  } catch (exception err) {
+  } catch (err) {
     console.error('Erro ao editar paciente:', err.message);
   }
 }
@@ -107,7 +107,7 @@ async function deletePatient() {
     const patientId = parseInt(readlineSync.question('ID do paciente a ser excluido: '), 10);
     await PatientService.deletePatient(patientId);
     console.log('Paciente excluido com sucesso!');
-  } catch (exception err) {
+  } catch (err) {
     console.error('Erro ao excluir paciente:', err.message);
   }
 }
@@ -118,7 +118,7 @@ async function deletePatient() {
     console.log('Iniciando sistema de secretaria virtual...');
     await showMenu();
     console.log('Sistema encerrado.');
-  } catch (exception err) {
+  } catch (err) {
     console.error('Erro fatal na aplicação:', err.message);
     await Database.close(); // Garante que a conexão será encerrada em caso de erro
   }
