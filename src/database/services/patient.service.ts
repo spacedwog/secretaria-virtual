@@ -19,7 +19,7 @@ export class PatientService {
   ): Promise<void> {
     try {
       await Database.query(
-        'INSERT INTO patients (name, age, phone, email, address) VALUES ($1, $2, $3, $4, $5)',
+        'INSERT INTO patients (name, age, phone, email, address) VALUES ($name, $2, $3, $4, $5)',
         [name, age, phone, email, address]
       );
     } catch (error) {
