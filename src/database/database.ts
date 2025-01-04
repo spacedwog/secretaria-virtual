@@ -7,31 +7,44 @@ export class Database {
   static init() {
     if (!this.pool) {
       this.pool = new Pool({
-        user: 'postgres', // Substitua pelo seu usuário do banco
+        user: 'postgres',
         host: 'localhost',
         database: 'secretaria_virtual',
-        password: '6z2h1j3k9F!', // Substitua pela sua senha
-        port: 3306,
+        password: 'sua_senha', // Substitua por sua senha
+        port: 5432,
       });
     }
     return this.pool;
   }
 
-  // Executa uma consulta ao banco
+  // Executa uma consulta no banco de dados
   static async query(sql: string, params?: any[]): Promise<any> {
+    console.log('Executando SQL:', sql, 'com parâmetros:', params);
     try {
       const result = await this.init().query(sql, params);
       return result.rows;
     } catch (error) {
-      console.error('Erro na consulta ao banco de dados:', error);
+      console.error('Erro na consulta ao banco de dados:', error.message);
       throw error;
     }
   }
 
-  // Fecha todas as conexões
+  // Fecha o pool de conexões
   static async close() {
     if (this.pool) {
-      await this.pool.end();
+      try {
+        await this.pool.end();
+        console.log('Conexão com o banco de dados encerrada.');
+      } catch (error) {
+        console.error('Erro ao fechar a conexão com o banco de dados:', error.message);
+      }
     }
+  }
+
+  // Reinicia o pool de conexões
+  static async restartConnection() {
+    await this.close();
+    this.init();
+    console.log('Conexão com o banco de dados reiniciada.');
   }
 }
