@@ -15,22 +15,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Database = void 0;
 const mysql2_1 = __importDefault(require("mysql2"));
 class Database {
-    // Inicializar a conexão com o banco de dados MySQL
     static init() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.connection = mysql2_1.default.createConnection({
-                host: '127.0.0.1',
-                user: 'root',
-                password: '6z2h1j3k9F!',
-                database: 'secretaria_virtual',
-            });
+            if (!this.pool) {
+                this.pool = mysql2_1.default.createPool({
+                    host: 'localhost',
+                    user: 'yourUser',
+                    password: 'yourPassword',
+                    database: 'yourDatabase',
+                });
+            }
         });
     }
-    // Método para executar consultas SQL
     static query(queryText_1) {
         return __awaiter(this, arguments, void 0, function* (queryText, params = []) {
             return new Promise((resolve, reject) => {
-                this.connection.execute(queryText, params, (err, results) => {
+                this.pool.execute(queryText, params, (err, results) => {
                     if (err) {
                         console.error('Error executing query:', err);
                         reject(err);
@@ -42,9 +42,10 @@ class Database {
             });
         });
     }
-    // Fechar a conexão com o banco
     static close() {
-        this.connection.end();
+        if (this.pool) {
+            this.pool.end();
+        }
     }
 }
 exports.Database = Database;

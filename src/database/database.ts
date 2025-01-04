@@ -6,10 +6,10 @@ export class Database {
   static async init() {
     if (!this.pool) {
       this.pool = mysql.createPool({
-        host: 'localhost',
-        user: 'yourUser',
-        password: 'yourPassword',
-        database: 'yourDatabase',
+        host: '127.0.0.1',
+        user: 'root',
+        password: '6z2h1j3k9F!',
+        database: 'secretaria_virtual',
       });
     }
   }
