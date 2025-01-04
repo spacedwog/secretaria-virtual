@@ -20,7 +20,7 @@ class Database {
                 host: 'localhost',
                 database: 'secretaria_virtual',
                 password: '6z2h1j3k9F!', // Substitua pela sua senha
-                port: 5432,
+                port: 3306,
             });
         }
         return this.pool;
