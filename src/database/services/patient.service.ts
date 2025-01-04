@@ -1,5 +1,5 @@
 import { query } from '../database';
-import { Patient } from '../models/patient.model';
+import { Patient } from '../models/patient.models';
 
 export async function getAllPatients(): Promise<Patient[]> {
   const patients = await query('SELECT * FROM patients');
