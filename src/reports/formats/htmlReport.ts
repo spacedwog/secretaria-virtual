@@ -1,4 +1,4 @@
-import { Patient } from '../../database/models/patient.model';
+import { Patient } from '../../database/models/patient.models';
 import * as fs from 'fs';
 
 export function generateHTMLReport(patients: Patient[]): string {

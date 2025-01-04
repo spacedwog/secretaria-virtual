@@ -1,4 +1,4 @@
-import { Patient } from '../database/models/patient.model';
+import { Patient } from '../database/models/patient.models';
 import { generateJSONReport } from './formats/jsonReport';
 import { generateHTMLReport } from './formats/htmlReport';
 import { generatePDFReport } from './formats/pdfReport';
