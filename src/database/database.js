@@ -19,7 +19,7 @@ class Database {
     static init() {
         return __awaiter(this, void 0, void 0, function* () {
             this.connection = mysql2_1.default.createConnection({
-                host: 'localhost',
+                host: '127.0.0.1',
                 user: 'mysql',
                 password: '6z2h1j3k9F!',
                 database: 'secretaria_virtual',
