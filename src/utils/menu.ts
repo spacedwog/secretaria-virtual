@@ -1,6 +1,8 @@
+// src/utils/menu.ts
+
 import { gerarRelatorioJSON, gerarRelatorioHTML, gerarRelatorioPDF } from './relatorios'; // Importa as funções de relatório
 
-class SecretariaVirtual {
+export class SecretariaVirtual {
     private pacientes: any[] = []; // Lista de pacientes
     private consultas: any[] = []; // Lista de consultas
 
@@ -77,7 +79,7 @@ class SecretariaVirtual {
     }
 
     // Função para inserir paciente (exemplo básico)
-    private inserirPaciente(): void {
+    public inserirPaciente(): void {
         console.log(`Inserindo paciente: ${this.getNome()}`);
         // Lógica para inserir paciente no banco de dados (simulação)
         const paciente = {
@@ -91,7 +93,7 @@ class SecretariaVirtual {
     }
 
     // Função para agendar consulta (exemplo básico)
-    private agendarConsulta(): void {
+    public agendarConsulta(): void {
         console.log(`Agendando consulta para o paciente ID: ${this.getPacienteId()} na data ${this.getDataConsulta()}`);
         // Lógica para agendar consulta no banco de dados (simulação)
         const consulta = {
@@ -103,7 +105,7 @@ class SecretariaVirtual {
     }
 
     // Função para exibir relatórios (chama as funções de gerar relatório)
-    private exibirRelatorios(): void {
+    public exibirRelatorios(): void {
         console.log('Exibindo relatórios...');
         gerarRelatorioJSON();
         gerarRelatorioHTML();
@@ -149,17 +151,3 @@ class SecretariaVirtual {
         } while (opcao !== '4');
     }
 }
-
-// Criando uma instância da classe e executando o menu
-const secretaria = new SecretariaVirtual();
-secretaria.exibirMenu();
-
-// Exemplo de uso dos getters e setters
-console.log("Pacientes:", secretaria.getPacientes());
-secretaria.setPacientes([{
-    nome: "Maria",
-    telefone: "987654321",
-    email: "maria@example.com",
-    dataNascimento: "1985-04-12"
-}]);
-console.log("Pacientes atualizados:", secretaria.getPacientes());
