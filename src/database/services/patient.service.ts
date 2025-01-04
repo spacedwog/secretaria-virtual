@@ -2,7 +2,12 @@ import { Database } from '../database';
 
 export class PatientService {
   static async listPatients(): Promise<any[]> {
-    return await Database.query('SELECT * FROM patients');
+    try {
+      return await Database.query('SELECT * FROM patients');
+    } catch (error) {
+      console.error('Error listing patients:', error);
+      throw new Error('Failed to list patients. Please try again later.');
+    }
   }
 
   static async addPatient(
@@ -12,25 +17,47 @@ export class PatientService {
     email: string,
     address: string
   ): Promise<void> {
-    await Database.query(
-      'INSERT INTO patients (name, age, phone, email, address) VALUES ($1, $2, $3, $4, $5)',
-      [name, age, phone, email, address]
-    );
+    try {
+      await Database.query(
+        'INSERT INTO patients (name, age, phone, email, address) VALUES ($1, $2, $3, $4, $5)',
+        [name, age, phone, email, address]
+      );
+    } catch (error) {
+      console.error('Error adding patient:', error);
+      throw new Error('Failed to add patient. Please check the input data and try again.');
+    }
   }
 
   static async editPatient(
     patientId: number,
     fieldsToUpdate: Record<string, any>
   ): Promise<void> {
-    const columns = Object.keys(fieldsToUpdate);
-    const values = Object.values(fieldsToUpdate);
+    try {
+      const columns = Object.keys(fieldsToUpdate);
+      const values = Object.values(fieldsToUpdate);
 
-    const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
-    const query = `UPDATE patients SET ${setClause} WHERE patient_id = $${columns.length + 1}`;
-    await Database.query(query, [...values, patientId]);
+      if (columns.length === 0) {
+        throw new Error('No fields provided for update.');
+      }
+
+      const setClause = columns.map((col, idx) => `${col} = $${idx + 1}`).join(', ');
+      const query = `UPDATE patients SET ${setClause} WHERE patient_id = $${columns.length + 1}`;
+      
+      console.log('Executing query:', query);
+      
+      await Database.query(query, [...values, patientId]);
+    } catch (error) {
+      console.error('Error editing patient:', error);
+      throw new Error('Failed to edit patient. Please check the input data and try again.');
+    }
   }
 
   static async deletePatient(patientId: number): Promise<void> {
-    await Database.query('DELETE FROM patients WHERE patient_id = $1', [patientId]);
+    try {
+      await Database.query('DELETE FROM patients WHERE patient_id = $1', [patientId]);
+    } catch (error) {
+      console.error('Error deleting patient:', error);
+      throw new Error('Failed to delete patient. Please try again later.');
+    }
   }
 }
