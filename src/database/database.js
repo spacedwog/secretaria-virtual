@@ -35,7 +35,6 @@ class Database {
             }
             catch (error) {
                 console.error('Erro na consulta ao banco de dados:', error);
-                restartConnection();
                 throw error;
             }
         });
