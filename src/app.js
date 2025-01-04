@@ -1,36 +1,20 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const readline_sync_1 = __importDefault(require("readline-sync"));
 // src/app.ts
-// Remova a extensão .ts ao importar módulos.
-const menu_1 = require("./utils/menu");
-const menu = () => {
-    const opcao = readline_sync_1.default.question(`
-    1. Inserir paciente
-    2. Agendar consulta
-    3. Exibir relatórios
-    4. Sair
-    Selecione uma opção: `);
-    switch (opcao) {
-        case '1':
-            (0, menu_1.inserirPaciente)();
-            break;
-        case '2':
-            (0, menu_1.agendarConsulta)();
-            break;
-        case '3':
-            (0, menu_1.exibirRelatorios)();
-            break;
-        case '4':
-            console.log('Saindo...');
-            process.exit();
-            break;
-        default:
-            console.log('Opção inválida!');
-            menu();
-    }
-};
-menu();
+Object.defineProperty(exports, "__esModule", { value: true });
+const menu_1 = require("./utils/menu"); // Importa a classe SecretariaVirtual
+// Criando uma instância da classe
+const secretaria = new menu_1.SecretariaVirtual();
+// Exibindo o menu para interação com o usuário
+secretaria.exibirMenu();
+// Usando os métodos de inserir paciente, agendar consulta e exibir relatórios
+// Você pode utilizar os métodos após a criação da instância de secretaria
+// Exemplo de uso dos métodos da classe SecretariaVirtual:
+secretaria.setNome('João Silva');
+secretaria.setTelefone('123456789');
+secretaria.setEmail('joao@example.com');
+secretaria.setDataNascimento('1980-12-01');
+secretaria.inserirPaciente();
+secretaria.setPacienteId(1);
+secretaria.setDataConsulta('2025-01-10');
+secretaria.agendarConsulta();
+secretaria.exibirRelatorios();
