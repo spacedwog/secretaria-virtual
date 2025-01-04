@@ -10,7 +10,7 @@ export class Database {
         user: 'postgres', // Substitua pelo seu usuário do banco
         host: 'localhost',
         database: 'secretaria_virtual',
-        password: 'sua_senha', // Substitua pela sua senha
+        password: '6z2h1j3k9F!', // Substitua pela sua senha
         port: 5432,
       });
     }
