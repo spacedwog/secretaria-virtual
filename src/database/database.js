@@ -8,58 +8,43 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Database = void 0;
-const pg_1 = require("pg");
+const mysql2_1 = __importDefault(require("mysql2"));
 class Database {
-    // Inicializa o pool de conexões
+    // Inicializar a conexão com o banco de dados MySQL
     static init() {
-        if (!this.pool) {
-            this.pool = new pg_1.Pool({
-                user: 'mysql',
+        return __awaiter(this, void 0, void 0, function* () {
+            this.connection = mysql2_1.default.createConnection({
                 host: 'localhost',
+                user: 'mysql',
+                password: '6z2h1j3k9F!',
                 database: 'secretaria_virtual',
-                password: '6z2h1j3k9F!', // Substitua por sua senha
-                port: 3306,
             });
-        }
-        return this.pool;
-    }
-    // Executa uma consulta no banco de dados
-    static query(sql, params) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log('Executando SQL:', sql, 'com parâmetros:', params);
-            try {
-                const result = yield this.init().query(sql, params);
-                return result.rows;
-            }
-            catch (error) {
-                console.error('Erro na consulta ao banco de dados:', error);
-                throw error;
-            }
         });
     }
-    // Fecha o pool de conexões
+    // Método para executar consultas SQL
+    static query(queryText_1) {
+        return __awaiter(this, arguments, void 0, function* (queryText, params = []) {
+            return new Promise((resolve, reject) => {
+                this.connection.execute(queryText, params, (err, results) => {
+                    if (err) {
+                        console.error('Error executing query:', err);
+                        reject(err);
+                    }
+                    else {
+                        resolve(results);
+                    }
+                });
+            });
+        });
+    }
+    // Fechar a conexão com o banco
     static close() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (this.pool) {
-                try {
-                    yield this.pool.end();
-                    console.log('Conexão com o banco de dados encerrada.');
-                }
-                catch (error) {
-                    console.error('Erro ao fechar a conexão com o banco de dados:', error);
-                }
-            }
-        });
-    }
-    // Reinicia o pool de conexões
-    static restartConnection() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.close();
-            this.init();
-            console.log('Conexão com o banco de dados reiniciada.');
-        });
+        this.connection.end();
     }
 }
 exports.Database = Database;

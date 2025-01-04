@@ -15,7 +15,8 @@ class PatientService {
     static listPatients() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield database_1.Database.query("SELECT * FROM patients");
+                const result = yield database_1.Database.query("SELECT * FROM patients");
+                return result; // O MySQL retornará os dados no formato esperado
             }
             catch (error) {
                 console.error('Error listing patients:', error);
@@ -42,7 +43,6 @@ class PatientService {
                 if (columns.length === 0) {
                     throw new Error('No fields provided for update.');
                 }
-                // Adjust the placeholder syntax for MySQL (use `?` instead of `$1`, `$2`, etc.)
                 const setClause = columns.map((col) => `${col} = ?`).join(', ');
                 const query = `UPDATE patients SET ${setClause} WHERE patient_id = ?`;
                 console.log('Executing query:', query);
