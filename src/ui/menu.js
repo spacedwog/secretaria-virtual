@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const readline_sync_1 = __importDefault(require("readline-sync"));
-const patientService_1 = require("./database/services/patientService");
-const database_1 = require("./database/database");
+const patientService_1 = require("../database/services/patientService");
+const database_1 = require("../database/database");
 // Função para exibir o menu principal
 function showMenu() {
     return __awaiter(this, void 0, void 0, function* () {

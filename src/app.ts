@@ -1,6 +1,6 @@
 import { Database } from './database/database';
 import readlineSync from 'readline-sync';
-import { PatientService } from './database/services/patientService';
+import { PatientService } from './database/services/patient.service';
 
 // Função para exibir o menu principal
 async function showMenu() {
