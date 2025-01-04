@@ -6,7 +6,7 @@ export class Database {
   // Inicializar a conexão com o banco de dados MySQL
   static async init() {
     this.connection = mysql.createConnection({
-      host: 'localhost',
+      host: '127.0.0.1',
       user: 'mysql',
       password: '6z2h1j3k9F!',
       database: 'secretaria_virtual',
