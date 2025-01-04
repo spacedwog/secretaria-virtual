@@ -61,7 +61,7 @@ function listPatients() {
             });
         }
         catch (err) {
-            console.error('Erro ao listar pacientes:', err.message);
+            console.error('Erro ao listar pacientes:', err);
         }
     });
 }

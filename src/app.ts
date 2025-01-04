@@ -65,7 +65,7 @@ async function addPatient() {
     await PatientService.addPatient(name, age, phone, email, address);
     console.log('Paciente adicionado com sucesso!');
   } catch (err) {
-    console.error('Erro ao adicionar paciente:', err.message);
+    console.error('Erro ao adicionar paciente:', err);
   }
 }
 
@@ -97,7 +97,7 @@ async function editPatient() {
       console.log('Nenhuma alteracao foi feita.');
     }
   } catch (err) {
-    console.error('Erro ao editar paciente:', err.message);
+    console.error('Erro ao editar paciente:', err);
   }
 }
 
@@ -108,7 +108,7 @@ async function deletePatient() {
     await PatientService.deletePatient(patientId);
     console.log('Paciente excluido com sucesso!');
   } catch (err) {
-    console.error('Erro ao excluir paciente:', err.message);
+    console.error('Erro ao excluir paciente:', err);
   }
 }
 
@@ -119,7 +119,7 @@ async function deletePatient() {
     await showMenu();
     console.log('Sistema encerrado.');
   } catch (err) {
-    console.error('Erro fatal na aplicação:', err.message);
+    console.error('Erro fatal na aplicação:', err);
     await Database.close(); // Garante que a conexão será encerrada em caso de erro
   }
 })();
