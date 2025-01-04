@@ -18,13 +18,9 @@ export class PatientService {
     address: string
   ): Promise<void> {
     try {
-      const comando = "INSERT INTO ";
-      const tabela = "patients";
-      const colunas = "(name, age, phone, email, address)";
-      const valores = "('" + name + "', '" + age + "', '" + phone + "', '" + email + "', '" + address + "')";
-      const query = comando + tabela + colunas + " VALUES " + valores;
       await Database.query(
-        query
+        'INSERT INTO patients (name, age, phone, email, address) VALUES ($1, $2, $3, $4, $5)',
+        [name, age, phone, email, address]
       );
     } catch (error) {
       console.error('Error adding patient:', error);

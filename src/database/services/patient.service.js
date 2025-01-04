@@ -29,7 +29,7 @@ class PatientService {
                 const comando = "INSERT INTO ";
                 const tabela = "patients";
                 const colunas = "(name, age, phone, email, address)";
-                const valores = "(" + name + ", " + age + ", " + phone + ", " + email + ", " + address + ")";
+                const valores = "('" + name + "', '" + age + "', '" + phone + "', '" + email + "', '" + address + "')";
                 const query = comando + tabela + colunas + " VALUES " + valores;
                 yield database_1.Database.query(query);
             }
