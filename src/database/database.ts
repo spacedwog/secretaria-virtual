@@ -23,7 +23,7 @@ export class Database {
       const result = await this.init().query(sql, params);
       return result.rows;
     } catch (error) {
-      console.error('Erro na consulta ao banco de dados:', error.message);
+      console.error('Erro na consulta ao banco de dados:', error);
       throw error;
     }
   }

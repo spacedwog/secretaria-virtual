@@ -78,7 +78,7 @@ function addPatient() {
             console.log('Paciente adicionado com sucesso!');
         }
         catch (err) {
-            console.error('Erro ao adicionar paciente:', err.message);
+            console.error('Erro ao adicionar paciente:', err);
         }
     });
 }
@@ -112,7 +112,7 @@ function editPatient() {
             }
         }
         catch (err) {
-            console.error('Erro ao editar paciente:', err.message);
+            console.error('Erro ao editar paciente:', err);
         }
     });
 }
@@ -125,7 +125,7 @@ function deletePatient() {
             console.log('Paciente excluido com sucesso!');
         }
         catch (err) {
-            console.error('Erro ao excluir paciente:', err.message);
+            console.error('Erro ao excluir paciente:', err);
         }
     });
 }
@@ -137,7 +137,7 @@ function deletePatient() {
         console.log('Sistema encerrado.');
     }
     catch (err) {
-        console.error('Erro fatal na aplicação:', err.message);
+        console.error('Erro fatal na aplicação:', err);
         yield database_1.Database.close(); // Garante que a conexão será encerrada em caso de erro
     }
 }))();
