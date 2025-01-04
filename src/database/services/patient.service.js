@@ -26,7 +26,12 @@ class PatientService {
     static addPatient(name, age, phone, email, address) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.query('INSERT INTO patients (name, age, phone, email, address) VALUES ($name, $2, $3, $4, $5)', [name, age, phone, email, address]);
+                const comando = "INSERT INTO ";
+                const tabela = "patients";
+                const colunas = "(name, age, phone, email, address)";
+                const valores = "(" + name + ", " + age + ", " + phone + ", " + email + ", " + address + ")";
+                const query = comando + tabela + colunas + " VALUES " + valores;
+                yield database_1.Database.query(query);
             }
             catch (error) {
                 console.error('Error adding patient:', error);
