@@ -1,50 +1,34 @@
-import { Pool } from 'pg';
+import mysql from 'mysql2';
 
 export class Database {
-  private static pool: Pool;
+  private static connection: mysql.Connection;
 
-  // Inicializa o pool de conexões
-  static init() {
-    if (!this.pool) {
-      this.pool = new Pool({
-        user: 'mysql',
-        host: 'localhost',
-        database: 'secretaria_virtual',
-        password: '6z2h1j3k9F!', // Substitua por sua senha
-        port: 3306,
+  // Inicializar a conexão com o banco de dados MySQL
+  static async init() {
+    this.connection = mysql.createConnection({
+      host: 'localhost',
+      user: 'mysql',
+      password: '6z2h1j3k9F!',
+      database: 'secretaria_virtual',
+    });
+  }
+
+  // Método para executar consultas SQL
+  static async query(queryText: string, params: any[] = []) {
+    return new Promise<any>((resolve, reject) => {
+      this.connection.execute(queryText, params, (err, results) => {
+        if (err) {
+          console.error('Error executing query:', err);
+          reject(err);
+        } else {
+          resolve(results);
+        }
       });
-    }
-    return this.pool;
+    });
   }
 
-  // Executa uma consulta no banco de dados
-  static async query(sql: string, params?: any[]): Promise<any> {
-    console.log('Executando SQL:', sql, 'com parâmetros:', params);
-    try {
-      const result = await this.init().query(sql, params);
-      return result.rows;
-    } catch (error) {
-      console.error('Erro na consulta ao banco de dados:', error);
-      throw error;
-    }
-  }
-
-  // Fecha o pool de conexões
-  static async close() {
-    if (this.pool) {
-      try {
-        await this.pool.end();
-        console.log('Conexão com o banco de dados encerrada.');
-      } catch (error) {
-        console.error('Erro ao fechar a conexão com o banco de dados:', error);
-      }
-    }
-  }
-
-  // Reinicia o pool de conexões
-  static async restartConnection() {
-    await this.close();
-    this.init();
-    console.log('Conexão com o banco de dados reiniciada.');
+  // Fechar a conexão com o banco
+  static close() {
+    this.connection.end();
   }
 }

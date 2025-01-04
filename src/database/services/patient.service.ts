@@ -3,7 +3,8 @@ import { Database } from '../database';
 export class PatientService {
   static async listPatients(): Promise<any[]> {
     try {
-      return await Database.query("SELECT * FROM patients");
+      const result = await Database.query("SELECT * FROM patients");
+      return result;  // O MySQL retornará os dados no formato esperado
     } catch (error) {
       console.error('Error listing patients:', error);
       throw new Error('Failed to list patients. Please try again later.');
@@ -40,7 +41,6 @@ export class PatientService {
         throw new Error('No fields provided for update.');
       }
 
-      // Adjust the placeholder syntax for MySQL (use `?` instead of `$1`, `$2`, etc.)
       const setClause = columns.map((col) => `${col} = ?`).join(', ');
       const query = `UPDATE patients SET ${setClause} WHERE patient_id = ?`;
 
