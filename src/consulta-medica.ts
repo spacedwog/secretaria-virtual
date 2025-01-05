@@ -1,7 +1,7 @@
 import readlineSync from 'readline-sync';
 import { Database } from './database/database';
-import { PatientService } from './database/services/patient.service';
 import { DoctorService } from './database/services/doctor.service';
+import { PatientService } from './database/services/patient.service';
 
 // Função para exibir o menu principal
 async function menuSchedule() {
@@ -78,6 +78,7 @@ async function scheduleAppoiment() {
   } catch (err) {
     console.error('Erro ao adicionar consulta médica:', err);
   }
+}
 
 // Ponto de entrada da aplicação
 (async () => {

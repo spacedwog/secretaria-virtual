@@ -24,8 +24,7 @@ function menuSchedule() {
             console.log('1. Cadastrar Doutor');
             console.log('2. Agendar Visita Médica');
             console.log('3. Agendar Consulta');
-            console.log('4. Imprimir Agenda Médica');
-            console.log('5. Sair');
+            console.log('4. Sair');
             option = readline_sync_1.default.question('Escolha uma opcao: ');
             switch (option) {
                 case '1':
@@ -38,9 +37,6 @@ function menuSchedule() {
                     yield scheduleAppoiment();
                     break;
                 case '4':
-                    yield appoitmentView();
-                    break;
-                case '5':
                     console.log('Saindo do sistema...');
                     break;
                 default:
@@ -92,21 +88,6 @@ function scheduleAppoiment() {
         }
         catch (err) {
             console.error('Erro ao adicionar consulta médica:', err);
-        }
-        // Listar todas consultas
-        function appoitmentView() {
-            return __awaiter(this, void 0, void 0, function* () {
-                try {
-                    const appoitment = yield doctor_service_1.DoctorService.appoitmentView();
-                    console.log('\n--- Lista de Consultas ---');
-                    appoitment.forEach((appoitment) => {
-                        console.log(`ID: ${appoitment.patient_id}, Nome: ${appoitment.patient_name}, Idade: ${appoitment.age}, Telefone: ${appoitment.phone} Email: ${appoitment.email}`);
-                    });
-                }
-                catch (err) {
-                    console.error('Erro ao listar pacientes:', err);
-                }
-            });
         }
         // Ponto de entrada da aplicação
         (() => __awaiter(this, void 0, void 0, function* () {
