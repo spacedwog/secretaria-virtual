@@ -19,6 +19,7 @@ export class DoctorService {
     speciality: string
   ): Promise<void> {
     try {
+      await Database.init(); // Certifique-se de inicializar a conexão
       await Database.query(
         'INSERT INTO doctors (name, phone, email, speciality) VALUES (?, ?, ?, ?)',
         [name, phone, email, speciality]
@@ -34,6 +35,7 @@ export class DoctorService {
     doctorId: number
   ): Promise<void> {
     try {
+      await Database.init(); // Certifique-se de inicializar a conexão
       await Database.query(
         'INSERT INTO patients_doctors (patient_id, doctor_id) VALUES (?, ?)',
         [patientId, doctorId]
@@ -46,6 +48,7 @@ export class DoctorService {
 
   static async consultSchedule(patientId: number): Promise<void> {
     try {
+      await Database.init(); // Certifique-se de inicializar a conexão
       const result = await Database.query('SELECT * FROM patient_appointments_view WHERE patient_id = ?', [patientId]);
       return result;
     } catch (error) {

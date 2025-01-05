@@ -24,7 +24,7 @@ function showMenu() {
             console.log('1. Listar Consultas');
             console.log('2. Adicionar Doutor');
             console.log('3. Registrar Visita');
-            console.log('4. Agendar Consulta');
+            console.log('4. Consultar Agendamento');
             console.log('5. Sair');
             option = readline_sync_1.default.question('Escolha uma opcao: ');
             switch (option) {
@@ -38,6 +38,9 @@ function showMenu() {
                     yield registerVisit();
                     break;
                 case '4':
+                    yield consultSchedule();
+                    break;
+                case '5':
                     console.log('Saindo do sistema...');
                     break;
                 default:
@@ -85,6 +88,18 @@ function registerVisit() {
             const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
             const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
             yield doctor_service_1.DoctorService.visitDoctor(patientId, doctorId);
+        }
+        catch (err) {
+            console.error('Erro ao editar paciente:', err);
+        }
+    });
+}
+// Editar um paciente existente
+function consultSchedule() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
+            yield doctor_service_1.DoctorService.consultSchedule(patientId);
         }
         catch (err) {
             console.error('Erro ao editar paciente:', err);

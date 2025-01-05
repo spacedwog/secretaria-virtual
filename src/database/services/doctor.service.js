@@ -47,5 +47,17 @@ class DoctorService {
             }
         });
     }
+    static consultSchedule(patientId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield database_1.Database.query('SELECT * FROM patient_appointments_view WHERE patient_id = ?', [patientId]);
+                return result;
+            }
+            catch (error) {
+                console.error('Error deleting patient:', error);
+                throw new Error('Failed to delete patient. Please try again later.');
+            }
+        });
+    }
 }
 exports.DoctorService = DoctorService;
