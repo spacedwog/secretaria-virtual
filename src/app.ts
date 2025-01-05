@@ -31,8 +31,9 @@ async function showMenu() {
         await deletePatient();
         break;
       case 'c':
-        const menuSchedule = new menuSchedule();
-        menuSchedule().display;
+        const consultaMedica = new menuSchedule();
+        consultaMedica.display();
+        this.display();
         break;
       case '5':
         console.log('Saindo do sistema...');
