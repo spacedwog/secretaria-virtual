@@ -1,10 +1,20 @@
-# Configuração do servidor local
-$port = 8080
+# Solicita ao usuário a configuração inicial
+$port = Read-Host "Digite a porta para o servidor (padrão 8080)"
+if (-not $port) {
+    $port = 8080
+}
+
+$prefix = Read-Host "Digite o prefixo do servidor (padrão http://localhost)"
+if (-not $prefix) {
+    $prefix = "http://localhost"
+}
+
+# Inicia o servidor com as configurações informadas
 $listener = [System.Net.HttpListener]::new()
-$listener.Prefixes.Add("http://localhost:$port/")
+$listener.Prefixes.Add("$prefix:$port/")
 $listener.Start()
 
-Write-Host "Servidor HTTP iniciado em http://localhost:$port/"
+Write-Host "Servidor HTTP iniciado em $prefix:$port/"
 Write-Host "Pressione Ctrl+C para encerrar o servidor."
 
 while ($true) {
@@ -25,10 +35,15 @@ while ($true) {
         Write-Host "Headers: $($request.Headers)"
         Write-Host "Corpo da requisição: $body"
 
-        # Responde com uma mensagem de confirmação
-        $responseString = "Requisição recebida com sucesso!"
-        $buffer = [System.Text.Encoding]::UTF8.GetBytes($responseString)
+        # Solicita input interativo do operador do servidor
+        $responseString = Read-Host "Digite a resposta para o cliente"
 
+        if (-not $responseString) {
+            $responseString = "Resposta padrão do servidor."
+        }
+
+        # Envia a resposta para o cliente
+        $buffer = [System.Text.Encoding]::UTF8.GetBytes($responseString)
         $response.ContentLength64 = $buffer.Length
         $response.OutputStream.Write($buffer, 0, $buffer.Length)
         $response.OutputStream.Close()
