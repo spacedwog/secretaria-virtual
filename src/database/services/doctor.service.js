@@ -61,7 +61,7 @@ class DoctorService {
     static consultSchedule(patientId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.query('SELECT FROM appointments WHERE patient_id = ?', [patientId]);
+                yield database_1.Database.query('SELECT * FROM appointments WHERE patient_id = ?', [patientId]);
             }
             catch (error) {
                 console.error('Error deleting patient:', error);

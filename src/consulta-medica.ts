@@ -1,4 +1,3 @@
-import { register } from 'module';
 import readlineSync from 'readline-sync';
 import { Database } from './database/database';
 import { DoctorService } from './database/services/doctor.service';
@@ -12,8 +11,9 @@ async function showMenu() {
     console.log('1. Listar Consultas');
     console.log('2. Adicionar Doutor');
     console.log('3. Registrar Visita');
-    console.log('4. Consultar Agendamento');
-    console.log('5. Sair');
+    console.log('4. Agendar Consulta');
+    console.log('5. Consultar Agendamento');
+    console.log('6. Sair');
 
     option = readlineSync.question('Escolha uma opcao: ');
 
@@ -24,13 +24,16 @@ async function showMenu() {
       case '2':
         await addDoctor();
         break;
-      case '3':
-        await registerVisit();
-        break;
-      case '4':
+        case '3':
+          await registerVisit();
+          break;
+        case '4':
+          await makeAppointment();
+          break;
+      case '5':
         await consultSchedule();
         break;
-      case '5':
+      case '6':
         console.log('Saindo do sistema...');
         break;
       default:
@@ -80,6 +83,23 @@ async function registerVisit() {
 
   } catch (err) {
     console.error('Erro ao editar paciente:', err);
+  }
+}
+
+async function makeAppointment() {
+  try {
+
+    const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
+    const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
+    const appoitmentDate = readlineSync.question('Data da consulta: ');
+    const appoitmentTime = readlineSync.question('Horário da consulta: ');
+    const reasonAppoiment = readlineSync.question('Motivo da consulta: ');
+    const statusAppoiment = readlineSync.question('Status da consulta: ');
+
+    await DoctorService.makeAppoitment(patientId, doctorId, appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment);
+    console.log('Consulta agendada com sucesso!');
+  } catch (err) {
+    console.error('Erro ao agendar consulta:', err);
   }
 }
 
