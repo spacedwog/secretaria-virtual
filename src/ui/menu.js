@@ -41,9 +41,6 @@ function showMenu() {
                     yield deletePatient();
                     break;
                 case '5':
-                    yield scheduleAppointment();
-                    break;
-                case '6':
                     console.log('Saindo do sistema...');
                     break;
                 default:

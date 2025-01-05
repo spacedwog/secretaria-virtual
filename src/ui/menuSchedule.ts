@@ -1,18 +1,18 @@
-import { Database } from './database/database';
 import readlineSync from 'readline-sync';
-import { PatientService } from './database/services/patient.service';
+import { Database } from '../database/database';
+import { generateReport } from '../reports/reportGenerator';
+import { PatientService } from '../database/services/patient.service';
 
 // Função para exibir o menu principal
-async function showMenu() {
+async function menuSchedule() {
   let option: string;
 
   do {
-    console.log('\n--- Sistema de Secretaria Virtual ---');
+    console.log('\n--- Menu Principal ---');
     console.log('1. Listar Pacientes');
     console.log('2. Adicionar Paciente');
     console.log('3. Editar Paciente');
     console.log('4. Excluir Paciente');
-    console.log('n. Menu de Consulta Médica');
     console.log('5. Sair');
 
     option = readlineSync.question('Escolha uma opcao: ');
@@ -29,9 +29,6 @@ async function showMenu() {
         break;
       case '4':
         await deletePatient();
-        break;
-      case 'n':
-        await menuSchedule();
         break;
       case '5':
         console.log('Saindo do sistema...');
@@ -116,14 +113,7 @@ async function deletePatient() {
   }
 }
 
-// Ponto de entrada da aplicação
-(async () => {
-  try {
-    console.log('Iniciando sistema de secretaria virtual...');
-    await showMenu();
-    console.log('Sistema encerrado.');
-  } catch (err) {
-    console.error('Erro fatal na aplicação:', err);
-    await Database.close(); // Garante que a conexão será encerrada em caso de erro
-  }
-})();
+// Inicia o menu principal
+menuSchedule()
+  .then(() => console.log('Programa encerrado.'))
+  .catch((err) => console.error('Erro inesperado:', err));
