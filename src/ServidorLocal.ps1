@@ -14,14 +14,19 @@ while ($true) {
         $request = $context.Request
         $response = $context.Response
 
+        # Lê o corpo da requisição (se houver)
+        $reader = New-Object System.IO.StreamReader($request.InputStream, $request.ContentEncoding)
+        $body = $reader.ReadToEnd()
+
         # Exibe informações da requisição no console
-        Write-Host "Requisição recebida:"
+        Write-Host "`nRequisição recebida:"
         Write-Host "URL: $($request.Url)"
         Write-Host "Método: $($request.HttpMethod)"
         Write-Host "Headers: $($request.Headers)"
+        Write-Host "Corpo da requisição: $body"
 
-        # Responde com uma mensagem básica
-        $responseString = "Olá, mundo! Este é o seu servidor local."
+        # Responde com uma mensagem de confirmação
+        $responseString = "Requisição recebida com sucesso!"
         $buffer = [System.Text.Encoding]::UTF8.GetBytes($responseString)
 
         $response.ContentLength64 = $buffer.Length
