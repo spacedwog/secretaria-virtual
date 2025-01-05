@@ -25,8 +25,7 @@ function showMenu() {
             console.log('2. Adicionar Doutor');
             console.log('3. Registrar Visita');
             console.log('4. Agendar Consulta');
-            console.log('5. Consultar Agendamento');
-            console.log('6. Sair');
+            console.log('5. Sair');
             option = readline_sync_1.default.question('Escolha uma opcao: ');
             switch (option) {
                 case '1':
@@ -42,9 +41,6 @@ function showMenu() {
                     yield makeAppointment();
                     break;
                 case '5':
-                    yield consultSchedule();
-                    break;
-                case '6':
                     console.log('Saindo do sistema...');
                     break;
                 default:
@@ -112,19 +108,6 @@ function makeAppointment() {
         }
         catch (err) {
             console.error('Erro ao agendar consulta:', err);
-        }
-    });
-}
-// Excluir um paciente
-function consultSchedule() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
-            yield doctor_service_1.DoctorService.consultSchedule(patientId);
-            console.log('Paciente excluido com sucesso!');
-        }
-        catch (err) {
-            console.error('Erro ao excluir paciente:', err);
         }
     });
 }

@@ -84,15 +84,13 @@ async function registerVisit() {
 
 async function makeAppointment() {
   try {
-
-    const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
-    const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
+    
     const appoitmentDate = readlineSync.question('Data da consulta: ');
     const appoitmentTime = readlineSync.question('Horário da consulta: ');
     const reasonAppoiment = readlineSync.question('Motivo da consulta: ');
     const statusAppoiment = readlineSync.question('Status da consulta: ');
 
-    await DoctorService.makeAppoitment(patientId, doctorId, appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment);
+    await DoctorService.makeAppoitment(appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment);
     console.log('Consulta agendada com sucesso!');
   } catch (err) {
     console.error('Erro ao agendar consulta:', err);

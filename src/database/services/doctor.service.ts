@@ -45,8 +45,6 @@ export class DoctorService {
   }
 
   static async makeAppoitment(
-    patientId: number,
-    doctorId: number,
     appoitmentDate: string,
     appoitmentTime: string,
     reasonAppoiment: string,
@@ -54,8 +52,8 @@ export class DoctorService {
   ): Promise<void> {
     try {
       await Database.query(
-        'INSERT INTO appointments (patient_id, doctor_id, appoitment_date, appoitment_time, reason, status) VALUES (?,?,?,?,?,?)',
-        [patientId, doctorId, appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment]
+        'INSERT INTO appointments (appoitment_date, appoitment_time, reason, status) VALUES (?,?,?,?)',
+        [appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment]
       );
     } catch (error) {
       console.error('Error making appoitment:', error);
