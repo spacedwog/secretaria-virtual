@@ -11,7 +11,7 @@ async function showMenu() {
     console.log('1. Listar Consultas');
     console.log('2. Adicionar Doutor');
     console.log('3. Registrar Visita');
-    console.log('4. Agendar Consulta');
+    console.log('4. Consultar Agendamento');
     console.log('5. Sair');
 
     option = readlineSync.question('Escolha uma opcao: ');
@@ -27,6 +27,9 @@ async function showMenu() {
         await registerVisit();
         break;
       case '4':
+        await consultSchedule();
+        break;
+      case '5':
         console.log('Saindo do sistema...');
         break;
       default:
@@ -73,6 +76,19 @@ async function registerVisit() {
     const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
 
     await DoctorService.visitDoctor(patientId, doctorId);
+
+  } catch (err) {
+    console.error('Erro ao editar paciente:', err);
+  }
+}
+
+// Editar um paciente existente
+async function consultSchedule() {
+  try {
+
+    const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
+
+    await DoctorService.consultSchedule(patientId);
 
   } catch (err) {
     console.error('Erro ao editar paciente:', err);
