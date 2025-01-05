@@ -59,15 +59,14 @@ async function listAppoitment() {
 async function addDoctor() {
   try {
     const name = readlineSync.question('Nome do doutor: ');
-    const age = parseInt(readlineSync.question('Idade: '), 10);
     const phone = readlineSync.question('Telefone: ');
     const email = readlineSync.question('Email: ');
-    const address = readlineSync.question('Endereco: ');
+    const speciality = readlineSync.question('Especialidade: ');
 
-    await PatientService.addPatient(name, age, phone, email, address);
-    console.log('Paciente adicionado com sucesso!');
+    await PatientService.addPatient(name, phone, email, speciality);
+    console.log('Doutor adicionado com sucesso!');
   } catch (err) {
-    console.error('Erro ao adicionar paciente:', err);
+    console.error('Erro ao adicionar doutor:', err);
   }
 }
 
