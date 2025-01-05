@@ -12,8 +12,7 @@ async function showMenu() {
     console.log('2. Adicionar Doutor');
     console.log('3. Registrar Visita');
     console.log('4. Agendar Consulta');
-    console.log('5. Consultar Agendamento');
-    console.log('6. Sair');
+    console.log('5. Sair');
 
     option = readlineSync.question('Escolha uma opcao: ');
 
@@ -31,9 +30,6 @@ async function showMenu() {
           await makeAppointment();
           break;
       case '5':
-        await consultSchedule();
-        break;
-      case '6':
         console.log('Saindo do sistema...');
         break;
       default:
@@ -100,18 +96,6 @@ async function makeAppointment() {
     console.log('Consulta agendada com sucesso!');
   } catch (err) {
     console.error('Erro ao agendar consulta:', err);
-  }
-}
-
-// Excluir um paciente
-async function consultSchedule() {
-  try {
-    const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
-
-    await DoctorService.consultSchedule(patientId);
-    console.log('Paciente excluido com sucesso!');
-  } catch (err) {
-    console.error('Erro ao excluir paciente:', err);
   }
 }
 
