@@ -1,5 +1,6 @@
-import { Database } from './database/database';
 import readlineSync from 'readline-sync';
+iport { menuSchedule } from 'ui/menuSchedule';
+import { Database } from './database/database';
 import { PatientService } from './database/services/patient.service';
 
 // Função para exibir o menu principal
@@ -33,7 +34,6 @@ async function showMenu() {
       case 'c':
         const consultaMedica = new menuSchedule();
         consultaMedica.display();
-        this.display();
         break;
       case '5':
         console.log('Saindo do sistema...');
