@@ -99,7 +99,12 @@ function consultSchedule() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
-            yield doctor_service_1.DoctorService.consultSchedule(patientId);
+            const schedule = yield doctor_service_1.DoctorService.consultSchedule(patientId);
+            ;
+            console.log('\n--- Lista de Agendamentos ---');
+            schedule.forEach((schedule) => {
+                console.log(`Nome: ${schedule.patient_name}, E-mail: ${schedule.email}, Telefone: ${schedule.phone}, Data: ${schedule.appoitment_date}, Horário: ${schedule.appoitment_time}`);
+            });
         }
         catch (err) {
             console.error('Erro ao editar paciente:', err);
