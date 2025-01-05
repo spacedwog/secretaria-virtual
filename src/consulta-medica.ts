@@ -11,8 +11,7 @@ async function showMenu() {
     console.log('1. Listar Consultas');
     console.log('2. Adicionar Doutor');
     console.log('3. Registrar Visita');
-    console.log('4. Agendar Consulta');
-    console.log('5. Sair');
+    console.log('4. Sair');
 
     option = readlineSync.question('Escolha uma opcao: ');
 
@@ -23,13 +22,10 @@ async function showMenu() {
       case '2':
         await addDoctor();
         break;
-        case '3':
+      case '3':
           await registerVisit();
           break;
-        case '4':
-          await makeAppointment();
-          break;
-      case '5':
+      case '4':
         console.log('Saindo do sistema...');
         break;
       default:

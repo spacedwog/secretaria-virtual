@@ -94,21 +94,6 @@ function registerVisit() {
         }
     });
 }
-function makeAppointment() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const appoitmentDate = readline_sync_1.default.question('Data da consulta: ');
-            const appoitmentTime = readline_sync_1.default.question('Horário da consulta: ');
-            const reasonAppoiment = readline_sync_1.default.question('Motivo da consulta: ');
-            const statusAppoiment = readline_sync_1.default.question('Status da consulta: ');
-            yield doctor_service_1.DoctorService.makeAppoitment(appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment);
-            console.log('Consulta agendada com sucesso!');
-        }
-        catch (err) {
-            console.error('Erro ao agendar consulta:', err);
-        }
-    });
-}
 // Ponto de entrada da aplicação
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {

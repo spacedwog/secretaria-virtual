@@ -47,16 +47,5 @@ class DoctorService {
             }
         });
     }
-    static makeAppoitment(appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield database_1.Database.query('INSERT INTO appointments (appoitment_date, appoitment_time, reason, status) VALUES (?,?,?,?)', [appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment]);
-            }
-            catch (error) {
-                console.error('Error making appoitment:', error);
-                throw new Error('Failed to make appoitment. Please check the input data and try again.');
-            }
-        });
-    }
 }
 exports.DoctorService = DoctorService;
