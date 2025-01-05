@@ -12,20 +12,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const database_1 = require("./database/database");
 const readline_sync_1 = __importDefault(require("readline-sync"));
-const patient_service_1 = require("./database/services/patient.service");
+const database_1 = require("../database/database");
+const patient_service_1 = require("../database/services/patient.service");
 // Função para exibir o menu principal
-function showMenu() {
+function menuSchedule() {
     return __awaiter(this, void 0, void 0, function* () {
         let option;
         do {
-            console.log('\n--- Sistema de Secretaria Virtual ---');
+            console.log('\n--- Menu Principal ---');
             console.log('1. Listar Pacientes');
             console.log('2. Adicionar Paciente');
             console.log('3. Editar Paciente');
             console.log('4. Excluir Paciente');
-            console.log('n. Menu de Consulta Médica');
             console.log('5. Sair');
             option = readline_sync_1.default.question('Escolha uma opcao: ');
             switch (option) {
@@ -40,9 +39,6 @@ function showMenu() {
                     break;
                 case '4':
                     yield deletePatient();
-                    break;
-                case 'n':
-                    yield menuSchedule();
                     break;
                 case '5':
                     console.log('Saindo do sistema...');
@@ -133,15 +129,7 @@ function deletePatient() {
         }
     });
 }
-// Ponto de entrada da aplicação
-(() => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        console.log('Iniciando sistema de secretaria virtual...');
-        yield showMenu();
-        console.log('Sistema encerrado.');
-    }
-    catch (err) {
-        console.error('Erro fatal na aplicação:', err);
-        yield database_1.Database.close(); // Garante que a conexão será encerrada em caso de erro
-    }
-}))();
+// Inicia o menu principal
+menuSchedule()
+    .then(() => console.log('Programa encerrado.'))
+    .catch((err) => console.error('Erro inesperado:', err));

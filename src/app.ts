@@ -116,13 +116,27 @@ async function deletePatient() {
   }
 }
 
+async function menuSchedule(){
+  (async () => {
+    try{
+      console.log('Abrindo menu de consulta médica...');
+      await menuSchedule();
+    }
+    catch (err) {
+      console.error('Erro fatal na aplicação:', err);
+      await Database.close(); // Garante que a conexão será encerrada em caso de erro
+    }
+  })();
+}
+
 // Ponto de entrada da aplicação
 (async () => {
   try {
     console.log('Iniciando sistema de secretaria virtual...');
     await showMenu();
     console.log('Sistema encerrado.');
-  } catch (err) {
+  }
+  catch (err) {
     console.error('Erro fatal na aplicação:', err);
     await Database.close(); // Garante que a conexão será encerrada em caso de erro
   }
