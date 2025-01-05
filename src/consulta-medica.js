@@ -100,10 +100,9 @@ function consultSchedule() {
         try {
             const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
             const schedule = yield doctor_service_1.DoctorService.consultSchedule(patientId);
-            ;
             console.log('\n--- Lista de Agendamentos ---');
             schedule.forEach((schedule) => {
-                console.log(`Nome: ${schedule.patient_name}, E-mail: ${schedule.email}, Telefone: ${schedule.phone}, Data: ${schedule.appoitment_date}, Horário: ${schedule.appoitment_time}`);
+                console.log(`Nome: ${schedule.patient_name}, E-mail: ${schedule.email}, Telefone: ${schedule.phone}, Data: ${schedule.appointment_date}, Horário: ${schedule.appointment_time}`);
             });
         }
         catch (err) {
