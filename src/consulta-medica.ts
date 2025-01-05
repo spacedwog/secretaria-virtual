@@ -3,15 +3,16 @@ import { Database } from './database/database';
 import { PatientService } from './database/services/patient.service';
 
 // Função para exibir o menu principal
-async function showMenu() {
+async function menuSchedule() {
   let option: string;
 
   do {
-    console.log('\n--- Sistema de Secretaria Virtual ---');
+    console.log('\n--- Sistema de Secretaria Virtual 2---');
     console.log('1. Listar Pacientes');
     console.log('2. Adicionar Paciente');
     console.log('3. Editar Paciente');
     console.log('4. Excluir Paciente');
+    console.log('c. Menu de Consulta Médica');
     console.log('5. Sair');
 
     option = readlineSync.question('Escolha uma opcao: ');
@@ -115,8 +116,8 @@ async function deletePatient() {
 // Ponto de entrada da aplicação
 (async () => {
   try {
-    console.log('Iniciando sistema de secretaria virtual...');
-    await showMenu();
+    console.log('Iniciando sistema de consulta médica...');
+    await menuSchedule();
     console.log('Sistema encerrado.');
   }
   catch (err) {
