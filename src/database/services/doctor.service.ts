@@ -46,7 +46,7 @@ export class DoctorService {
     }
   }
 
-  static async consultSchedule(patientId: number): Promise<void> {
+  static async consultSchedule(patientId: number): Promise<any[]> {
     try {
       await Database.init(); // Certifique-se de inicializar a conexão
       const result = await Database.query('SELECT * FROM patient_appointments_view WHERE patient_id = ?', [patientId]);

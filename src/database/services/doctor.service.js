@@ -28,6 +28,7 @@ class DoctorService {
     static addDoctor(name, phone, email, speciality) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield database_1.Database.init(); // Certifique-se de inicializar a conexão
                 yield database_1.Database.query('INSERT INTO doctors (name, phone, email, speciality) VALUES (?, ?, ?, ?)', [name, phone, email, speciality]);
             }
             catch (error) {
@@ -39,6 +40,7 @@ class DoctorService {
     static visitDoctor(patientId, doctorId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield database_1.Database.init(); // Certifique-se de inicializar a conexão
                 yield database_1.Database.query('INSERT INTO patients_doctors (patient_id, doctor_id) VALUES (?, ?)', [patientId, doctorId]);
             }
             catch (error) {
@@ -50,6 +52,7 @@ class DoctorService {
     static consultSchedule(patientId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield database_1.Database.init(); // Certifique-se de inicializar a conexão
                 const result = yield database_1.Database.query('SELECT * FROM patient_appointments_view WHERE patient_id = ?', [patientId]);
                 return result;
             }
