@@ -14,12 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const database_1 = require("./database/database");
-iport;
-{
-    menuSchedule;
-}
-from;
-'./ui/menuSchedule';
+const menuSchedule_1 = require("./ui/menuSchedule");
 const patient_service_1 = require("./database/services/patient.service");
 // Função para exibir o menu principal
 function showMenu() {
@@ -48,7 +43,7 @@ function showMenu() {
                     yield deletePatient();
                     break;
                 case 'c':
-                    const consultaMedica = new menuSchedule();
+                    const consultaMedica = new menuSchedule_1.menuSchedule();
                     consultaMedica.display();
                     break;
                 case '5':
