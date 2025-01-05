@@ -73,7 +73,7 @@ function addDoctor() {
             const phone = readline_sync_1.default.question('Telefone: ');
             const email = readline_sync_1.default.question('Email: ');
             const speciality = readline_sync_1.default.question('Especialidade: ');
-            yield PatientService.addPatient(name, phone, email, speciality);
+            yield doctor_service_1.DoctorService.addDoctor(name, phone, email, speciality);
             console.log('Doutor adicionado com sucesso!');
         }
         catch (err) {
@@ -85,30 +85,9 @@ function addDoctor() {
 function registerVisit() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const patientId = parseInt(readline_sync_1.default.question('ID do paciente a ser editado: '), 10);
-            const fieldsToUpdate = {};
-            const name = readline_sync_1.default.question('Novo nome (deixe vazio para nao alterar): ');
-            if (name)
-                fieldsToUpdate.name = name;
-            const age = readline_sync_1.default.question('Nova idade (deixe vazio para nao alterar): ');
-            if (age)
-                fieldsToUpdate.age = parseInt(age, 10);
-            const phone = readline_sync_1.default.question('Novo telefone (deixe vazio para nao alterar): ');
-            if (phone)
-                fieldsToUpdate.phone = phone;
-            const email = readline_sync_1.default.question('Novo email (deixe vazio para nao alterar): ');
-            if (email)
-                fieldsToUpdate.email = email;
-            const address = readline_sync_1.default.question('Novo endereco (deixe vazio para nao alterar): ');
-            if (address)
-                fieldsToUpdate.address = address;
-            if (Object.keys(fieldsToUpdate).length > 0) {
-                yield PatientService.editPatient(patientId, fieldsToUpdate);
-                console.log('Paciente atualizado com sucesso!');
-            }
-            else {
-                console.log('Nenhuma alteracao foi feita.');
-            }
+            const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
+            const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
+            yield doctor_service_1.DoctorService.visitDoctor(patientId, doctorId);
         }
         catch (err) {
             console.error('Erro ao editar paciente:', err);
@@ -119,8 +98,8 @@ function registerVisit() {
 function consultSchedule() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const patientId = parseInt(readline_sync_1.default.question('ID do paciente a ser excluido: '), 10);
-            yield PatientService.deletePatient(patientId);
+            const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
+            yield doctor_service_1.DoctorService.consultSchedule(patientId);
             console.log('Paciente excluido com sucesso!');
         }
         catch (err) {
