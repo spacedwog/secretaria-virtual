@@ -97,13 +97,11 @@ function registerVisit() {
 function makeAppointment() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
-            const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
             const appoitmentDate = readline_sync_1.default.question('Data da consulta: ');
             const appoitmentTime = readline_sync_1.default.question('Horário da consulta: ');
             const reasonAppoiment = readline_sync_1.default.question('Motivo da consulta: ');
             const statusAppoiment = readline_sync_1.default.question('Status da consulta: ');
-            yield doctor_service_1.DoctorService.makeAppoitment(patientId, doctorId, appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment);
+            yield doctor_service_1.DoctorService.makeAppoitment(appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment);
             console.log('Consulta agendada com sucesso!');
         }
         catch (err) {

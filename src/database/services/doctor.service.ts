@@ -44,21 +44,4 @@ export class DoctorService {
     }
   }
 
-  static async makeAppoitment(
-    appoitmentDate: string,
-    appoitmentTime: string,
-    reasonAppoiment: string,
-    statusAppoiment: string
-  ): Promise<void> {
-    try {
-      await Database.query(
-        'INSERT INTO appointments (appoitment_date, appoitment_time, reason, status) VALUES (?,?,?,?)',
-        [appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment]
-      );
-    } catch (error) {
-      console.error('Error making appoitment:', error);
-      throw new Error('Failed to make appoitment. Please check the input data and try again.');
-    }
-  }
-
 }
