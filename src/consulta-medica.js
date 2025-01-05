@@ -24,8 +24,7 @@ function showMenu() {
             console.log('1. Listar Consultas');
             console.log('2. Adicionar Doutor');
             console.log('3. Registrar Visita');
-            console.log('4. Agendar Consulta');
-            console.log('5. Sair');
+            console.log('4. Sair');
             option = readline_sync_1.default.question('Escolha uma opcao: ');
             switch (option) {
                 case '1':
@@ -38,9 +37,6 @@ function showMenu() {
                     yield registerVisit();
                     break;
                 case '4':
-                    yield makeAppointment();
-                    break;
-                case '5':
                     console.log('Saindo do sistema...');
                     break;
                 default:
