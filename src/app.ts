@@ -1,6 +1,6 @@
 import readlineSync from 'readline-sync';
-iport { menuSchedule } from 'ui/menuSchedule';
 import { Database } from './database/database';
+iport { menuSchedule } from './ui/menuSchedule';
 import { PatientService } from './database/services/patient.service';
 
 // Função para exibir o menu principal

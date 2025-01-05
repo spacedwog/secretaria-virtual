@@ -12,8 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const database_1 = require("./database/database");
 const readline_sync_1 = __importDefault(require("readline-sync"));
+iport;
+{
+    menuSchedule;
+}
+from;
+'ui/menuSchedule';
+const database_1 = require("./database/database");
 const patient_service_1 = require("./database/services/patient.service");
 // Função para exibir o menu principal
 function showMenu() {
@@ -44,7 +50,6 @@ function showMenu() {
                 case 'c':
                     const consultaMedica = new menuSchedule();
                     consultaMedica.display();
-                    this.display();
                     break;
                 case '5':
                     console.log('Saindo do sistema...');
