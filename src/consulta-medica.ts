@@ -1,7 +1,6 @@
+import { register } from 'module';
 import readlineSync from 'readline-sync';
 import { Database } from './database/database';
-import { PatientService } from './database/services/patient.service';
-import { register } from 'module';
 import { DoctorService } from './database/services/doctor.service';
 
 // Função para exibir o menu principal
