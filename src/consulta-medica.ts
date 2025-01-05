@@ -62,7 +62,7 @@ async function addDoctor() {
     const email = readlineSync.question('Email: ');
     const speciality = readlineSync.question('Especialidade: ');
 
-    await PatientService.addPatient(name, phone, email, speciality);
+    await DoctorService.addDoctor(name, phone, email, speciality);
     console.log('Doutor adicionado com sucesso!');
   } catch (err) {
     console.error('Erro ao adicionar doutor:', err);
@@ -72,30 +72,12 @@ async function addDoctor() {
 // Editar um paciente existente
 async function registerVisit() {
   try {
-    const patientId = parseInt(readlineSync.question('ID do paciente a ser editado: '), 10);
-    const fieldsToUpdate: Record<string, any> = {};
 
-    const name = readlineSync.question('Novo nome (deixe vazio para nao alterar): ');
-    if (name) fieldsToUpdate.name = name;
+    const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
+    const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
 
-    const age = readlineSync.question('Nova idade (deixe vazio para nao alterar): ');
-    if (age) fieldsToUpdate.age = parseInt(age, 10);
+    await DoctorService.visitDoctor(patientId, doctorId);
 
-    const phone = readlineSync.question('Novo telefone (deixe vazio para nao alterar): ');
-    if (phone) fieldsToUpdate.phone = phone;
-
-    const email = readlineSync.question('Novo email (deixe vazio para nao alterar): ');
-    if (email) fieldsToUpdate.email = email;
-
-    const address = readlineSync.question('Novo endereco (deixe vazio para nao alterar): ');
-    if (address) fieldsToUpdate.address = address;
-
-    if (Object.keys(fieldsToUpdate).length > 0) {
-      await PatientService.editPatient(patientId, fieldsToUpdate);
-      console.log('Paciente atualizado com sucesso!');
-    } else {
-      console.log('Nenhuma alteracao foi feita.');
-    }
   } catch (err) {
     console.error('Erro ao editar paciente:', err);
   }
@@ -104,8 +86,9 @@ async function registerVisit() {
 // Excluir um paciente
 async function consultSchedule() {
   try {
-    const patientId = parseInt(readlineSync.question('ID do paciente a ser excluido: '), 10);
-    await PatientService.deletePatient(patientId);
+    const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
+
+    await DoctorService.consultSchedule(patientId);
     console.log('Paciente excluido com sucesso!');
   } catch (err) {
     console.error('Erro ao excluir paciente:', err);

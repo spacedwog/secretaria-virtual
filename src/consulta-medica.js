@@ -14,31 +14,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const database_1 = require("./database/database");
-const patient_service_1 = require("./database/services/patient.service");
+const doctor_service_1 = require("./database/services/doctor.service");
 // Função para exibir o menu principal
 function showMenu() {
     return __awaiter(this, void 0, void 0, function* () {
         let option;
         do {
             console.log('\n--- Sistema de Secretaria Virtual ---');
-            console.log('1. Listar Pacientes');
-            console.log('2. Adicionar Paciente');
-            console.log('3. Editar Paciente');
-            console.log('4. Excluir Paciente');
+            console.log('1. Listar Consultas');
+            console.log('2. Adicionar Doutor');
+            console.log('3. Registrar Visita');
+            console.log('4. Consultar Agendamento');
             console.log('5. Sair');
             option = readline_sync_1.default.question('Escolha uma opcao: ');
             switch (option) {
                 case '1':
-                    yield listPatients();
+                    yield listAppoitment();
                     break;
                 case '2':
-                    yield addPatient();
+                    yield addDoctor();
                     break;
                 case '3':
-                    yield editPatient();
+                    yield registerVisit();
                     break;
                 case '4':
-                    yield deletePatient();
+                    yield consultSchedule();
                     break;
                 case '5':
                     console.log('Saindo do sistema...');
@@ -51,39 +51,38 @@ function showMenu() {
     });
 }
 // Listar todos os pacientes
-function listPatients() {
+function listAppoitment() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const patients = yield patient_service_1.PatientService.listPatients();
-            console.log('\n--- Lista de Pacientes ---');
-            patients.forEach((patient) => {
-                console.log(`ID: ${patient.patient_id}, Nome: ${patient.name}, Idade: ${patient.age}, Telefone: ${patient.phone}`);
+            const appoitment = yield doctor_service_1.DoctorService.appoitmentView();
+            console.log('\n--- Lista de Consultas Médicas ---');
+            appoitment.forEach((appoitment) => {
+                console.log(`ID: ${appoitment.patient_id}, Nome: ${appoitment.patient_name}, Idade: ${appoitment.age}, Telefone: ${appoitment.phone}`);
             });
         }
         catch (err) {
-            console.error('Erro ao listar pacientes:', err);
+            console.error('Erro ao listar consultas médicas:', err);
         }
     });
 }
 // Adicionar um novo paciente
-function addPatient() {
+function addDoctor() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const name = readline_sync_1.default.question('Nome do paciente: ');
-            const age = parseInt(readline_sync_1.default.question('Idade: '), 10);
+            const name = readline_sync_1.default.question('Nome do doutor: ');
             const phone = readline_sync_1.default.question('Telefone: ');
             const email = readline_sync_1.default.question('Email: ');
-            const address = readline_sync_1.default.question('Endereco: ');
-            yield patient_service_1.PatientService.addPatient(name, age, phone, email, address);
-            console.log('Paciente adicionado com sucesso!');
+            const speciality = readline_sync_1.default.question('Especialidade: ');
+            yield PatientService.addPatient(name, phone, email, speciality);
+            console.log('Doutor adicionado com sucesso!');
         }
         catch (err) {
-            console.error('Erro ao adicionar paciente:', err);
+            console.error('Erro ao adicionar doutor:', err);
         }
     });
 }
 // Editar um paciente existente
-function editPatient() {
+function registerVisit() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const patientId = parseInt(readline_sync_1.default.question('ID do paciente a ser editado: '), 10);
@@ -104,7 +103,7 @@ function editPatient() {
             if (address)
                 fieldsToUpdate.address = address;
             if (Object.keys(fieldsToUpdate).length > 0) {
-                yield patient_service_1.PatientService.editPatient(patientId, fieldsToUpdate);
+                yield PatientService.editPatient(patientId, fieldsToUpdate);
                 console.log('Paciente atualizado com sucesso!');
             }
             else {
@@ -117,11 +116,11 @@ function editPatient() {
     });
 }
 // Excluir um paciente
-function deletePatient() {
+function consultSchedule() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const patientId = parseInt(readline_sync_1.default.question('ID do paciente a ser excluido: '), 10);
-            yield patient_service_1.PatientService.deletePatient(patientId);
+            yield PatientService.deletePatient(patientId);
             console.log('Paciente excluido com sucesso!');
         }
         catch (err) {
