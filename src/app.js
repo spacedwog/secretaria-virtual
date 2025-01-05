@@ -133,6 +133,20 @@ function deletePatient() {
         }
     });
 }
+function menuSchedule() {
+    return __awaiter(this, void 0, void 0, function* () {
+        (() => __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log('Abrindo menu de consulta médica...');
+                yield menuSchedule();
+            }
+            catch (err) {
+                console.error('Erro fatal na aplicação:', err);
+                yield database_1.Database.close(); // Garante que a conexão será encerrada em caso de erro
+            }
+        }))();
+    });
+}
 // Ponto de entrada da aplicação
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {

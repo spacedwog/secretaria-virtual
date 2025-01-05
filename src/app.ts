@@ -12,7 +12,7 @@ async function showMenu() {
     console.log('2. Adicionar Paciente');
     console.log('3. Editar Paciente');
     console.log('4. Excluir Paciente');
-    console.log('n. Menu de Consulta Médica');
+    console.log('c. Menu de Consulta Médica');
     console.log('5. Sair');
 
     option = readlineSync.question('Escolha uma opcao: ');
@@ -30,8 +30,9 @@ async function showMenu() {
       case '4':
         await deletePatient();
         break;
-      case 'n':
-        await menuSchedule();
+      case 'c':
+        const menuSchedule = new menuSchedule();
+        menuSchedule().display;
         break;
       case '5':
         console.log('Saindo do sistema...');
@@ -114,19 +115,6 @@ async function deletePatient() {
   } catch (err) {
     console.error('Erro ao excluir paciente:', err);
   }
-}
-
-async function menuSchedule(){
-  (async () => {
-    try{
-      console.log('Abrindo menu de consulta médica...');
-      await menuSchedule();
-    }
-    catch (err) {
-      console.error('Erro fatal na aplicação:', err);
-      await Database.close(); // Garante que a conexão será encerrada em caso de erro
-    }
-  })();
 }
 
 // Ponto de entrada da aplicação
