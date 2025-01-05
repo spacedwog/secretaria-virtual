@@ -1,7 +1,6 @@
 import readlineSync from 'readline-sync';
 import { Database } from './database/database';
 import { DoctorService } from './database/services/doctor.service';
-import { PatientService } from './database/services/patient.service';
 
 // Função para exibir o menu principal
 async function menuSchedule() {

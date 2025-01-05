@@ -89,17 +89,17 @@ function scheduleAppoiment() {
         catch (err) {
             console.error('Erro ao adicionar consulta médica:', err);
         }
-        // Ponto de entrada da aplicação
-        (() => __awaiter(this, void 0, void 0, function* () {
-            try {
-                console.log('Iniciando sistema de consulta médica...');
-                yield menuSchedule();
-                console.log('Sistema encerrado.');
-            }
-            catch (err) {
-                console.error('Erro fatal na aplicação:', err);
-                database_1.Database.close(); // Garante que a conexão será encerrada em caso de erro
-            }
-        }))();
     });
 }
+// Ponto de entrada da aplicação
+(() => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        console.log('Iniciando sistema de consulta médica...');
+        yield menuSchedule();
+        console.log('Sistema encerrado.');
+    }
+    catch (err) {
+        console.error('Erro fatal na aplicação:', err);
+        database_1.Database.close(); // Garante que a conexão será encerrada em caso de erro
+    }
+}))();
