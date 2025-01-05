@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const database_1 = require("./database/database");
-const menuSchedule_1 = require("./ui/menuSchedule");
 const patient_service_1 = require("./database/services/patient.service");
 // Função para exibir o menu principal
 function showMenu() {
@@ -26,7 +25,6 @@ function showMenu() {
             console.log('2. Adicionar Paciente');
             console.log('3. Editar Paciente');
             console.log('4. Excluir Paciente');
-            console.log('c. Menu de Consulta Médica');
             console.log('5. Sair');
             option = readline_sync_1.default.question('Escolha uma opcao: ');
             switch (option) {
@@ -42,10 +40,6 @@ function showMenu() {
                 case '4':
                     yield deletePatient();
                     break;
-                case 'c':
-                    const consultaMedica = new menuSchedule_1.menuSchedule();
-                    consultaMedica.display();
-                    break;
                 case '5':
                     console.log('Saindo do sistema...');
                     break;
@@ -53,7 +47,7 @@ function showMenu() {
                     console.log('Opcao invalida. Tente novamente.');
             }
         } while (option !== '5');
-        yield database_1.Database.close(); // Fecha a conexão ao sair
+        database_1.Database.close(); // Fecha a conexão ao sair
     });
 }
 // Listar todos os pacientes
@@ -144,6 +138,6 @@ function deletePatient() {
     }
     catch (err) {
         console.error('Erro fatal na aplicação:', err);
-        yield database_1.Database.close(); // Garante que a conexão será encerrada em caso de erro
+        database_1.Database.close(); // Garante que a conexão será encerrada em caso de erro
     }
 }))();
