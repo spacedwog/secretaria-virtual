@@ -88,7 +88,7 @@ async function consultSchedule() {
 
     const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
 
-    const schedule = await DoctorService.consultSchedule(patientId);;
+    const schedule = await DoctorService.consultSchedule(patientId);
     console.log('\n--- Lista de Agendamentos ---');
     schedule.forEach((schedule) => {
       console.log(`Nome: ${schedule.patient_name}, E-mail: ${schedule.email}, Telefone: ${schedule.phone}, Data: ${schedule.appointment_date}, Horário: ${schedule.appointment_time}`);
