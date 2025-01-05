@@ -63,7 +63,7 @@ export class DoctorService {
 
   static async consultSchedule(patientId: number): Promise<void> {
     try {
-      await Database.query('SELECT FROM appointments WHERE patient_id = ?', [patientId]);
+      await Database.query('SELECT * FROM appointments WHERE patient_id = ?', [patientId]);
     } catch (error) {
       console.error('Error deleting patient:', error);
       throw new Error('Failed to delete patient. Please try again later.');
