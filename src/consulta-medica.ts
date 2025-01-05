@@ -1,6 +1,8 @@
 import readlineSync from 'readline-sync';
 import { Database } from './database/database';
 import { PatientService } from './database/services/patient.service';
+import { register } from 'module';
+import { DoctorService } from './database/services/doctor.service';
 
 // Função para exibir o menu principal
 async function showMenu() {
@@ -8,26 +10,26 @@ async function showMenu() {
 
   do {
     console.log('\n--- Sistema de Secretaria Virtual ---');
-    console.log('1. Listar Pacientes');
-    console.log('2. Adicionar Paciente');
-    console.log('3. Editar Paciente');
-    console.log('4. Excluir Paciente');
+    console.log('1. Listar Consultas');
+    console.log('2. Adicionar Doutor');
+    console.log('3. Registrar Visita');
+    console.log('4. Consultar Agendamento');
     console.log('5. Sair');
 
     option = readlineSync.question('Escolha uma opcao: ');
 
     switch (option) {
       case '1':
-        await listPatients();
+        await listAppoitment();
         break;
       case '2':
-        await addPatient();
+        await addDoctor();
         break;
       case '3':
-        await editPatient();
+        await registerVisit();
         break;
       case '4':
-        await deletePatient();
+        await consultSchedule();
         break;
       case '5':
         console.log('Saindo do sistema...');
@@ -41,22 +43,22 @@ async function showMenu() {
 }
 
 // Listar todos os pacientes
-async function listPatients() {
+async function listAppoitment() {
   try {
-    const patients = await PatientService.listPatients();
-    console.log('\n--- Lista de Pacientes ---');
-    patients.forEach((patient) => {
-      console.log(`ID: ${patient.patient_id}, Nome: ${patient.name}, Idade: ${patient.age}, Telefone: ${patient.phone}`);
+    const appoitment = await DoctorService.appoitmentView();
+    console.log('\n--- Lista de Consultas Médicas ---');
+    appoitment.forEach((appoitment) => {
+      console.log(`ID: ${appoitment.patient_id}, Nome: ${appoitment.patient_name}, Idade: ${appoitment.age}, Telefone: ${appoitment.phone}`);
     });
   } catch (err) {
-    console.error('Erro ao listar pacientes:', err);
+    console.error('Erro ao listar consultas médicas:', err);
   }
 }
 
 // Adicionar um novo paciente
-async function addPatient() {
+async function addDoctor() {
   try {
-    const name = readlineSync.question('Nome do paciente: ');
+    const name = readlineSync.question('Nome do doutor: ');
     const age = parseInt(readlineSync.question('Idade: '), 10);
     const phone = readlineSync.question('Telefone: ');
     const email = readlineSync.question('Email: ');
@@ -70,7 +72,7 @@ async function addPatient() {
 }
 
 // Editar um paciente existente
-async function editPatient() {
+async function registerVisit() {
   try {
     const patientId = parseInt(readlineSync.question('ID do paciente a ser editado: '), 10);
     const fieldsToUpdate: Record<string, any> = {};
@@ -102,7 +104,7 @@ async function editPatient() {
 }
 
 // Excluir um paciente
-async function deletePatient() {
+async function consultSchedule() {
   try {
     const patientId = parseInt(readlineSync.question('ID do paciente a ser excluido: '), 10);
     await PatientService.deletePatient(patientId);

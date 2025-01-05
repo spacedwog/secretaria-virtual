@@ -20,8 +20,8 @@ class DoctorService {
                 return result; // O MySQL retornará os dados no formato esperado
             }
             catch (error) {
-                console.error('Error listing patients:', error);
-                throw new Error('Failed to list patients. Please try again later.');
+                console.error('Error listing appoitments:', error);
+                throw new Error('Failed to list appoitments. Please try again later.');
             }
         });
     }
