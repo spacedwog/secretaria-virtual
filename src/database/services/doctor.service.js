@@ -47,10 +47,10 @@ class DoctorService {
             }
         });
     }
-    static makeAppoitment(appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment) {
+    static makeAppoitment(patientId, doctorId, appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.query('INSERT INTO appointments (appoitment_date, appoitment_time, reason, status) VALUES (?,?,?,?)', [appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment]);
+                yield database_1.Database.query('INSERT INTO appointments (patient_id, doctor_id, appoitment_date, appoitment_time, reason, status) VALUES (?,?,?,?)', [patientId, doctorId, appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment]);
             }
             catch (error) {
                 console.error('Error making appoitment:', error);
@@ -61,7 +61,8 @@ class DoctorService {
     static consultSchedule(patientId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.query('SELECT * FROM appointments WHERE patient_id = ?', [patientId]);
+                const result = yield database_1.Database.query('SELECT * FROM appointments WHERE patient_id = ?', [patientId]);
+                return result;
             }
             catch (error) {
                 console.error('Error deleting patient:', error);

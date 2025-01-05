@@ -24,8 +24,9 @@ function showMenu() {
             console.log('1. Listar Consultas');
             console.log('2. Adicionar Doutor');
             console.log('3. Registrar Visita');
-            console.log('4. Consultar Agendamento');
-            console.log('5. Sair');
+            console.log('4. Agendar Consulta');
+            console.log('5. Consultar Agendamento');
+            console.log('6. Sair');
             option = readline_sync_1.default.question('Escolha uma opcao: ');
             switch (option) {
                 case '1':
@@ -38,9 +39,12 @@ function showMenu() {
                     yield registerVisit();
                     break;
                 case '4':
-                    yield consultSchedule();
+                    yield makeAppointment();
                     break;
                 case '5':
+                    yield consultSchedule();
+                    break;
+                case '6':
                     console.log('Saindo do sistema...');
                     break;
                 default:
@@ -91,6 +95,23 @@ function registerVisit() {
         }
         catch (err) {
             console.error('Erro ao editar paciente:', err);
+        }
+    });
+}
+function makeAppointment() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
+            const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
+            const appoitmentDate = readline_sync_1.default.question('Data da consulta: ');
+            const appoitmentTime = readline_sync_1.default.question('Horário da consulta: ');
+            const reasonAppoiment = readline_sync_1.default.question('Motivo da consulta: ');
+            const statusAppoiment = readline_sync_1.default.question('Status da consulta: ');
+            yield doctor_service_1.DoctorService.makeAppoitment(patientId, doctorId, appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment);
+            console.log('Consulta agendada com sucesso!');
+        }
+        catch (err) {
+            console.error('Erro ao agendar consulta:', err);
         }
     });
 }

@@ -54,7 +54,7 @@ export class DoctorService {
   ): Promise<void> {
     try {
       await Database.query(
-        'INSERT INTO appointments (patient_id, doctor_id, appoitment_date, appoitment_time, reason, status) VALUES (?,?,?,?)',
+        'INSERT INTO appointments (patient_id, doctor_id, appoitment_date, appoitment_time, reason, status) VALUES (?,?,?,?,?,?)',
         [patientId, doctorId, appoitmentDate, appoitmentTime, reasonAppoiment, statusAppoiment]
       );
     } catch (error) {
