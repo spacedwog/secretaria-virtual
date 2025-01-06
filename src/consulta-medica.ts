@@ -47,7 +47,7 @@ async function listAppoitment() {
     console.log('\n--- Lista de Consultas Médicas ---');
     appoitment.forEach((appoitment) => {
       const date = new Date(appoitment.appointment_date).toDateString();
-      console.log(`<div><h1>Consulta Médica</h1></br><p>O paciente ${appoitment.patient_name} têm consulta médica com o doutor ${appoitment.doctor_name} no dia ${date} às ${appoitment.appointment_time}</p></div>`);
+      console.table(`O paciente ${appoitment.patient_name} têm consulta médica com o doutor ${appoitment.doctor_name} no dia ${date} às ${appoitment.appointment_time}`);
     });
   }
   catch (err) {
