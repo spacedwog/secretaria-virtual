@@ -36,9 +36,14 @@ export class DoctorService {
   ): Promise<void> {
     try {
       await Database.init(); // Certifique-se de inicializar a conexão
+      const ano = new Date().getFullYear();
+      const mes = new Date().getMonth();
+      const dia = new Date().getDay();
+      const date = ano + '-' + mes + '-' + dia;
+      const time = new Date().getHours() + ':' + new Date().getMinutes();
       await Database.query(
-        'INSERT INTO patients_doctors (patient_id, doctor_id) VALUES (?, ?)',
-        [patientId, doctorId]
+        'INSERT INTO patients_doctors (patient_id, doctor_id, visit_date, visit_time) VALUES (?, ?, ?, ?)',
+        [patientId, doctorId, date, time]
       );
     } catch (error) {
       console.error('Error visiting doctor:', error);
