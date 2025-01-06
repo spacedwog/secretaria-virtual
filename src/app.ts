@@ -4,7 +4,7 @@ import { consultaMedica } from './consulta-medica';
 import { PatientService } from './database/services/patient.service';
 
 // Função para exibir o menu principal
-async function showMenu() {
+export async function showMenu() {
   let option: string;
 
   do {

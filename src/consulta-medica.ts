@@ -1,4 +1,4 @@
-import showMenu from './app';
+import { showMenu } from './app';
 import readlineSync from 'readline-sync';
 import { Database } from './database/database';
 import { DoctorService } from './database/services/doctor.service';

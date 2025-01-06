@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.consultaMedica = consultaMedica;
+const app_1 = __importDefault(require("./app"));
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const database_1 = require("./database/database");
 const doctor_service_1 = require("./database/services/doctor.service");
@@ -26,6 +27,7 @@ function consultaMedica() {
             console.log('2. Adicionar Doutor');
             console.log('3. Registrar Visita');
             console.log('4. Agendar Consulta');
+            console.log('v. Painel de cadastro de paciente');
             console.log('5. Sair');
             option = readline_sync_1.default.question('Escolha uma opcao: ');
             switch (option) {
@@ -43,6 +45,9 @@ function consultaMedica() {
                     break;
                 case '5':
                     console.log('Saindo do sistema...');
+                    break;
+                case 'v':
+                    yield (0, app_1.default)();
                     break;
                 default:
                     console.log('Opcao invalida. Tente novamente.');
