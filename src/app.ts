@@ -1,4 +1,4 @@
-import 'consultaMedica' from './consultaMedica';
+import 'consultaMedica' from './consulta-medica';
 import readlineSync from 'readline-sync';
 import { Database } from './database/database';
 import { PatientService } from './database/services/patient.service';

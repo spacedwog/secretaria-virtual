@@ -12,6 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+require("consultaMedica");
+from;
+'./consultaMedica';
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const database_1 = require("./database/database");
 const patient_service_1 = require("./database/services/patient.service");
@@ -25,6 +28,7 @@ function showMenu() {
             console.log('2. Adicionar Paciente');
             console.log('3. Editar Paciente');
             console.log('4. Excluir Paciente');
+            console.log('c. Painel de Consulta Médica');
             console.log('5. Sair');
             option = readline_sync_1.default.question('Escolha uma opcao: ');
             switch (option) {
@@ -42,6 +46,9 @@ function showMenu() {
                     break;
                 case '5':
                     console.log('Saindo do sistema...');
+                    break;
+                case 'c':
+                    yield consultaMedica();
                     break;
                 default:
                     console.log('Opcao invalida. Tente novamente.');
