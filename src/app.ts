@@ -51,7 +51,16 @@ async function listPatients() {
     const patients = await PatientService.listPatients();
     console.log('\n--- Lista de Pacientes ---');
     patients.forEach((patient) => {
-      console.log(`ID: ${patient.patient_id}, Nome: ${patient.name}, Idade: ${patient.age}, Telefone: ${patient.phone}`);
+      console.table([
+        {
+          "ID": patient.patient_id,
+          "Nome do Paciente": patient.name,
+          "Idade": patient.age,
+          "Telefone": patient.phone,
+          "Email": patient.email,
+          "Endereco": patient.address
+        }
+      ]);
     });
   } catch (err) {
     console.error('Erro ao listar pacientes:', err);
