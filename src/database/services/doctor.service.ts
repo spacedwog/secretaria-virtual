@@ -4,7 +4,7 @@ export class DoctorService {
   static async appoitmentView(): Promise<any[]> {
     try {
       await Database.init(); // Certifique-se de inicializar a conexão
-      const result = await Database.query("SELECT * FROM patient_appointments_view");
+      const result = await Database.query("SELECT * FROM appointments");
       return result;  // O MySQL retornará os dados no formato esperado
     } catch (error) {
       console.error('Error listing appoitments:', error);

@@ -60,17 +60,16 @@ function listAppoitment() {
                 const date = new Date(appoitment.appointment_date).toDateString();
                 const paciente = appoitment.patient_name;
                 const doutor = appoitment.doctor_name;
-                const data = appoitment.appointment_date;
                 const time = appoitment.appointment_time;
-                const motivo = appoitment.reason;
                 const status = appoitment.status;
                 console.table([
-                    ['Paciente', paciente],
-                    ['Doutor', doutor],
-                    ['Data', data],
-                    ['Hora', time],
-                    ['Motivo', motivo],
-                    ['Status', status],
+                    {
+                        'Paciente': paciente,
+                        'Doutor': doutor,
+                        'Data': date,
+                        'Hora': time,
+                        'Status': status,
+                    }
                 ]);
             });
         }
