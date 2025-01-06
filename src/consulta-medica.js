@@ -57,7 +57,7 @@ function listAppoitment() {
             const appoitment = yield doctor_service_1.DoctorService.appoitmentView();
             console.log('\n--- Lista de Consultas Médicas ---');
             appoitment.forEach((appoitment) => {
-                console.log(`ID: ${appoitment.patient_id}, Nome: ${appoitment.patient_name}, Idade: ${appoitment.age}, Telefone: ${appoitment.phone}`);
+                console.log(`ID: ${appoitment.patient_id}, Nome: ${appoitment.patient_name}, Data: ${appoitment.appointment_date}, Hora: ${appoitment.appointment_time}`);
             });
         }
         catch (err) {
@@ -88,6 +88,7 @@ function registerVisit() {
             const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
             const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
             yield doctor_service_1.DoctorService.visitDoctor(patientId, doctorId);
+            console.log('Visita ao consultório médico registrada com sucesso!');
         }
         catch (err) {
             console.error('Erro ao editar paciente:', err);
@@ -105,6 +106,7 @@ function recordSchedule() {
             const reason = readline_sync_1.default.question('Motivo da consulta: ');
             const status = readline_sync_1.default.question('Status da consulta (agendado/realizado): ');
             yield doctor_service_1.DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status);
+            console.log('Consulta agendada com sucesso!');
         }
         catch (err) {
             console.error('Erro ao agendar consulta:', err);
