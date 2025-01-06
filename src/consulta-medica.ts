@@ -46,9 +46,8 @@ async function listAppoitment() {
     const appoitment = await DoctorService.appoitmentView();
     console.log('\n--- Lista de Consultas Médicas ---');
     appoitment.forEach((appoitment) => {
-      const date = new Date(appoitment.appointment_date).getDate();
-      const time = new Date(appoitment.appointment_time).getTime();
-      console.log(`O paciente ${appoitment.patient_name} têm consulta médica com o doutor ${appoitment.doctor_name} no dia ${date} às ${time}`);
+      const date = new Date(appoitment.appointment_date).toDateString();
+      console.log(`O paciente ${appoitment.patient_name} têm consulta médica com o doutor ${appoitment.doctor_name} no dia ${date} às ${appoitment.appointment_time}`);
     });
   } catch (err) {
     console.error('Erro ao listar consultas médicas:', err);
