@@ -7,7 +7,7 @@ export async function consultaMedica() {
   let option: string;
 
   do {
-    console.log('\n--- Sistema de Secretaria Virtual ---');
+    console.log('\n--- Painel de consulta médica ---');
     console.log('1. Listar Consultas');
     console.log('2. Adicionar Doutor');
     console.log('3. Registrar Visita');
