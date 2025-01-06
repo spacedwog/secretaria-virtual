@@ -1,10 +1,9 @@
-import { showMenu } from './app';
 import readlineSync from 'readline-sync';
 import { Database } from './database/database';
 import { DoctorService } from './database/services/doctor.service';
 
 // Função para exibir o menu principal
-export async function consultaMedica() {
+async function consultaMedica() {
   let option: string;
 
   do {
@@ -33,9 +32,6 @@ export async function consultaMedica() {
         break;
       case '5':
         console.log('Saindo do sistema...');
-        break;
-      case 'v':
-        await showMenu();
         break;
       default:
         console.log('Opcao invalida. Tente novamente.');
