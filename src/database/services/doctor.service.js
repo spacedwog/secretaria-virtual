@@ -16,7 +16,7 @@ class DoctorService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield database_1.Database.init(); // Certifique-se de inicializar a conexão
-                const result = yield database_1.Database.query("SELECT * FROM appointments");
+                const result = yield database_1.Database.query("SELECT * FROM patient_appointments_view");
                 return result; // O MySQL retornará os dados no formato esperado
             }
             catch (error) {

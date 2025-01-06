@@ -12,7 +12,6 @@ async function consultaMedica() {
     console.log('2. Adicionar Doutor');
     console.log('3. Registrar Visita');
     console.log('4. Agendar Consulta');
-    console.log('v. Painel de cadastro de paciente');
     console.log('5. Sair');
 
     option = readlineSync.question('Escolha uma opcao: ');
