@@ -21,7 +21,7 @@ function consultaMedica() {
     return __awaiter(this, void 0, void 0, function* () {
         let option;
         do {
-            console.log('\n--- Sistema de Secretaria Virtual ---');
+            console.log('\n--- Painel de consulta médica ---');
             console.log('1. Listar Consultas');
             console.log('2. Adicionar Doutor');
             console.log('3. Registrar Visita');

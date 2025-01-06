@@ -1,6 +1,6 @@
-import { consultaMedica } from './consulta-medica';
 import readlineSync from 'readline-sync';
 import { Database } from './database/database';
+import { consultaMedica } from './consulta-medica';
 import { PatientService } from './database/services/patient.service';
 
 // Função para exibir o menu principal
