@@ -46,14 +46,23 @@ export class DoctorService {
     }
   }
 
-  static async consultSchedule(patientId: number): Promise<any[]> {
+  static async recordSchedule(
+    patient_id: number,
+    doctor_id: number,
+    date: string,
+    time: string,
+    reason: string,
+    status: string
+  ): Promise<void> {
     try {
       await Database.init(); // Certifique-se de inicializar a conexão
-      const result = await Database.query('SELECT * FROM patient_appointments_view WHERE patient_id = ?', [patientId]);
-      return result;
+      await Database.query(
+        'INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason, status) VALUES (?, ?, ?, ?, ?, ?)',
+        [patient_id, doctor_id, date, time, reason, status]
+      );
     } catch (error) {
-      console.error('Error deleting patient:', error);
-      throw new Error('Failed to delete patient. Please try again later.');
+      console.error('Error adding doctor:', error);
+      throw new Error('Failed to add doctor. Please check the input data and try again.');
     }
   }
 

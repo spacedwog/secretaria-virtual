@@ -11,7 +11,7 @@ async function showMenu() {
     console.log('1. Listar Consultas');
     console.log('2. Adicionar Doutor');
     console.log('3. Registrar Visita');
-    console.log('4. Consultar Agendamento');
+    console.log('4. Agendar Consulta');
     console.log('5. Sair');
 
     option = readlineSync.question('Escolha uma opcao: ');
@@ -27,7 +27,7 @@ async function showMenu() {
         await registerVisit();
         break;
       case '4':
-        await consultSchedule();
+        await recordSchedule();
         break;
       case '5':
         console.log('Saindo do sistema...');
@@ -83,12 +83,17 @@ async function registerVisit() {
 }
 
 // Editar um paciente existente
-async function consultSchedule() {
+async function recordSchedule() {
   try {
 
     const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
+    const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
+    const appoitmentDate = readlineSync.question('Data da consulta (aaaa/mm/dd): ');
+    const appoitmentTime = readlineSync.question('Horário da consulta (hh:mm): ');
+    const reason = readlineSync.question('Motivo da consulta: ');
+    const status = readlineSync.question('Status da consulta (agendado/realizado): ');
 
-    const schedule = await DoctorService.consultSchedule(patientId);
+    await DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status);
     console.log('\n--- Lista de Agendamentos ---');
     schedule.forEach((schedule) => {
       console.log(`Nome: ${schedule.patient_name}, E-mail: ${schedule.email}, Telefone: ${schedule.phone}, Data: ${schedule.appointment_date}, Horário: ${schedule.appointment_time}`);
@@ -96,7 +101,7 @@ async function consultSchedule() {
 
 
   } catch (err) {
-    console.error('Erro ao editar paciente:', err);
+    console.error('Erro ao agendar consulta:', err);
   }
 }
 
