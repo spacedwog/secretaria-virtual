@@ -12,9 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("consultaMedica");
-from;
-'./consulta-medica';
+const consulta_medica_1 = require("./consulta-medica");
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const database_1 = require("./database/database");
 const patient_service_1 = require("./database/services/patient.service");
@@ -48,7 +46,7 @@ function showMenu() {
                     console.log('Saindo do sistema...');
                     break;
                 case 'c':
-                    yield consultaMedica();
+                    yield (0, consulta_medica_1.consultaMedica)();
                     break;
                 default:
                     console.log('Opcao invalida. Tente novamente.');
