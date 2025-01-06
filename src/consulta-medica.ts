@@ -3,7 +3,7 @@ import { Database } from './database/database';
 import { DoctorService } from './database/services/doctor.service';
 
 // Função para exibir o menu principal
-async function consultMedica() {
+export async function consultaMedica() {
   let option: string;
 
   do {
@@ -122,7 +122,7 @@ async function recordSchedule() {
 (async () => {
   try {
     console.log('Iniciando sistema de secretaria virtual...');
-    await consultMedica();
+    await consultaMedica();
     console.log('Sistema encerrado.');
   }
   catch (err) {
