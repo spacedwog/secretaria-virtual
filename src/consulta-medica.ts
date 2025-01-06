@@ -46,7 +46,7 @@ async function listAppoitment() {
     const appoitment = await DoctorService.appoitmentView();
     console.log('\n--- Lista de Consultas Médicas ---');
     appoitment.forEach((appoitment) => {
-      console.log(`ID: ${appoitment.patient_id}, Nome: ${appoitment.patient_name}, Idade: ${appoitment.age}, Telefone: ${appoitment.phone}`);
+      console.log(`ID: ${appoitment.patient_id}, Nome: ${appoitment.patient_name}, Data: ${appoitment.appointment_date}, Hora: ${appoitment.appointment_time}`);
     });
   } catch (err) {
     console.error('Erro ao listar consultas médicas:', err);
@@ -76,7 +76,7 @@ async function registerVisit() {
     const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
 
     await DoctorService.visitDoctor(patientId, doctorId);
-
+    console.log('Visita ao consultório médico registrada com sucesso!');
   } catch (err) {
     console.error('Erro ao editar paciente:', err);
   }
@@ -94,6 +94,7 @@ async function recordSchedule() {
     const status = readlineSync.question('Status da consulta (agendado/realizado): ');
 
     await DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status);
+    console.log('Consulta agendada com sucesso!');
   }
   catch (err) {
     console.error('Erro ao agendar consulta:', err);

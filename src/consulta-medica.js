@@ -105,10 +105,6 @@ function recordSchedule() {
             const reason = readline_sync_1.default.question('Motivo da consulta: ');
             const status = readline_sync_1.default.question('Status da consulta (agendado/realizado): ');
             yield doctor_service_1.DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status);
-            console.log('\n--- Lista de Agendamentos ---');
-            schedule.forEach((schedule) => {
-                console.log(`Nome: ${schedule.patient_name}, E-mail: ${schedule.email}, Telefone: ${schedule.phone}, Data: ${schedule.appointment_date}, Horário: ${schedule.appointment_time}`);
-            });
         }
         catch (err) {
             console.error('Erro ao agendar consulta:', err);
