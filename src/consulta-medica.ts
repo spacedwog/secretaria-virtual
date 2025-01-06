@@ -49,7 +49,8 @@ async function listAppoitment() {
       const date = new Date(appoitment.appointment_date).toDateString();
       console.log(`O paciente ${appoitment.patient_name} têm consulta médica com o doutor ${appoitment.doctor_name} no dia ${date} às ${appoitment.appointment_time}`);
     });
-  } catch (err) {
+  }
+  catch (err) {
     console.error('Erro ao listar consultas médicas:', err);
   }
 }
