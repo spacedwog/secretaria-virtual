@@ -1,3 +1,4 @@
+import 'consultaMedica' from './consultaMedica';
 import readlineSync from 'readline-sync';
 import { Database } from './database/database';
 import { PatientService } from './database/services/patient.service';
@@ -12,6 +13,7 @@ async function showMenu() {
     console.log('2. Adicionar Paciente');
     console.log('3. Editar Paciente');
     console.log('4. Excluir Paciente');
+    console.log('c. Painel de Consulta Médica');
     console.log('5. Sair');
 
     option = readlineSync.question('Escolha uma opcao: ');
@@ -31,6 +33,9 @@ async function showMenu() {
         break;
       case '5':
         console.log('Saindo do sistema...');
+        break;
+      case 'c':
+        await consultaMedica();
         break;
       default:
         console.log('Opcao invalida. Tente novamente.');

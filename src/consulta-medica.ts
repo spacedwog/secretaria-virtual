@@ -3,7 +3,7 @@ import { Database } from './database/database';
 import { DoctorService } from './database/services/doctor.service';
 
 // Função para exibir o menu principal
-async function showMenu() {
+async function consultMedica() {
   let option: string;
 
   do {
@@ -46,7 +46,7 @@ async function listAppoitment() {
     const appoitment = await DoctorService.appoitmentView();
     console.log('\n--- Lista de Consultas Médicas ---');
     appoitment.forEach((appoitment) => {
-      
+
       const date = new Date(appoitment.appointment_date).toDateString();
       const paciente = appoitment.patient_name;
       const doutor = appoitment.doctor_name;
@@ -122,7 +122,7 @@ async function recordSchedule() {
 (async () => {
   try {
     console.log('Iniciando sistema de secretaria virtual...');
-    await showMenu();
+    await consultMedica();
     console.log('Sistema encerrado.');
   }
   catch (err) {
