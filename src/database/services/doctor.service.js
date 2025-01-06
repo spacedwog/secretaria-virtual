@@ -41,7 +41,12 @@ class DoctorService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield database_1.Database.init(); // Certifique-se de inicializar a conexão
-                yield database_1.Database.query('INSERT INTO patients_doctors (patient_id, doctor_id) VALUES (?, ?)', [patientId, doctorId]);
+                const ano = new Date().getFullYear();
+                const mes = new Date().getMonth();
+                const dia = new Date().getDay();
+                const date = ano + '-' + mes + '-' + dia;
+                const time = new Date().getHours() + ':' + new Date().getMinutes();
+                yield database_1.Database.query('INSERT INTO patients_doctors (patient_id, doctor_id, visit_date, visit_time) VALUES (?, ?, ?, ?)', [patientId, doctorId, date, time]);
             }
             catch (error) {
                 console.error('Error visiting doctor:', error);
