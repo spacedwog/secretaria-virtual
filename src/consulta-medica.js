@@ -57,7 +57,7 @@ function listAppoitment() {
             const appoitment = yield doctor_service_1.DoctorService.appoitmentView();
             console.log('\n--- Lista de Consultas Médicas ---');
             appoitment.forEach((appoitment) => {
-                console.log(`ID: ${appoitment.patient_id}, Nome: ${appoitment.patient_name}, Data: ${appoitment.appointment_date}, Hora: ${appoitment.appointment_time}`);
+                console.log(`O paciente ${appoitment.patient_name} têm consulta médica com o doutor ${appoitment.doctor_name} no dia ${appoitment.appointment_date} às ${appoitment.appointment_time}`);
             });
         }
         catch (err) {
