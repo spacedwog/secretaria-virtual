@@ -49,16 +49,15 @@ class DoctorService {
             }
         });
     }
-    static consultSchedule(patientId) {
+    static recordSchedule(patient_id, doctor_id, date, time, reason, status) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield database_1.Database.init(); // Certifique-se de inicializar a conexão
-                const result = yield database_1.Database.query('SELECT * FROM patient_appointments_view WHERE patient_id = ?', [patientId]);
-                return result;
+                yield database_1.Database.query('INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason, status) VALUES (?, ?, ?, ?, ?, ?)', [patient_id, doctor_id, date, time, reason, status]);
             }
             catch (error) {
-                console.error('Error deleting patient:', error);
-                throw new Error('Failed to delete patient. Please try again later.');
+                console.error('Error adding doctor:', error);
+                throw new Error('Failed to add doctor. Please check the input data and try again.');
             }
         });
     }

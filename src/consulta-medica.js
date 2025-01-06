@@ -24,7 +24,7 @@ function showMenu() {
             console.log('1. Listar Consultas');
             console.log('2. Adicionar Doutor');
             console.log('3. Registrar Visita');
-            console.log('4. Consultar Agendamento');
+            console.log('4. Agendar Consulta');
             console.log('5. Sair');
             option = readline_sync_1.default.question('Escolha uma opcao: ');
             switch (option) {
@@ -38,7 +38,7 @@ function showMenu() {
                     yield registerVisit();
                     break;
                 case '4':
-                    yield consultSchedule();
+                    yield recordSchedule();
                     break;
                 case '5':
                     console.log('Saindo do sistema...');
@@ -95,18 +95,23 @@ function registerVisit() {
     });
 }
 // Editar um paciente existente
-function consultSchedule() {
+function recordSchedule() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
-            const schedule = yield doctor_service_1.DoctorService.consultSchedule(patientId);
+            const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
+            const appoitmentDate = readline_sync_1.default.question('Data da consulta (aaaa/mm/dd): ');
+            const appoitmentTime = readline_sync_1.default.question('Horário da consulta (hh:mm): ');
+            const reason = readline_sync_1.default.question('Motivo da consulta: ');
+            const status = readline_sync_1.default.question('Status da consulta (agendado/realizado): ');
+            yield doctor_service_1.DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status);
             console.log('\n--- Lista de Agendamentos ---');
             schedule.forEach((schedule) => {
                 console.log(`Nome: ${schedule.patient_name}, E-mail: ${schedule.email}, Telefone: ${schedule.phone}, Data: ${schedule.appointment_date}, Horário: ${schedule.appointment_time}`);
             });
         }
         catch (err) {
-            console.error('Erro ao editar paciente:', err);
+            console.error('Erro ao agendar consulta:', err);
         }
     });
 }

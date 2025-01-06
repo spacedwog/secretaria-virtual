@@ -94,13 +94,8 @@ async function recordSchedule() {
     const status = readlineSync.question('Status da consulta (agendado/realizado): ');
 
     await DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status);
-    console.log('\n--- Lista de Agendamentos ---');
-    schedule.forEach((schedule) => {
-      console.log(`Nome: ${schedule.patient_name}, E-mail: ${schedule.email}, Telefone: ${schedule.phone}, Data: ${schedule.appointment_date}, Horário: ${schedule.appointment_time}`);
-    });
-
-
-  } catch (err) {
+  }
+  catch (err) {
     console.error('Erro ao agendar consulta:', err);
   }
 }
