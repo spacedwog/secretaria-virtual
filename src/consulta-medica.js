@@ -12,11 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MedicSchedule = void 0;
+exports.MenuSchedule = void 0;
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const database_1 = require("./database/database");
 const doctor_service_1 = require("./database/services/doctor.service");
-class MedicSchedule {
+class MenuSchedule {
     consultaMedica() {
         return __awaiter(this, void 0, void 0, function* () {
             let option;
@@ -128,4 +128,4 @@ class MedicSchedule {
         });
     }
 }
-exports.MedicSchedule = MedicSchedule;
+exports.MenuSchedule = MenuSchedule;

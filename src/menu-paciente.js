@@ -19,6 +19,7 @@ const patient_service_1 = require("./database/services/patient.service");
 class MenuPacient {
     menuPaciente() {
         return __awaiter(this, void 0, void 0, function* () {
+            database_1.Database.init();
             let option;
             do {
                 console.log('\n--- Sistema de Secretaria Virtual ---');

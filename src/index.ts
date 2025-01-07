@@ -13,7 +13,7 @@ class MenuStarter{
       console.log('5. Sair');
 
       const paciente = new MenuPacient();
-      const medico = new MedicSchedule();
+      const medico = new MenuSchedule();
 
       option = readlineSync.question('Escolha uma opcao: ');
 
