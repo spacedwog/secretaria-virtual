@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const database_1 = require("./database/database");
 const doctor_service_1 = require("./database/services/doctor.service");
-// Função para exibir o menu principal
+class medic_schedule {
+}
 function consultaMedica() {
     return __awaiter(this, void 0, void 0, function* () {
         let option;

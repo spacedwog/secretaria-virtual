@@ -2,9 +2,8 @@ import readlineSync from 'readline-sync';
 import { Database } from './database/database';
 import { DoctorService } from './database/services/doctor.service';
 
-
-public class medic_schedule{
-  async function consultaMedica() {
+class MedicSchedule {
+  public async consultaMedica() {
     let option: string;
 
     do {
@@ -19,16 +18,16 @@ public class medic_schedule{
 
       switch (option) {
         case '1':
-          await listAppoitment();
+          await this.listAppoitment();
           break;
         case '2':
-          await addDoctor();
+          await this.addDoctor();
           break;
         case '3':
-          await registerVisit();
+          await this.registerVisit();
           break;
         case '4':
-          await recordSchedule();
+          await this.recordSchedule();
           break;
         case '5':
           console.log('Saindo do sistema...');
@@ -42,12 +41,11 @@ public class medic_schedule{
   }
 
   // Listar todos os pacientes
-  async function listAppoitment() {
+  private async listAppoitment() {
     try {
-      const appoitment = await DoctorService.appoitmentView();
+      const appoitments = await DoctorService.appoitmentView();
       console.log('\n--- Lista de Consultas Médicas ---');
-      appoitment.forEach((appoitment) => {
-
+      appoitments.forEach((appoitment) => {
         const date = new Date(appoitment.appointment_date).toDateString();
         const paciente = appoitment.patient_name;
         const doutor = appoitment.doctor_name;
@@ -56,23 +54,21 @@ public class medic_schedule{
 
         console.table([
           {
-            'Paciente': paciente,
-            'Doutor': doutor,
-            'Data': date,
-            'Hora': time,
-            'Status': status,
-          }
+            Paciente: paciente,
+            Doutor: doutor,
+            Data: date,
+            Hora: time,
+            Status: status,
+          },
         ]);
-        
       });
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Erro ao listar consultas médicas:', err);
     }
   }
 
-  // Adicionar um novo paciente
-  async function addDoctor() {
+  // Adicionar um novo doutor
+  private async addDoctor() {
     try {
       const name = readlineSync.question('Nome do doutor: ');
       const phone = readlineSync.question('Telefone: ');
@@ -86,24 +82,22 @@ public class medic_schedule{
     }
   }
 
-  // Editar um paciente existente
-  async function registerVisit() {
+  // Registrar visita
+  private async registerVisit() {
     try {
-
       const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
       const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
 
       await DoctorService.visitDoctor(patientId, doctorId);
       console.log('Visita ao consultório médico registrada com sucesso!');
     } catch (err) {
-      console.error('Erro ao editar paciente:', err);
+      console.error('Erro ao registrar visita:', err);
     }
   }
 
-  // Editar um paciente existente
-  async function recordSchedule() {
+  // Agendar consulta
+  private async recordSchedule() {
     try {
-
       const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
       const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
       const appoitmentDate = readlineSync.question('Data da consulta (aaaa/mm/dd): ');
@@ -113,22 +107,21 @@ public class medic_schedule{
 
       await DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status);
       console.log('Consulta agendada com sucesso!');
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Erro ao agendar consulta:', err);
     }
   }
-
-  // Ponto de entrada da aplicação
-  (async () => {
-    try {
-      console.log('Iniciando sistema de secretaria virtual...');
-      await consultaMedica();
-      console.log('Sistema encerrado.');
-    }
-    catch (err) {
-      console.error('Erro fatal na aplicação:', err);
-      Database.close(); // Garante que a conexão será encerrada em caso de erro
-    }
-  })();
 }
+
+// Ponto de entrada da aplicação
+(async () => {
+  const schedule = new MedicSchedule();
+  try {
+    console.log('Iniciando sistema de secretaria virtual...');
+    await schedule.consultaMedica();
+    console.log('Sistema encerrado.');
+  } catch (err) {
+    console.error('Erro fatal na aplicação:', err);
+    Database.close(); // Garante que a conexão será encerrada em caso de erro
+  }
+})();
