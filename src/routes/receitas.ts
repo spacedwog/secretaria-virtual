@@ -1,16 +1,20 @@
-import { Router, Request, Response } from 'express';
-import { Database } from '../database/database'; // Configuração do banco de dados
+import { Router, Request, Response, NextFunction } from 'express';
+import { db } from '../db'; // Configuração do banco de dados
 import PDFDocument from 'pdfkit';
 
 const router = Router();
 
-// Rota para gerar a receita médica
-router.get('/receitas/:id', async (req: Request<{ id: string }>, res: Response) => {
+// Função para lidar com a rota de forma isolada
+const gerarReceita = async (
+    req: Request<{ id: string }>,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
     const idReceita = parseInt(req.params.id);
 
     try {
         // Buscar dados da receita
-        const receita = await Database.query(`
+        const receita = await db.query(`
             SELECT r.*, p.nome AS paciente, m.nome AS medico, m.crm
             FROM receitas_medicas r
             JOIN pacientes p ON r.id_paciente = p.id_paciente
@@ -18,14 +22,15 @@ router.get('/receitas/:id', async (req: Request<{ id: string }>, res: Response) 
             WHERE r.id_receita = $1
         `, [idReceita]);
 
-        const medicamentos = await Database.query(`
+        const medicamentos = await db.query(`
             SELECT nome_medicamento, dosagem, frequencia, duracao
             FROM medicamentos_receita
             WHERE id_receita = $1
         `, [idReceita]);
 
         if (!receita.rows.length) {
-            return res.status(404).send('Receita não encontrada.');
+            res.status(404).send('Receita não encontrada.');
+            return;
         }
 
         // Gerar PDF
@@ -53,8 +58,11 @@ router.get('/receitas/:id', async (req: Request<{ id: string }>, res: Response) 
         doc.end();
     } catch (error) {
         console.error(error);
-        res.status(500).send('Erro ao gerar a receita.');
+        next(error);
     }
-});
+};
+
+// Adicionar a rota ao roteador
+router.get('/receitas/:id', gerarReceita);
 
 export default router;
