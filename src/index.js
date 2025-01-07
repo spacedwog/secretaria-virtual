@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const menu_paciente_1 = require("./menu-paciente");
 const consulta_medica_1 = require("./consulta-medica");
-class MenuStarter extends menu_paciente_1.MenuPacient, consulta_medica_1.MedicSchedule {
+class MenuStarter {
     menuPrincipal() {
         return __awaiter(this, void 0, void 0, function* () {
             let option;
