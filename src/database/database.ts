@@ -1,6 +1,7 @@
 import mysql from 'mysql2';
 
 export class Database {
+  
   private static pool: mysql.Pool;
 
   static async init() {
