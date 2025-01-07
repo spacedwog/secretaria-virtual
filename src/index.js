@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const menu_paciente_1 = require("./menu-paciente");
+const consulta_medica_1 = require("./consulta-medica");
 class MenuStarter {
     menuPrincipal() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -24,7 +25,7 @@ class MenuStarter {
                 console.log('2. Menu Consulta Médica');
                 console.log('5. Sair');
                 const paciente = new menu_paciente_1.MenuPacient();
-                const medico = new MedicSchedule();
+                const medico = new consulta_medica_1.MenuSchedule();
                 option = readline_sync_1.default.question('Escolha uma opcao: ');
                 switch (option) {
                     case '1':

@@ -4,6 +4,7 @@ import { DoctorService } from './database/services/doctor.service';
 
 export class MenuSchedule {
   public async consultaMedica() {
+    Database.init(); // Inicializa a conexão com o banco de dados
     let option: string;
 
     do {

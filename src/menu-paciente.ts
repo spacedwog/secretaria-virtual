@@ -4,7 +4,7 @@ import { PatientService } from './database/services/patient.service';
 
 export class MenuPacient {
   public async menuPaciente() {
-    Database.init();
+    Database.init(); // Inicializa a conexão com o banco de dados
     let option: string;
 
     do {
