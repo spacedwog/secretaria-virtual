@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MedicSchedule = void 0;
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const database_1 = require("./database/database");
 const doctor_service_1 = require("./database/services/doctor.service");
@@ -127,6 +128,7 @@ class MedicSchedule {
         });
     }
 }
+exports.MedicSchedule = MedicSchedule;
 // Ponto de entrada da aplicação
 (() => __awaiter(void 0, void 0, void 0, function* () {
     const schedule = new MedicSchedule();

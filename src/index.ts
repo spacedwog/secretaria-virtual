@@ -2,7 +2,7 @@ import readlineSync from 'readline-sync';
 import { MenuPacient } from './menu-paciente';
 import { MedicSchedule } from './consulta-medica';
 
-class MenuStarter extends MenuPacient, MedicSchedule {
+class MenuStarter{
   public async menuPrincipal(){
     let option: string;
 
@@ -32,6 +32,7 @@ class MenuStarter extends MenuPacient, MedicSchedule {
       }
     } while (option !== '5');
   }
+}
 
 // Ponto de entrada da aplicação
 (async () => {
