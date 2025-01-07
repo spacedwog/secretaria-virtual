@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const readline_sync_1 = __importDefault(require("readline-sync"));
-const menu_paciente_1 = require("./menu-paciente");
-const consulta_medica_1 = require("./consulta-medica");
+const menu_paciente_1 = require("./pacient/menu-paciente");
+const consulta_medica_1 = require("./schedule/consulta-medica");
 class MenuStarter {
     // Método principal do menu
     menuPrincipal() {
