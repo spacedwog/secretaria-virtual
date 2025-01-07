@@ -11,6 +11,7 @@
   "description": "Este projeto simula uma secretária virtual para um escritório médico. Ele permite o cadastro de pacientes, agendamento de consultas e geração de relatórios em diferentes formatos.",
   "dependencies": {
     "@google-cloud/speech": "^6.7.0",
+    "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
     "expo": "^52.0.23",
