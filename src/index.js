@@ -16,6 +16,7 @@ const readline_sync_1 = __importDefault(require("readline-sync"));
 const menu_paciente_1 = require("./menu-paciente");
 const consulta_medica_1 = require("./consulta-medica");
 class MenuStarter {
+    // Método principal do menu
     menuPrincipal() {
         return __awaiter(this, void 0, void 0, function* () {
             let option;
@@ -24,7 +25,9 @@ class MenuStarter {
                 console.log('1. Menu Paciente');
                 console.log('2. Menu Consulta Médica');
                 console.log('5. Sair');
+                // Captura a escolha do usuário
                 option = readline_sync_1.default.question('Escolha uma opcao: ');
+                // Executa a funcionalidade correspondente
                 switch (option) {
                     case '1':
                         yield this.menuPaciente();
@@ -39,8 +42,10 @@ class MenuStarter {
                         console.log('Opcao invalida. Escolha entre 1, 2 ou 5.');
                 }
             } while (option !== '5');
+            console.log('Obrigado por usar o sistema. Até a próxima!');
         });
     }
+    // Método para acessar o menu do paciente
     menuPaciente() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -52,6 +57,7 @@ class MenuStarter {
             }
         });
     }
+    // Método para acessar o menu de consulta médica
     menuConsultaMedica() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -70,7 +76,7 @@ class MenuStarter {
     try {
         console.log('Iniciando sistema de secretaria virtual...');
         yield menu.menuPrincipal();
-        console.log('Sistema encerrado.');
+        console.log('Sistema encerrado com sucesso.');
     }
     catch (err) {
         console.error('Erro fatal na aplicação:', err);
