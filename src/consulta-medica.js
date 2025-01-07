@@ -14,12 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MenuSchedule = void 0;
 const readline_sync_1 = __importDefault(require("readline-sync"));
-const database_1 = require("./database/database");
 const doctor_service_1 = require("./database/services/doctor.service");
 class MenuSchedule {
     consultaMedica() {
         return __awaiter(this, void 0, void 0, function* () {
-            database_1.Database.init(); // Inicializa a conexão com o banco de dados
             let option;
             do {
                 console.log('\n--- Painel de consulta médica ---');
@@ -49,7 +47,6 @@ class MenuSchedule {
                         console.log('Opcao invalida. Tente novamente.');
                 }
             } while (option !== '5');
-            database_1.Database.close(); // Fecha a conexão ao sair
         });
     }
     // Listar todos os pacientes
