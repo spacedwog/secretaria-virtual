@@ -19,6 +19,7 @@ const doctor_service_1 = require("./database/services/doctor.service");
 class MenuSchedule {
     consultaMedica() {
         return __awaiter(this, void 0, void 0, function* () {
+            database_1.Database.init(); // Inicializa a conexão com o banco de dados
             let option;
             do {
                 console.log('\n--- Painel de consulta médica ---');

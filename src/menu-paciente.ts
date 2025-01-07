@@ -4,7 +4,6 @@ import { PatientService } from './database/services/patient.service';
 
 export class MenuPacient {
   public async menuPaciente() {
-    Database.init(); // Inicializa a conexão com o banco de dados
     let option: string;
 
     do {
@@ -37,8 +36,6 @@ export class MenuPacient {
           console.log('Opcao invalida. Tente novamente.');
       }
     } while (option !== '5');
-
-    Database.close(); // Fecha a conexão ao sair
   }
 
   // Listar todos os pacientes
