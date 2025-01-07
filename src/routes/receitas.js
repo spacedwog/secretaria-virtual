@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const db_1 = require("../db"); // Configuração do banco de dados
+const database_1 = require("../database/database"); // Configuração do banco de dados
 const pdfkit_1 = __importDefault(require("pdfkit"));
 const router = (0, express_1.Router)();
 // Função para lidar com a rota de forma isolada
@@ -21,14 +21,14 @@ const gerarReceita = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     const idReceita = parseInt(req.params.id);
     try {
         // Buscar dados da receita
-        const receita = yield db_1.db.query(`
+        const receita = yield database_1.Database.query(`
             SELECT r.*, p.nome AS paciente, m.nome AS medico, m.crm
             FROM receitas_medicas r
             JOIN pacientes p ON r.id_paciente = p.id_paciente
             JOIN medicos m ON r.id_medico = m.id_medico
             WHERE r.id_receita = $1
         `, [idReceita]);
-        const medicamentos = yield db_1.db.query(`
+        const medicamentos = yield database_1.Database.query(`
             SELECT nome_medicamento, dosagem, frequencia, duracao
             FROM medicamentos_receita
             WHERE id_receita = $1
