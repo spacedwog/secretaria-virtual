@@ -24,23 +24,43 @@ class MenuStarter {
                 console.log('1. Menu Paciente');
                 console.log('2. Menu Consulta Médica');
                 console.log('5. Sair');
-                const paciente = new menu_paciente_1.MenuPacient();
-                const medico = new consulta_medica_1.MenuSchedule();
                 option = readline_sync_1.default.question('Escolha uma opcao: ');
                 switch (option) {
                     case '1':
-                        yield paciente.menuPaciente();
+                        yield this.menuPaciente();
                         break;
                     case '2':
-                        yield medico.consultaMedica();
+                        yield this.menuConsultaMedica();
                         break;
                     case '5':
                         console.log('Saindo do sistema...');
                         break;
                     default:
-                        console.log('Opcao invalida. Tente novamente.');
+                        console.log('Opcao invalida. Escolha entre 1, 2 ou 5.');
                 }
             } while (option !== '5');
+        });
+    }
+    menuPaciente() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const paciente = new menu_paciente_1.MenuPacient();
+                yield paciente.menuPaciente();
+            }
+            catch (err) {
+                console.error('Erro ao executar o menu paciente:', err);
+            }
+        });
+    }
+    menuConsultaMedica() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const medico = new consulta_medica_1.MenuSchedule();
+                yield medico.consultaMedica();
+            }
+            catch (err) {
+                console.error('Erro ao executar o menu consulta médica:', err);
+            }
         });
     }
 }

@@ -2,8 +2,9 @@ import readlineSync from 'readline-sync';
 import { MenuPacient } from './menu-paciente';
 import { MenuSchedule } from './consulta-medica';
 
-class MenuStarter{
-  public async menuPrincipal(){
+class MenuStarter {
+  // Método principal do menu
+  public async menuPrincipal() {
     let option: string;
 
     do {
@@ -12,8 +13,10 @@ class MenuStarter{
       console.log('2. Menu Consulta Médica');
       console.log('5. Sair');
 
+      // Captura a escolha do usuário
       option = readlineSync.question('Escolha uma opcao: ');
 
+      // Executa a funcionalidade correspondente
       switch (option) {
         case '1':
           await this.menuPaciente();
@@ -28,24 +31,26 @@ class MenuStarter{
           console.log('Opcao invalida. Escolha entre 1, 2 ou 5.');
       }
     } while (option !== '5');
+
+    console.log('Obrigado por usar o sistema. Até a próxima!');
   }
 
+  // Método para acessar o menu do paciente
   private async menuPaciente() {
-    try{
+    try {
       const paciente = new MenuPacient();
       await paciente.menuPaciente();
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Erro ao executar o menu paciente:', err);
     }
   }
 
+  // Método para acessar o menu de consulta médica
   private async menuConsultaMedica() {
-    try{
+    try {
       const medico = new MenuSchedule();
       await medico.consultaMedica();
-    }
-    catch (err) {
+    } catch (err) {
       console.error('Erro ao executar o menu consulta médica:', err);
     }
   }
@@ -57,7 +62,7 @@ class MenuStarter{
   try {
     console.log('Iniciando sistema de secretaria virtual...');
     await menu.menuPrincipal();
-    console.log('Sistema encerrado.');
+    console.log('Sistema encerrado com sucesso.');
   } catch (err) {
     console.error('Erro fatal na aplicação:', err);
   }
