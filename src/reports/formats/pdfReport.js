@@ -11,7 +11,7 @@ function generatePDFReport(patients) {
         doc.text(`ID: ${patient.id}`, 10, y);
         doc.text(`Name: ${patient.name}`, 10, y + 10);
         doc.text(`Age: ${patient.age}`, 10, y + 20);
-        doc.text(`Date of Consultation: ${patient.consultationDate}`, 10, y + 30);
+        doc.text(`Date of Consultation: ${patient.appointmentDate}`, 10, y + 30);
         doc.text(`Reason: ${patient.reason}`, 10, y + 40);
         y += 50;
     });

@@ -15,7 +15,7 @@ const patients: Patient[] = [
 ];
 
 try {
-    const fileName = generateReport(patients, 'pdf'); // Escolha: 'json', 'html', ou 'pdf'
+    const fileName = generateReport(patients, 'html'); // Escolha: 'json', 'html', ou 'pdf'
     console.log(`Report generated: ${fileName}`);
 }
 catch (error) {
