@@ -112,16 +112,3 @@ export class MedicSchedule {
     }
   }
 }
-
-// Ponto de entrada da aplicação
-(async () => {
-  const schedule = new MedicSchedule();
-  try {
-    console.log('Iniciando sistema de secretaria virtual...');
-    await schedule.consultaMedica();
-    console.log('Sistema encerrado.');
-  } catch (err) {
-    console.error('Erro fatal na aplicação:', err);
-    Database.close(); // Garante que a conexão será encerrada em caso de erro
-  }
-})();

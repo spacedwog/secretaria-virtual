@@ -141,16 +141,3 @@ class MenuPacient {
     }
 }
 exports.MenuPacient = MenuPacient;
-// Ponto de entrada da aplicação
-(() => __awaiter(void 0, void 0, void 0, function* () {
-    const paciente = new MenuPacient();
-    try {
-        console.log('Iniciando sistema de secretaria virtual...');
-        yield paciente.menuPaciente();
-        console.log('Sistema encerrado.');
-    }
-    catch (err) {
-        console.error('Erro fatal na aplicação:', err);
-        database_1.Database.close(); // Garante que a conexão será encerrada em caso de erro
-    }
-}))();
