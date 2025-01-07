@@ -129,16 +129,3 @@ class MedicSchedule {
     }
 }
 exports.MedicSchedule = MedicSchedule;
-// Ponto de entrada da aplicação
-(() => __awaiter(void 0, void 0, void 0, function* () {
-    const schedule = new MedicSchedule();
-    try {
-        console.log('Iniciando sistema de secretaria virtual...');
-        yield schedule.consultaMedica();
-        console.log('Sistema encerrado.');
-    }
-    catch (err) {
-        console.error('Erro fatal na aplicação:', err);
-        database_1.Database.close(); // Garante que a conexão será encerrada em caso de erro
-    }
-}))();

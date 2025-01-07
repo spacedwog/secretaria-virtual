@@ -1,6 +1,6 @@
 import readlineSync from 'readline-sync';
 import { MenuPacient } from './menu-paciente';
-import { MedicSchedule } from './consulta-medica';
+import { MenuSchedule } from './consulta-medica';
 
 class MenuStarter{
   public async menuPrincipal(){
