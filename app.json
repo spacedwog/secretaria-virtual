@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "4ebaa815-d68e-4faf-8a00-baa3ac41a262"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.spacedwog.secretariavirtual"
+    }
+  }
+}
