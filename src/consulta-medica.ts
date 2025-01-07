@@ -2,7 +2,7 @@ import readlineSync from 'readline-sync';
 import { Database } from './database/database';
 import { DoctorService } from './database/services/doctor.service';
 
-class MedicSchedule {
+export class MedicSchedule {
   public async consultaMedica() {
     let option: string;
 

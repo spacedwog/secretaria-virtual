@@ -2,7 +2,7 @@ import readlineSync from 'readline-sync';
 import { Database } from './database/database';
 import { PatientService } from './database/services/patient.service';
 
-class MenuPacient {
+export class MenuPacient {
   public async menuPaciente() {
     let option: string;
 
