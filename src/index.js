@@ -25,7 +25,7 @@ class MenuStarter {
                 console.log('1. Menu Paciente');
                 console.log('2. Menu Consulta Médica');
                 console.log('3. Receita Médica');
-                console.log('4. Imprimir Relatório de Consultas');
+                console.log('4. Imprimir Receita Médica');
                 console.log('5. Sair');
                 // Captura a escolha do usuário
                 option = readline_sync_1.default.question('Escolha uma opcao: ');

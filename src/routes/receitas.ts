@@ -1,11 +1,11 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { Database } from '../database/database'; // Configuração do banco de dados
 import PDFDocument from 'pdfkit';
 
 const router = Router();
 
 // Rota para gerar a receita médica
-router.get('/receitas/:id', async (req, res) => {
+router.get('/receitas/:id', async (req: Request<{ id: string }>, res: Response) => {
     const idReceita = parseInt(req.params.id);
 
     try {
