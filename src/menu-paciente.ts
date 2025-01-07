@@ -2,8 +2,8 @@ import readlineSync from 'readline-sync';
 import { Database } from './database/database';
 import { PatientService } from './database/services/patient.service';
 
-class VirtualSecretary {
-  public async secretariaVirtual() {
+class MenuPacient {
+  public async menuPaciente() {
     let option: string;
 
     do {
@@ -124,10 +124,10 @@ class VirtualSecretary {
 
 // Ponto de entrada da aplicação
 (async () => {
-  const secretaria = new VirtualSecretary();
+  const paciente = new MenuPacient();
   try {
     console.log('Iniciando sistema de secretaria virtual...');
-    await secretaria.secretariaVirtual();
+    await paciente.menuPaciente();
     console.log('Sistema encerrado.');
   } catch (err) {
     console.error('Erro fatal na aplicação:', err);
