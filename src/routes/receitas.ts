@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { db } from '../db'; // Configuração do banco de dados
+import { Database } from '../database/database'; // Configuração do banco de dados
 import PDFDocument from 'pdfkit';
 
 const router = Router();
@@ -14,7 +14,7 @@ const gerarReceita = async (
 
     try {
         // Buscar dados da receita
-        const receita = await db.query(`
+        const receita = await Database.query(`
             SELECT r.*, p.nome AS paciente, m.nome AS medico, m.crm
             FROM receitas_medicas r
             JOIN pacientes p ON r.id_paciente = p.id_paciente
@@ -22,7 +22,7 @@ const gerarReceita = async (
             WHERE r.id_receita = $1
         `, [idReceita]);
 
-        const medicamentos = await db.query(`
+        const medicamentos = await Database.query(`
             SELECT nome_medicamento, dosagem, frequencia, duracao
             FROM medicamentos_receita
             WHERE id_receita = $1

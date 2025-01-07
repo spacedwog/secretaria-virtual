@@ -13,28 +13,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const database_1 = require("../database/database"); // Configuração do banco de dados
+const db_1 = require("../db"); // Configuração do banco de dados
 const pdfkit_1 = __importDefault(require("pdfkit"));
 const router = (0, express_1.Router)();
-// Rota para gerar a receita médica
-router.get('/receitas/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Função para lidar com a rota de forma isolada
+const gerarReceita = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const idReceita = parseInt(req.params.id);
     try {
         // Buscar dados da receita
-        const receita = yield database_1.Database.query(`
+        const receita = yield db_1.db.query(`
             SELECT r.*, p.nome AS paciente, m.nome AS medico, m.crm
             FROM receitas_medicas r
             JOIN pacientes p ON r.id_paciente = p.id_paciente
             JOIN medicos m ON r.id_medico = m.id_medico
             WHERE r.id_receita = $1
         `, [idReceita]);
-        const medicamentos = yield database_1.Database.query(`
+        const medicamentos = yield db_1.db.query(`
             SELECT nome_medicamento, dosagem, frequencia, duracao
             FROM medicamentos_receita
             WHERE id_receita = $1
         `, [idReceita]);
         if (!receita.rows.length) {
-            return res.status(404).send('Receita não encontrada.');
+            res.status(404).send('Receita não encontrada.');
+            return;
         }
         // Gerar PDF
         const doc = new pdfkit_1.default();
@@ -60,7 +61,9 @@ router.get('/receitas/:id', (req, res) => __awaiter(void 0, void 0, void 0, func
     }
     catch (error) {
         console.error(error);
-        res.status(500).send('Erro ao gerar a receita.');
+        next(error);
     }
-}));
+});
+// Adicionar a rota ao roteador
+router.get('/receitas/:id', gerarReceita);
 exports.default = router;
