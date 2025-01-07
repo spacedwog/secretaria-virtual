@@ -1,6 +1,6 @@
 import readlineSync from 'readline-sync';
-import { Database } from './database/database';
-import { DoctorService } from './database/services/doctor.service';
+import { Database } from '../database/database';
+import { DoctorService } from '../database/services/doctor.service';
 
 export class MenuSchedule {
   public async consultaMedica() {

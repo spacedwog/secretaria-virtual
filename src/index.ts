@@ -1,6 +1,6 @@
 import readlineSync from 'readline-sync';
-import { MenuPacient } from './menu-paciente';
-import { MenuSchedule } from './consulta-medica';
+import { MenuPacient } from './pacient/menu-paciente';
+import { MenuSchedule } from './schedule/consulta-medica';
 
 class MenuStarter {
   // Método principal do menu
