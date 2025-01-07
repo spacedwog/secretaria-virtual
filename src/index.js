@@ -24,6 +24,8 @@ class MenuStarter {
                 console.log('\n--- Sistema de Secretaria Virtual ---');
                 console.log('1. Menu Paciente');
                 console.log('2. Menu Consulta Médica');
+                console.log('3. Menu Administrativo');
+                console.log('4. Menu Relatorial');
                 console.log('5. Sair');
                 // Captura a escolha do usuário
                 option = readline_sync_1.default.question('Escolha uma opcao: ');
