@@ -1,32 +1,23 @@
+import { jsPDF } from 'jspdf';
 import { Patient } from '../../database/models/patient.models';
-import * as fs from 'fs';
-import PDFDocument from 'pdfkit';
 
 export function generatePDFReport(patients: Patient[]): string {
-  const doc = new PDFDocument();
+  const doc = new jsPDF();
+  const fileName = 'report.pdf';
 
-  // Nome do arquivo PDF
-  const filePath = 'patients_report.pdf';
+  doc.text('Patient Report', 10, 10);
 
-  // Cria o arquivo de saída
-  doc.pipe(fs.createWriteStream(filePath));
-
-  // Título do relatório
-  doc.fontSize(18).text('Patients Report', { align: 'center' });
-  doc.moveDown();
-
-  // Cabeçalho da tabela
-  doc.fontSize(12).text('ID    Name           Age    Phone         Email              Appointment Date');
-  doc.moveDown();
-
-  // Adiciona os dados dos pacientes
-  patients.forEach((patient) => {
-    const row = `${patient.id.toString().padEnd(6)} ${patient.name.padEnd(15)} ${patient.age.toString().padEnd(5)} ${patient.phone.padEnd(12)} ${patient.email.padEnd(20)} ${patient.appointmentDate}`;
-    doc.text(row);
+  let y = 20;
+  patients.forEach(patient => {
+    doc.text(`ID: ${patient.id}`, 10, y);
+    doc.text(`Name: ${patient.name}`, 10, y + 10);
+    doc.text(`Age: ${patient.age}`, 10, y + 20);
+    doc.text(`Date of Consultation: ${patient.consultationDate}`, 10, y + 30);
+    doc.text(`Reason: ${patient.reason}`, 10, y + 40);
+    y += 50;
   });
 
-  // Finaliza a criação do PDF
-  doc.end();
-
-  return 'PDF report generated successfully';
+  doc.save(fileName);
+  console.log(`PDF report saved as ${fileName}`);
+  return fileName;
 }
