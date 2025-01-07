@@ -25,7 +25,7 @@ class MenuPacient {
                 console.log('2. Adicionar Paciente');
                 console.log('3. Editar Paciente');
                 console.log('4. Excluir Paciente');
-                console.log('5. Sair');
+                console.log('v. Voltar');
                 option = readline_sync_1.default.question('Escolha uma opcao: ');
                 switch (option) {
                     case '1':
@@ -40,13 +40,13 @@ class MenuPacient {
                     case '4':
                         yield this.deletePatient();
                         break;
-                    case '5':
+                    case 'v':
                         console.log('Saindo do sistema...');
                         break;
                     default:
                         console.log('Opcao invalida. Tente novamente.');
                 }
-            } while (option !== '5');
+            } while (option !== 'v');
         });
     }
     // Listar todos os pacientes

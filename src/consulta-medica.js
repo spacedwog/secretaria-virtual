@@ -25,7 +25,7 @@ class MenuSchedule {
                 console.log('2. Adicionar Doutor');
                 console.log('3. Registrar Visita');
                 console.log('4. Agendar Consulta');
-                console.log('5. Sair');
+                console.log('v. Voltar');
                 option = readline_sync_1.default.question('Escolha uma opcao: ');
                 switch (option) {
                     case '1':
@@ -40,13 +40,13 @@ class MenuSchedule {
                     case '4':
                         yield this.recordSchedule();
                         break;
-                    case '5':
+                    case 'v':
                         console.log('Saindo do sistema...');
                         break;
                     default:
                         console.log('Opcao invalida. Tente novamente.');
                 }
-            } while (option !== '5');
+            } while (option !== 'v');
         });
     }
     // Listar todos os pacientes

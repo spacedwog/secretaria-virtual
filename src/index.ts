@@ -12,25 +12,42 @@ class MenuStarter{
       console.log('2. Menu Consulta Médica');
       console.log('5. Sair');
 
-      const paciente = new MenuPacient();
-      const medico = new MenuSchedule();
-
       option = readlineSync.question('Escolha uma opcao: ');
 
       switch (option) {
         case '1':
-          await paciente.menuPaciente();
+          await this.menuPaciente();
           break;
         case '2':
-          await medico.consultaMedica();
+          await this.menuConsultaMedica();
           break;
         case '5':
           console.log('Saindo do sistema...');
           break;
         default:
-          console.log('Opcao invalida. Tente novamente.');
+          console.log('Opcao invalida. Escolha entre 1, 2 ou 5.');
       }
     } while (option !== '5');
+  }
+
+  private async menuPaciente() {
+    try{
+      const paciente = new MenuPacient();
+      await paciente.menuPaciente();
+    }
+    catch (err) {
+      console.error('Erro ao executar o menu paciente:', err);
+    }
+  }
+
+  private async menuConsultaMedica() {
+    try{
+      const medico = new MenuSchedule();
+      await medico.consultaMedica();
+    }
+    catch (err) {
+      console.error('Erro ao executar o menu consulta médica:', err);
+    }
   }
 }
 
