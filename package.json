@@ -25,7 +25,9 @@
     "pg": "^8.13.1",
     "prompt-sync": "^4.2.0",
     "react-native-audio-recorder-player": "^3.6.12",
-    "readline-sync": "^1.4.10"
+    "readline-sync": "^1.4.10",
+    "react-native-web": "~0.19.13",
+    "@expo/metro-runtime": "~4.0.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
