@@ -11,6 +11,8 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Servidor rodando em TypeScript!');
 });
 
-app.post('/data', (req: Request, res: Response) => {
-    res.json({ message: 'Dados recebidos com sucesso!' });
+// Inicia o servidor
+app.listen(PORT, (req: Request, res: Response) => {
+    console.log(`Servidor está rodando em http://localhost:${PORT}`);
 });
+
