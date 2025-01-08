@@ -1,5 +1,5 @@
 import readlineSync from 'readline-sync';
-import { PatientService } from '../database/services/patient.service';
+import { PatientService } from '../Back-end/patient.service';
 
 export class MenuPacient {
   public async menuPaciente() {
