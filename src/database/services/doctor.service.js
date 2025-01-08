@@ -66,5 +66,18 @@ class DoctorService {
             }
         });
     }
+    static medicRecip(id_paciente, id_medico, id_receita, data_prescricao, observacao, nome_medicamento, frequencia, dosagem, duracao) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield database_1.Database.init(); // Certifique-se de inicializar a conexão
+                yield database_1.Database.query('INSERT INTO receitas_medicas (id_paciente, id_medico, data_prescricao, observacao) VALUES (?, ?, ?, ?)', [id_paciente, id_medico, data_prescricao, observacao]);
+                yield database_1.Database.query('INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao) VALUES (?, ?, ?, ?, ?)', [id_receita, nome_medicamento, dosagem, frequencia, duracao]);
+            }
+            catch (error) {
+                console.error('Error adding medication:', error);
+                throw new Error('Failed to add medication. Please check the input data and try again.');
+            }
+        });
+    }
 }
 exports.DoctorService = DoctorService;

@@ -96,4 +96,5 @@ export class DoctorService {
       console.error('Error adding medication:', error);
       throw new Error('Failed to add medication. Please check the input data and try again.');
     }
+  }
 }
