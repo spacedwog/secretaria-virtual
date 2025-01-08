@@ -20,6 +20,7 @@ export class PatientService {
     address: string
   ): Promise<void> {
     try {
+      Database.init(); // Certifique-se de inicializar a conexão
       await Database.query(
         'EXEC add_patient @name = ?, @age = ?, @phone = ?, @email = ?, @address = ?',
         [name, age, phone, email, address]
