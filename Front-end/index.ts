@@ -96,16 +96,16 @@ class MenuStarter {
   }
 
   private async imprimirReceitaMedica() {
+
     const recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
 
     const receitas = await DoctorService.printMedicRecip(recipId);
     console.log('\n--- Lista de Receitas Médicas ---');
 
-    receitas.forEach((receitas => {
+    receitas.forEach((receitas) => {
       const paciente = receitas.nome_paciente;
       const date = new Date(receitas.data_prescricao).toDateString();
       const doutor = receitas.nome_medico;
-      const remedio = receitas.nome_medicamento;
       const dosagem = receitas.dosagem;
       const frequencia = receitas.frequencia;
       const duracao = receitas.duracao;
@@ -113,15 +113,13 @@ class MenuStarter {
 
       console.table([
         {
-          Paciente: paciente,
-          Remedio: remedio,
+          Medicamento: receitas.nome_medicamento,
           Dosagem: dosagem,
           Frequencia: frequencia,
           Duracao: duracao,
-          Doutor: doutor,
-          DataPrescricao: date,
-          Observacao: observacao
-        },
+          Observacao: observacao,
+          Data: date
+        }
       ]);
     });
   }

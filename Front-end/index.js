@@ -84,7 +84,7 @@ class MenuStarter {
             try {
                 const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
                 const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
-                const recipId = parseInt(readline_sync_1.default.question('ID da receita medica: '), 10);
+                const recipId = parseInt(readline_sync_1.default.question('ID do medicamento: '), 10);
                 const recipName = readline_sync_1.default.question('Nome do medicamento: ');
                 const dataMed = readline_sync_1.default.question('Data da medicacao (aaaa/mm/dd): ');
                 const recipQuantity = readline_sync_1.default.question('Dosagem da medicacao: ');
@@ -104,24 +104,28 @@ class MenuStarter {
             const recipId = parseInt(readline_sync_1.default.question('ID do medicamento: '), 10);
             const receitas = yield doctor_service_1.DoctorService.printMedicRecip(recipId);
             console.log('\n--- Lista de Receitas Médicas ---');
-            receitas.forEach((receitas) => {
-                const nome_medicamento = receitas.nome_medicamento;
-                const data_prescricao = receitas.data_prescricao;
-                const observacao = receitas.observacoes;
-                const frequencia = receitas.frequencia;
+            receitas.forEach((receitas => {
+                const paciente = receitas.nome_paciente;
+                const date = new Date(receitas.data_prescricao).toDateString();
+                const doutor = receitas.nome_medico;
+                const remedio = receitas.nome_medicamento;
                 const dosagem = receitas.dosagem;
+                const frequencia = receitas.frequencia;
                 const duracao = receitas.duracao;
+                const observacao = receitas.observacoes;
                 console.table([
                     {
-                        Nome_Medicamento: nome_medicamento,
-                        Data_Prescricao: data_prescricao,
-                        Observacao: observacao,
+                        Paciente: paciente,
+                        Remedio: remedio,
                         Dosagem: dosagem,
                         Frequencia: frequencia,
                         Duracao: duracao,
+                        Doutor: doutor,
+                        DataPrescricao: date,
+                        Observacao: observacao
                     },
                 ]);
-            });
+            }));
         });
     }
 }
