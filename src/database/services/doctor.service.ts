@@ -1,14 +1,29 @@
 import { Database } from '../database';
 
 export class DoctorService {
+  private static _databaseInstance: Database;
+
+  // Getter para inicializar e acessar a instância do Database
+  static get databaseInstance(): Database {
+    if (!this._databaseInstance) {
+      this._databaseInstance = new Database();
+    }
+    return this._databaseInstance;
+  }
+
+  // Setter caso precise atualizar a instância do Database (se necessário)
+  static set databaseInstance(database: Database) {
+    this._databaseInstance = database;
+  }
+
   static async appoitmentView(): Promise<any[]> {
     try {
-      await Database.init(); // Certifique-se de inicializar a conexão
-      const result = await Database.query("SELECT * FROM patient_appointments_view");
-      return result;  // O MySQL retornará os dados no formato esperado
+      await this.databaseInstance.init();
+      const result = await this.databaseInstance.query("SELECT * FROM patient_appointments_view");
+      return result;
     } catch (error) {
-      console.error('Error listing appoitments:', error);
-      throw new Error('Failed to list appoitments. Please try again later.');
+      console.error('Error listing appointments:', error);
+      throw new Error('Failed to list appointments. Please try again later.');
     }
   }
 
@@ -19,8 +34,8 @@ export class DoctorService {
     speciality: string
   ): Promise<void> {
     try {
-      await Database.init(); // Certifique-se de inicializar a conexão
-      await Database.query(
+      await this.databaseInstance.init();
+      await this.databaseInstance.query(
         'INSERT INTO doctors (name, phone, email, speciality) VALUES (?, ?, ?, ?)',
         [name, phone, email, speciality]
       );
@@ -35,13 +50,11 @@ export class DoctorService {
     doctorId: number
   ): Promise<void> {
     try {
-      await Database.init(); // Certifique-se de inicializar a conexão
-      const ano = new Date().getFullYear();
-      const mes = new Date().getMonth();
-      const dia = new Date().getDay();
-      const date = ano + '-' + mes + '-' + dia;
-      const time = new Date().getHours() + ':' + new Date().getMinutes();
-      await Database.query(
+      await this.databaseInstance.init();
+      const currentDate = new Date();
+      const date = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
+      const time = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+      await this.databaseInstance.query(
         'INSERT INTO patients_doctors (patient_id, doctor_id, visit_date, visit_time) VALUES (?, ?, ?, ?)',
         [patientId, doctorId, date, time]
       );
@@ -60,14 +73,14 @@ export class DoctorService {
     status: string
   ): Promise<void> {
     try {
-      await Database.init(); // Certifique-se de inicializar a conexão
-      await Database.query(
+      await this.databaseInstance.init();
+      await this.databaseInstance.query(
         'INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason, status) VALUES (?, ?, ?, ?, ?, ?)',
         [patient_id, doctor_id, date, time, reason, status]
       );
     } catch (error) {
-      console.error('Error adding doctor:', error);
-      throw new Error('Failed to add doctor. Please check the input data and try again.');
+      console.error('Error recording schedule:', error);
+      throw new Error('Failed to record schedule. Please check the input data and try again.');
     }
   }
 
@@ -83,12 +96,12 @@ export class DoctorService {
     duracao: string
   ): Promise<void> {
     try {
-      await Database.init(); // Certifique-se de inicializar a conexão
-      await Database.query(
+      await this.databaseInstance.init();
+      await this.databaseInstance.query(
         'INSERT INTO receitas_medicas (id_paciente, id_medico, data_prescricao, observacoes) VALUES (?, ?, ?, ?)',
         [id_paciente, id_medico, data_prescricao, observacao]
       );
-      await Database.query(
+      await this.databaseInstance.query(
         'INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao) VALUES (?, ?, ?, ?, ?)',
         [id_receita, nome_medicamento, dosagem, frequencia, duracao]
       );
