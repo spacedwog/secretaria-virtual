@@ -104,8 +104,6 @@ class MenuStarter {
     receitas.forEach((receitas)=> {
 
       const nome_medicamento = receitas.nome_medicamento;
-      const nome_paciente = receitas.nome_paciente;
-      const nome_medico = receitas.nome_medico;
       const data_prescricao = receitas.data_prescricao;
       const observacao = receitas.observacoes;
       const dosagem = receitas.dosagem;
@@ -115,8 +113,6 @@ class MenuStarter {
       console.table([
         {
           Nome_Medicamento: nome_medicamento,
-          Nome_Paciente: nome_paciente,
-          Nome_Medico: nome_medico,
           Data_Prescricao: data_prescricao,
           Observacao: observacao,
           Dosagem: dosagem,
