@@ -103,9 +103,7 @@ class MenuStarter {
     console.log('\n--- Lista de Receitas Médicas ---');
 
     receitas.forEach((receitas) => {
-      const paciente = receitas.nome_paciente;
       const date = new Date(receitas.data_prescricao).toDateString();
-      const doutor = receitas.nome_medico;
       const dosagem = receitas.dosagem;
       const frequencia = receitas.frequencia;
       const duracao = receitas.duracao;
