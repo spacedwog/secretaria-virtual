@@ -106,8 +106,8 @@ class MenuStarter {
       const nome_medicamento = receitas.nome_medicamento;
       const data_prescricao = receitas.data_prescricao;
       const observacao = receitas.observacoes;
-      const dosagem = receitas.dosagem;
       const frequencia = receitas.frequencia;
+      const dosagem = receitas.dosagem;
       const duracao = receitas.duracao;
 
       console.table([
