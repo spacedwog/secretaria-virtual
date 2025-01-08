@@ -2,7 +2,6 @@ import readlineSync from 'readline-sync';
 import { MenuPacient } from './pacient/menu-paciente';
 import { MenuSchedule } from './schedule/consulta-medica';
 import { DoctorService } from './database/services/doctor.service';
-import { gerarReceita } from './routes/receitas';
 
 class MenuStarter {
   // Método principal do menu
@@ -96,7 +95,7 @@ class MenuStarter {
   }
 
   private async imprimirReceitaMedica() {
-    gerarReceita(request, response, next);
+    const recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
   }
 }
 
