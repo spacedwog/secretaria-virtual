@@ -21,7 +21,7 @@ export class PatientService {
   ): Promise<void> {
     try {
       await Database.query(
-        'INSERT INTO patients (name, age, phone, email, address) VALUES (?, ?, ?, ?, ?)',
+        'EXEC add_patient @name = ?, @age = ?, @phone = ?, @email = ?, @address = ?',
         [name, age, phone, email, address]
       );
     } catch (error) {
