@@ -12,24 +12,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DoctorService = void 0;
 const database_1 = require("../database");
 class DoctorService {
+    // Getter para inicializar e acessar a instância do Database
+    static get databaseInstance() {
+        if (!this._databaseInstance) {
+            this._databaseInstance = new database_1.Database();
+        }
+        return this._databaseInstance;
+    }
+    // Setter caso precise atualizar a instância do Database (se necessário)
+    static set databaseInstance(database) {
+        this._databaseInstance = database;
+    }
     static appoitmentView() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.init(); // Certifique-se de inicializar a conexão
-                const result = yield database_1.Database.query("SELECT * FROM patient_appointments_view");
-                return result; // O MySQL retornará os dados no formato esperado
+                yield this.databaseInstance.init();
+                const result = yield this.databaseInstance.query("SELECT * FROM patient_appointments_view");
+                return result;
             }
             catch (error) {
-                console.error('Error listing appoitments:', error);
-                throw new Error('Failed to list appoitments. Please try again later.');
+                console.error('Error listing appointments:', error);
+                throw new Error('Failed to list appointments. Please try again later.');
             }
         });
     }
     static addDoctor(name, phone, email, speciality) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.init(); // Certifique-se de inicializar a conexão
-                yield database_1.Database.query('INSERT INTO doctors (name, phone, email, speciality) VALUES (?, ?, ?, ?)', [name, phone, email, speciality]);
+                yield this.databaseInstance.init();
+                yield this.databaseInstance.query('INSERT INTO doctors (name, phone, email, speciality) VALUES (?, ?, ?, ?)', [name, phone, email, speciality]);
             }
             catch (error) {
                 console.error('Error adding doctor:', error);
@@ -40,13 +51,11 @@ class DoctorService {
     static visitDoctor(patientId, doctorId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.init(); // Certifique-se de inicializar a conexão
-                const ano = new Date().getFullYear();
-                const mes = new Date().getMonth();
-                const dia = new Date().getDay();
-                const date = ano + '-' + mes + '-' + dia;
-                const time = new Date().getHours() + ':' + new Date().getMinutes();
-                yield database_1.Database.query('INSERT INTO patients_doctors (patient_id, doctor_id, visit_date, visit_time) VALUES (?, ?, ?, ?)', [patientId, doctorId, date, time]);
+                yield this.databaseInstance.init();
+                const currentDate = new Date();
+                const date = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
+                const time = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+                yield this.databaseInstance.query('INSERT INTO patients_doctors (patient_id, doctor_id, visit_date, visit_time) VALUES (?, ?, ?, ?)', [patientId, doctorId, date, time]);
             }
             catch (error) {
                 console.error('Error visiting doctor:', error);
@@ -57,21 +66,21 @@ class DoctorService {
     static recordSchedule(patient_id, doctor_id, date, time, reason, status) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.init(); // Certifique-se de inicializar a conexão
-                yield database_1.Database.query('INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason, status) VALUES (?, ?, ?, ?, ?, ?)', [patient_id, doctor_id, date, time, reason, status]);
+                yield this.databaseInstance.init();
+                yield this.databaseInstance.query('INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason, status) VALUES (?, ?, ?, ?, ?, ?)', [patient_id, doctor_id, date, time, reason, status]);
             }
             catch (error) {
-                console.error('Error adding doctor:', error);
-                throw new Error('Failed to add doctor. Please check the input data and try again.');
+                console.error('Error recording schedule:', error);
+                throw new Error('Failed to record schedule. Please check the input data and try again.');
             }
         });
     }
     static medicRecip(id_paciente, id_medico, id_receita, data_prescricao, observacao, nome_medicamento, frequencia, dosagem, duracao) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield database_1.Database.init(); // Certifique-se de inicializar a conexão
-                yield database_1.Database.query('INSERT INTO receitas_medicas (id_paciente, id_medico, data_prescricao, observacoes) VALUES (?, ?, ?, ?)', [id_paciente, id_medico, data_prescricao, observacao]);
-                yield database_1.Database.query('INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao) VALUES (?, ?, ?, ?, ?)', [id_receita, nome_medicamento, dosagem, frequencia, duracao]);
+                yield this.databaseInstance.init();
+                yield this.databaseInstance.query('INSERT INTO receitas_medicas (id_paciente, id_medico, data_prescricao, observacoes) VALUES (?, ?, ?, ?)', [id_paciente, id_medico, data_prescricao, observacao]);
+                yield this.databaseInstance.query('INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao) VALUES (?, ?, ?, ?, ?)', [id_receita, nome_medicamento, dosagem, frequencia, duracao]);
             }
             catch (error) {
                 console.error('Error adding medication:', error);
