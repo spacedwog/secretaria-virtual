@@ -70,7 +70,7 @@ class DoctorService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield database_1.Database.init(); // Certifique-se de inicializar a conexão
-                yield database_1.Database.query('INSERT INTO receitas_medicas (id_paciente, id_medico, data_prescricao, observacao) VALUES (?, ?, ?, ?)', [id_paciente, id_medico, data_prescricao, observacao]);
+                yield database_1.Database.query('INSERT INTO receitas_medicas (id_paciente, id_medico, data_prescricao, observacoes) VALUES (?, ?, ?, ?)', [id_paciente, id_medico, data_prescricao, observacao]);
                 yield database_1.Database.query('INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao) VALUES (?, ?, ?, ?, ?)', [id_receita, nome_medicamento, dosagem, frequencia, duracao]);
             }
             catch (error) {

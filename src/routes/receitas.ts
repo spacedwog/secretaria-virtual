@@ -5,7 +5,7 @@ import PDFDocument from 'pdfkit';
 const router = Router();
 
 // Função para lidar com a rota de forma isolada
-const gerarReceita = async (
+export const gerarReceita = async (
     req: Request<{ id: string }>,
     res: Response,
     next: NextFunction

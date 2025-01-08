@@ -2,6 +2,7 @@ import readlineSync from 'readline-sync';
 import { MenuPacient } from './pacient/menu-paciente';
 import { MenuSchedule } from './schedule/consulta-medica';
 import { DoctorService } from './database/services/doctor.service';
+import { gerarReceita } from './routes/receitas';
 
 class MenuStarter {
   // Método principal do menu
@@ -31,6 +32,7 @@ class MenuStarter {
           await this.receitaMedica();
           break;
         case '4':
+          await this.imprimirReceitaMedica();
           break;
         case '5':
           console.log('Saindo do sistema...');
@@ -87,10 +89,15 @@ class MenuStarter {
         recipQuantity,
         consumation);
       console.log('Medicamento registrado com sucesso!');
-      } catch (err) {
-        console.error('Erro ao registrar visita:', err);
-      }
     }
+    catch (err) {
+        console.error('Erro ao registrar visita:', err);
+    }
+  }
+
+  private async imprimirReceitaMedica() {
+    gerarReceita(request, response, next);
+  }
 }
 
 // Ponto de entrada da aplicação
