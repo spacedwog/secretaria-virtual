@@ -118,13 +118,15 @@ class Server {
             const frequencia = this.getFrequencia();
             const duracao = this.getDuracao();
             console.table([
-                "Nome do Paciente": nome_paciente,
-                "Nome do Medico": nome_medico,
-                "Data de Prescricao": data_prescricao,
-                "Nome do Medicamento": nome_medicamento,
-                "Dosagem": dosagem,
-                "Frequencia": frequencia,
-                "Duracao": duracao
+                {
+                    "Nome do Paciente": nome_paciente,
+                    "Nome do Medico": nome_medico,
+                    "Data de Prescricao": data_prescricao,
+                    "Nome do Medicamento": nome_medicamento,
+                    "Dosagem": dosagem,
+                    "Frequencia": frequencia,
+                    "Duracao": duracao
+                }
             ]);
         });
     }
