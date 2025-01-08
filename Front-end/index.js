@@ -82,17 +82,15 @@ class MenuStarter {
     receitaMedica() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                process.stdin.setEncoding('utf-8');
-                const readlineSync = require('readline-sync');
-                const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
-                const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
-                const recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
-                const recipName = readlineSync.question('Nome do medicamento: ');
-                const dataMed = readlineSync.question('Data da medicação (aaaa/mm/dd): ');
-                const recipQuantity = readlineSync.question('Dosagem da medicação: ');
-                const frequencyMed = readlineSync.question('Frequência de medicação: ');
-                const consumation = readlineSync.question('Duracao da dose: ');
-                const observation = readlineSync.question('Observações: ');
+                const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
+                const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
+                const recipId = parseInt(readline_sync_1.default.question('ID do medicamento: '), 10);
+                const recipName = readline_sync_1.default.question('Nome do medicamento: ');
+                const dataMed = readline_sync_1.default.question('Data da medicacao (aaaa/mm/dd): ');
+                const recipQuantity = readline_sync_1.default.question('Dosagem da medicacao: ');
+                const frequencyMed = readline_sync_1.default.question('Frequência de medicacao: ');
+                const consumation = readline_sync_1.default.question('Duracao da dose: ');
+                const observation = readline_sync_1.default.question('Observacoes: ');
                 yield doctor_service_1.DoctorService.medicRecip(patientId, doctorId, recipId, dataMed, observation, recipName, frequencyMed, recipQuantity, consumation);
                 console.log('Medicamento registrado com sucesso!');
             }

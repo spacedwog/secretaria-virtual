@@ -73,7 +73,7 @@ class MenuSchedule {
                 });
             }
             catch (err) {
-                console.error('Erro ao listar consultas médicas:', err);
+                console.error('Erro ao listar consultas medicas:', err);
             }
         });
     }
@@ -100,7 +100,7 @@ class MenuSchedule {
                 const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
                 const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
                 yield doctor_service_1.DoctorService.visitDoctor(patientId, doctorId);
-                console.log('Visita ao consultório médico registrada com sucesso!');
+                console.log('Visita ao consultório medico registrada com sucesso!');
             }
             catch (err) {
                 console.error('Erro ao registrar visita:', err);
@@ -114,7 +114,7 @@ class MenuSchedule {
                 const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
                 const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
                 const appoitmentDate = readline_sync_1.default.question('Data da consulta (aaaa/mm/dd): ');
-                const appoitmentTime = readline_sync_1.default.question('Horário da consulta (hh:mm): ');
+                const appoitmentTime = readline_sync_1.default.question('Horario da consulta (hh:mm): ');
                 const reason = readline_sync_1.default.question('Motivo da consulta: ');
                 const status = readline_sync_1.default.question('Status da consulta (agendado/realizado): ');
                 yield doctor_service_1.DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status);

@@ -110,4 +110,17 @@ export class DoctorService {
       throw new Error('Failed to add medication. Please check the input data and try again.');
     }
   }
+
+  static async printMedicRecip(id_receita: number): Promise<any[]> {
+    try {
+      await Database.init(); // Alterado para chamar o método estático diretamente
+      const result = await Database.query('SELECT * FROM vw_receitas_detalhadas WHERE id_receita = ?',
+        [id_receita]
+      );
+      return result;
+    } catch (error) {
+      console.error('Error printing medication:', error);
+      throw new Error('Failed to print medication. Please check the input data and try again.');
+    }
+  }
 }
