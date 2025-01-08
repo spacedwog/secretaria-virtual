@@ -67,6 +67,9 @@ class MenuStarter {
   // Registrar visita
   private async receitaMedica() {
     try {
+      process.stdin.setEncoding('utf-8');
+      const readlineSync = require('readline-sync');
+
       const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
       const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
       const recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
