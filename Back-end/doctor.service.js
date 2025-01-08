@@ -40,7 +40,7 @@ class DoctorService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield database_1.Database.init(); // Alterado para chamar o método estático diretamente
-                yield database_1.Database.query('INSERT INTO doctors (name, phone, email, speciality) VALUES (?, ?, ?, ?)', [name, phone, email, speciality]);
+                yield database_1.Database.query('CALL add_doctor(?, ?, ?, ?)', [name, speciality, phone, email]);
             }
             catch (error) {
                 console.error('Error adding doctor:', error);
@@ -55,7 +55,7 @@ class DoctorService {
                 const currentDate = new Date();
                 const date = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
                 const time = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-                yield database_1.Database.query('INSERT INTO patients_doctors (patient_id, doctor_id, visit_date, visit_time) VALUES (?, ?, ?, ?)', [patientId, doctorId, date, time]);
+                yield database_1.Database.query('CALL visit_doctor(?, ?, ?, ?)', [date, time, patientId, doctorId]);
             }
             catch (error) {
                 console.error('Error visiting doctor:', error);
@@ -67,7 +67,7 @@ class DoctorService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield database_1.Database.init(); // Alterado para chamar o método estático diretamente
-                yield database_1.Database.query('INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason, status) VALUES (?, ?, ?, ?, ?, ?)', [patient_id, doctor_id, date, time, reason, status]);
+                yield database_1.Database.query('CALL make_appointment(?, ?, ?, ?, ?, ?)', [date, time, reason, status, patient_id, doctor_id]);
             }
             catch (error) {
                 console.error('Error recording schedule:', error);
@@ -79,8 +79,7 @@ class DoctorService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield database_1.Database.init(); // Alterado para chamar o método estático diretamente
-                yield database_1.Database.query('INSERT INTO receitas_medicas (id_paciente, id_medico, data_prescricao, observacoes) VALUES (?, ?, ?, ?)', [id_paciente, id_medico, data_prescricao, observacao]);
-                yield database_1.Database.query('INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao) VALUES (?, ?, ?, ?, ?)', [id_receita, nome_medicamento, dosagem, frequencia, duracao]);
+                yield database_1.Database.query('CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?)', [id_paciente, id_medico, data_prescricao, observacao, id_receita, nome_medicamento, dosagem, frequencia, duracao]);
             }
             catch (error) {
                 console.error('Error adding medication:', error);

@@ -70,7 +70,7 @@ class MenuStarter {
 
       const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
       const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
-      const recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
+      const recipId = parseInt(readlineSync.question('ID da receita medica: '), 10);
       const recipName = readlineSync.question('Nome do medicamento: ');
       const dataMed = readlineSync.question('Data da medicacao (aaaa/mm/dd): ');
       const recipQuantity = readlineSync.question('Dosagem da medicacao: ');
