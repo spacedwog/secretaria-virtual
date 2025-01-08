@@ -1,9 +1,9 @@
 {
   "name": "secretaria-virtual",
   "version": "1.0.0",
-  "main": "node Front-end/index.js",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node Front-end/index.js",
+    "start": "ts-node-dev Cloud-dev/src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
