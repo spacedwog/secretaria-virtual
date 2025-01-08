@@ -107,7 +107,7 @@ class MenuStarter {
       const nome_paciente = receitas.nome_paciente;
       const nome_medico = receitas.nome_medico;
       const data_prescricao = receitas.data_prescricao;
-      const observacao = receitas.observacao;
+      const observacao = receitas.observacoes;
       const dosagem = receitas.dosagem;
       const frequencia = receitas.frequencia;
       const duracao = receitas.duracao;

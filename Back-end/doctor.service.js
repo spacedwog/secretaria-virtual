@@ -88,5 +88,18 @@ class DoctorService {
             }
         });
     }
+    static printMedicRecip(id_receita) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield database_1.Database.init(); // Alterado para chamar o método estático diretamente
+                const result = yield database_1.Database.query('SELECT * FROM vw_receitas_detalhadas WHERE id_receita = ?', [id_receita]);
+                return result;
+            }
+            catch (error) {
+                console.error('Error printing medication:', error);
+                throw new Error('Failed to print medication. Please check the input data and try again.');
+            }
+        });
+    }
 }
 exports.DoctorService = DoctorService;

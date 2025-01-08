@@ -102,6 +102,30 @@ class MenuStarter {
     imprimirReceitaMedica() {
         return __awaiter(this, void 0, void 0, function* () {
             const recipId = parseInt(readline_sync_1.default.question('ID do medicamento: '), 10);
+            const receitas = yield doctor_service_1.DoctorService.printMedicRecip(recipId);
+            console.log('\n--- Lista de Receitas Médicas ---');
+            receitas.forEach((receitas) => {
+                const nome_medicamento = receitas.nome_medicamento;
+                const nome_paciente = receitas.nome_paciente;
+                const nome_medico = receitas.nome_medico;
+                const data_prescricao = receitas.data_prescricao;
+                const observacao = receitas.observacao;
+                const dosagem = receitas.dosagem;
+                const frequencia = receitas.frequencia;
+                const duracao = receitas.duracao;
+                console.table([
+                    {
+                        Nome_Medicamento: nome_medicamento,
+                        Nome_Paciente: nome_paciente,
+                        Nome_Medico: nome_medico,
+                        Data_Prescricao: data_prescricao,
+                        Observacao: observacao,
+                        Dosagem: dosagem,
+                        Frequencia: frequencia,
+                        Duracao: duracao,
+                    },
+                ]);
+            });
         });
     }
 }
