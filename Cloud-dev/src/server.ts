@@ -12,7 +12,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // Inicia o servidor
-app.listen('/data', (req: Request, res: Response) => {
+app.listen(PORT, () => {
     console.log(`Servidor está rodando em http://localhost:${PORT}`);
 });
 
