@@ -24,6 +24,14 @@ class Server {
     constructor(port: number) {
         this.app = express();
         this.port = port;
+        this.nome_paciente = "";
+        this.nome_medico = "";
+        this.data_prescricao = "";
+        this.observacao = "";
+        this.nome_medicamento = "";
+        this.dosagem = "";
+        this.frequencia = "";
+        this.duracao = "";
 
         // Configura middlewares
         this.setupMiddlewares();
