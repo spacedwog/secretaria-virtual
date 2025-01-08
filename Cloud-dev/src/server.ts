@@ -44,7 +44,7 @@ class Server {
     }
 
     private setupMiddlewares() {
-        this.app.use(express.json());
+        this.app.use(express.json()); // Para entender requisições JSON
     }
 
     private setupRoutes() {
@@ -55,6 +55,35 @@ class Server {
 
         // Rota para testar consulta ao banco
         this.app.get('/dados', this.getData.bind(this));
+
+        // Rota para receber dados via POST e settar nas variáveis
+        this.app.post('/setDados', (req: Request, res: Response) => {
+            const { 
+                nome_paciente, 
+                nome_medico, 
+                data_prescricao, 
+                observacao, 
+                nome_medicamento, 
+                dosagem, 
+                frequencia, 
+                duracao 
+            } = req.body;
+
+            // Usando os setters para atribuir os valores
+            this.setNome_paciente(nome_paciente);
+            this.setNome_medico(nome_medico);
+            this.setData_prescricao(data_prescricao);
+            this.setObservacao(observacao);
+            this.setNome_medicamento(nome_medicamento);
+            this.setDosagem(dosagem);
+            this.setFrequencia(frequencia);
+            this.setDuracao(duracao);
+
+            res.status(200).json({
+                message: 'Dados atualizados com sucesso!',
+                data: req.body
+            });
+        });
     }
 
     private async connectToDatabase() {
@@ -81,7 +110,89 @@ class Server {
         await this.connectToDatabase();
         this.app.listen(this.port, () => {
             console.log(`Servidor está rodando em http://localhost:${this.port}`);
+            const nome_paciente = this.getNome_paciente();
+            const nome_medico = this.getNome_medico();
+            const data_prescricao = this.getData_prescricao();
+            const nome_medicamento = this.getNome_medicamento();
+            const dosagem = this.getDosagem();
+            const frequencia = this.getFrequencia();
+            const duracao = this.getDuracao();
+            console.table([
+                "Nome do Paciente": nome_paciente,
+                "Nome do Medico": nome_medico,
+                "Data de Prescricao": data_prescricao,
+                "Nome do Medicamento": nome_medicamento,
+                "Dosagem": dosagem,
+                "Frequencia": frequencia,
+                "Duracao": duracao
+            ]);
         });
+    }
+
+    // Getters
+    public getNome_paciente(): string {
+        return this.nome_paciente;
+    }
+
+    public getNome_medico(): string {
+        return this.nome_medico;
+    }
+
+    public getData_prescricao(): string {
+        return this.data_prescricao;
+    }
+
+    public getObservacao(): string {
+        return this.observacao;
+    }
+
+    public getNome_medicamento(): string {
+        return this.nome_medicamento;
+    }
+
+    public getDosagem(): string {
+        return this.dosagem;
+    }
+
+    public getFrequencia(): string {
+        return this.frequencia;
+    }
+
+    public getDuracao(): string {
+        return this.duracao;
+    }
+
+    // Setters
+    public setNome_paciente(nome_paciente: string): void {
+        this.nome_paciente = nome_paciente;
+    }
+
+    public setNome_medico(nome_medico: string): void {
+        this.nome_medico = nome_medico;
+    }
+
+    public setData_prescricao(data_prescricao: string): void {
+        this.data_prescricao = data_prescricao;
+    }
+
+    public setObservacao(observacao: string): void {
+        this.observacao = observacao;
+    }
+
+    public setNome_medicamento(nome_medicamento: string): void {
+        this.nome_medicamento = nome_medicamento;
+    }
+
+    public setDosagem(dosagem: string): void {
+        this.dosagem = dosagem;
+    }
+
+    public setFrequencia(frequencia: string): void {
+        this.frequencia = frequencia;
+    }
+
+    public setDuracao(duracao: string): void {
+        this.duracao = duracao;
     }
 }
 
