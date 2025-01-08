@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "dist/server.js",
   "scripts": {
-    "start": "ts-node-dev Cloud-dev/src/server.ts",
+    "start": "npx kill-port 3000 && ts-node-dev Cloud-dev/src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
