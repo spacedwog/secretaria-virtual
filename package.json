@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "node Front-end/index.js",
   "scripts": {
-    "start": "ts-node-dev Cloud-dev/src/server.ts",
+    "start": "node Front-end/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
