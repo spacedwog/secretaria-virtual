@@ -85,7 +85,7 @@ export class DoctorService {
     try {
       await Database.init(); // Certifique-se de inicializar a conexão
       await Database.query(
-        'INSERT INTO receitas_medicas (id_paciente, id_medico, data_prescricao, observacao) VALUES (?, ?, ?, ?)',
+        'INSERT INTO receitas_medicas (id_paciente, id_medico, data_prescricao, observacoes) VALUES (?, ?, ?, ?)',
         [id_paciente, id_medico, data_prescricao, observacao]
       );
       await Database.query(
