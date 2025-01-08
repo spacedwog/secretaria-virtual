@@ -36,8 +36,8 @@ export class DoctorService {
     try {
       await Database.init(); // Alterado para chamar o método estático diretamente
       await Database.query(
-        'INSERT INTO doctors (name, phone, email, speciality) VALUES (?, ?, ?, ?)',
-        [name, phone, email, speciality]
+        'CALL add_doctor(?, ?, ?, ?)',
+        [name, speciality, phone, email]
       );
     } catch (error) {
       console.error('Error adding doctor:', error);
@@ -55,8 +55,8 @@ export class DoctorService {
       const date = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
       const time = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
       await Database.query(
-        'INSERT INTO patients_doctors (patient_id, doctor_id, visit_date, visit_time) VALUES (?, ?, ?, ?)',
-        [patientId, doctorId, date, time]
+        'CALL visit_doctor(?, ?, ?, ?)',
+        [date, time, patientId, doctorId]
       );
     } catch (error) {
       console.error('Error visiting doctor:', error);
@@ -75,8 +75,8 @@ export class DoctorService {
     try {
       await Database.init(); // Alterado para chamar o método estático diretamente
       await Database.query(
-        'INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time, reason, status) VALUES (?, ?, ?, ?, ?, ?)',
-        [patient_id, doctor_id, date, time, reason, status]
+        'CALL make_appointment(?, ?, ?, ?, ?, ?)',
+        [date, time, reason, status, patient_id, doctor_id]
       );
     } catch (error) {
       console.error('Error recording schedule:', error);
@@ -98,12 +98,8 @@ export class DoctorService {
     try {
       await Database.init(); // Alterado para chamar o método estático diretamente
       await Database.query(
-        'INSERT INTO receitas_medicas (id_paciente, id_medico, data_prescricao, observacoes) VALUES (?, ?, ?, ?)',
-        [id_paciente, id_medico, data_prescricao, observacao]
-      );
-      await Database.query(
-        'INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao) VALUES (?, ?, ?, ?, ?)',
-        [id_receita, nome_medicamento, dosagem, frequencia, duracao]
+        'CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [id_paciente, id_medico, data_prescricao, observacao, id_receita, nome_medicamento, dosagem, frequencia, duracao]
       );
     } catch (error) {
       console.error('Error adding medication:', error);

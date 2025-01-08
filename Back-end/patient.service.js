@@ -29,7 +29,7 @@ class PatientService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 database_1.Database.init(); // Certifique-se de inicializar a conexão
-                yield database_1.Database.query('EXEC add_patient @name = ?, @age = ?, @phone = ?, @email = ?, @address = ?', [name, age, phone, email, address]);
+                yield database_1.Database.query('CALL add_patient(?, ?, ?, ?, ?)', [name, age, phone, email, address]);
             }
             catch (error) {
                 console.error('Error adding patient:', error);
