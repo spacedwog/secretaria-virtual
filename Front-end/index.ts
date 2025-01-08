@@ -67,18 +67,16 @@ class MenuStarter {
   // Registrar visita
   private async receitaMedica() {
     try {
-      process.stdin.setEncoding('utf-8');
-      const readlineSync = require('readline-sync');
 
       const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
       const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
       const recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
       const recipName = readlineSync.question('Nome do medicamento: ');
-      const dataMed = readlineSync.question('Data da medicação (aaaa/mm/dd): ');
-      const recipQuantity = readlineSync.question('Dosagem da medicação: ');
-      const frequencyMed = readlineSync.question('Frequência de medicação: ');
+      const dataMed = readlineSync.question('Data da medicacao (aaaa/mm/dd): ');
+      const recipQuantity = readlineSync.question('Dosagem da medicacao: ');
+      const frequencyMed = readlineSync.question('Frequência de medicacao: ');
       const consumation = readlineSync.question('Duracao da dose: ');
-      const observation = readlineSync.question('Observações: ');
+      const observation = readlineSync.question('Observacoes: ');
 
       await DoctorService.medicRecip(
         patientId,
