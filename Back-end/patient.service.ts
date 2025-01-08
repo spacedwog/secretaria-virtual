@@ -22,7 +22,7 @@ export class PatientService {
     try {
       Database.init(); // Certifique-se de inicializar a conexão
       await Database.query(
-        'EXEC add_patient @name = ?, @age = ?, @phone = ?, @email = ?, @address = ?',
+        'CALL add_patient(?, ?, ?, ?, ?)',
         [name, age, phone, email, address]
       );
     } catch (error) {
