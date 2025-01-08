@@ -104,28 +104,23 @@ class MenuStarter {
             const recipId = parseInt(readline_sync_1.default.question('ID do medicamento: '), 10);
             const receitas = yield doctor_service_1.DoctorService.printMedicRecip(recipId);
             console.log('\n--- Lista de Receitas Médicas ---');
-            receitas.forEach((receitas => {
-                const paciente = receitas.nome_paciente;
+            receitas.forEach((receitas) => {
                 const date = new Date(receitas.data_prescricao).toDateString();
-                const doutor = receitas.nome_medico;
-                const remedio = receitas.nome_medicamento;
                 const dosagem = receitas.dosagem;
                 const frequencia = receitas.frequencia;
                 const duracao = receitas.duracao;
                 const observacao = receitas.observacoes;
                 console.table([
                     {
-                        Paciente: paciente,
-                        Remedio: remedio,
+                        Medicamento: receitas.nome_medicamento,
                         Dosagem: dosagem,
                         Frequencia: frequencia,
                         Duracao: duracao,
-                        Doutor: doutor,
-                        DataPrescricao: date,
-                        Observacao: observacao
-                    },
+                        Observacao: observacao,
+                        Data: date
+                    }
                 ]);
-            }));
+            });
         });
     }
 }
