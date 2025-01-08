@@ -1,52 +1,81 @@
-import express, { Request, Response } from 'express';
-import mysql from 'mysql2/promise'; // Importa a versão Promise do mysql2
+import express, { Request, Response, Express } from 'express';
+import mysql, { Connection } from 'mysql2/promise'; // Importa a versão Promise do mysql2
 
-const app = express();
-const PORT = 3000;
+class Server {
+    private app: Express;
+    private port: number;
+    private dbConfig = {
+        host: 'localhost',              // Host do banco de dados
+        user: 'root',                   // Substitua pelo seu usuário do banco
+        password: '6z2h1j3k9F!',        // Senha do banco de dados
+        database: 'secretaria_virtual', // Nome do banco de dados
+    };
+    private connection!: Connection;
 
-// Middleware para parsing de JSON
-app.use(express.json());
+    private nome_paciente: string;
+    private nome_medico: string;
+    private data_prescricao: string;
+    private observacao: string;
+    private nome_medicamento: string;
+    private dosagem: string;
+    private frequencia: string;
+    private duracao: string;
 
-// Configuração do banco de dados
-const dbConfig = {
-    host: 'localhost',              // Host do banco de dados
-    user: 'root',                   // Substitua pelo seu usuário do banco
-    password: '6z2h1j3k9F!',        // Senha do banco de dados
-    database: 'secretaria_virtual', // Nome do banco de dados
-};
+    constructor(port: number) {
+        this.app = express();
+        this.port = port;
 
-// Cria uma conexão com o banco de dados
-let connection: mysql.Connection;
+        // Configura middlewares
+        this.setupMiddlewares();
 
-const connectToDatabase = async () => {
-    try {
-        connection = await mysql.createConnection(dbConfig);
-        console.log('Conexão com o banco de dados MySQL estabelecida com sucesso!');
-    } catch (error) {
-        console.error('Erro ao conectar ao banco de dados MySQL:', error);
-        process.exit(1); // Sai do processo caso a conexão falhe
+        // Define rotas
+        this.setupRoutes();
+
+        // Conecta ao banco de dados e inicia o servidor
+        this.initialize();
     }
-};
 
-// Rota para testar consulta ao banco
-app.get('/dados', async (req: Request, res: Response) => {
-    try {
-        const [rows] = await connection.query('SELECT * FROM vw_receitas_detalhadas'); // Substitua pelo nome da sua tabela
-        res.status(200).json(rows);
-    } catch (error) {
-        console.error('Erro ao consultar o banco de dados:', error);
-        res.status(500).json({ error: 'Erro ao consultar o banco de dados' });
+    private setupMiddlewares() {
+        this.app.use(express.json());
     }
-});
 
-// Rota principal
-app.get('/', (req: Request, res: Response) => {
-    res.send('Servidor rodando em TypeScript com MySQL!');
-});
+    private setupRoutes() {
+        // Rota principal
+        this.app.get('/', (req: Request, res: Response) => {
+            res.send('Servidor rodando em TypeScript com MySQL!');
+        });
 
-// Inicia o servidor após conectar ao banco
-connectToDatabase().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Servidor está rodando em http://localhost:${PORT}`);
-    });
-});
+        // Rota para testar consulta ao banco
+        this.app.get('/dados', this.getData.bind(this));
+    }
+
+    private async connectToDatabase() {
+        try {
+            this.connection = await mysql.createConnection(this.dbConfig);
+            console.log('Conexão com o banco de dados MySQL estabelecida com sucesso!');
+        } catch (error) {
+            console.error('Erro ao conectar ao banco de dados MySQL:', error);
+            process.exit(1); // Sai do processo caso a conexão falhe
+        }
+    }
+
+    private async getData(req: Request, res: Response) {
+        try {
+            const [rows] = await this.connection.query('SELECT * FROM vw_receitas_detalhadas'); // Ajuste conforme necessário
+            res.status(200).json(rows);
+        } catch (error) {
+            console.error('Erro ao consultar o banco de dados:', error);
+            res.status(500).json({ error: 'Erro ao consultar o banco de dados' });
+        }
+    }
+
+    private async initialize() {
+        await this.connectToDatabase();
+        this.app.listen(this.port, () => {
+            console.log(`Servidor está rodando em http://localhost:${this.port}`);
+        });
+    }
+}
+
+// Cria e inicia o servidor
+new Server(3000);
