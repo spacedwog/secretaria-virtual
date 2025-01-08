@@ -1,6 +1,7 @@
 import readlineSync from 'readline-sync';
 import { MenuPacient } from './pacient/menu-paciente';
 import { MenuSchedule } from './schedule/consulta-medica';
+import { DoctorService } from './database/services/doctor.service';
 
 class MenuStarter {
   // Método principal do menu
@@ -25,6 +26,11 @@ class MenuStarter {
           break;
         case '2':
           await this.menuConsultaMedica();
+          break;
+        case '3':
+          await this.receitaMedica();
+          break;
+        case '4':
           break;
         case '5':
           console.log('Saindo do sistema...');
@@ -56,6 +62,35 @@ class MenuStarter {
       console.error('Erro ao executar o menu consulta médica:', err);
     }
   }
+  
+  // Registrar visita
+  private async receitaMedica() {
+    try {
+      const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
+      const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
+      const recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
+      const recipName = readlineSync.question('Nome do medicamento: ');
+      const dataMed = readlineSync.question('Data da medicação (aaaa/mm/dd): ');
+      const recipQuantity = readlineSync.question('Dosagem da medicação: ');
+      const frequencyMed = readlineSync.question('Frequência de medicação: ');
+      const consumation = readlineSync.question('Duracao da dose: ');
+      const observation = readlineSync.question('Observações: ');
+
+      await DoctorService.medicRecip(
+        patientId,
+        doctorId,
+        recipId,
+        dataMed,
+        observation,
+        recipName,
+        frequencyMed,
+        recipQuantity,
+        consumation);
+      console.log('Medicamento registrado com sucesso!');
+      } catch (err) {
+        console.error('Erro ao registrar visita:', err);
+      }
+    }
 }
 
 // Ponto de entrada da aplicação

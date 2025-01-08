@@ -71,4 +71,29 @@ export class DoctorService {
     }
   }
 
+  static async medicRecip(
+    id_paciente: number,
+    id_medico: number,
+    id_receita: number,
+    data_prescricao: string,
+    observacao: string,
+    nome_medicamento: string,
+    frequencia: string,
+    dosagem: string,
+    duracao: string
+  ): Promise<void> {
+    try {
+      await Database.init(); // Certifique-se de inicializar a conexão
+      await Database.query(
+        'INSERT INTO receitas_medicas (id_paciente, id_medico, data_prescricao, observacao) VALUES (?, ?, ?, ?)',
+        [id_paciente, id_medico, data_prescricao, observacao]
+      );
+      await Database.query(
+        'INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao) VALUES (?, ?, ?, ?, ?)',
+        [id_receita, nome_medicamento, dosagem, frequencia, duracao]
+      );
+    } catch (error) {
+      console.error('Error adding medication:', error);
+      throw new Error('Failed to add medication. Please check the input data and try again.');
+    }
 }
