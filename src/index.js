@@ -16,6 +16,7 @@ const readline_sync_1 = __importDefault(require("readline-sync"));
 const menu_paciente_1 = require("./pacient/menu-paciente");
 const consulta_medica_1 = require("./schedule/consulta-medica");
 const doctor_service_1 = require("./database/services/doctor.service");
+const receitas_1 = require("./routes/receitas");
 class MenuStarter {
     // Método principal do menu
     menuPrincipal() {
@@ -42,6 +43,7 @@ class MenuStarter {
                         yield this.receitaMedica();
                         break;
                     case '4':
+                        yield this.imprimirReceitaMedica();
                         break;
                     case '5':
                         console.log('Saindo do sistema...');
@@ -96,6 +98,11 @@ class MenuStarter {
             catch (err) {
                 console.error('Erro ao registrar visita:', err);
             }
+        });
+    }
+    imprimirReceitaMedica() {
+        return __awaiter(this, void 0, void 0, function* () {
+            (0, receitas_1.gerarReceita)(request, response, next);
         });
     }
 }

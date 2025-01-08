@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.gerarReceita = void 0;
 const express_1 = require("express");
 const database_1 = require("../database/database"); // Configuração do banco de dados
 const pdfkit_1 = __importDefault(require("pdfkit"));
@@ -64,6 +65,7 @@ const gerarReceita = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         next(error);
     }
 });
+exports.gerarReceita = gerarReceita;
 // Adicionar a rota ao roteador
-router.get('/receitas/:id', gerarReceita);
+router.get('/receitas/:id', exports.gerarReceita);
 exports.default = router;
