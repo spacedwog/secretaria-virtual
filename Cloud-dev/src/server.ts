@@ -60,10 +60,9 @@ class Server {
         this.app.post('/setDados', (req: Request, res: Response) => {
 
             const dados = req.body; // Array de objetos
-            this.setNome_paciente(dados);
-            console.log(dados);
             // Verifica se o corpo da requisição é um array
             if (Array.isArray(dados)) {
+                console.log("Dados: "+dados);
                 // Itera sobre cada item do array e usa os setters
                 dados.forEach((dados) => {
                     this.setNome_paciente(dados.nome_paciente);
