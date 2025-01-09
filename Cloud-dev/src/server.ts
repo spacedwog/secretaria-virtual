@@ -12,26 +12,9 @@ class Server {
     };
     private connection!: Connection;
 
-    private nome_paciente: string;
-    private nome_medico: string;
-    private data_prescricao: string;
-    private observacao: string;
-    private nome_medicamento: string;
-    private dosagem: string;
-    private frequencia: string;
-    private duracao: string;
-
     constructor(port: number) {
         this.app = express();
         this.port = port;
-        this.nome_paciente = "";
-        this.nome_medico = "";
-        this.data_prescricao = "";
-        this.observacao = "";
-        this.nome_medicamento = "";
-        this.dosagem = "";
-        this.frequencia = "";
-        this.duracao = "";
 
         // Configura middlewares
         this.setupMiddlewares();
@@ -50,41 +33,11 @@ class Server {
     private setupRoutes() {
         // Rota principal
         this.app.get('/', (req: Request, res: Response) => {
-            res.send('Nome do Paciente:'+ this.getNome_paciente());
+            res.send('Bem-vindo à Secretaria Virtual!');
         });
 
         // Rota para testar consulta ao banco
         this.app.get('/dados', this.getData.bind(this));
-
-        // Rota para receber dados via POST e settar nas variáveis
-        this.app.post('/setDados', (req: Request, res: Response) => {
-
-            const dados = req.body; // Array de objetos
-            // Verifica se o corpo da requisição é um array
-            if (Array.isArray(dados)) {
-                console.log("Dados: "+dados);
-                // Itera sobre cada item do array e usa os setters
-                dados.forEach((dados) => {
-                    this.setNome_paciente(dados.nome_paciente);
-                    this.setNome_medico(dados.nome_medico);
-                    this.setData_prescricao(dados.data_prescricao);
-                    this.setObservacao(dados.observacoes);
-                    this.setNome_medicamento(dados.nome_medicamento);
-                    this.setDosagem(dados.dosagem);
-                    this.setFrequencia(dados.frequencia);
-                    this.setDuracao(dados.duracao);
-                });
-
-                res.status(200).json({
-                    message: 'Dados atualizados com sucesso!',
-                    data: dados
-                });
-            } else {
-                res.status(400).json({
-                    error: 'O corpo da requisição deve ser um array de objetos'
-                });
-            }
-        });
     }
 
     private async connectToDatabase() {
@@ -111,74 +64,7 @@ class Server {
         await this.connectToDatabase();
         this.app.listen(this.port, () => {
             console.log(`Servidor está rodando em http://localhost:${this.port}`);
-            console.log("Nome do Paciente: " + this.getNome_paciente());
         });
-    }
-
-    // Getters
-    public getNome_paciente(): string {
-        return this.nome_paciente;
-    }
-
-    public getNome_medico(): string {
-        return this.nome_medico;
-    }
-
-    public getData_prescricao(): string {
-        return this.data_prescricao;
-    }
-
-    public getObservacao(): string {
-        return this.observacao;
-    }
-
-    public getNome_medicamento(): string {
-        return this.nome_medicamento;
-    }
-
-    public getDosagem(): string {
-        return this.dosagem;
-    }
-
-    public getFrequencia(): string {
-        return this.frequencia;
-    }
-
-    public getDuracao(): string {
-        return this.duracao;
-    }
-
-    // Setters
-    public setNome_paciente(nome_paciente: string): void {
-        this.nome_paciente = nome_paciente;
-    }
-
-    public setNome_medico(nome_medico: string): void {
-        this.nome_medico = nome_medico;
-    }
-
-    public setData_prescricao(data_prescricao: string): void {
-        this.data_prescricao = data_prescricao;
-    }
-
-    public setObservacao(observacao: string): void {
-        this.observacao = observacao;
-    }
-
-    public setNome_medicamento(nome_medicamento: string): void {
-        this.nome_medicamento = nome_medicamento;
-    }
-
-    public setDosagem(dosagem: string): void {
-        this.dosagem = dosagem;
-    }
-
-    public setFrequencia(frequencia: string): void {
-        this.frequencia = frequencia;
-    }
-
-    public setDuracao(duracao: string): void {
-        this.duracao = duracao;
     }
 }
 
