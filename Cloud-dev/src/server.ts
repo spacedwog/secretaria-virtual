@@ -1,6 +1,6 @@
 import express, { Request, Response, Express } from 'express';
-import mysql, { Connection } from 'mysql2/promise'; //Importa a versão Promise do mysql2
-import axios from 'axios'; // Importa o axios para fazer requisições HTTP
+import mysql, { Connection } from 'mysql2/promise'; // Importa a versão Promise do mysql2
+import cors from 'cors'; // Para permitir requisições de outros domínios (como o app React Native)
 
 class Server {
     private app: Express;
@@ -13,26 +13,9 @@ class Server {
     };
     private connection!: Connection;
 
-    private nome_paciente: string;
-    private nome_medico: string;
-    private data_prescricao: string;
-    private observacao: string;
-    private nome_medicamento: string;
-    private dosagem: string;
-    private frequencia: string;
-    private duracao: string;
-
     constructor(port: number) {
         this.app = express();
         this.port = port;
-        this.nome_paciente = "";
-        this.nome_medico = "";
-        this.data_prescricao = "";
-        this.observacao = "";
-        this.nome_medicamento = "";
-        this.dosagem = "";
-        this.frequencia = "";
-        this.duracao = "";
 
         // Configura middlewares
         this.setupMiddlewares();
@@ -45,30 +28,27 @@ class Server {
     }
 
     private setupMiddlewares() {
-        this.app.use(express.json()); // Para entender requisições JSON
+        this.app.use(express.json()); // Para processar requisições JSON
+        this.app.use(cors()); // Permitir requisições de outros domínios
     }
 
     private setupRoutes() {
         // Rota principal
-        this.app.get('/', async (req: Request, res: Response) => {
-            try {
-                // Faz uma requisição interna à rota /dados
-                const response = await axios.get('http://localhost:3000/dados');
-                
-                // Passa os dados da resposta para a página inicial
-                res.status(200).json({
-                    message: 'Dados recebidos com sucesso!',
-                    dados: response.data
-                });
-            }
-            catch (error) {
-                console.error('Erro ao buscar dados:', error);
-                res.status(500).json({ error: 'Erro ao buscar dados' });
-            }
+        this.app.get('/', (req: Request, res: Response) => {
+            res.send('Servidor rodando e pronto para receber requisições!');
         });
 
-        // Rota para testar consulta ao banco
+        // Rota para retornar dados do banco
         this.app.get('/dados', this.getData.bind(this));
+
+        // Rota para adicionar dados ao banco
+        this.app.post('/adicionar', this.addData.bind(this));
+
+        // Rota para atualizar dados no banco
+        this.app.put('/atualizar/:id', this.updateData.bind(this));
+
+        // Rota para deletar dados no banco
+        this.app.delete('/deletar/:id', this.deleteData.bind(this));
     }
 
     private async connectToDatabase() {
@@ -83,7 +63,7 @@ class Server {
 
     private async getData(req: Request, res: Response) {
         try {
-            const [rows] = await this.connection.query('SELECT * FROM vw_receitas_detalhadas'); // Ajuste conforme necessário
+            const [rows] = await this.connection.query('SELECT * FROM vw_receitas_detalhadas');
             res.status(200).json(rows);
         } catch (error) {
             console.error('Erro ao consultar o banco de dados:', error);
@@ -91,23 +71,59 @@ class Server {
         }
     }
 
+    private async addData(req: Request, res: Response) {
+        const { nome_paciente, nome_medico, data_prescricao, observacoes, nome_medicamento, dosagem, frequencia, duracao } = req.body;
+
+        try {
+            const result = await this.connection.query(
+                `INSERT INTO receitas (nome_paciente, nome_medico, data_prescricao, observacoes, nome_medicamento, dosagem, frequencia, duracao) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                [nome_paciente, nome_medico, data_prescricao, observacoes, nome_medicamento, dosagem, frequencia, duracao]
+            );
+            res.status(201).json({ message: 'Dados inseridos com sucesso!', result });
+        } catch (error) {
+            console.error('Erro ao adicionar dados ao banco de dados:', error);
+            res.status(500).json({ error: 'Erro ao adicionar dados ao banco de dados' });
+        }
+    }
+
+    private async updateData(req: Request, res: Response) {
+        const { id } = req.params;
+        const { nome_paciente, nome_medico, data_prescricao, observacoes, nome_medicamento, dosagem, frequencia, duracao } = req.body;
+
+        try {
+            const result = await this.connection.query(
+                `UPDATE receitas SET nome_paciente = ?, nome_medico = ?, data_prescricao = ?, observacoes = ?, nome_medicamento = ?, dosagem = ?, frequencia = ?, duracao = ? WHERE id = ?`,
+                [nome_paciente, nome_medico, data_prescricao, observacoes, nome_medicamento, dosagem, frequencia, duracao, id]
+            );
+            res.status(200).json({ message: 'Dados atualizados com sucesso!', result });
+        } catch (error) {
+            console.error('Erro ao atualizar dados no banco de dados:', error);
+            res.status(500).json({ error: 'Erro ao atualizar dados no banco de dados' });
+        }
+    }
+
+    private async deleteData(req: Request, res: Response) {
+        const { id } = req.params;
+
+        try {
+            const result = await this.connection.query(
+                `DELETE FROM receitas WHERE id = ?`,
+                [id]
+            );
+            res.status(200).json({ message: 'Dados deletados com sucesso!', result });
+        } catch (error) {
+            console.error('Erro ao deletar dados do banco de dados:', error);
+            res.status(500).json({ error: 'Erro ao deletar dados do banco de dados' });
+        }
+    }
+
     private async initialize() {
         await this.connectToDatabase();
         this.app.listen(this.port, () => {
             console.log(`Servidor está rodando em http://localhost:${this.port}`);
-        }).on('error', (err) => {
-            const error = err as NodeJS.ErrnoException; // Type assertion para incluir 'code'
-            if (error.code === 'EADDRINUSE') {
-                console.error(`Porta ${this.port} já está em uso. Tentando outra porta...`);
-                this.port += 1; // Tenta a próxima porta
-                this.initialize();
-            }
         });
     }
-
-    // Getters e Setters para outras propriedades
-    // (omiti os getters e setters por serem os mesmos do código anterior)
-
 }
 
 // Cria e inicia o servidor
