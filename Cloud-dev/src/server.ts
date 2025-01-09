@@ -216,10 +216,19 @@ class Server {
         }
     }
     
-    private formatMultilineText(text: string, maxLength: number): string {
+    private formatMultilineText(text: string, maxLength: number){
+        
         if (!text) return '';
+    
         const regex = new RegExp(`.{1,${maxLength}}`, 'g');
-        return text.match(regex)?.join('\n') || text;
+        const matches = [];
+        let match;
+    
+        while ((match = regex.exec(text)) !== null) {
+            matches.push(match[0]); // Adiciona cada correspondência ao array
+        }
+    
+        return matches.length > 0 ? matches.join('\n') : text;
     }
     
 
