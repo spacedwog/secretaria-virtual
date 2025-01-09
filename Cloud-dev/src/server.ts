@@ -1,5 +1,6 @@
 import express, { Request, Response, Express } from 'express';
 import mysql, { Connection } from 'mysql2/promise'; // Importa a versão Promise do mysql2
+import readlineSync from 'readline-sync';
 import axios from 'axios'; // Importa o axios para fazer requisições HTTP
 
 class Server {
@@ -114,9 +115,20 @@ class Server {
     }
 
     private async initialize() {
+        let option: string;
+    
         await this.connectToDatabase();
         this.app.listen(this.port, () => {
             console.log(`Servidor está rodando em http://localhost:${this.port}`);
+            console.log('\n--- Sistema de Secretaria Virtual ---');
+            console.log('1. Menu Paciente');
+            console.log('2. Menu Consulta Médica');
+            console.log('3. Receita Médica');
+            console.log('4. Imprimir Receita Médica');
+            console.log('5. Sair');
+      
+            // Captura a escolha do usuário
+            option = readlineSync.question('Escolha uma opcao: ');
         });
     }
 
