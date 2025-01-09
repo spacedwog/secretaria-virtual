@@ -11,7 +11,7 @@ class Server {
     private dbConfig = {
         host: 'localhost',
         user: 'root',
-        password: '6z2h3k9F!',
+        password: '6z2h1j3k9F!',
         database: 'secretaria_virtual',
         connectTimeout: 10000, // Tempo limite para a conexão
     };
