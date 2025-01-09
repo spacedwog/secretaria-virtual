@@ -92,26 +92,26 @@ class Server {
                 duracao,
             } = inputData;
 
-            const query = `INSERT INTO medicamentos_receita(id_receita, nome_medicamento, dosagem, frequencia, duracao)
-                            VALUES(?, ?, ?, ?, ?)`;
+            const queryMedicamento  = `INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
+                                        VALUES (?, ?, ?, ?, ?)`;
 
-                            await this.connection.query(query, [
-                                id_receita,
-                                nome_medicamento,
-                                dosagem,
-                                frequencia,
-                                duracao
-                            ]);
-
-            const query2 = `INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
-                            VALUES (?, ?, ?, ?, ?)`;
-
-                            await this.connection.query(query2, [
+                            await this.connection.query(queryMedicamento, [
                                 id_receita,
                                 id_paciente,
                                 id_medico,
                                 data_prescricao,
                                 observacoes
+                            ]);
+
+            const queryReceita  = `INSERT INTO medicamentos_receita(id_receita, nome_medicamento, dosagem, frequencia, duracao)
+                                    VALUES(?, ?, ?, ?, ?)`;
+
+                            await this.connection.query(queryReceita, [
+                                id_receita,
+                                nome_medicamento,
+                                dosagem,
+                                frequencia,
+                                duracao
                             ]);
 
             res.status(201).json({ message: 'Dados inseridos com sucesso!' });
