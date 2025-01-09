@@ -208,8 +208,11 @@ class Server {
         // Converter Uint8Array para Base64
         const base64Pdf = Buffer.from(pdfBytes).toString('base64');
     
-        // Salvar o arquivo no sistema
-        FileSystem.writeFileSync(filePath, base64Pdf, 'base64');
+        // Salvar o arquivo usando `writeAsStringAsync`
+        await FileSystem.writeAsStringAsync(filePath, base64Pdf, {
+            encoding: FileSystem.EncodingType.Base64,
+        });
+    
         console.log(`Relatório PDF salvo em: ${filePath}`);
     }
 
