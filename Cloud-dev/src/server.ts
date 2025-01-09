@@ -1,6 +1,7 @@
-import express, { Request, Response, Express } from 'express';
-import mysql, { Connection } from 'mysql2/promise';
 import cors from 'cors';
+import readlineSync from 'readline-sync';
+import mysql, { Connection } from 'mysql2/promise';
+import express, { Request, Response, Express } from 'express';
 
 class Server {
     private app: Express;
@@ -25,6 +26,9 @@ class Server {
 
         // Conecta ao banco de dados e inicia o servidor
         this.initialize();
+
+        // Permite entrada de dados pelo terminal
+        this.readFromTerminal();
     }
 
     private setupMiddlewares(): void {
@@ -68,7 +72,6 @@ class Server {
     private async handleInput(req: Request, res: Response): Promise<void> {
         const inputData = req.body;
 
-        // Validação básica
         if (!inputData || Object.keys(inputData).length === 0) {
             res.status(400).json({ error: 'Nenhum dado recebido' });
             return;
@@ -76,11 +79,11 @@ class Server {
 
         console.log('Dados recebidos:', inputData);
 
-        // Aqui, você pode implementar a lógica para salvar, processar ou manipular os dados recebidos.
         try {
             const {
-                nome_paciente,
-                nome_medico,
+                id_receita,
+                id_paciente,
+                id_medico,
                 data_prescricao,
                 observacoes,
                 nome_medicamento,
@@ -89,26 +92,78 @@ class Server {
                 duracao,
             } = inputData;
 
+            const query = `INSERT INTO medicamentos_receita(id_receita, nome_medicamento, dosagem, frequencia, duracao)
+                            VALUES(?, ?, ?, ?, ?)`;
+
+                            await this.connection.query(query, [
+                                id_receita,
+                                nome_medicamento,
+                                dosagem,
+                                frequencia,
+                                duracao
+                            ]);
+
+            const query2 = `INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
+                            VALUES (?, ?, ?, ?, ?)`;
+
+                            await this.connection.query(query2, [
+                                id_receita,
+                                id_paciente,
+                                id_medico,
+                                data_prescricao,
+                                observacoes
+                            ]);
+
+            res.status(201).json({ message: 'Dados inseridos com sucesso!' });
+        } catch (error) {
+            console.error('Erro ao processar dados:', error);
+            res.status(500).json({ error: 'Erro ao processar dados recebidos' });
+        }
+    }
+
+    private async readFromTerminal(): Promise<void> {
+        console.log('Entre com os dados para inserir uma nova receita.');
+
+        const id_receita = parseInt(readlineSync.question('ID da receita medica: '), 10);
+        const nome_medicamento = readlineSync.question('Nome do medicamento: ');
+        const dosagem = readlineSync.question('Dosagem: ');
+        const frequencia = readlineSync.question('Frequência: ');
+        const duracao = readlineSync.question('Duração: ');
+
+        const id_paciente = parseInt(readlineSync.question('ID do paciente: '), 10);
+        const id_medico = parseInt(readlineSync.question('ID do medico: '), 10);
+        const data_prescricao = readlineSync.question('Data da prescrição (YYYY-MM-DD): ');
+        const observacoes = readlineSync.question('Observações: ');
+
+        try {
             const query = `
-                INSERT INTO receitas (nome_paciente, nome_medico, data_prescricao, observacoes, nome_medicamento, dosagem, frequencia, duracao)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
+                VALUES (?, ?, ?, ?, ?)
             `;
 
             await this.connection.query(query, [
-                nome_paciente,
-                nome_medico,
+                id_receita,
+                id_paciente,
+                id_medico,
                 data_prescricao,
                 observacoes,
+            ]);
+            const query2 = `
+                INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+
+            await this.connection.query(query2, [
+                id_receita,
                 nome_medicamento,
                 dosagem,
                 frequencia,
                 duracao,
             ]);
 
-            res.status(201).json({ message: 'Dados inseridos com sucesso!' });
+            console.log('Dados inseridos com sucesso no banco de dados!');
         } catch (error) {
-            console.error('Erro ao processar dados:', error);
-            res.status(500).json({ error: 'Erro ao processar dados recebidos' });
+            console.error('Erro ao inserir dados no banco:', error);
         }
     }
 
