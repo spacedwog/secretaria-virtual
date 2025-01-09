@@ -50,7 +50,7 @@ class Server {
     private setupRoutes() {
         // Rota principal
         this.app.get('/', (req: Request, res: Response) => {
-            res.send('Servidor rodando em TypeScript com MySQL!');
+            res.send('Nome do Paciente:'+ this.getNome_paciente());
         });
 
         // Rota para testar consulta ao banco
@@ -58,27 +58,28 @@ class Server {
 
         // Rota para receber dados via POST e settar nas variáveis
         this.app.post('/setDados', (req: Request, res: Response) => {
-            const dados = req.body; // Array de objetos
 
+            const dados = req.body; // Array de objetos
+            this.setNome_paciente(dados);
+            console.log(dados);
             // Verifica se o corpo da requisição é um array
             if (Array.isArray(dados)) {
                 // Itera sobre cada item do array e usa os setters
-                dados.forEach(item => {
-                    this.setNome_paciente(item.nome_paciente);
-                    this.setNome_medico(item.nome_medico);
-                    this.setData_prescricao(item.data_prescricao);
-                    this.setObservacao(item.observacoes);
-                    this.setNome_medicamento(item.nome_medicamento);
-                    this.setDosagem(item.dosagem);
-                    this.setFrequencia(item.frequencia);
-                    this.setDuracao(item.duracao);
+                dados.forEach((dados) => {
+                    this.setNome_paciente(dados.nome_paciente);
+                    this.setNome_medico(dados.nome_medico);
+                    this.setData_prescricao(dados.data_prescricao);
+                    this.setObservacao(dados.observacoes);
+                    this.setNome_medicamento(dados.nome_medicamento);
+                    this.setDosagem(dados.dosagem);
+                    this.setFrequencia(dados.frequencia);
+                    this.setDuracao(dados.duracao);
                 });
 
                 res.status(200).json({
                     message: 'Dados atualizados com sucesso!',
                     data: dados
                 });
-                console.log("Nome do Paciente: " + this.getNome_paciente());
             } else {
                 res.status(400).json({
                     error: 'O corpo da requisição deve ser um array de objetos'
@@ -111,6 +112,7 @@ class Server {
         await this.connectToDatabase();
         this.app.listen(this.port, () => {
             console.log(`Servidor está rodando em http://localhost:${this.port}`);
+            console.log("Nome do Paciente: " + this.getNome_paciente());
         });
     }
 
