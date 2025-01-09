@@ -95,6 +95,13 @@ class Server {
         await this.connectToDatabase();
         this.app.listen(this.port, () => {
             console.log(`Servidor está rodando em http://localhost:${this.port}`);
+        }).on('error', (err) => {
+            const error = err as NodeJS.ErrnoException; // Type assertion para incluir 'code'
+            if (error.code === 'EADDRINUSE') {
+                console.error(`Porta ${this.port} já está em uso. Tentando outra porta...`);
+                this.port += 1; // Tenta a próxima porta
+                this.initialize();
+            }
         });
     }
 
