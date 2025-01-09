@@ -48,9 +48,10 @@ class Server {
         // Rota para receber e processar dados via POST
         this.app.post('/entrada', (req, res) => this.handleInput(req, res));
     }
-
+    
     private async connectToDatabase(): Promise<void> {
         try {
+            console.log('Tentando conectar ao banco de dados...');
             this.connection = await mysql.createConnection(this.dbConfig);
             console.log('Conexão com o banco de dados MySQL estabelecida com sucesso!');
         } catch (error) {
@@ -122,6 +123,13 @@ class Server {
     }
 
     private async readFromTerminal(): Promise<void> {
+
+        // Aguarda a conexão ao banco de dados
+        if (!this.connection) {
+            console.log('Conexão ao banco de dados ainda não está pronta. Tentando conectar...');
+            await this.connectToDatabase();
+        }
+
         console.log('Entre com os dados para inserir uma nova receita.');
 
         const id_receita = parseInt(readlineSync.question('ID da receita medica: '), 10);
