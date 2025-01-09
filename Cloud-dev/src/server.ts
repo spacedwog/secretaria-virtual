@@ -13,32 +13,13 @@ class Server {
         user: 'root',
         password: '6z2h1j3k9F!',
         database: 'secretaria_virtual',
-        connectTimeout: 10000, // Tempo limite para a conexão
+        connectTimeout: 10000,
     };
     private connection!: Connection;
-
-    private id_paciente: number;
-    private id_medico: number;
-    private id_receita: number;
-    private data_prescricao: string;
-    private observacao: string;
-    private nome_medicamento: string;
-    private dosagem: string;
-    private frequencia: string;
-    private duracao: string;
 
     constructor(port: number) {
         this.app = express();
         this.port = port;
-        this.id_paciente = 0;
-        this.id_medico = 0;
-        this.id_receita = 0;
-        this.data_prescricao = "";
-        this.observacao = "";
-        this.nome_medicamento = "";
-        this.dosagem = "";
-        this.frequencia = "";
-        this.duracao = "";
 
         this.setupMiddlewares();
         this.setupRoutes();
@@ -50,28 +31,23 @@ class Server {
     }
 
     private setupRoutes() {
-        // Rota principal
         this.app.get('/', (req: Request, res: Response) => {
             res.send('Servidor rodando em TypeScript com MySQL!');
         });
 
-        // Rota para testar consulta ao banco
         this.app.get('/dados', this.getData.bind(this));
-
-        // Rota para gerar relatórios
         this.app.get('/gerar-relatorio', async (req: Request, res: Response) => {
             await this.generateReport();
-            res.send('Relatório gerado com sucesso. Confira os arquivos gerados no servidor.');
+            res.send('Relatório gerado com sucesso!');
         });
     }
 
     private async connectToDatabase() {
         try {
-            console.log('Tentando conectar ao banco de dados...');
             this.connection = await mysql.createConnection(this.dbConfig);
-            console.log('Conexão com o banco de dados MySQL estabelecida com sucesso!');
+            console.log('Conexão com o banco de dados estabelecida!');
         } catch (error) {
-            console.error('Erro ao conectar ao banco de dados MySQL:', error);
+            console.error('Erro ao conectar ao banco de dados:', error);
             process.exit(1);
         }
     }
@@ -86,63 +62,8 @@ class Server {
         }
     }
 
-    private async readFromTerminal(): Promise<void> {
-        // Aguarda a conexão ao banco de dados
-        if (!this.connection) {
-            console.log('Conexão ao banco de dados ainda não está pronta. Tentando conectar...');
-            await this.connectToDatabase();
-        }
-
-        console.log('Entre com os dados para inserir uma nova receita.');
-
-        const id_paciente = parseInt(readlineSync.question('ID do paciente: '), 10);
-        const id_medico = parseInt(readlineSync.question('ID do medico'), 10);
-        const id_receita = parseInt(readlineSync.question('ID do receita'), 10);
-        const data_prescricao = readlineSync.question('Data da prescrição (YYYY-MM-DD): ');
-        const observacoes = readlineSync.question('Observações: ');
-
-        const nome_medicamento = readlineSync.question('Nome do medicamento: ');
-        const dosagem = readlineSync.question('Dosagem: ');
-        const frequencia = readlineSync.question('Frequência: ');
-        const duracao = readlineSync.question('Duração: ');
-
+    private async generateReport() {
         try {
-            const queryMedicamento = `
-                INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao)
-                VALUES (?, ?, ?, ?, ?)
-            `;
-
-            await this.connection.query(queryMedicamento, [
-                id_receita,
-                nome_medicamento,
-                dosagem,
-                frequencia,
-                duracao,
-            ]);
-            const queryReceita = `
-                INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            `;
-
-            await this.connection.query(queryReceita, [
-                id_receita,
-                id_paciente,
-                id_medico,
-                data_prescricao,
-                observacoes,
-            ]);
-
-            console.log('Dados inseridos com sucesso no banco de dados!');
-        } catch (error) {
-            console.error('Erro ao inserir dados no banco:', error);
-        }
-    }
-
-    private async generateReport(): Promise<void> {
-        console.log('Gerando relatório...');
-
-        try {
-            // Consultar os dados no banco de dados
             const [rows]: any = await this.connection.query('SELECT * FROM vw_receitas_detalhadas');
 
             if (!rows.length) {
@@ -150,21 +71,17 @@ class Server {
                 return;
             }
 
-            // Caminhos para salvar os arquivos
-            const jsonPath = path.join(__dirname, 'relatorio.json');
-            const htmlPath = path.join(__dirname, 'relatorio.html');
-            const pdfPath = path.join(__dirname, 'relatorio.pdf');
+            const jsonPath = path.join(__dirname, 'receita_medica.json');
+            const htmlPath = path.join(__dirname, 'receita_medica.html');
+            const pdfPath = path.join(__dirname, 'receita_medica.pdf');
 
-            // Gerar relatório em JSON
             fs.writeFileSync(jsonPath, JSON.stringify(rows, null, 2));
             console.log(`Relatório JSON salvo em: ${jsonPath}`);
 
-            // Gerar relatório em HTML
             const htmlContent = this.generateHTMLContent(rows);
             fs.writeFileSync(htmlPath, htmlContent);
             console.log(`Relatório HTML salvo em: ${htmlPath}`);
 
-            // Gerar relatório em PDF
             this.generatePDF(rows, pdfPath);
             console.log(`Relatório PDF salvo em: ${pdfPath}`);
         } catch (error) {
@@ -239,20 +156,101 @@ class Server {
         doc.end();
     }
 
+    private async showMenu(): Promise<void> {
+        let exit = false;
+
+        while (!exit) {
+            console.log('\n--- MENU ---');
+            console.log('1. Visualizar dados');
+            console.log('2. Inserir dados');
+            console.log('3. Gerar relatorio');
+            console.log('4. Sair');
+
+            const choice = readlineSync.question('Escolha uma opcao: ');
+
+            switch (choice) {
+                case '1':
+                    await this.getDataFromDB();
+                    break;
+                case '2':
+                    await this.insertData();
+                    break;
+                case '3':
+                    await this.generateReport();
+                    break;
+                case '4':
+                    exit = true;
+                    console.log('Saindo...');
+                    break;
+                default:
+                    console.log('Opção inválida.');
+            }
+        }
+    }
+
+    private async getDataFromDB() {
+        try {
+            const [rows] = await this.connection.query('SELECT * FROM vw_receitas_detalhadas');
+            // Verifique se rows é um array
+            if (Array.isArray(rows) && rows.length > 0) {
+                console.log('\n--- DADOS RETORNADOS DO BANCO ---');
+                console.table(
+                    rows.map((row: any) => ({
+                        'ID Receita': row.id_receita,
+                        'Paciente': row.nome_paciente,
+                        'Médico': row.nome_medico,
+                        'Data Prescrição': row.data_prescricao,
+                        'Observações': row.observacoes,
+                        'Medicamento': row.nome_medicamento,
+                        'Dosagem': row.dosagem,
+                        'Frequência': row.frequencia,
+                        'Duração': row.duracao,
+                    }))
+                );
+            }
+            else {
+                console.log('Nenhum dado encontrado.');
+            }
+        } catch (error) {
+            console.error('Erro ao consultar o banco de dados:', error);
+        }
+    }
+
+    private async insertData() {
+        const id_receita = parseInt(readlineSync.question('ID da receita: '), 10);
+        const nome_medicamento = readlineSync.question('Nome do medicamento: ');
+        const dosagem = readlineSync.question('Dosagem: ');
+        const frequencia = readlineSync.question('Frequencia: ');
+        const duracao = readlineSync.question('Duracao: ');
+
+        const id_paciente = parseInt(readlineSync.question('ID do paciente: '), 10);
+        const id_medico = parseInt(readlineSync.question('ID do medico: '), 10);
+        const data_prescricao = readlineSync.question('Data da prescricao (YYYY-MM-DD): ');
+        const observacoes = readlineSync.question('Observacoes: ');
+
+        try {
+            const queryMedicamento = `
+                INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+            await this.connection.query(queryMedicamento, [id_receita, nome_medicamento, dosagem, frequencia, duracao]);
+            console.log('Medicamento registrado com sucesso!');
+
+            const queryReceita = `
+                INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
+                VALUES(?, ?, ?, ?, ?)
+            `;
+            await this.connection.query(queryReceita, [id_receita, id_paciente, id_medico, data_prescricao, observacoes]);
+            console.log('Receita registrada com sucesso!');
+        } catch (error) {
+            console.error('Erro ao inserir dados:', error);
+        }
+    }
+
     private async initialize() {
         await this.connectToDatabase();
-        this.app.listen(this.port, () => {
-            console.log(`Servidor está rodando em http://localhost:${this.port}`);
-        }).on('error', (err) => {
-            const error = err as NodeJS.ErrnoException; // Type assertion para incluir 'code'
-            if (error.code === 'EADDRINUSE') {
-                console.error(`Porta ${this.port} já está em uso. Tentando outra porta...`);
-                this.port += 1; // Tenta a próxima porta
-                this.initialize();
-            }
-        });
+        this.showMenu();
     }
 }
 
-// Cria e inicia o servidor
 new Server(3000);
