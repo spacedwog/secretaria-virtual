@@ -127,38 +127,38 @@ class Server {
         const id_receita = parseInt(readlineSync.question('ID da receita medica: '), 10);
         const nome_medicamento = readlineSync.question('Nome do medicamento: ');
         const dosagem = readlineSync.question('Dosagem: ');
-        const frequencia = readlineSync.question('Frequência: ');
-        const duracao = readlineSync.question('Duração: ');
+        const frequencia = readlineSync.question('Frequencia: ');
+        const duracao = readlineSync.question('Duracao: ');
 
         const id_paciente = parseInt(readlineSync.question('ID do paciente: '), 10);
         const id_medico = parseInt(readlineSync.question('ID do medico: '), 10);
-        const data_prescricao = readlineSync.question('Data da prescrição (YYYY-MM-DD): ');
-        const observacoes = readlineSync.question('Observações: ');
+        const data_prescricao = readlineSync.question('Data da prescricao (YYYY-MM-DD): ');
+        const observacoes = readlineSync.question('Observaçcoes: ');
 
         try {
-            const query = `
-                INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
-                VALUES (?, ?, ?, ?, ?)
-            `;
-
-            await this.connection.query(query, [
-                id_receita,
-                id_paciente,
-                id_medico,
-                data_prescricao,
-                observacoes,
-            ]);
-            const query2 = `
+            const queryMedicamento = `
                 INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao)
                 VALUES (?, ?, ?, ?, ?)
             `;
 
-            await this.connection.query(query2, [
+            await this.connection.query(queryMedicamento, [
                 id_receita,
                 nome_medicamento,
                 dosagem,
                 frequencia,
                 duracao,
+            ]);
+            const queryReceita = `
+                INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+
+            await this.connection.query(queryReceita, [
+                id_receita,
+                id_paciente,
+                id_medico,
+                data_prescricao,
+                observacoes,
             ]);
 
             console.log('Dados inseridos com sucesso no banco de dados!');
