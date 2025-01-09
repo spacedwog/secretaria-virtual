@@ -1,8 +1,9 @@
 import express, { Request, Response, Express } from 'express';
 import mysql, { Connection } from 'mysql2/promise';
 import readlineSync from 'readline-sync';
-import * as FileSystem from 'expo-file-system';
-import { PDFDocument, StandardFonts } from 'pdf-lib';
+import fs from 'fs';
+import path from 'path';
+import PDFDocument from 'pdfkit';
 
 class Server {
     private app: Express;
@@ -70,21 +71,18 @@ class Server {
                 return;
             }
 
-            const jsonPath = `${FileSystem.documentDirectory}receita_medica.json`;
-            const htmlPath = `${FileSystem.documentDirectory}receita_medica.html`;
-            const pdfPath = `${FileSystem.documentDirectory}receita_medica.pdf`;
+            const jsonPath = path.join(__dirname, 'receita_medica.json');
+            const htmlPath = path.join(__dirname, 'receita_medica.html');
+            const pdfPath = path.join(__dirname, 'receita_medica.pdf');
 
-            // Gerar JSON
-            await FileSystem.writeAsStringAsync(jsonPath, JSON.stringify(rows, null, 2));
+            fs.writeFileSync(jsonPath, JSON.stringify(rows, null, 2));
             console.log(`Relatório JSON salvo em: ${jsonPath}`);
 
-            // Gerar HTML
             const htmlContent = this.generateHTMLContent(rows);
-            await FileSystem.writeAsStringAsync(htmlPath, htmlContent);
+            fs.writeFileSync(htmlPath, htmlContent);
             console.log(`Relatório HTML salvo em: ${htmlPath}`);
 
-            // Gerar PDF
-            await this.generatePDF(rows, pdfPath);
+            this.generatePDF(rows, pdfPath);
             console.log(`Relatório PDF salvo em: ${pdfPath}`);
         } catch (error) {
             console.error('Erro ao gerar relatório:', error);
@@ -135,89 +133,125 @@ class Server {
         </html>`;
     }
 
-    private async generatePDF(rows: any[], filePath: string): Promise<void> {
-        // Criação do documento PDF
-        const pdfDoc = await PDFDocument.create();
-        const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
-    
-        // Adicionar uma nova página ao PDF
-        const page = pdfDoc.addPage();
-        const { width, height } = page.getSize();
-        const fontSize = 12;
-    
-        // Configurações de layout
-        let yPosition = height - 50; // Margem superior
-        const lineSpacing = 15;
-    
-        // Título do relatório
-        page.drawText('Relatório de Receitas Médicas', {
-            x: 50,
-            y: yPosition,
-            size: 18,
-            font: timesRomanFont,
+    private generatePDF(rows: any[], filePath: string): void {
+        const doc = new PDFDocument();
+        doc.pipe(fs.createWriteStream(filePath));
+
+        doc.fontSize(18).text('Relatório de Receitas', { align: 'center' });
+        doc.moveDown();
+
+        rows.forEach(row => {
+            doc.fontSize(12).text(`ID Receita: ${row.id_receita}`);
+            doc.text(`Nome do Paciente: ${row.nome_paciente}`);
+            doc.text(`Nome do Médico: ${row.nome_medico}`);
+            doc.text(`Data da Prescrição: ${row.data_prescricao}`);
+            doc.text(`Observações: ${row.observacoes}`);
+            doc.text(`Nome do Medicamento: ${row.nome_medicamento}`);
+            doc.text(`Dosagem: ${row.dosagem}`);
+            doc.text(`Frequência: ${row.frequencia}`);
+            doc.text(`Duração: ${row.duracao}`);
+            doc.moveDown();
         });
-    
-        yPosition -= 30; // Ajustar posição após o título
-    
-        // Adicionar dados em formato estruturado
-        rows.forEach((row, index) => {
-            if (yPosition < 50) {
-                // Adicionar nova página se o conteúdo ultrapassar os limites
-                const newPage = pdfDoc.addPage();
-                yPosition = height - 50;
-            }
-    
-            page.drawText(`ID Receita: ${row.id_receita}`, {
-                x: 50,
-                y: yPosition,
-                size: fontSize,
-                font: timesRomanFont,
-            });
-            page.drawText(`Paciente: ${row.nome_paciente}`, {
-                x: 50,
-                y: yPosition - lineSpacing,
-                size: fontSize,
-                font: timesRomanFont,
-            });
-            page.drawText(`Médico: ${row.nome_medico}`, {
-                x: 50,
-                y: yPosition - 2 * lineSpacing,
-                size: fontSize,
-                font: timesRomanFont,
-            });
-            page.drawText(`Data Prescrição: ${row.data_prescricao}`, {
-                x: 50,
-                y: yPosition - 3 * lineSpacing,
-                size: fontSize,
-                font: timesRomanFont,
-            });
-            page.drawText(`Observações: ${row.observacoes}`, {
-                x: 50,
-                y: yPosition - 4 * lineSpacing,
-                size: fontSize,
-                font: timesRomanFont,
-            });
-    
-            // Avançar posição para a próxima entrada
-            yPosition -= 5 * lineSpacing;
-        });
-    
-        // Salvar o PDF como Uint8Array
-        const pdfBytes = await pdfDoc.save();
-    
-        // Converter Uint8Array para Base64
-        const base64Pdf = Buffer.from(pdfBytes).toString('base64');
-    
-        // Salvar o arquivo usando `writeAsStringAsync`
-        await FileSystem.writeAsStringAsync(filePath, base64Pdf, {
-            encoding: FileSystem.EncodingType.Base64,
-        });
-    
-        console.log(`Relatório PDF salvo em: ${filePath}`);
+
+        doc.end();
     }
 
     private async showMenu(): Promise<void> {
-        // Mantido como estava no código original
+        let exit;
+
+        while (!exit) {
+            console.log('\n--- MENU ---');
+            console.log('1. Exibir Receita Medica');
+            console.log('2. Registrar Receita Medica');
+            console.log('3. Gerar Receita Medica');
+            console.log('4. Sair');
+
+            const choice = readlineSync.question('Escolha uma opcao: ');
+
+            switch (choice) {
+                case '1':
+                    await this.getDataFromDB();
+                    break;
+                case '2':
+                    await this.insertData();
+                    break;
+                case '3':
+                    await this.generateReport();
+                    break;
+                case '4':
+                    exit = true;
+                    console.log('Saindo...');
+                    break;
+                default:
+                    console.log('Opção inválida.');
+            }
+        }
+    }
+
+    private async getDataFromDB() {
+        try {
+            const [rows] = await this.connection.query('SELECT * FROM vw_receitas_detalhadas');
+            // Verifique se rows é um array
+            if (Array.isArray(rows) && rows.length > 0) {
+                console.log('\n--- RECEITA MÉDICA ---');
+                console.table(
+                    rows.map((row: any) => ({
+                        'ID Receita': row.id_receita,
+                        'Paciente': row.nome_paciente,
+                        'Médico': row.nome_medico,
+                        'Data Prescrição': row.data_prescricao,
+                        'Observações': this.formatMultilineText(row.observacoes, 50),
+                        'Medicamento': row.nome_medicamento,
+                        'Dosagem': row.dosagem,
+                        'Frequência': row.frequencia,
+                        'Duração': row.duracao,
+                    }))
+                );
+            }
+            else {
+                console.log('Nenhum dado encontrado.');
+            }
+        } catch (error) {
+            console.error('Erro ao consultar o banco de dados:', error);
+        }
+    }
+    
+    private formatMultilineText(text: string, maxLength: number): string {
+        if (!text) return '';
+        const regex = new RegExp(`.{1,${maxLength}}`, 'g');
+        return text.match(regex)?.join('\n') || text;
+    }
+    
+
+    private async insertData() {
+        const id_receita = parseInt(readlineSync.question('ID da receita: '), 10);
+        const nome_medicamento = readlineSync.question('Nome do medicamento: ');
+        const dosagem = readlineSync.question('Dosagem: ');
+        const frequencia = readlineSync.question('Frequencia: ');
+        const duracao = readlineSync.question('Duracao: ');
+
+        const id_paciente = parseInt(readlineSync.question('ID do paciente: '), 10);
+        const id_medico = parseInt(readlineSync.question('ID do medico: '), 10);
+        const data_prescricao = readlineSync.question('Data da prescricao (YYYY-MM-DD): ');
+        const observacoes = readlineSync.question('Observacoes: ');
+
+        try {
+            const queryMedicamento = `
+                INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+            await this.connection.query(queryMedicamento, [id_receita, nome_medicamento, dosagem, frequencia, duracao]);
+            console.log('Medicamento registrado com sucesso!');
+
+            const queryReceita = `
+                INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
+                VALUES(?, ?, ?, ?, ?)
+            `;
+            await this.connection.query(queryReceita, [id_receita, id_paciente, id_medico, data_prescricao, observacoes]);
+            console.log('Receita registrada com sucesso!');
+        } catch (error) {
+            console.error('Erro ao inserir dados:', error);
+        }
     }
 
     private async initialize() {

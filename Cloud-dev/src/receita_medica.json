@@ -1,0 +1,15 @@
+[
+  {
+    "id_receita": 15,
+    "patient_id": 1,
+    "nome_paciente": "Felipe Rodrigues dos Santos",
+    "doctor_id": 1,
+    "nome_medico": "Felipe Santos",
+    "data_prescricao": "2025-12-31T03:00:00.000Z",
+    "observacoes": "Guardar o frasco no congelador",
+    "nome_medicamento": "Loprazol",
+    "dosagem": "10ml/dia",
+    "frequencia": "2,5ml/6h",
+    "duracao": "1Frasco(150ml)"
+  }
+]
