@@ -4,18 +4,22 @@ import readlineSync from 'readline-sync';
 import fs from 'fs';
 import path from 'path';
 import PDFDocument from 'pdfkit';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 class Server {
     private app: Express;
     private port: number;
     private dbConfig = {
-        host: 'localhost',
-        user: 'root',
-        password: '6z2h1j3k9F!',
-        database: 'secretaria_virtual',
+        host: process.env.DB_HOST || 'localhost',
+        user: process.env.DB_USER || 'root',
+        password: process.env.DB_PASSWORD || '6z2h1j3k9F!',
+        database: process.env.DB_NAME || 'secretaria_virtual',
         connectTimeout: 10000,
     };
     private connection!: Connection;
+    private pingInterval!: NodeJS.Timeout;
 
     constructor(port: number) {
         this.app = express();
@@ -46,6 +50,11 @@ class Server {
         try {
             this.connection = await mysql.createConnection(this.dbConfig);
             console.log('Conexão com o banco de dados estabelecida!');
+
+            // Mantém a conexão ativa
+            this.pingInterval = setInterval(() => {
+                this.connection.ping().then(() => console.log('Ping ao banco de dados.')).catch(console.error);
+            }, 10000);
         } catch (error) {
             console.error('Erro ao conectar ao banco de dados:', error);
             process.exit(1);
@@ -156,17 +165,90 @@ class Server {
         doc.end();
     }
 
+    private validateInput(input: string, type: 'string' | 'number' | 'date'): boolean {
+        if (!input) return false;
+        switch (type) {
+            case 'number':
+                return !isNaN(Number(input));
+            case 'date':
+                return !isNaN(Date.parse(input));
+            case 'string':
+                return input.trim().length > 0;
+            default:
+                return false;
+        }
+    }
+
+    private async insertData() {
+        let id_receita = readlineSync.question('ID da receita: ');
+        while (!this.validateInput(id_receita, 'number')) {
+            console.log('ID inválido. Tente novamente.');
+            id_receita = readlineSync.question('ID da receita: ');
+        }
+
+        const nome_medicamento = readlineSync.question('Nome do medicamento: ');
+        const dosagem = readlineSync.question('Dosagem: ');
+        const frequencia = readlineSync.question('Frequência: ');
+        const duracao = readlineSync.question('Duração: ');
+
+        const id_paciente = readlineSync.question('ID do paciente: ');
+        const id_medico = readlineSync.question('ID do médico: ');
+        const data_prescricao = readlineSync.question('Data da prescrição (YYYY-MM-DD): ');
+
+        while (!this.validateInput(data_prescricao, 'date')) {
+            console.log('Data inválida. Use o formato YYYY-MM-DD.');
+        }
+
+        const observacoes = readlineSync.question('Observações: ');
+
+        try {
+            const queryMedicamento = `
+                INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+            await this.connection.query(queryMedicamento, [id_receita, nome_medicamento, dosagem, frequencia, duracao]);
+            console.log('Medicamento registrado com sucesso!');
+
+            const queryReceita = `
+                INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
+                VALUES (?, ?, ?, ?, ?)
+            `;
+            await this.connection.query(queryReceita, [id_receita, id_paciente, id_medico, data_prescricao, observacoes]);
+            console.log('Receita registrada com sucesso!');
+        } catch (error) {
+            console.error('Erro ao inserir dados:', error);
+        }
+    }
+
+    private async initialize() {
+        await this.connectToDatabase();
+
+        process.on('SIGINT', async () => {
+            console.log('\nEncerrando servidor...');
+            clearInterval(this.pingInterval);
+            await this.connection.end();
+            console.log('Conexão com o banco de dados encerrada.');
+            process.exit(0);
+        });
+
+        this.app.listen(this.port, () => {
+            console.log(`Servidor rodando na porta ${this.port}`);
+        });
+
+        this.showMenu();
+    }
+
     private async showMenu(): Promise<void> {
         let exit;
 
         while (!exit) {
             console.log('\n--- MENU ---');
-            console.log('1. Exibir Receita Medica');
-            console.log('2. Registrar Receita Medica');
-            console.log('3. Gerar Receita Medica');
+            console.log('1. Exibir Receita Médica');
+            console.log('2. Registrar Receita Médica');
+            console.log('3. Gerar Receita Médica');
             console.log('4. Sair');
 
-            const choice = readlineSync.question('Escolha uma opcao: ');
+            const choice = readlineSync.question('Escolha uma opção: ');
 
             switch (choice) {
                 case '1':
@@ -191,81 +273,14 @@ class Server {
     private async getDataFromDB() {
         try {
             const [rows] = await this.connection.query('SELECT * FROM vw_receitas_detalhadas');
-            // Verifique se rows é um array
             if (Array.isArray(rows) && rows.length > 0) {
-                console.log('\n--- RECEITA MÉDICA ---');
-                console.table(
-                    rows.map((row: any) => ({
-                        'ID Receita': row.id_receita,
-                        'Paciente': row.nome_paciente,
-                        'Médico': row.nome_medico,
-                        'Data Prescrição': row.data_prescricao,
-                        'Observações': this.formatMultilineText(row.observacoes, 50),
-                        'Medicamento': row.nome_medicamento,
-                        'Dosagem': row.dosagem,
-                        'Frequência': row.frequencia,
-                        'Duração': row.duracao,
-                    }))
-                );
-            }
-            else {
+                console.table(rows);
+            } else {
                 console.log('Nenhum dado encontrado.');
             }
         } catch (error) {
             console.error('Erro ao consultar o banco de dados:', error);
         }
-    }
-    
-    private formatMultilineText(text: string, maxLength: number){
-        
-        if (!text) return '';
-    
-        const regex = new RegExp(`.{1,${maxLength}}`, 'g');
-        const matches = [];
-        let match;
-    
-        while ((match = regex.exec(text)) !== null) {
-            matches.push(match[0]); // Adiciona cada correspondência ao array
-        }
-    
-        return matches.length > 0 ? matches.join('\n') : text;
-    }
-    
-
-    private async insertData() {
-        const id_receita = parseInt(readlineSync.question('ID da receita: '), 10);
-        const nome_medicamento = readlineSync.question('Nome do medicamento: ');
-        const dosagem = readlineSync.question('Dosagem: ');
-        const frequencia = readlineSync.question('Frequencia: ');
-        const duracao = readlineSync.question('Duracao: ');
-
-        const id_paciente = parseInt(readlineSync.question('ID do paciente: '), 10);
-        const id_medico = parseInt(readlineSync.question('ID do medico: '), 10);
-        const data_prescricao = readlineSync.question('Data da prescricao (YYYY-MM-DD): ');
-        const observacoes = readlineSync.question('Observacoes: ');
-
-        try {
-            const queryMedicamento = `
-                INSERT INTO medicamentos_receita (id_receita, nome_medicamento, dosagem, frequencia, duracao)
-                VALUES (?, ?, ?, ?, ?)
-            `;
-            await this.connection.query(queryMedicamento, [id_receita, nome_medicamento, dosagem, frequencia, duracao]);
-            console.log('Medicamento registrado com sucesso!');
-
-            const queryReceita = `
-                INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
-                VALUES(?, ?, ?, ?, ?)
-            `;
-            await this.connection.query(queryReceita, [id_receita, id_paciente, id_medico, data_prescricao, observacoes]);
-            console.log('Receita registrada com sucesso!');
-        } catch (error) {
-            console.error('Erro ao inserir dados:', error);
-        }
-    }
-
-    private async initialize() {
-        await this.connectToDatabase();
-        this.showMenu();
     }
 }
 
