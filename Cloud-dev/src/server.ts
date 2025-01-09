@@ -1,6 +1,5 @@
 import express, { Request, Response, Express } from 'express';
 import mysql, { Connection } from 'mysql2/promise'; // Importa a versão Promise do mysql2
-import readlineSync from 'readline-sync';
 import axios from 'axios'; // Importa o axios para fazer requisições HTTP
 
 class Server {
@@ -14,9 +13,26 @@ class Server {
     };
     private connection!: Connection;
 
+    private nome_paciente: string;
+    private nome_medico: string;
+    private data_prescricao: string;
+    private observacao: string;
+    private nome_medicamento: string;
+    private dosagem: string;
+    private frequencia: string;
+    private duracao: string;
+
     constructor(port: number) {
         this.app = express();
         this.port = port;
+        this.nome_paciente = "";
+        this.nome_medico = "";
+        this.data_prescricao = "";
+        this.observacao = "";
+        this.nome_medicamento = "";
+        this.dosagem = "";
+        this.frequencia = "";
+        this.duracao = "";
 
         // Configura middlewares
         this.setupMiddlewares();
@@ -38,7 +54,30 @@ class Server {
             try {
                 // Faz uma requisição interna à rota /dados
                 const response = await axios.get('http://localhost:3000/dados');
+                const dados = response.data;
 
+                const date = new Date(dados.data_prescricao).toDateString();
+                const paciente = dados.patient_name;
+                const doutor = dados.doctor_name;
+                const observacao = dados.observacoes;
+                const nome_medicamento = dados.medicamento_nome;
+                const dosagem = dados.dosagem;
+                const frequencia = dados.frequencia;
+                const duracao = dados.duracao;
+                
+                console.table([
+                    {
+                        Paciente: paciente,
+                        Doutor: doutor,
+                        Data_Prescricao: date,
+                        Observacao: observacao,
+                        Medicamento: nome_medicamento,
+                        Dosagem: dosagem,
+                        Frequencia: frequencia,
+                        Duracao: duracao
+                    },
+                    ]);
+                
                 // Passa os dados da resposta para a página inicial
                 res.status(200).json({
                     message: 'Dados recebidos com sucesso!',
@@ -75,11 +114,10 @@ class Server {
     }
 
     private async initialize() {
-        
+        await this.connectToDatabase();
         this.app.listen(this.port, () => {
             console.log(`Servidor está rodando em http://localhost:${this.port}`);
         });
-        
     }
 
     // Getters e Setters para outras propriedades
