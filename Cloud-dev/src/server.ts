@@ -115,21 +115,18 @@ class Server {
     }
 
     private async initialize() {
-        let option: string;
     
         await this.connectToDatabase();
         this.app.listen(this.port, () => {
             console.log(`Servidor está rodando em http://localhost:${this.port}`);
-            console.log('\n--- Sistema de Secretaria Virtual ---');
-            console.log('1. Menu Paciente');
-            console.log('2. Menu Consulta Médica');
-            console.log('3. Receita Médica');
-            console.log('4. Imprimir Receita Médica');
-            console.log('5. Sair');
-      
-            // Captura a escolha do usuário
-            option = readlineSync.question('Escolha uma opcao: ');
         });
+        
+        try {
+            const [rows] = await this.connection.query('SELECT * FROM vw_receitas_detalhadas'); // Ajuste conforme necessário
+            console.log(rows);
+        } catch (error) {
+            console.error('Erro ao consultar o banco de dados:', error);
+        }
     }
 
     // Getters e Setters para outras propriedades
