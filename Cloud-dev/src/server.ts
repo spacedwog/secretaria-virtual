@@ -54,6 +54,29 @@ class Server {
             try {
                 // Faz uma requisição interna à rota /dados
                 const response = await axios.get('http://localhost:3000/dados');
+                const dados = response.data;
+
+                const date = new Date(dados.data_prescricao).toDateString();
+                const paciente = dados.patient_name;
+                const doutor = dados.doctor_name;
+                const observacao = dados.observacoes;
+                const nome_medicamento = dados.medicamento_nome;
+                const dosagem = dados.dosagem;
+                const frequencia = dados.frequencia;
+                const duracao = dados.duracao;
+                
+                console.table([
+                    {
+                        Paciente: paciente,
+                        Doutor: doutor,
+                        Data_Prescricao: date,
+                        Observacao: observacao,
+                        Medicamento: nome_medicamento,
+                        Dosagem: dosagem,
+                        Frequencia: frequencia,
+                        Duracao: duracao
+                    },
+                    ]);
                 
                 // Passa os dados da resposta para a página inicial
                 res.status(200).json({
