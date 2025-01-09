@@ -1,5 +1,6 @@
 import express, { Request, Response, Express } from 'express';
 import mysql, { Connection } from 'mysql2/promise'; // Importa a versão Promise do mysql2
+import axios from 'axios'; // Importa o axios para fazer requisições HTTP
 
 class Server {
     private app: Express;
@@ -12,9 +13,26 @@ class Server {
     };
     private connection!: Connection;
 
+    private nome_paciente: string;
+    private nome_medico: string;
+    private data_prescricao: string;
+    private observacao: string;
+    private nome_medicamento: string;
+    private dosagem: string;
+    private frequencia: string;
+    private duracao: string;
+
     constructor(port: number) {
         this.app = express();
         this.port = port;
+        this.nome_paciente = "";
+        this.nome_medico = "";
+        this.data_prescricao = "";
+        this.observacao = "";
+        this.nome_medicamento = "";
+        this.dosagem = "";
+        this.frequencia = "";
+        this.duracao = "";
 
         // Configura middlewares
         this.setupMiddlewares();
@@ -32,8 +50,20 @@ class Server {
 
     private setupRoutes() {
         // Rota principal
-        this.app.get('/', (req: Request, res: Response) => {
-            res.send('Bem-vindo à Secretaria Virtual!');
+        this.app.get('/', async (req: Request, res: Response) => {
+            try {
+                // Faz uma requisição interna à rota /dados
+                const response = await axios.get('http://localhost:3000/dados');
+                
+                // Passa os dados da resposta para a página inicial
+                res.status(200).json({
+                    message: 'Dados recebidos com sucesso!',
+                    dados: response.data
+                });
+            } catch (error) {
+                console.error('Erro ao buscar dados:', error);
+                res.status(500).json({ error: 'Erro ao buscar dados' });
+            }
         });
 
         // Rota para testar consulta ao banco
@@ -66,6 +96,10 @@ class Server {
             console.log(`Servidor está rodando em http://localhost:${this.port}`);
         });
     }
+
+    // Getters e Setters para outras propriedades
+    // (omiti os getters e setters por serem os mesmos do código anterior)
+
 }
 
 // Cria e inicia o servidor

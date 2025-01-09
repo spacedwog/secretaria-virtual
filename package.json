@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "Este projeto simula uma secretária virtual para um escritório médico. Ele permite o cadastro de pacientes, agendamento de consultas e geração de relatórios em diferentes formatos.",
   "dependencies": {
+    "@expo/metro-runtime": "~4.0.0",
     "@google-cloud/speech": "^6.7.0",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.9",
@@ -25,9 +26,8 @@
     "pg": "^8.13.1",
     "prompt-sync": "^4.2.0",
     "react-native-audio-recorder-player": "^3.6.12",
-    "readline-sync": "^1.4.10",
     "react-native-web": "~0.19.13",
-    "@expo/metro-runtime": "~4.0.0"
+    "readline-sync": "^1.4.10"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
