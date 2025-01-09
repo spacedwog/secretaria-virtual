@@ -9,13 +9,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 class Server {
-    private app: Express;
+    private readonly app: Express;
     private port: number;
     private dbConfig = {
-        host: process.env.DB_HOST || 'localhost',
-        user: process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || '6z2h1j3k9F!',
-        database: process.env.DB_NAME || 'secretaria_virtual',
+        host: process.env.DB_HOST ?? 'localhost',
+        user: process.env.DB_USER ?? 'root',
+        password: process.env.DB_PASSWORD ?? '6z2h1j3k9F!',
+        database: process.env.DB_NAME ?? 'secretaria_virtual',
         connectTimeout: 10000,
     };
     private connection!: Connection;
