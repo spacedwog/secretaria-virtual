@@ -193,14 +193,14 @@ class Server {
             const [rows] = await this.connection.query('SELECT * FROM vw_receitas_detalhadas');
             // Verifique se rows é um array
             if (Array.isArray(rows) && rows.length > 0) {
-                console.log('\n--- DADOS RETORNADOS DO BANCO ---');
+                console.log('\n--- RECEITA MÉDICA ---');
                 console.table(
                     rows.map((row: any) => ({
                         'ID Receita': row.id_receita,
                         'Paciente': row.nome_paciente,
                         'Médico': row.nome_medico,
                         'Data Prescrição': row.data_prescricao,
-                        'Observações': row.observacoes,
+                        'Observações': this.formatMultilineText(row.observacoes, 50),
                         'Medicamento': row.nome_medicamento,
                         'Dosagem': row.dosagem,
                         'Frequência': row.frequencia,
@@ -215,6 +215,13 @@ class Server {
             console.error('Erro ao consultar o banco de dados:', error);
         }
     }
+    
+    private formatMultilineText(text: string, maxLength: number): string {
+        if (!text) return '';
+        const regex = new RegExp(`.{1,${maxLength}}`, 'g');
+        return text.match(regex)?.join('\n') || text;
+    }
+    
 
     private async insertData() {
         const id_receita = parseInt(readlineSync.question('ID da receita: '), 10);
