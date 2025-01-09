@@ -14,26 +14,9 @@ class Server {
     };
     private connection!: Connection;
 
-    private nome_paciente: string;
-    private nome_medico: string;
-    private data_prescricao: string;
-    private observacao: string;
-    private nome_medicamento: string;
-    private dosagem: string;
-    private frequencia: string;
-    private duracao: string;
-
     constructor(port: number) {
         this.app = express();
         this.port = port;
-        this.nome_paciente = "";
-        this.nome_medico = "";
-        this.data_prescricao = "";
-        this.observacao = "";
-        this.nome_medicamento = "";
-        this.dosagem = "";
-        this.frequencia = "";
-        this.duracao = "";
 
         // Configura middlewares
         this.setupMiddlewares();
@@ -55,8 +38,6 @@ class Server {
             try {
                 // Faz uma requisição interna à rota /dados
                 const response = await axios.get('http://localhost:3000/dados');
-
-                console.log(response.data);
 
                 // Passa os dados da resposta para a página inicial
                 res.status(200).json({
@@ -94,18 +75,11 @@ class Server {
     }
 
     private async initialize() {
-    
-        await this.connectToDatabase();
+        
         this.app.listen(this.port, () => {
             console.log(`Servidor está rodando em http://localhost:${this.port}`);
         });
         
-        try {
-            const [rows] = await this.connection.query('SELECT * FROM vw_receitas_detalhadas'); // Ajuste conforme necessário
-            console.log(rows);
-        } catch (error) {
-            console.error('Erro ao consultar o banco de dados:', error);
-        }
     }
 
     // Getters e Setters para outras propriedades
