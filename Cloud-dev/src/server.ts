@@ -1,7 +1,9 @@
-import cors from 'cors';
-import readlineSync from 'readline-sync';
-import mysql, { Connection } from 'mysql2/promise';
 import express, { Request, Response, Express } from 'express';
+import mysql, { Connection } from 'mysql2/promise';
+import readlineSync from 'readline-sync';
+import fs from 'fs';
+import path from 'path';
+import PDFDocument from 'pdfkit';
 
 class Server {
     private app: Express;
@@ -9,47 +11,61 @@ class Server {
     private dbConfig = {
         host: 'localhost',
         user: 'root',
-        password: '6z2h1j3k9F!',
+        password: '6z2h3k9F!',
         database: 'secretaria_virtual',
+        connectTimeout: 10000, // Tempo limite para a conexão
     };
     private connection!: Connection;
+
+    private id_paciente: number;
+    private id_medico: number;
+    private id_receita: number;
+    private data_prescricao: string;
+    private observacao: string;
+    private nome_medicamento: string;
+    private dosagem: string;
+    private frequencia: string;
+    private duracao: string;
 
     constructor(port: number) {
         this.app = express();
         this.port = port;
+        this.id_paciente = 0;
+        this.id_medico = 0;
+        this.id_receita = 0;
+        this.data_prescricao = "";
+        this.observacao = "";
+        this.nome_medicamento = "";
+        this.dosagem = "";
+        this.frequencia = "";
+        this.duracao = "";
 
-        // Configura middlewares
         this.setupMiddlewares();
-
-        // Define rotas
         this.setupRoutes();
-
-        // Conecta ao banco de dados e inicia o servidor
         this.initialize();
-
-        // Permite entrada de dados pelo terminal
-        this.readFromTerminal();
     }
 
-    private setupMiddlewares(): void {
-        this.app.use(express.json()); // Permite entrada de dados JSON
-        this.app.use(cors()); // Permite requisições de outros domínios
+    private setupMiddlewares() {
+        this.app.use(express.json());
     }
 
-    private setupRoutes(): void {
+    private setupRoutes() {
         // Rota principal
         this.app.get('/', (req: Request, res: Response) => {
-            res.send('Servidor rodando e pronto para receber entradas!');
+            res.send('Servidor rodando em TypeScript com MySQL!');
         });
 
-        // Rota para listar dados do banco
+        // Rota para testar consulta ao banco
         this.app.get('/dados', this.getData.bind(this));
 
-        // Rota para receber e processar dados via POST
-        this.app.post('/entrada', (req, res) => this.handleInput(req, res));
+        // Rota para gerar relatórios
+        this.app.get('/gerar-relatorio', async (req: Request, res: Response) => {
+            await this.generateReport();
+            res.send('Relatório gerado com sucesso. Confira os arquivos gerados no servidor.');
+        });
     }
-    
-    private async connectToDatabase(): Promise<void> {
+
+    private async connectToDatabase() {
         try {
             console.log('Tentando conectar ao banco de dados...');
             this.connection = await mysql.createConnection(this.dbConfig);
@@ -60,7 +76,7 @@ class Server {
         }
     }
 
-    private async getData(req: Request, res: Response): Promise<void> {
+    private async getData(req: Request, res: Response) {
         try {
             const [rows] = await this.connection.query('SELECT * FROM vw_receitas_detalhadas');
             res.status(200).json(rows);
@@ -70,60 +86,7 @@ class Server {
         }
     }
 
-    private async handleInput(req: Request, res: Response): Promise<void> {
-        const inputData = req.body;
-
-        if (!inputData || Object.keys(inputData).length === 0) {
-            res.status(400).json({ error: 'Nenhum dado recebido' });
-            return;
-        }
-
-        console.log('Dados recebidos:', inputData);
-
-        try {
-            const {
-                id_receita,
-                id_paciente,
-                id_medico,
-                data_prescricao,
-                observacoes,
-                nome_medicamento,
-                dosagem,
-                frequencia,
-                duracao,
-            } = inputData;
-
-            const queryMedicamento  = `INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
-                                        VALUES (?, ?, ?, ?, ?)`;
-
-                            await this.connection.query(queryMedicamento, [
-                                id_receita,
-                                id_paciente,
-                                id_medico,
-                                data_prescricao,
-                                observacoes
-                            ]);
-
-            const queryReceita  = `INSERT INTO medicamentos_receita(id_receita, nome_medicamento, dosagem, frequencia, duracao)
-                                    VALUES(?, ?, ?, ?, ?)`;
-
-                            await this.connection.query(queryReceita, [
-                                id_receita,
-                                nome_medicamento,
-                                dosagem,
-                                frequencia,
-                                duracao
-                            ]);
-
-            res.status(201).json({ message: 'Dados inseridos com sucesso!' });
-        } catch (error) {
-            console.error('Erro ao processar dados:', error);
-            res.status(500).json({ error: 'Erro ao processar dados recebidos' });
-        }
-    }
-
     private async readFromTerminal(): Promise<void> {
-
         // Aguarda a conexão ao banco de dados
         if (!this.connection) {
             console.log('Conexão ao banco de dados ainda não está pronta. Tentando conectar...');
@@ -132,16 +95,16 @@ class Server {
 
         console.log('Entre com os dados para inserir uma nova receita.');
 
-        const id_receita = parseInt(readlineSync.question('ID da receita medica: '), 10);
+        const id_paciente = parseInt(readlineSync.question('ID do paciente: '), 10);
+        const id_medico = parseInt(readlineSync.question('ID do medico'), 10);
+        const id_receita = parseInt(readlineSync.question('ID do receita'), 10);
+        const data_prescricao = readlineSync.question('Data da prescrição (YYYY-MM-DD): ');
+        const observacoes = readlineSync.question('Observações: ');
+
         const nome_medicamento = readlineSync.question('Nome do medicamento: ');
         const dosagem = readlineSync.question('Dosagem: ');
-        const frequencia = readlineSync.question('Frequencia: ');
-        const duracao = readlineSync.question('Duracao: ');
-
-        const id_paciente = parseInt(readlineSync.question('ID do paciente: '), 10);
-        const id_medico = parseInt(readlineSync.question('ID do medico: '), 10);
-        const data_prescricao = readlineSync.question('Data da prescricao (YYYY-MM-DD): ');
-        const observacoes = readlineSync.question('Observaçcoes: ');
+        const frequencia = readlineSync.question('Frequência: ');
+        const duracao = readlineSync.question('Duração: ');
 
         try {
             const queryMedicamento = `
@@ -158,7 +121,7 @@ class Server {
             ]);
             const queryReceita = `
                 INSERT INTO receitas_medicas (id_receita, id_paciente, id_medico, data_prescricao, observacoes)
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             `;
 
             await this.connection.query(queryReceita, [
@@ -175,26 +138,112 @@ class Server {
         }
     }
 
-    private async initialize(): Promise<void> {
+    private async generateReport(): Promise<void> {
+        console.log('Gerando relatório...');
+
+        try {
+            // Consultar os dados no banco de dados
+            const [rows]: any = await this.connection.query('SELECT * FROM vw_receitas_detalhadas');
+
+            if (!rows.length) {
+                console.log('Nenhum dado encontrado para o relatório.');
+                return;
+            }
+
+            // Caminhos para salvar os arquivos
+            const jsonPath = path.join(__dirname, 'relatorio.json');
+            const htmlPath = path.join(__dirname, 'relatorio.html');
+            const pdfPath = path.join(__dirname, 'relatorio.pdf');
+
+            // Gerar relatório em JSON
+            fs.writeFileSync(jsonPath, JSON.stringify(rows, null, 2));
+            console.log(`Relatório JSON salvo em: ${jsonPath}`);
+
+            // Gerar relatório em HTML
+            const htmlContent = this.generateHTMLContent(rows);
+            fs.writeFileSync(htmlPath, htmlContent);
+            console.log(`Relatório HTML salvo em: ${htmlPath}`);
+
+            // Gerar relatório em PDF
+            this.generatePDF(rows, pdfPath);
+            console.log(`Relatório PDF salvo em: ${pdfPath}`);
+        } catch (error) {
+            console.error('Erro ao gerar relatório:', error);
+        }
+    }
+
+    private generateHTMLContent(rows: any[]): string {
+        const tableRows = rows.map(row => `
+            <tr>
+                <td>${row.id_receita}</td>
+                <td>${row.nome_paciente}</td>
+                <td>${row.nome_medico}</td>
+                <td>${row.data_prescricao}</td>
+                <td>${row.observacoes}</td>
+                <td>${row.nome_medicamento}</td>
+                <td>${row.dosagem}</td>
+                <td>${row.frequencia}</td>
+                <td>${row.duracao}</td>
+            </tr>`).join('');
+
+        return `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Relatório</title>
+        </head>
+        <body>
+            <h1>Relatório de Receitas</h1>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID Receita</th>
+                        <th>Nome do Paciente</th>
+                        <th>Nome do Médico</th>
+                        <th>Data da Prescrição</th>
+                        <th>Observações</th>
+                        <th>Nome do Medicamento</th>
+                        <th>Dosagem</th>
+                        <th>Frequência</th>
+                        <th>Duração</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableRows}
+                </tbody>
+            </table>
+        </body>
+        </html>`;
+    }
+
+    private generatePDF(rows: any[], filePath: string): void {
+        const doc = new PDFDocument();
+        doc.pipe(fs.createWriteStream(filePath));
+
+        doc.fontSize(18).text('Relatório de Receitas', { align: 'center' });
+        doc.moveDown();
+
+        rows.forEach(row => {
+            doc.fontSize(12).text(`ID Receita: ${row.id_receita}`);
+            doc.text(`Nome do Paciente: ${row.nome_paciente}`);
+            doc.text(`Nome do Médico: ${row.nome_medico}`);
+            doc.text(`Data da Prescrição: ${row.data_prescricao}`);
+            doc.text(`Observações: ${row.observacoes}`);
+            doc.text(`Nome do Medicamento: ${row.nome_medicamento}`);
+            doc.text(`Dosagem: ${row.dosagem}`);
+            doc.text(`Frequência: ${row.frequencia}`);
+            doc.text(`Duração: ${row.duracao}`);
+            doc.moveDown();
+        });
+
+        doc.end();
+    }
+
+    private async initialize() {
         await this.connectToDatabase();
-
-        const startServer = () => {
-            this.app
-                .listen(this.port, () => {
-                    console.log(`Servidor está rodando em http://localhost:${this.port}`);
-                })
-                .on('error', (err: NodeJS.ErrnoException) => {
-                    if (err.code === 'EADDRINUSE') {
-                        console.error(`Porta ${this.port} já está em uso. Tentando a próxima porta...`);
-                        this.port += 1;
-                        startServer();
-                    } else {
-                        console.error('Erro ao iniciar o servidor:', err);
-                    }
-                });
-        };
-
-        startServer();
+        this.app.listen(this.port, () => {
+            console.log(`Servidor está rodando em http://localhost:${this.port}`);
+        });
     }
 }
 
