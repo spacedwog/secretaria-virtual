@@ -136,21 +136,81 @@ class Server {
     }
 
     private async generatePDF(rows: any[], filePath: string): Promise<void> {
+        // Criação do documento PDF
         const pdfDoc = await PDFDocument.create();
         const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+    
+        // Adicionar uma nova página ao PDF
         const page = pdfDoc.addPage();
         const { width, height } = page.getSize();
         const fontSize = 12;
-
-        let yPosition = height - fontSize * 2;
-
-        rows.forEach(row => {
-            page.drawText(`ID Receita: ${row.id_receita}`, { x: 50, y: yPosition, size: fontSize, font: timesRomanFont });
-            yPosition -= fontSize * 2;
+    
+        // Configurações de layout
+        let yPosition = height - 50; // Margem superior
+        const lineSpacing = 15;
+    
+        // Título do relatório
+        page.drawText('Relatório de Receitas Médicas', {
+            x: 50,
+            y: yPosition,
+            size: 18,
+            font: timesRomanFont,
         });
-
+    
+        yPosition -= 30; // Ajustar posição após o título
+    
+        // Adicionar dados em formato estruturado
+        rows.forEach((row, index) => {
+            if (yPosition < 50) {
+                // Adicionar nova página se o conteúdo ultrapassar os limites
+                const newPage = pdfDoc.addPage();
+                yPosition = height - 50;
+            }
+    
+            page.drawText(`ID Receita: ${row.id_receita}`, {
+                x: 50,
+                y: yPosition,
+                size: fontSize,
+                font: timesRomanFont,
+            });
+            page.drawText(`Paciente: ${row.nome_paciente}`, {
+                x: 50,
+                y: yPosition - lineSpacing,
+                size: fontSize,
+                font: timesRomanFont,
+            });
+            page.drawText(`Médico: ${row.nome_medico}`, {
+                x: 50,
+                y: yPosition - 2 * lineSpacing,
+                size: fontSize,
+                font: timesRomanFont,
+            });
+            page.drawText(`Data Prescrição: ${row.data_prescricao}`, {
+                x: 50,
+                y: yPosition - 3 * lineSpacing,
+                size: fontSize,
+                font: timesRomanFont,
+            });
+            page.drawText(`Observações: ${row.observacoes}`, {
+                x: 50,
+                y: yPosition - 4 * lineSpacing,
+                size: fontSize,
+                font: timesRomanFont,
+            });
+    
+            // Avançar posição para a próxima entrada
+            yPosition -= 5 * lineSpacing;
+        });
+    
+        // Salvar o PDF como Uint8Array
         const pdfBytes = await pdfDoc.save();
-        await FileSystem.writeAsStringAsync(filePath, pdfBytes, { encoding: FileSystem.EncodingType.Base64 });
+    
+        // Converter Uint8Array para Base64
+        const base64Pdf = Buffer.from(pdfBytes).toString('base64');
+    
+        // Salvar o arquivo no sistema
+        FileSystem.writeFileSync(filePath, base64Pdf, 'base64');
+        console.log(`Relatório PDF salvo em: ${filePath}`);
     }
 
     private async showMenu(): Promise<void> {
