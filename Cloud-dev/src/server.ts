@@ -80,9 +80,9 @@ class Server {
                 return;
             }
 
-            const jsonPath = path.join(__dirname, 'receita_medica.json');
-            const htmlPath = path.join(__dirname, 'receita_medica.html');
-            const pdfPath = path.join(__dirname, 'receita_medica.pdf');
+            const jsonPath = path.join(__dirname+"/receitas_medicas", 'receita_medica.json');
+            const htmlPath = path.join(__dirname+"/receitas_medicas", 'receita_medica.html');
+            const pdfPath = path.join(__dirname+"/receitas_medicas", 'receita_medica.pdf');
 
             fs.writeFileSync(jsonPath, JSON.stringify(rows, null, 2));
             console.log(`Relatório JSON salvo em: ${jsonPath}`);
@@ -248,7 +248,7 @@ class Server {
             console.log('3. Gerar Receita Médica');
             console.log('4. Sair');
 
-            const choice = readlineSync.question('Escolha uma opção: ');
+            const choice = readlineSync.question('Escolha uma opcao: ');
 
             switch (choice) {
                 case '1':
