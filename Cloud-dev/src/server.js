@@ -37,11 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var net = require("net");
-var path_1 = require("path");
-var dotenv_1 = require("dotenv");
+var path = require("path");
+var dotenv = require("dotenv");
 var promise_1 = require("mysql2/promise");
 var express_1 = require("express");
-dotenv_1.default.config();
+dotenv.config();
 var Server = /** @class */ (function () {
     function Server(port) {
         var _a, _b, _c, _d;
@@ -68,7 +68,7 @@ var Server = /** @class */ (function () {
             next();
         });
         // Middleware para servir arquivos estáticos
-        var staticPath = path_1.default.join(__dirname, 'public');
+        var staticPath = path.join(__dirname, 'public');
         this.app.use(express_1.default.static(staticPath));
         // Middleware para configurar headers (ex.: CORS)
         this.app.use(function (req, res, next) {

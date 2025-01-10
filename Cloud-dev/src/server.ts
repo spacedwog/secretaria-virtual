@@ -1,7 +1,7 @@
 import * as net from 'net';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
-import mysql, { Connection } from 'mysql2/promise';
+import * as mysql from 'mysql2/promise';
 import express, { Request, Response, Express, NextFunction } from 'express';
 
 dotenv.config();
@@ -16,7 +16,7 @@ class Server {
         database: process.env.DB_NAME ?? 'secretaria_virtual',
         connectTimeout: 10000,
     };
-    private connection!: Connection;
+    private connection!: mysql.Connection;
     private pingInterval!: NodeJS.Timeout;
 
     constructor(port: number) {
