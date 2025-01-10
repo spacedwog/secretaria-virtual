@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var net = require("net");
 var path = require("path");
 var dotenv = require("dotenv");
-var promise_1 = require("mysql2/promise");
+var mysql = require("mysql2/promise");
 var express_1 = require("express");
 dotenv.config();
 var Server = /** @class */ (function () {
@@ -118,7 +118,7 @@ var Server = /** @class */ (function () {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
                         _a = this;
-                        return [4 /*yield*/, promise_1.default.createConnection(this.dbConfig)];
+                        return [4 /*yield*/, mysql.createConnection(this.dbConfig)];
                     case 1:
                         _a.connection = _b.sent();
                         console.log('Conexão com o banco de dados estabelecida!');

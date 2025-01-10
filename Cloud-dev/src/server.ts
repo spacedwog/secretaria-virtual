@@ -2,12 +2,13 @@ import * as net from 'net';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
-import express, { Request, Response, Express, NextFunction } from 'express';
+import * as express from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 dotenv.config();
 
 class Server {
-    private readonly app: Express;
+    private readonly app: express.Express;
     private readonly port: number;
     private readonly dbConfig = {
         host: process.env.DB_HOST ?? 'localhost',
@@ -20,7 +21,7 @@ class Server {
     private pingInterval!: NodeJS.Timeout;
 
     constructor(port: number) {
-        this.app = express();
+        this.app = express.default();
         this.port = port;
 
         this.setupMiddlewares();
