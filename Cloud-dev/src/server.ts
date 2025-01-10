@@ -1,6 +1,5 @@
 import net from 'net';
 import path from 'path';
-import * as fs from 'fs';
 import dotenv from 'dotenv';
 import mysql, { Connection } from 'mysql2/promise';
 import express, { Request, Response, Express, NextFunction } from 'express';
@@ -220,8 +219,7 @@ class Server {
                     </body>
                 </html>`;
                 res.send(html);
-
-                fs.writeFileSync('sensor_data.json', JSON.stringify(appointment, null, 2));
+                
             }
             catch (error) {
                 console.error('Erro ao executar consulta:', error);
