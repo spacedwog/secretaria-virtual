@@ -1,18 +1,15 @@
-import fs from 'fs';
 import net from 'net';
 import path from 'path';
 import dotenv from 'dotenv';
-import PDFDocument from 'pdfkit';
-import readlineSync from 'readline-sync';
 import mysql, { Connection } from 'mysql2/promise';
-import express, { Request, Response, Express } from 'express';
+import express, { Request, Response, Express, NextFunction } from 'express';
 
 dotenv.config();
 
 class Server {
     private readonly app: Express;
-    private port: number;
-    private dbConfig = {
+    private readonly port: number;
+    private readonly dbConfig = {
         host: process.env.DB_HOST ?? 'localhost',
         user: process.env.DB_USER ?? 'root',
         password: process.env.DB_PASSWORD ?? '6z2h1j3k9F!',
@@ -32,13 +29,38 @@ class Server {
     }
 
     private setupMiddlewares() {
+        // Middleware para parse de JSON e form data
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
+    
+        // Middleware para logar as requisições
+        this.app.use((req, res, next) => {
+            console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+            next();
+        });
+    
+        // Middleware para servir arquivos estáticos
+        const staticPath = path.join(__dirname, 'public');
+        this.app.use(express.static(staticPath));
+    
+        // Middleware para configurar headers (ex.: CORS)
+        this.app.use((req, res, next) => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            next();
+        });
+    
+        // Middleware para tratar erros genéricos
+        this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+            console.error('Erro no middleware:', err);
+            res.status(err.status || 500).json({ error: err.message || 'Erro interno do servidor' });
+        });
     }
 
     private setupRoutes() {
         this.app.get('/', this.getPacientes.bind(this));
-        this.app.get('/dados', this.getData.bind(this));
+        this.app.get('/', this.getReceita_medica.bind(this));
         this.app.get('/gerar-relatorio', this.generateReportRoute.bind(this));
     }
 
@@ -115,13 +137,70 @@ class Server {
         }
     }
 
-    private async getData(req: Request, res: Response) {
+    private async getReceita_medica(req: Request, res: Response) {
         try {
-            const [rows] = await this.connection.query('SELECT * FROM vw_receitas_detalhadas');
-            res.status(200).json(rows);
+            const query = `SELECT id_receita, nome_paciente, nome_medicamento, data_prescricao, dosagem, frequencia, duracao, observacoes, nome_medico FROM vw_receitas_detalhadas;`;
+            const [rows] = await this.connection.query(query);
+
+            const receitas = rows as Array<{
+                id_receita: number;
+                nome_paciente: string;
+                nome_medicamento: number;
+                data_prescricao: string | null;
+                dosagem: string;
+                frequencia: string;
+                duracao: string;
+                observacoes: string | null;
+                nome_medico: string;
+            }>;
+
+            let html = `
+                <!DOCTYPE html>
+                <html lang="pt-br">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Lista de Pacientes</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; }
+                        table { width: 100%; border-collapse: collapse; }
+                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #0078d4; color: white; }
+                        tr:nth-child(even) { background-color: #f2f2f2; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Lista de Pacientes</h1>
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome do Paciente</th>
+                            <th>Nome do Medicamento</th>
+                            <th>Data da Prescrição</th>
+                            <th>Dosagem</th>
+                            <th>Frequência</th>
+                            <th>Observações</th>
+                            <th>Nome do Médico</th>
+                        </tr>`;
+            receitas.forEach((r) => {
+                html += `
+                    <tr>
+                        <td>${r.id_receita}</td>
+                        <td>${r.nome_paciente}</td>
+                        <td>${r.nome_medicamento}</td>
+                        <td>${r.data_prescricao ?? ''}</td>
+                        <td>${r.dosagem}</td>
+                        <td>${r.frequencia}</td>
+                        <td>${r.duracao}</td>
+                        <td>${r.observacoes ?? ''}</td>
+                        <td>${r.nome_medico}</td>
+                    </tr>`;
+            });
+            html += `</table></body></html>`;
+            res.send(html);
         } catch (error) {
-            console.error('Erro ao consultar o banco de dados:', error);
-            res.status(500).json({ error: 'Erro ao consultar o banco de dados' });
+            console.error('Erro ao buscar dados:', error);
+            res.status(500).send('Erro ao buscar pacientes.');
         }
     }
 
@@ -162,6 +241,7 @@ class Server {
             console.log('Conexão com o banco de dados encerrada.');
             process.exit(0);
         });
+
     }
 
     private async checkPortAvailability() {
