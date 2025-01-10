@@ -36,9 +36,8 @@ class Server {
     }
 
     private setupRoutes() {
-        
-
-// Rota para buscar os dados do banco de dados
+        this.connectToDatabase();
+        // Rota para buscar os dados do banco de dados
         this.app.get('/', async (req, res) => {
             try {
                 const connection = await mysql.createConnection(this.dbConfig);
@@ -59,81 +58,82 @@ class Server {
                     address: string | null;
                 }>;
 
-        await connection.end();
+                await connection.end();
 
-        // Renderizar uma tabela com os dados
-        let html = `
-            <!DOCTYPE html>
-            <html lang="pt-br">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Lista de Pacientes</title>
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        margin: 20px;
-                        padding: 0;
-                        background-color: #f5f5f5;
-                    }
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        margin-bottom: 20px;
-                    }
-                    th, td {
-                        border: 1px solid #ddd;
-                        padding: 8px;
-                        text-align: left;
-                    }
-                    th {
-                        background-color: #0078d4;
-                        color: white;
-                    }
-                    tr:nth-child(even) {
-                        background-color: #f2f2f2;
-                    }
-                </style>
-            </head>
-            <body>
-                <h1>Lista de Pacientes</h1>
-                <table>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Idade</th>
-                        <th>Telefone</th>
-                        <th>Email</th>
-                        <th>Endereço</th>
-                    </tr>
-        `;
+                // Renderizar uma tabela com os dados
+                let html = `
+                    <!DOCTYPE html>
+                    <html lang="pt-br">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Lista de Pacientes</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                margin: 20px;
+                                padding: 0;
+                                background-color: #f5f5f5;
+                            }
+                            table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin-bottom: 20px;
+                            }
+                            th, td {
+                                border: 1px solid #ddd;
+                                padding: 8px;
+                                text-align: left;
+                            }
+                            th {
+                                background-color: #0078d4;
+                                color: white;
+                            }
+                            tr:nth-child(even) {
+                                background-color: #f2f2f2;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Lista de Pacientes</h1>
+                        <table>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Idade</th>
+                                <th>Telefone</th>
+                                <th>Email</th>
+                                <th>Endereço</th>
+                            </tr>
+                `;
 
-        pacientes.forEach((paciente) => {
-            html += `
-                <tr>
-                    <td>${paciente.patient_id}</td>
-                    <td>${paciente.name}</td>
-                    <td>${paciente.age}</td>
-                    <td>${paciente.phone}</td>
-                    <td>${paciente.email}</td>
-                    <td>${paciente.address ?? ''}</td>
-                </tr>
-            `;
+                pacientes.forEach((paciente) => {
+                    html += `
+                        <tr>
+                            <td>${paciente.patient_id}</td>
+                            <td>${paciente.name}</td>
+                            <td>${paciente.age}</td>
+                            <td>${paciente.phone}</td>
+                            <td>${paciente.email}</td>
+                            <td>${paciente.address ?? ''}</td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                        </table>
+                        <a href="/">Voltar</a>
+                    </body>
+                    </html>
+                `;
+
+                res.send(html);
+            }
+            catch (error) {
+                console.error('Erro ao buscar dados:', error);
+                res.status(500).send('Erro ao buscar pacientes.');
+            }
         });
-
-        html += `
-                </table>
-                <a href="/">Voltar</a>
-            </body>
-            </html>
-        `;
-
-        res.send(html);
-    } catch (error) {
-        console.error('Erro ao buscar dados:', error);
-        res.status(500).send('Erro ao buscar pacientes.');
-    }
-});
 
         // Demais rotas do seu código (não alteradas)
         this.app.get('/dados', this.getData.bind(this));
