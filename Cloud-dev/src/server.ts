@@ -38,20 +38,134 @@ class Server {
     private setupRoutes() {
         this.app.get('/', (req: Request, res: Response) => {
             res.send(`
-                <html>
-                    <head>
-                    </head>
-                    <body>
-                        <form action="/submit" method="POST">
-                            <label for="login">Login:</label>
-                            <input type="text" id="login" name="login" required><br><br>
-                            
-                            <label for="password">Senha:</label>
-                            <input type="password" id="senha" name="senha" required><br><br>
-                            
-                            <input type="submit" value="Enviar">
-                        </form>
-                    </body>
+                <!DOCTYPE html>
+                <html lang="pt-br">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Secretária Virtual</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 0;
+                            padding: 0;
+                            background-color: #f5f5f5;
+                            color: #333;
+                        }
+                        header {
+                            background-color: #0078d4;
+                            color: white;
+                            padding: 1rem;
+                            text-align: center;
+                        }
+                        nav {
+                            display: flex;
+                            justify-content: center;
+                            background-color: #005bb5;
+                            padding: 0.5rem;
+                        }
+                        nav a {
+                            color: white;
+                            text-decoration: none;
+                            margin: 0 1rem;
+                            font-weight: bold;
+                        }
+                        nav a:hover {
+                            text-decoration: underline;
+                        }
+                        main {
+                            padding: 2rem;
+                            max-width: 800px;
+                            margin: auto;
+                            background-color: white;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        }
+                        form {
+                            display: flex;
+                            flex-direction: column;
+                        }
+                        form label {
+                            margin: 0.5rem 0 0.2rem;
+                        }
+                        form input, form select, form textarea, form button {
+                            padding: 0.8rem;
+                            margin-bottom: 1rem;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                        }
+                        form button {
+                            background-color: #0078d4;
+                            color: white;
+                            border: none;
+                            cursor: pointer;
+                        }
+                        form button:hover {
+                            background-color: #005bb5;
+                        }
+                        footer {
+                            text-align: center;
+                            padding: 1rem;
+                            background-color: #0078d4;
+                            color: white;
+                            margin-top: 2rem;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <header>
+                        <h1>Secretária Virtual</h1>
+                        <p>Gerencie seus pacientes de forma simples e eficiente</p>
+                    </header>
+                    <nav>
+                        <a href="#cadastro">Cadastrar Paciente</a>
+                        <a href="#relatorios">Relatórios</a>
+                        <a href="#configuracoes">Configurações</a>
+                    </nav>
+                    <main>
+                        <section id="cadastro">
+                            <h2>Cadastro de Pacientes</h2>
+                            <form>
+                                <label for="nome">Nome Completo:</label>
+                                <input type="text" id="nome" name="nome" required>
+                                
+                                <label for="email">E-mail:</label>
+                                <input type="email" id="email" name="email" required>
+                                
+                                <label for="telefone">Telefone:</label>
+                                <input type="tel" id="telefone" name="telefone" required>
+                                
+                                <label for="data-nascimento">Data de Nascimento:</label>
+                                <input type="date" id="data-nascimento" name="data-nascimento" required>
+                                
+                                <label for="observacoes">Observações:</label>
+                                <textarea id="observacoes" name="observacoes" rows="4"></textarea>
+                                
+                                <button type="submit">Cadastrar</button>
+                            </form>
+                        </section>
+                        <section id="relatorios">
+                            <h2>Relatórios</h2>
+                            <p>Visualize e exporte os relatórios de atendimento.</p>
+                            <button onclick="exportar('json')">Exportar em JSON</button>
+                            <button onclick="exportar('html')">Exportar em HTML</button>
+                            <button onclick="exportar('pdf')">Exportar em PDF</button>
+                        </section>
+                        <section id="configuracoes">
+                            <h2>Configurações</h2>
+                            <p>Personalize a aplicação conforme suas necessidades.</p>
+                        </section>
+                    </main>
+                    <footer>
+                        <p>© 2025 Secretária Virtual. Todos os direitos reservados.</p>
+                    </footer>
+        
+                    <script>
+                        function exportar(formato) {
+                            alert(\`Exportando relatório em \${formato.toUpperCase()}\`);
+                        }
+                    </script>
+                </body>
                 </html>
             `);
         });
