@@ -36,178 +36,110 @@ class Server {
     }
 
     private setupRoutes() {
-        this.app.get('/', (req: Request, res: Response) => {
-            res.send(`
-                <!DOCTYPE html>
-                <html lang="pt-br">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>Secretária Virtual</title>
-                        <style>
-                            body {
-                                font-family: Arial, sans-serif;
-                                margin: 0;
-                                padding: 0;
-                                background-color: #f5f5f5;
-                                color: #333;
-                            }
-                            header {
-                                background-color: #0078d4;
-                                color: white;
-                                padding: 1rem;
-                                text-align: center;
-                            }
-                            nav {
-                                display: flex;
-                                justify-content: center;
-                                background-color: #005bb5;
-                                padding: 0.5rem;
-                            }
-                            nav a {
-                                color: white;
-                                text-decoration: none;
-                                margin: 0 1rem;
-                                font-weight: bold;
-                            }
-                            nav a:hover {
-                                text-decoration: underline;
-                            }
-                            main {
-                                padding: 2rem;
-                                max-width: 800px;
-                                margin: auto;
-                                background-color: white;
-                                border-radius: 8px;
-                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                            }
-                            form {
-                                display: flex;
-                                flex-direction: column;
-                            }
-                            form label {
-                                margin: 0.5rem 0 0.2rem;
-                            }
-                            form input, form select, form textarea, form button {
-                                padding: 0.8rem;
-                                margin-bottom: 1rem;
-                                border: 1px solid #ccc;
-                                border-radius: 4px;
-                            }
-                            form button {
-                                background-color: #0078d4;
-                                color: white;
-                                border: none;
-                                cursor: pointer;
-                            }
-                            form button:hover {
-                                background-color: #005bb5;
-                            }
-                            footer {
-                                text-align: center;
-                                padding: 1rem;
-                                background-color: #0078d4;
-                                color: white;
-                                margin-top: 2rem;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <header>
-                            <h1>Secretária Virtual</h1>
-                            <p>Gerencie seus pacientes de forma simples e eficiente</p>
-                        </header>
-                        <nav>
-                            <a href="#cadastro">Cadastrar Paciente</a>
-                            <a href="#relatorios">Relatórios</a>
-                            <a href="#configuracoes">Configurações</a>
-                        </nav>
-                        <main>
-                            <section id="cadastro">
-                                <h2>Cadastro de Pacientes</h2>
-                                <form>
-                                    <label for="nome">Nome Completo:</label>
-                                    <input type="text" id="nome" name="nome" required>
+        
 
-                                    <labbel for="idade">Idade:</labbel>
-                                    <input type="number" id="idade" name="idade" required>
-                                    
-                                    <label for="email">E-mail:</label>
-                                    <input type="email" id="email" name="email" required>
-                                    
-                                    <label for="telefone">Telefone:</label>
-                                    <input type="tel" id="telefone" name="telefone" required>
-                                    
-                                    <label for="endereco">Endereço:</label>
-                                    <textarea id="endereco" name="endereco" rows="4"></textarea>
-                                    
-                                    <button type="submit">Cadastrar</button>
-                                </form>
-                            </section>
-                            <section id="relatorios">
-                                <h2>Relatórios</h2>
-                                <p>Visualize e exporte os relatórios de atendimento.</p>
-                                <button onclick="exportar('json')">Exportar em JSON</button>
-                                <button onclick="exportar('html')">Exportar em HTML</button>
-                                <button onclick="exportar('pdf')">Exportar em PDF</button>
-                            </section>
-                            <section id="configuracoes">
-                                <h2>Configurações</h2>
-                                <p>Personalize a aplicação conforme suas necessidades.</p>
-                            </section>
-                        </main>
-                        <footer>
-                            <p>© 2025 Secretária Virtual. Todos os direitos reservados.</p>
-                        </footer>
-            
-                        <script>
-                            function exportar(formato) {
-                                alert(\`Exportando relatório em \${formato.toUpperCase()}\`);
-                            }
-                        </script>
-                    </body>
-                </html>
-            `);
+// Rota para buscar os dados do banco de dados
+        this.app.get('/pacientes', async (req, res) => {
+            try {
+                const connection = await mysql.createConnection(this.dbConfig);
+
+                const query = `
+                        SELECT id, nome, email, telefone, data_nascimento, observacoes
+                        FROM pacients;
+                    `;
+                const [rows] = await connection.execute(query);
+
+                // Garante que o tipo é uma lista de objetos
+                const pacientes = rows as Array<{
+                    id: number;
+                    nome: string;
+                    email: string;
+                    telefone: string;
+                    data_nascimento: string;
+                    observacoes: string | null;
+                }>;
+
+        await connection.end();
+
+        // Renderizar uma tabela com os dados
+        let html = `
+            <!DOCTYPE html>
+            <html lang="pt-br">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Lista de Pacientes</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 20px;
+                        padding: 0;
+                        background-color: #f5f5f5;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                    }
+                    th, td {
+                        border: 1px solid #ddd;
+                        padding: 8px;
+                        text-align: left;
+                    }
+                    th {
+                        background-color: #0078d4;
+                        color: white;
+                    }
+                    tr:nth-child(even) {
+                        background-color: #f2f2f2;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>Lista de Pacientes</h1>
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Data de Nascimento</th>
+                        <th>Observações</th>
+                    </tr>
+        `;
+
+        pacientes.forEach((paciente) => {
+            html += `
+                <tr>
+                    <td>${paciente.id}</td>
+                    <td>${paciente.nome}</td>
+                    <td>${paciente.email}</td>
+                    <td>${paciente.telefone}</td>
+                    <td>${paciente.data_nascimento}</td>
+                    <td>${paciente.observacoes || ''}</td>
+                </tr>
+            `;
         });
+
+        html += `
+                </table>
+                <a href="/">Voltar</a>
+            </body>
+            </html>
+        `;
+
+        res.send(html);
+    } catch (error) {
+        console.error('Erro ao buscar dados:', error);
+        res.status(500).send('Erro ao buscar pacientes.');
+    }
+});
 
         // Demais rotas do seu código (não alteradas)
         this.app.get('/dados', this.getData.bind(this));
         this.app.get('/gerar-relatorio', async (req: Request, res: Response) => {
             await this.generateReport();
             res.send('Relatório gerado com sucesso!');
-        });
-
-        
-
-// Rota para inserir os dados no banco de dados
-    this.app.post('/cadastrar', async (req, res) => {
-    const { nome, idade, telefone, email, endereco } = req.body;
-
-        try {
-
-            const connection = await mysql.createConnection(this.dbConfig);
-
-            const query = `
-                INSERT INTO pacientes (nome, age, phone, email, address)
-                VALUES (?, ?, ?, ?, ?);
-            `;
-            const [result] = await connection.execute(query, [
-                nome,
-                idade,
-                telefone,
-                email,
-                endereco,
-            ]);
-
-            await connection.end();
-
-            res.send(`<p>Paciente cadastrado com sucesso! ID: ${result}</p>
-                    <a href="/">Voltar</a>`);
-        }
-        catch (error) {
-            console.error('Erro ao inserir no banco:', error);
-            res.status(500).send('Erro ao cadastrar paciente.');
-        }
         });
     }
 
