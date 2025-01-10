@@ -38,15 +38,21 @@ class Server {
     private setupRoutes() {
         this.app.get('/', (req: Request, res: Response) => {
             res.send(`
-                <form action="/submit" method="POST">
-                    <label for="login">Login:</label>
-                    <input type="text" id="login" name="login" required><br><br>
-                    
-                    <label for="password">Senha:</label>
-                    <input type="password" id="senha" name="senha" required><br><br>
-                    
-                    <input type="submit" value="Enviar">
-                </form>
+                <html>
+                    <head>
+                    </head>
+                    <body>
+                        <form action="/submit" method="POST">
+                            <label for="login">Login:</label>
+                            <input type="text" id="login" name="login" required><br><br>
+                            
+                            <label for="password">Senha:</label>
+                            <input type="password" id="senha" name="senha" required><br><br>
+                            
+                            <input type="submit" value="Enviar">
+                        </form>
+                    </body>
+                </html>
             `);
         });
 
