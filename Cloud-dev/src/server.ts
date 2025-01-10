@@ -1,4 +1,4 @@
-import net from 'net';
+import * as net from 'net';
 import path from 'path';
 import dotenv from 'dotenv';
 import mysql, { Connection } from 'mysql2/promise';

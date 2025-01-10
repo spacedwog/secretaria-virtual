@@ -38,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var net_1 = require("net");
 var path_1 = require("path");
-var fs = require("fs");
 var dotenv_1 = require("dotenv");
 var promise_1 = require("mysql2/promise");
 var express_1 = require("express");
@@ -155,7 +154,6 @@ var Server = /** @class */ (function () {
                         });
                         html_1 += "\n                        </table>\n                    </body>\n                </html>";
                         res.send(html_1);
-                        fs.writeFileSync('sensor_data.json', JSON.stringify(appointment, null, 2));
                         return [3 /*break*/, 3];
                     case 2:
                         error_3 = _a.sent();
