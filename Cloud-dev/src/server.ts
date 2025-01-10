@@ -50,29 +50,6 @@ class Server {
             `);
         });
 
-        // Rota para processar os dados do formulário
-        this.app.post('/submit', async(req: Request, res: Response) => {
-            try {
-                const { login, senha } = req.body;
-        
-                if (!login || !senha) {
-                    return res.status(400).send('Login e Senha são obrigatórios!');
-                }
-        
-                // Função para buscar o usuário no banco de dados
-                const user = await this.findUser(login, senha);
-        
-                if (!user) {
-                    return res.status(404).send('Usuário não encontrado!');
-                }
-        
-                res.send(`Usuário encontrado! Login: ${user.login}, Nome: ${user.nome}`);
-            } catch (error) {
-                console.error(error); // Logando o erro
-                res.status(500).send('Erro ao processar os dados');
-            }
-        });
-
         // Demais rotas do seu código (não alteradas)
         this.app.get('/dados', this.getData.bind(this));
         this.app.get('/gerar-relatorio', async (req: Request, res: Response) => {
@@ -80,18 +57,6 @@ class Server {
             res.send('Relatório gerado com sucesso!');
         });
     }
-    
-    private async findUser(login: string, senha: string) {
-        const query = 'SELECT * FROM usuarios WHERE login = ? AND senha = ?';
-        const [rows] = await this.connection.query(query, [login, senha]);
-    
-        // Se encontrar um usuário, retorna o primeiro da lista (presumindo que login seja único)
-        if (Array.isArray(rows) && rows.length > 0) {
-            return rows[0]; // Retorna o primeiro usuário encontrado
-        }
-        return null; // Retorna null caso não encontre nenhum usuário
-    }
-    
 
     private async connectToDatabase() {
         try {
