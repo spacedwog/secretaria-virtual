@@ -380,4 +380,4 @@ class Server {
     }
 }
 
-new Server(3001);
+new Server(3000);
