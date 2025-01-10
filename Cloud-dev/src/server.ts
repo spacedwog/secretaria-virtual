@@ -37,14 +37,13 @@ class Server {
 
     private setupRoutes() {
         this.app.get('/', (req: Request, res: Response) => {
-            res.send('Servidor rodando em TypeScript com MySQL!');
             res.send(`
                 <form action="/submit" method="POST">
-                    <label for="name">Nome:</label>
-                    <input type="text" id="name" name="name" required><br><br>
+                    <label for="login">Login:</label>
+                    <input type="text" id="login" name="login" required><br><br>
                     
-                    <label for="email">E-mail:</label>
-                    <input type="email" id="email" name="email" required><br><br>
+                    <label for="password">Senha:</label>
+                    <input type="password" id="senha" name="senha" required><br><br>
                     
                     <input type="submit" value="Enviar">
                 </form>
@@ -52,12 +51,26 @@ class Server {
         });
 
         // Rota para processar os dados do formulário
-        this.app.post('/submit', (req: Request, res: Response) => {
-            const { name, email } = req.body;
-            // Aqui você pode salvar os dados no banco, por exemplo.
-            console.log('Dados do formulário:', { name, email });
-
-            res.send(`Formulário recebido! Nome: ${name}, E-mail: ${email}`);
+        this.app.post('/submit', async(req: Request, res: Response) => {
+            try {
+                const { login, senha } = req.body;
+        
+                if (!login || !senha) {
+                    return res.status(400).send('Login e Senha são obrigatórios!');
+                }
+        
+                // Função para buscar o usuário no banco de dados
+                const user = await this.findUser(login, senha);
+        
+                if (!user) {
+                    return res.status(404).send('Usuário não encontrado!');
+                }
+        
+                res.send(`Usuário encontrado! Login: ${user.login}, Nome: ${user.nome}`);
+            } catch (error) {
+                console.error(error); // Logando o erro
+                res.status(500).send('Erro ao processar os dados');
+            }
         });
 
         // Demais rotas do seu código (não alteradas)
@@ -67,6 +80,18 @@ class Server {
             res.send('Relatório gerado com sucesso!');
         });
     }
+    
+    private async findUser(login: string, senha: string) {
+        const query = 'SELECT * FROM usuarios WHERE login = ? AND senha = ?';
+        const [rows] = await this.connection.query(query, [login, senha]);
+    
+        // Se encontrar um usuário, retorna o primeiro da lista (presumindo que login seja único)
+        if (Array.isArray(rows) && rows.length > 0) {
+            return rows[0]; // Retorna o primeiro usuário encontrado
+        }
+        return null; // Retorna null caso não encontre nenhum usuário
+    }
+    
 
     private async connectToDatabase() {
         try {
