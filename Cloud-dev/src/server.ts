@@ -39,24 +39,24 @@ class Server {
         
 
 // Rota para buscar os dados do banco de dados
-        this.app.get('/pacientes', async (req, res) => {
+        this.app.get('/', async (req, res) => {
             try {
                 const connection = await mysql.createConnection(this.dbConfig);
 
                 const query = `
-                        SELECT id, nome, email, telefone, data_nascimento, observacoes
-                        FROM pacients;
+                        SELECT patient_id, name, age, phone, email, address
+                        FROM patients;
                     `;
                 const [rows] = await connection.execute(query);
 
                 // Garante que o tipo é uma lista de objetos
                 const pacientes = rows as Array<{
-                    id: number;
-                    nome: string;
+                    patient_id: number;
+                    name: string;
+                    age: number;
+                    phone: string;
                     email: string;
-                    telefone: string;
-                    data_nascimento: string;
-                    observacoes: string | null;
+                    address: string | null;
                 }>;
 
         await connection.end();
@@ -101,22 +101,22 @@ class Server {
                     <tr>
                         <th>ID</th>
                         <th>Nome</th>
-                        <th>Email</th>
+                        <th>Idade</th>
                         <th>Telefone</th>
-                        <th>Data de Nascimento</th>
-                        <th>Observações</th>
+                        <th>Email</th>
+                        <th>Endereço</th>
                     </tr>
         `;
 
         pacientes.forEach((paciente) => {
             html += `
                 <tr>
-                    <td>${paciente.id}</td>
-                    <td>${paciente.nome}</td>
+                    <td>${paciente.patient_id}</td>
+                    <td>${paciente.name}</td>
+                    <td>${paciente.age}</td>
+                    <td>${paciente.phone}</td>
                     <td>${paciente.email}</td>
-                    <td>${paciente.telefone}</td>
-                    <td>${paciente.data_nascimento}</td>
-                    <td>${paciente.observacoes || ''}</td>
+                    <td>${paciente.address ?? ''}</td>
                 </tr>
             `;
         });
