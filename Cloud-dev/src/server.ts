@@ -390,6 +390,7 @@ class Server {
 
         this.app.listen(this.port, () => {
             console.log(`Servidor rodando na porta ${this.port}`);
+            this.showMenu();
         });
 
         process.on('SIGINT', async () => {
@@ -399,8 +400,6 @@ class Server {
             console.log('Conexão com o banco de dados encerrada.');
             process.exit(0);
         });
-
-        this.showMenu();
     }
 
     private async showMenu(): Promise<void> {
