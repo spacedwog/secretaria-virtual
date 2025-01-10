@@ -2,7 +2,7 @@ import * as net from 'net';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
-import * as express from 'express';
+import express from 'express';
 import { Request, Response, NextFunction } from 'express';
 
 dotenv.config();
@@ -21,7 +21,7 @@ class Server {
     private pingInterval!: NodeJS.Timeout;
 
     constructor(port: number) {
-        this.app = express.default();
+        this.app = express();
         this.port = port;
 
         this.setupMiddlewares();
