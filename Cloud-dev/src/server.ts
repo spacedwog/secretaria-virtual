@@ -1,6 +1,6 @@
 import * as net from 'net';
-import path from 'path';
-import dotenv from 'dotenv';
+import * as path from 'path';
+import * as dotenv from 'dotenv';
 import mysql, { Connection } from 'mysql2/promise';
 import express, { Request, Response, Express, NextFunction } from 'express';
 

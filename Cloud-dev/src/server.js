@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var net_1 = require("net");
+var net = require("net");
 var path_1 = require("path");
 var dotenv_1 = require("dotenv");
 var promise_1 = require("mysql2/promise");
@@ -296,7 +296,7 @@ var Server = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var server = net_1.default.createServer();
+                        var server = net.createServer();
                         server.once('error', function (err) {
                             if (err.code === 'EADDRINUSE') {
                                 console.error("A porta ".concat(_this.port, " j\u00E1 est\u00E1 em uso."));
