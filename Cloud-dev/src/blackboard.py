@@ -29,7 +29,7 @@ class Blackboard:
 
     def send_data_to_server(self):
         """Envio de dados para o servidor TypeScript via POST."""
-        url = 'http://localhost:3000/receive-data'
+        url = 'http://localhost:3001/receive-data'
         headers = {'Content-Type': 'application/json'}
         response = requests.post(url, data=json.dumps(self.data), headers=headers)
         
