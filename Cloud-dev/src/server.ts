@@ -223,16 +223,16 @@ class Server {
     private async initialize() {
         await this.connectToDatabase();
 
+        this.app.listen(this.port, () => {
+            console.log(`Servidor rodando na porta ${this.port}`);
+        });
+
         process.on('SIGINT', async () => {
             console.log('\nEncerrando servidor...');
             clearInterval(this.pingInterval);
             await this.connection.end();
             console.log('Conexão com o banco de dados encerrada.');
             process.exit(0);
-        });
-
-        this.app.listen(this.port, () => {
-            console.log(`Servidor rodando na porta ${this.port}`);
         });
 
         this.showMenu();
