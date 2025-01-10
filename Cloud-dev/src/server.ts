@@ -1,10 +1,10 @@
-import express, { Request, Response, Express } from 'express';
-import mysql, { Connection } from 'mysql2/promise';
-import readlineSync from 'readline-sync';
 import fs from 'fs';
 import path from 'path';
-import PDFDocument from 'pdfkit';
 import dotenv from 'dotenv';
+import PDFDocument from 'pdfkit';
+import readlineSync from 'readline-sync';
+import mysql, { Connection } from 'mysql2/promise';
+import express, { Request, Response, Express } from 'express';
 
 dotenv.config();
 
