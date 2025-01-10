@@ -66,7 +66,7 @@ class Server {
         this.app.get('/gerar-relatorio', async (req: Request, res: Response) => {
             try {
                 await this.generateReport();
-                res.redirect('/paciente'); // Redireciona diretamente
+                res.redirect('/'); // Redireciona diretamente
             }
             catch (error) {
                 console.error('Erro ao gerar relatório:', error);
@@ -92,7 +92,7 @@ class Server {
 
         private async viewWebsite(req: Request, res: Response) {
             try{
-                const query = `SELECT appointment_id, patient_name, appointment_date, appointment_time, status, doctor_names FROM SELECT * FROM patient_appointments_view;`;
+                const query = `SELECT appointment_id, patient_name, appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view;`;
                 const [rows] = await this.connection.query(query);
     
                 const appointment = rows as Array<{
@@ -188,6 +188,7 @@ class Server {
                             <p>Gerencie seus pacientes de forma simples e eficiente</p>
                         </header>
                         <nav>
+                            <a href="/">Consultas Médicas</a>
                             <a href="/paciente">Lista de Pacientes</a>
                             <a href="/receita_medica">Visualizar Receita Médica</a>
                             <a href="/gerar-relatorio">Relatórios Médicos</a>
@@ -245,7 +246,7 @@ class Server {
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Lista de Pacientes</title>
+                    <title>Secretaria Virtual</title>
                     <style>
                         table { width: 100%; border-collapse: collapse; }
                         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
@@ -324,6 +325,7 @@ class Server {
                         <p>Gerencie seus pacientes de forma simples e eficiente</p>
                     </header>
                     <nav>
+                        <a href="/">Consultas Médicas</a>
                         <a href="/paciente">Lista de Pacientes</a>
                         <a href="/receita_medica">Visualizar Receita Médica</a>
                         <a href="/gerar-relatorio">Relatórios Médicos</a>
@@ -462,6 +464,7 @@ class Server {
                         <p>Gerencie seus pacientes de forma simples e eficiente</p>
                     </header>
                     <nav>
+                        <a href="/">Consultas Médicas</a>
                         <a href="/paciente">Lista de Pacientes</a>
                         <a href="/receita_medica">Visualizar Receita Médica</a>
                         <a href="/gerar-relatorio">Relatórios Médicos</a>
@@ -507,7 +510,7 @@ class Server {
     private async generateReportRoute(req: Request, res: Response) {
         await this.generateReport();
         res.send('Relatório gerado com sucesso!');
-        res.redirect('/paciente');
+        res.redirect('/');
     }
 
     private async generateReport() {
