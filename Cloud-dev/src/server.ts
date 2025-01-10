@@ -135,17 +135,33 @@ class Server {
     }
 
     private async initialize() {
-        try {
-            await this.connectToDatabase();
-            await this.checkPortAvailability();
+        
+        await this.connectToDatabase();
 
-            this.app.listen(this.port, () =>
-                console.log(`Servidor rodando em http://localhost:${this.port}`)
-            );
-        } catch (error) {
-            console.error('Erro ao inicializar o servidor:', error);
-            process.exit(1);
-        }
+        const startServer = (port: number) => {
+            this.app.listen(port, () => {
+                console.log(`Servidor rodando na porta ${port}`);
+            }).on('error', (err: any) => {
+                if (err.code === 'EADDRINUSE') {
+                    console.error(`Porta ${port} já está em uso.`);
+                    const alternativePort = port + 1;
+                    console.log(`Tentando porta alternativa ${alternativePort}...`);
+                    startServer(alternativePort);
+                } else {
+                    throw err;
+                }
+            });
+        };
+
+        startServer(this.port);
+
+        process.on('SIGINT', async () => {
+            console.log('\nEncerrando servidor...');
+            clearInterval(this.pingInterval);
+            await this.connection.end();
+            console.log('Conexão com o banco de dados encerrada.');
+            process.exit(0);
+        });
     }
 
     private async checkPortAvailability() {
