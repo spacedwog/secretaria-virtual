@@ -1,4 +1,6 @@
 # blackboard.py
+import requests
+import json
 
 class Blackboard:
     def __init__(self):
@@ -25,6 +27,17 @@ class Blackboard:
         self.add_input(key, value)
         print(f"Entrada '{key}: {value}' adicionada com sucesso!\n")
 
+    def send_data_to_server(self):
+        """Envio de dados para o servidor TypeScript via POST."""
+        url = 'http://localhost:3000/receive-data'
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(url, data=json.dumps(self.data), headers=headers)
+        
+        if response.status_code == 200:
+            print("Dados enviados para o servidor com sucesso!")
+        else:
+            print(f"Falha no envio: {response.status_code}")
+
 if __name__ == "__main__":
     # Exemplo de uso da classe Blackboard
     blackboard = Blackboard()
@@ -36,3 +49,6 @@ if __name__ == "__main__":
             break
 
     blackboard.display()
+    
+    # Envia os dados para o servidor
+    blackboard.send_data_to_server()
