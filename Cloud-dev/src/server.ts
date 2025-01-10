@@ -32,13 +32,35 @@ class Server {
 
     private setupMiddlewares() {
         this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true })); // Para processar formulários com método POST
     }
 
     private setupRoutes() {
         this.app.get('/', (req: Request, res: Response) => {
             res.send('Servidor rodando em TypeScript com MySQL!');
+            res.send(`
+                <form action="/submit" method="POST">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" required><br><br>
+                    
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" required><br><br>
+                    
+                    <input type="submit" value="Enviar">
+                </form>
+            `);
         });
 
+        // Rota para processar os dados do formulário
+        this.app.post('/submit', (req: Request, res: Response) => {
+            const { name, email } = req.body;
+            // Aqui você pode salvar os dados no banco, por exemplo.
+            console.log('Dados do formulário:', { name, email });
+
+            res.send(`Formulário recebido! Nome: ${name}, E-mail: ${email}`);
+        });
+
+        // Demais rotas do seu código (não alteradas)
         this.app.get('/dados', this.getData.bind(this));
         this.app.get('/gerar-relatorio', async (req: Request, res: Response) => {
             await this.generateReport();
@@ -80,9 +102,9 @@ class Server {
                 return;
             }
 
-            const jsonPath = path.join(__dirname+"/receitas_medicas", 'receita_medica.json');
-            const htmlPath = path.join(__dirname+"/receitas_medicas", 'receita_medica.html');
-            const pdfPath = path.join(__dirname+"/receitas_medicas", 'receita_medica.pdf');
+            const jsonPath = path.join(__dirname + "/receitas_medicas", 'receita_medica.json');
+            const htmlPath = path.join(__dirname + "/receitas_medicas", 'receita_medica.html');
+            const pdfPath = path.join(__dirname + "/receitas_medicas", 'receita_medica.pdf');
 
             fs.writeFileSync(jsonPath, JSON.stringify(rows, null, 2));
             console.log(`Relatório JSON salvo em: ${jsonPath}`);
