@@ -59,6 +59,7 @@ class Server {
     }
 
     private setupRoutes() {
+        this.app.get('/', this.viewWebsite.bind(this));
         this.app.get('/paciente', this.getPacientes.bind(this));
         this.app.get('/receita_medica', this.getReceita_medica.bind(this));
 
@@ -87,6 +88,134 @@ class Server {
             console.error('Erro ao conectar ao banco de dados:', error);
             process.exit(1);
         }
+    }
+
+    private async viewWebsite(req: Request, res: Response) {
+        const query = `SELECT appointment_id, patient_name, appointment_date, appointment_time, status, doctor_names FROM patient_appointments_view;`;
+        const [rows] = await this.connection.query(query);
+
+        const appointment = rows as Array<{
+            appointment_id: number;
+            patient_name: string;
+            appointment_date: string | null;
+            appointment_time: string | null;
+            status: string;
+            doctor_name: string;
+        }>;
+        let html = `
+        <!DOCTYPE html>
+        <html lang="pt-br">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Secretaria Virtual</title>
+            <style>
+                table { width: 100%; border-collapse: collapse; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #0078d4; color: white; }
+                tr:nth-child(even) { background-color: #f2f2f2; }
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #f5f5f5;
+                    color: #333;
+                }
+                header {
+                    background-color: #0078d4;
+                    color: white;
+                    padding: 1rem;
+                    text-align: center;
+                }
+                nav {
+                    display: flex;
+                    justify-content: center;
+                    background-color: #005bb5;
+                    padding: 0.5rem;
+                }
+                nav a {
+                    color: white;
+                    text-decoration: none;
+                    margin: 0 1rem;
+                    font-weight: bold;
+                }
+                nav a:hover {
+                    text-decoration: underline;
+                }
+                main {
+                    padding: 2rem;
+                    max-width: 800px;
+                    margin: auto;
+                    background-color: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+                form {
+                    display: flex;
+                    flex-direction: column;
+                }
+                form label {
+                    margin: 0.5rem 0 0.2rem;
+                }
+                form input, form select, form textarea, form button {
+                    padding: 0.8rem;
+                    margin-bottom: 1rem;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+                form button {
+                    background-color: #0078d4;
+                    color: white;
+                    border: none;
+                    cursor: pointer;
+                }
+                form button:hover {
+                    background-color: #005bb5;
+                }
+                footer {
+                    text-align: center;
+                    padding: 1rem;
+                    background-color: #0078d4;
+                    color: white;
+                    margin-top: 2rem;
+                }
+            </style>
+        </head>
+        <body>
+            <header>
+                <h1>Secretária Virtual</h1>
+                <p>Gerencie seus pacientes de forma simples e eficiente</p>
+            </header>
+            <nav>
+                <a href="/paciente">Lista de Pacientes</a>
+                <a href="/receita_medica">Visualizar Receita Médica</a>
+                <a href="/gerar-relatorio">Relatórios Médicos</a>
+            </nav>
+            <h1>Lista de Pacientes</h1>
+            <table>
+                <tr>
+                    <th>ID da consulta médica</th>
+                    <th>Nome do Paciente</th>
+                    <th>Data da Consulta</th>
+                    <th>Hora da Consulta</th>
+                    <th>Status da Consulta Médica</th>
+                    <th>Nome do Doutor</th>
+                </tr>`;
+                appointment.forEach((a) => {
+                    html += `
+                    <tr>
+                        <td>${a.appointment_id}</td>
+                        <td>${a.patient_name}</td>
+                        <td>${a.appointment_date}</td>
+                        <td>${a.appointment_time}</td>
+                        <td>${a.status}</td>
+                        <td>${a.doctor_name}</td>
+                    </tr>`;
+                });
+    html += `</table>
+                </body>
+    </html>`;
+    res.send(html);
     }
 
     private async getPacientes(req: Request, res: Response) {
@@ -188,6 +317,7 @@ class Server {
                         <p>Gerencie seus pacientes de forma simples e eficiente</p>
                     </header>
                     <nav>
+                        <a href="/paciente">Lista de Pacientes</a>
                         <a href="/receita_medica">Visualizar Receita Médica</a>
                         <a href="/gerar-relatorio">Relatórios Médicos</a>
                     </nav>
@@ -246,7 +376,7 @@ class Server {
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Lista de Pacientes</title>
+                    <title>Receitas Médicas</title>
                     <style>
                         table { width: 100%; border-collapse: collapse; }
                         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
@@ -325,10 +455,11 @@ class Server {
                         <p>Gerencie seus pacientes de forma simples e eficiente</p>
                     </header>
                     <nav>
+                        <a href="/paciente">Lista de Pacientes</a>
                         <a href="/receita_medica">Visualizar Receita Médica</a>
                         <a href="/gerar-relatorio">Relatórios Médicos</a>
                     </nav>
-                    <h1>Lista de Pacientes</h1>
+                    <h1>Receitas Médicas</h1>
                     <table>
                         <tr>
                             <th>ID da Receita Médica</th>
