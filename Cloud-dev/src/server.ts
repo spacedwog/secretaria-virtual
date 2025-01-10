@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import express from 'express';
 import { Request, Response, NextFunction } from 'express';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
@@ -30,6 +31,9 @@ class Server {
     }
 
     private setupMiddlewares() {
+
+        // Middleware para parsear o corpo das requisições como JSON
+        this.app.use(bodyParser.json());
         // Middleware para parse de JSON e form data
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
@@ -56,6 +60,15 @@ class Server {
         this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
             console.error('Erro no middleware:', err);
             res.status(err.status || 500).json({ error: err.message || 'Erro interno do servidor' });
+        });
+
+        // Endpoint para receber os dados do Python
+        this.app.post('/receive-data', (req: Request, res: Response) => {
+            const data = req.body;
+            console.log("Dados recebidos da Blackboard:", data);
+    
+            // Aqui você pode processar os dados conforme necessário
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
     }
 
