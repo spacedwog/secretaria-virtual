@@ -65,7 +65,7 @@ class Server {
         this.app.get('/gerar-relatorio', async (req: Request, res: Response) => {
             try {
                 await this.generateReport();
-                res.redirect('/'); // Redireciona diretamente
+                res.redirect('/paciente'); // Redireciona diretamente
             }
             catch (error) {
                 console.error('Erro ao gerar relatório:', error);
@@ -248,42 +248,116 @@ class Server {
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Lista de Pacientes</title>
                     <style>
-                        body { font-family: Arial, sans-serif; }
                         table { width: 100%; border-collapse: collapse; }
                         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
                         th { background-color: #0078d4; color: white; }
                         tr:nth-child(even) { background-color: #f2f2f2; }
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 0;
+                            padding: 0;
+                            background-color: #f5f5f5;
+                            color: #333;
+                        }
+                        header {
+                            background-color: #0078d4;
+                            color: white;
+                            padding: 1rem;
+                            text-align: center;
+                        }
+                        nav {
+                            display: flex;
+                            justify-content: center;
+                            background-color: #005bb5;
+                            padding: 0.5rem;
+                        }
+                        nav a {
+                            color: white;
+                            text-decoration: none;
+                            margin: 0 1rem;
+                            font-weight: bold;
+                        }
+                        nav a:hover {
+                            text-decoration: underline;
+                        }
+                        main {
+                            padding: 2rem;
+                            max-width: 800px;
+                            margin: auto;
+                            background-color: white;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        }
+                        form {
+                            display: flex;
+                            flex-direction: column;
+                        }
+                        form label {
+                            margin: 0.5rem 0 0.2rem;
+                        }
+                        form input, form select, form textarea, form button {
+                            padding: 0.8rem;
+                            margin-bottom: 1rem;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                        }
+                        form button {
+                            background-color: #0078d4;
+                            color: white;
+                            border: none;
+                            cursor: pointer;
+                        }
+                        form button:hover {
+                            background-color: #005bb5;
+                        }
+                        footer {
+                            text-align: center;
+                            padding: 1rem;
+                            background-color: #0078d4;
+                            color: white;
+                            margin-top: 2rem;
+                        }
                     </style>
                 </head>
                 <body>
-                    <h1>Receitas Médicas</h1>
+                    <header>
+                        <h1>Secretária Virtual</h1>
+                        <p>Gerencie seus pacientes de forma simples e eficiente</p>
+                    </header>
+                    <nav>
+                        <a href="/receita_medica">Visualizar Receita Médica</a>
+                        <a href="/gerar-relatorio">Relatórios Médicos</a>
+                    </nav>
+                    <h1>Lista de Pacientes</h1>
                     <table>
                         <tr>
-                            <th>ID</th>
+                            <th>ID da Receita Médica</th>
                             <th>Nome do Paciente</th>
-                            <th>Nome do Medicamento</th>
                             <th>Data da Prescrição</th>
+                            <th>Nome do Medicamento</th>
                             <th>Dosagem</th>
                             <th>Frequência</th>
                             <th>Duração</th>
                             <th>Observações</th>
                             <th>Nome do Médico</th>
                         </tr>`;
-            receitas.forEach((r) => {
-                html += `
-                    <tr>
-                        <td>${r.id_receita}</td>
-                        <td>${r.nome_paciente}</td>
-                        <td>${r.nome_medicamento}</td>
-                        <td>${r.data_prescricao ?? ''}</td>
-                        <td>${r.dosagem}</td>
-                        <td>${r.frequencia}</td>
-                        <td>${r.duracao}</td>
-                        <td>${r.observacoes ?? ''}</td>
-                        <td>${r.nome_medico}</td>
-                    </tr>`;
-            });
-            html += `</table></body></html>`;
+                        receitas.forEach((r) => {
+                            html += `
+                            <tr>
+                                <td>${r.id_receita}</td>
+                                <td>${r.nome_paciente}</td>
+                                <td>${r.data_prescricao ?? ''}</td>
+                                <td>${r.nome_medicamento}</td>
+                                <td>${r.dosagem}</td>
+                                <td>${r.frequencia}</td>
+                                <td>${r.duracao}</td>
+                                <td>${r.observacoes ?? ''}</td>
+                                <td>${r.nome_medico}</td>
+                            </tr>`;
+                        });
+            html += `</table>
+                        </body>
+            </html>`;
             res.send(html);
         }
         catch (error) {
