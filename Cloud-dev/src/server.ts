@@ -73,6 +73,7 @@ class Server {
     }
 
     private setupRoutes() {
+        this.app.get('/', this.viewWebsite.bind(this));
         this.app.get('/consulta_medica', this.viewWebsite.bind(this));
         this.app.get('/paciente', this.getPacientes.bind(this));
         this.app.get('/receita_medica', this.getReceita_medica.bind(this));
