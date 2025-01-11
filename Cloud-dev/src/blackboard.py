@@ -22,8 +22,8 @@ class Blackboard:
     def prompt_for_input(self):
         """Método para solicitar entradas ao usuário e adicionar à blackboard."""
         print("Digite os dados para adicionar à Blackboard:")
-        key = input("Chave: ")
-        value = input("Valor: ")
+        key = input("Medicine Type: ")
+        value = input("Medicine Code: ")
         self.add_input(key, value)
         print(f"Entrada '{key}: {value}' adicionada com sucesso!\n")
 
