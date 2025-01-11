@@ -1,4 +1,4 @@
-import readlineSync from 'readline-sync';
+import * as readlineSync from 'readline-sync';
 import { MenuPacient } from './menu-paciente';
 import { MenuSchedule } from './consulta-medica';
 import { DoctorService } from '../Back-end/doctor.service';
