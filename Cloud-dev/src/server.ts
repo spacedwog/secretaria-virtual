@@ -65,7 +65,7 @@ class Server {
         // Endpoint para receber os dados do Python
         this.app.post('/receive-data', (req: Request, res: Response) => {
             const data = req.body;
-            console.log("Dados recebidos da Blackboard:", data.pill, data);
+            console.log("Dados recebidos da Blackboard:", data);
     
             // Aqui você pode processar os dados conforme necessário
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
