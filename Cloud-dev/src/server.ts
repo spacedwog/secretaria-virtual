@@ -208,7 +208,7 @@ class Server {
                             <a href="/paciente">Lista de Pacientes</a>
                             <a href="/receita_medica">Visualizar Receita Médica</a>
                         </nav>
-                        <h1>Lista de Pacientes</h1>
+                        <h1>Consultas Médicas</h1>
                         <table>
                             <tr>
                                 <th>consulta médica</th>
