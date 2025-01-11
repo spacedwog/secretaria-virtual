@@ -203,10 +203,10 @@ class Server {
                             <p>Gerencie seus pacientes de forma simples e eficiente</p>
                         </header>
                         <nav>
+                            <a href="/">Home</a>
                             <a href="/consulta_medica">Consultas Médicas</a>
                             <a href="/paciente">Lista de Pacientes</a>
                             <a href="/receita_medica">Visualizar Receita Médica</a>
-                            <a href="/gerar-relatorio">Relatórios Médicos</a>
                         </nav>
                         <h1>Lista de Pacientes</h1>
                         <table>
@@ -341,10 +341,10 @@ class Server {
                         <p>Gerencie seus pacientes de forma simples e eficiente</p>
                     </header>
                     <nav>
+                        <a href="/">Home</a>
                         <a href="/consulta_medica">Consultas Médicas</a>
                         <a href="/paciente">Lista de Pacientes</a>
                         <a href="/receita_medica">Visualizar Receita Médica</a>
-                        <a href="/gerar-relatorio">Relatórios Médicos</a>
                     </nav>
                     <h1>Lista de Pacientes</h1>
                     <table>
@@ -480,10 +480,10 @@ class Server {
                         <p>Gerencie seus pacientes de forma simples e eficiente</p>
                     </header>
                     <nav>
+                        <a href="/">Home</a>
                         <a href="/consulta_medica">Consultas Médicas</a>
                         <a href="/paciente">Lista de Pacientes</a>
                         <a href="/receita_medica">Visualizar Receita Médica</a>
-                        <a href="/gerar-relatorio">Relatórios Médicos</a>
                     </nav>
                     <h1>Receitas Médicas</h1>
                     <table>
