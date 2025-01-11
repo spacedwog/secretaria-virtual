@@ -66,6 +66,11 @@ class Server {
         this.app.post('/receive-data', (req: Request, res: Response) => {
             const data = req.body;
             console.log("Dados recebidos da Blackboard:", data);
+
+            // Acessando os valores dentro de `data` (o JSON enviado do Python)
+            for (const [key, value] of Object.entries(data)) {
+                console.log(`Chave: ${key}, Valor: ${value}`);
+            }
     
             // Aqui você pode processar os dados conforme necessário
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
