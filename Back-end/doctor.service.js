@@ -8,97 +8,195 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DoctorService = void 0;
-const database_1 = require("./database");
-class DoctorService {
-    // Getter para inicializar e acessar a instância do Database
-    static get databaseInstance() {
-        if (!this._databaseInstance) {
-            this._databaseInstance = new database_1.Database();
-        }
-        return this._databaseInstance;
+var database_1 = require("./database");
+var DoctorService = /** @class */ (function () {
+    function DoctorService() {
     }
-    // Setter caso precise atualizar a instância do Database (se necessário)
-    static set databaseInstance(database) {
-        this._databaseInstance = database;
-    }
-    static appoitmentView() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield database_1.Database.init(); // Alterado para chamar o método estático diretamente
-                const result = yield database_1.Database.query("SELECT * FROM patient_appointments_view");
-                return result;
+    Object.defineProperty(DoctorService, "databaseInstance", {
+        // Getter para inicializar e acessar a instância do Database
+        get: function () {
+            if (!this._databaseInstance) {
+                this._databaseInstance = new database_1.Database();
             }
-            catch (error) {
-                console.error('Error listing appointments:', error);
-                throw new Error('Failed to list appointments. Please try again later.');
-            }
+            return this._databaseInstance;
+        },
+        // Setter caso precise atualizar a instância do Database (se necessário)
+        set: function (database) {
+            this._databaseInstance = database;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    DoctorService.appoitmentView = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.Database.init()];
+                    case 1:
+                        _a.sent(); // Alterado para chamar o método estático diretamente
+                        return [4 /*yield*/, database_1.Database.query("SELECT * FROM patient_appointments_view")];
+                    case 2:
+                        result = _a.sent();
+                        return [2 /*return*/, result];
+                    case 3:
+                        error_1 = _a.sent();
+                        console.error('Error listing appointments:', error_1);
+                        throw new Error('Failed to list appointments. Please try again later.');
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
-    }
-    static addDoctor(name, phone, email, speciality) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield database_1.Database.init(); // Alterado para chamar o método estático diretamente
-                yield database_1.Database.query('CALL add_doctor(?, ?, ?, ?)', [name, speciality, phone, email]);
-            }
-            catch (error) {
-                console.error('Error adding doctor:', error);
-                throw new Error('Failed to add doctor. Please check the input data and try again.');
-            }
+    };
+    DoctorService.addDoctor = function (name, phone, email, speciality) {
+        return __awaiter(this, void 0, void 0, function () {
+            var error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.Database.init()];
+                    case 1:
+                        _a.sent(); // Alterado para chamar o método estático diretamente
+                        return [4 /*yield*/, database_1.Database.query('CALL add_doctor(?, ?, ?, ?)', [name, speciality, phone, email])];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_2 = _a.sent();
+                        console.error('Error adding doctor:', error_2);
+                        throw new Error('Failed to add doctor. Please check the input data and try again.');
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
-    }
-    static visitDoctor(patientId, doctorId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield database_1.Database.init(); // Alterado para chamar o método estático diretamente
-                const currentDate = new Date();
-                const date = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
-                const time = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-                yield database_1.Database.query('CALL visit_doctor(?, ?, ?, ?)', [date, time, patientId, doctorId]);
-            }
-            catch (error) {
-                console.error('Error visiting doctor:', error);
-                throw new Error('Failed to visit doctor. Please check the input data and try again.');
-            }
+    };
+    DoctorService.visitDoctor = function (patientId, doctorId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var currentDate, date, time, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.Database.init()];
+                    case 1:
+                        _a.sent(); // Alterado para chamar o método estático diretamente
+                        currentDate = new Date();
+                        date = "".concat(currentDate.getFullYear(), "-").concat(currentDate.getMonth() + 1, "-").concat(currentDate.getDate());
+                        time = "".concat(currentDate.getHours(), ":").concat(currentDate.getMinutes());
+                        return [4 /*yield*/, database_1.Database.query('CALL visit_doctor(?, ?, ?, ?)', [date, time, patientId, doctorId])];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_3 = _a.sent();
+                        console.error('Error visiting doctor:', error_3);
+                        throw new Error('Failed to visit doctor. Please check the input data and try again.');
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
-    }
-    static recordSchedule(patient_id, doctor_id, date, time, reason, status) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield database_1.Database.init(); // Alterado para chamar o método estático diretamente
-                yield database_1.Database.query('CALL make_appointment(?, ?, ?, ?, ?, ?)', [date, time, reason, status, patient_id, doctor_id]);
-            }
-            catch (error) {
-                console.error('Error recording schedule:', error);
-                throw new Error('Failed to record schedule. Please check the input data and try again.');
-            }
+    };
+    DoctorService.recordSchedule = function (patient_id, doctor_id, date, time, reason, status) {
+        return __awaiter(this, void 0, void 0, function () {
+            var error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.Database.init()];
+                    case 1:
+                        _a.sent(); // Alterado para chamar o método estático diretamente
+                        return [4 /*yield*/, database_1.Database.query('CALL make_appointment(?, ?, ?, ?, ?, ?)', [date, time, reason, status, patient_id, doctor_id])];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_4 = _a.sent();
+                        console.error('Error recording schedule:', error_4);
+                        throw new Error('Failed to record schedule. Please check the input data and try again.');
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
-    }
-    static medicRecip(id_paciente, id_medico, id_receita, data_prescricao, observacao, nome_medicamento, frequencia, dosagem, duracao) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield database_1.Database.init(); // Alterado para chamar o método estático diretamente
-                yield database_1.Database.query('CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?)', [id_paciente, id_medico, data_prescricao, observacao, id_receita, nome_medicamento, dosagem, frequencia, duracao]);
-            }
-            catch (error) {
-                console.error('Error adding medication:', error);
-                throw new Error('Failed to add medication. Please check the input data and try again.');
-            }
+    };
+    DoctorService.medicRecip = function (id_paciente, id_medico, code_medicamento, id_receita, data_prescricao, observacao, nome_medicamento, tipo_medicamento, frequencia, dosagem, duracao) {
+        return __awaiter(this, void 0, void 0, function () {
+            var error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.Database.init()];
+                    case 1:
+                        _a.sent(); // Alterado para chamar o método estático diretamente
+                        return [4 /*yield*/, database_1.Database.query('CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [code_medicamento, id_paciente, id_medico, data_prescricao, observacao, id_receita, nome_medicamento, tipo_medicamento, dosagem, frequencia, duracao])];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_5 = _a.sent();
+                        console.error('Error adding medication:', error_5);
+                        throw new Error('Failed to add medication. Please check the input data and try again.');
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
-    }
-    static printMedicRecip(id_receita) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield database_1.Database.init(); // Alterado para chamar o método estático diretamente
-                const result = yield database_1.Database.query('SELECT * FROM vw_receitas_detalhadas WHERE id_receita = ?', [id_receita]);
-                return result;
-            }
-            catch (error) {
-                console.error('Error printing medication:', error);
-                throw new Error('Failed to print medication. Please check the input data and try again.');
-            }
+    };
+    DoctorService.printMedicRecip = function (id_receita) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, error_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1.Database.init()];
+                    case 1:
+                        _a.sent(); // Alterado para chamar o método estático diretamente
+                        return [4 /*yield*/, database_1.Database.query('SELECT * FROM vw_receitas_detalhadas WHERE id_receita = ?', [id_receita])];
+                    case 2:
+                        result = _a.sent();
+                        return [2 /*return*/, result];
+                    case 3:
+                        error_6 = _a.sent();
+                        console.error('Error printing medication:', error_6);
+                        throw new Error('Failed to print medication. Please check the input data and try again.');
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
-    }
-}
+    };
+    return DoctorService;
+}());
 exports.DoctorService = DoctorService;

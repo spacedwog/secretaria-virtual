@@ -8,122 +8,208 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MenuSchedule = void 0;
-const readline_sync_1 = __importDefault(require("readline-sync"));
-const doctor_service_1 = require("../Back-end/doctor.service");
-class MenuSchedule {
-    consultaMedica() {
-        return __awaiter(this, void 0, void 0, function* () {
-            let option;
-            do {
-                console.log('\n--- Painel de consulta médica ---');
-                console.log('1. Listar Consultas');
-                console.log('2. Adicionar Doutor');
-                console.log('3. Registrar Visita');
-                console.log('4. Agendar Consulta');
-                console.log('v. Voltar');
-                option = readline_sync_1.default.question('Escolha uma opcao: ');
-                switch (option) {
-                    case '1':
-                        yield this.listAppoitment();
-                        break;
-                    case '2':
-                        yield this.addDoctor();
-                        break;
-                    case '3':
-                        yield this.registerVisit();
-                        break;
-                    case '4':
-                        yield this.recordSchedule();
-                        break;
-                    case 'v':
+var readline_sync_1 = require("readline-sync");
+var doctor_service_1 = require("../Back-end/doctor.service");
+var MenuSchedule = /** @class */ (function () {
+    function MenuSchedule() {
+    }
+    MenuSchedule.prototype.consultaMedica = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var option, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        console.log('\n--- Painel de consulta médica ---');
+                        console.log('1. Listar Consultas');
+                        console.log('2. Adicionar Doutor');
+                        console.log('3. Registrar Visita');
+                        console.log('4. Agendar Consulta');
+                        console.log('v. Voltar');
+                        option = readline_sync_1.default.question('Escolha uma opcao: ');
+                        _a = option;
+                        switch (_a) {
+                            case '1': return [3 /*break*/, 1];
+                            case '2': return [3 /*break*/, 3];
+                            case '3': return [3 /*break*/, 5];
+                            case '4': return [3 /*break*/, 7];
+                            case 'v': return [3 /*break*/, 9];
+                        }
+                        return [3 /*break*/, 10];
+                    case 1: return [4 /*yield*/, this.listAppoitment()];
+                    case 2:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 3: return [4 /*yield*/, this.addDoctor()];
+                    case 4:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 5: return [4 /*yield*/, this.registerVisit()];
+                    case 6:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 7: return [4 /*yield*/, this.recordSchedule()];
+                    case 8:
+                        _b.sent();
+                        return [3 /*break*/, 11];
+                    case 9:
                         console.log('Saindo do sistema...');
-                        break;
-                    default:
+                        return [3 /*break*/, 11];
+                    case 10:
                         console.log('Opcao invalida. Tente novamente.');
+                        _b.label = 11;
+                    case 11:
+                        if (option !== 'v') return [3 /*break*/, 0];
+                        _b.label = 12;
+                    case 12: return [2 /*return*/];
                 }
-            } while (option !== 'v');
+            });
         });
-    }
+    };
     // Listar todos os pacientes
-    listAppoitment() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const appoitments = yield doctor_service_1.DoctorService.appoitmentView();
-                console.log('\n--- Lista de Consultas Médicas ---');
-                appoitments.forEach((appoitment) => {
-                    const date = new Date(appoitment.appointment_date).toDateString();
-                    const paciente = appoitment.patient_name;
-                    const doutor = appoitment.doctor_name;
-                    const time = appoitment.appointment_time;
-                    const status = appoitment.status;
-                    console.table([
-                        {
-                            Paciente: paciente,
-                            Doutor: doutor,
-                            Data: date,
-                            Hora: time,
-                            Status: status,
-                        },
-                    ]);
-                });
-            }
-            catch (err) {
-                console.error('Erro ao listar consultas medicas:', err);
-            }
+    MenuSchedule.prototype.listAppoitment = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var appoitments, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, doctor_service_1.DoctorService.appoitmentView()];
+                    case 1:
+                        appoitments = _a.sent();
+                        console.log('\n--- Lista de Consultas Médicas ---');
+                        appoitments.forEach(function (appoitment) {
+                            var date = new Date(appoitment.appointment_date).toDateString();
+                            var paciente = appoitment.patient_name;
+                            var doutor = appoitment.doctor_name;
+                            var time = appoitment.appointment_time;
+                            var status = appoitment.status;
+                            console.table([
+                                {
+                                    Paciente: paciente,
+                                    Doutor: doutor,
+                                    Data: date,
+                                    Hora: time,
+                                    Status: status,
+                                },
+                            ]);
+                        });
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_1 = _a.sent();
+                        console.error('Erro ao listar consultas medicas:', err_1);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
         });
-    }
+    };
     // Adicionar um novo doutor
-    addDoctor() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const name = readline_sync_1.default.question('Nome do doutor: ');
-                const phone = readline_sync_1.default.question('Telefone: ');
-                const email = readline_sync_1.default.question('Email: ');
-                const speciality = readline_sync_1.default.question('Especialidade: ');
-                yield doctor_service_1.DoctorService.addDoctor(name, phone, email, speciality);
-                console.log('Doutor adicionado com sucesso!');
-            }
-            catch (err) {
-                console.error('Erro ao adicionar doutor:', err);
-            }
+    MenuSchedule.prototype.addDoctor = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var name_1, phone, email, speciality, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        name_1 = readline_sync_1.default.question('Nome do doutor: ');
+                        phone = readline_sync_1.default.question('Telefone: ');
+                        email = readline_sync_1.default.question('Email: ');
+                        speciality = readline_sync_1.default.question('Especialidade: ');
+                        return [4 /*yield*/, doctor_service_1.DoctorService.addDoctor(name_1, phone, email, speciality)];
+                    case 1:
+                        _a.sent();
+                        console.log('Doutor adicionado com sucesso!');
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_2 = _a.sent();
+                        console.error('Erro ao adicionar doutor:', err_2);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
         });
-    }
+    };
     // Registrar visita
-    registerVisit() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
-                const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
-                yield doctor_service_1.DoctorService.visitDoctor(patientId, doctorId);
-                console.log('Visita ao consultório medico registrada com sucesso!');
-            }
-            catch (err) {
-                console.error('Erro ao registrar visita:', err);
-            }
+    MenuSchedule.prototype.registerVisit = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var patientId, doctorId, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
+                        doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
+                        return [4 /*yield*/, doctor_service_1.DoctorService.visitDoctor(patientId, doctorId)];
+                    case 1:
+                        _a.sent();
+                        console.log('Visita ao consultório medico registrada com sucesso!');
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_3 = _a.sent();
+                        console.error('Erro ao registrar visita:', err_3);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
         });
-    }
+    };
     // Agendar consulta
-    recordSchedule() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
-                const doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
-                const appoitmentDate = readline_sync_1.default.question('Data da consulta (aaaa/mm/dd): ');
-                const appoitmentTime = readline_sync_1.default.question('Horario da consulta (hh:mm): ');
-                const reason = readline_sync_1.default.question('Motivo da consulta: ');
-                const status = readline_sync_1.default.question('Status da consulta (agendado/realizado): ');
-                yield doctor_service_1.DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status);
-                console.log('Consulta agendada com sucesso!');
-            }
-            catch (err) {
-                console.error('Erro ao agendar consulta:', err);
-            }
+    MenuSchedule.prototype.recordSchedule = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var patientId, doctorId, appoitmentDate, appoitmentTime, reason, status_1, err_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
+                        doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
+                        appoitmentDate = readline_sync_1.default.question('Data da consulta (aaaa/mm/dd): ');
+                        appoitmentTime = readline_sync_1.default.question('Horario da consulta (hh:mm): ');
+                        reason = readline_sync_1.default.question('Motivo da consulta: ');
+                        status_1 = readline_sync_1.default.question('Status da consulta (agendado/realizado): ');
+                        return [4 /*yield*/, doctor_service_1.DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status_1)];
+                    case 1:
+                        _a.sent();
+                        console.log('Consulta agendada com sucesso!');
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_4 = _a.sent();
+                        console.error('Erro ao agendar consulta:', err_4);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
         });
-    }
-}
+    };
+    return MenuSchedule;
+}());
 exports.MenuSchedule = MenuSchedule;
