@@ -18,8 +18,20 @@ class Server {
         database: process.env.DB_NAME ?? 'secretaria_virtual',
         connectTimeout: 10000,
     };
+    private readonly dbRemidConfig = {
+
+        host: process.env.DB_REMID_HOST?? 'localhost',
+        user: process.env.DB_REMID_USER?? 'root',
+        password: process.env.DB_REMID_PASSWORD?? '6z2h1j3k9F!',
+        database: process.env.DB_REMID_NAME??'gerenciamentomedicamentos',
+        connectTimeout: 10000,
+
+    }
     private connection!: mysql.Connection;
     private pingInterval!: NodeJS.Timeout;
+
+    private tipo_medicamento: string = "";
+    private code_medicamento: string = "";
 
     constructor(port: number) {
         this.app = express();
@@ -70,6 +82,11 @@ class Server {
             // Acessando os valores dentro de `data` (o JSON enviado do Python)
             for (const [key, value] of Object.entries(data)) {
                 console.log(`Chave: ${key}, Valor: ${value}`);
+
+                this.setTipo_medicamento(data.key);
+                this.setCode_medicamento(data.value);
+
+                console.log("Data.Key: " + data.key);
             }
     
             // Aqui você pode processar os dados conforme necessário
@@ -584,6 +601,20 @@ class Server {
             });
             server.listen(this.port);
         });
+    }
+
+    public getTipo_medicamento(){
+        return this.tipo_medicamento;
+    }
+    public getCode_medicamento(){
+        return this.code_medicamento;
+    }
+
+    public setTipo_medicamento(tipo_medicamento: string){
+        this.tipo_medicamento = tipo_medicamento;
+    }
+    public setCode_medicamento(code_medicamento: string){
+        this.code_medicamento = code_medicamento;
     }
 }
 

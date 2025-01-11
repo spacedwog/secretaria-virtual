@@ -70,8 +70,10 @@ class MenuStarter {
 
       const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
       const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
+      const codeMedicamento = readlineSync.question('Codigo do medicamento: ');
       const recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
       const recipName = readlineSync.question('Nome do medicamento: ');
+      const tipoMedicamento = readlineSync.question('Tipo do medicamento: ');
       const dataMed = readlineSync.question('Data da medicacao (aaaa/mm/dd): ');
       const recipQuantity = readlineSync.question('Dosagem da medicacao: ');
       const frequencyMed = readlineSync.question('Frequência de medicacao: ');
@@ -81,10 +83,12 @@ class MenuStarter {
       await DoctorService.medicRecip(
         patientId,
         doctorId,
+        codeMedicamento,
         recipId,
         dataMed,
         observation,
         recipName,
+        tipoMedicamento,
         frequencyMed,
         recipQuantity,
         consumation);

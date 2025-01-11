@@ -87,10 +87,12 @@ export class DoctorService {
   static async medicRecip(
     id_paciente: number,
     id_medico: number,
+    code_medicamento: string,
     id_receita: number,
     data_prescricao: string,
     observacao: string,
     nome_medicamento: string,
+    tipo_medicamento: string,
     frequencia: string,
     dosagem: string,
     duracao: string
@@ -98,8 +100,8 @@ export class DoctorService {
     try {
       await Database.init(); // Alterado para chamar o método estático diretamente
       await Database.query(
-        'CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [id_paciente, id_medico, data_prescricao, observacao, id_receita, nome_medicamento, dosagem, frequencia, duracao]
+        'CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [code_medicamento, id_paciente, id_medico, data_prescricao, observacao, id_receita, nome_medicamento, tipo_medicamento, dosagem, frequencia, duracao]
       );
     } catch (error) {
       console.error('Error adding medication:', error);
