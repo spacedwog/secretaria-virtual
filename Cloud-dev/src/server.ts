@@ -73,7 +73,7 @@ class Server {
     }
 
     private setupRoutes() {
-        this.app.get('/', this.viewWebsite.bind(this));
+        this.app.get('/consulta_medica', this.viewWebsite.bind(this));
         this.app.get('/paciente', this.getPacientes.bind(this));
         this.app.get('/receita_medica', this.getReceita_medica.bind(this));
 
@@ -106,11 +106,11 @@ class Server {
 
         private async viewWebsite(req: Request, res: Response) {
             try{
-                const query = `SELECT appointment_id, patient_name, appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view;`;
+                const query = `SELECT nome_consulta_medica, patient_name, DATE_FORMAT(appointment_date, '%d/%M/%Y') as appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view;`;
                 const [rows] = await this.connection.query(query);
     
                 const appointment = rows as Array<{
-                    appointment_id: number;
+                    nome_consulta_medica: string;
                     patient_name: string;
                     appointment_date: string | null;
                     appointment_time: string | null;
@@ -202,7 +202,7 @@ class Server {
                             <p>Gerencie seus pacientes de forma simples e eficiente</p>
                         </header>
                         <nav>
-                            <a href="/">Consultas Médicas</a>
+                            <a href="/consulta_medica">Consultas Médicas</a>
                             <a href="/paciente">Lista de Pacientes</a>
                             <a href="/receita_medica">Visualizar Receita Médica</a>
                             <a href="/gerar-relatorio">Relatórios Médicos</a>
@@ -210,7 +210,7 @@ class Server {
                         <h1>Lista de Pacientes</h1>
                         <table>
                             <tr>
-                                <th>ID da consulta médica</th>
+                                <th>consulta médica</th>
                                 <th>Nome do Paciente</th>
                                 <th>Data da Consulta</th>
                                 <th>Hora da Consulta</th>
@@ -220,7 +220,7 @@ class Server {
                             appointment.forEach((a) => {
                                 html += `
                                 <tr>
-                                    <td>${a.appointment_id}</td>
+                                    <td>${a.nome_consulta_medica}</td>
                                     <td>${a.patient_name}</td>
                                     <td>${a.appointment_date}</td>
                                     <td>${a.appointment_time}</td>
@@ -340,7 +340,7 @@ class Server {
                         <p>Gerencie seus pacientes de forma simples e eficiente</p>
                     </header>
                     <nav>
-                        <a href="/">Consultas Médicas</a>
+                        <a href="/consulta_medica">Consultas Médicas</a>
                         <a href="/paciente">Lista de Pacientes</a>
                         <a href="/receita_medica">Visualizar Receita Médica</a>
                         <a href="/gerar-relatorio">Relatórios Médicos</a>
@@ -379,7 +379,7 @@ class Server {
 
     private async getReceita_medica(req: Request, res: Response) {
         try {
-            const query = `SELECT id_receita, nome_paciente, nome_medicamento, data_prescricao, dosagem, frequencia, duracao, observacoes, nome_medico FROM vw_receitas_detalhadas;`;
+            const query = `SELECT id_receita, nome_paciente, nome_medicamento, DATE_FORMAT(data_prescricao, '%d/%M/%Y') as data_prescricao, dosagem, frequencia, duracao, observacoes, nome_medico FROM vw_receitas_detalhadas;`;
             const [rows] = await this.connection.query(query);
 
             const receitas = rows as Array<{
@@ -479,7 +479,7 @@ class Server {
                         <p>Gerencie seus pacientes de forma simples e eficiente</p>
                     </header>
                     <nav>
-                        <a href="/">Consultas Médicas</a>
+                        <a href="/consulta_medica">Consultas Médicas</a>
                         <a href="/paciente">Lista de Pacientes</a>
                         <a href="/receita_medica">Visualizar Receita Médica</a>
                         <a href="/gerar-relatorio">Relatórios Médicos</a>
