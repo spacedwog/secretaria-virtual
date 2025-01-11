@@ -46,7 +46,7 @@ var Database = /** @class */ (function () {
             return __generator(this, function (_a) {
                 if (!this.pool) {
                     this.pool = mysql2_1.default.createPool({
-                        host: '127.0.0.1',
+                        host: 'localhost',
                         user: 'root',
                         password: '6z2h1j3k9F!',
                         database: 'secretaria_virtual',

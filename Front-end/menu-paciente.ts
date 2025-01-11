@@ -1,4 +1,4 @@
-import readlineSync from 'readline-sync';
+import * as readlineSync from 'readline-sync';
 import { PatientService } from '../Back-end/patient.service';
 
 export class MenuPacient {

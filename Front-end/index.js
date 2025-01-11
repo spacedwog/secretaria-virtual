@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var readline_sync_1 = require("readline-sync");
+var readlineSync = require("readline-sync");
 var menu_paciente_1 = require("./menu-paciente");
 var consulta_medica_1 = require("./consulta-medica");
 var doctor_service_1 = require("../Back-end/doctor.service");
@@ -57,7 +57,7 @@ var MenuStarter = /** @class */ (function () {
                         console.log('4. Imprimir Receita Médica');
                         console.log('5. Sair');
                         // Captura a escolha do usuário
-                        option = readline_sync_1.default.question('Escolha uma opcao: ');
+                        option = readlineSync.question('Escolha uma opcao: ');
                         _a = option;
                         switch (_a) {
                             case '1': return [3 /*break*/, 1];
@@ -151,17 +151,17 @@ var MenuStarter = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
-                        doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
-                        codeMedicamento = readline_sync_1.default.question('Codigo do medicamento: ');
-                        recipId = parseInt(readline_sync_1.default.question('ID do medicamento: '), 10);
-                        recipName = readline_sync_1.default.question('Nome do medicamento: ');
-                        tipoMedicamento = readline_sync_1.default.question('Tipo do medicamento: ');
-                        dataMed = readline_sync_1.default.question('Data da medicacao (aaaa/mm/dd): ');
-                        recipQuantity = readline_sync_1.default.question('Dosagem da medicacao: ');
-                        frequencyMed = readline_sync_1.default.question('Frequência de medicacao: ');
-                        consumation = readline_sync_1.default.question('Duracao da dose: ');
-                        observation = readline_sync_1.default.question('Observacoes: ');
+                        patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
+                        doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
+                        codeMedicamento = readlineSync.question('Codigo do medicamento: ');
+                        recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
+                        recipName = readlineSync.question('Nome do medicamento: ');
+                        tipoMedicamento = readlineSync.question('Tipo do medicamento: ');
+                        dataMed = readlineSync.question('Data da medicacao (aaaa/mm/dd): ');
+                        recipQuantity = readlineSync.question('Dosagem da medicacao: ');
+                        frequencyMed = readlineSync.question('Frequência de medicacao: ');
+                        consumation = readlineSync.question('Duracao da dose: ');
+                        observation = readlineSync.question('Observacoes: ');
                         return [4 /*yield*/, doctor_service_1.DoctorService.medicRecip(patientId, doctorId, codeMedicamento, recipId, dataMed, observation, recipName, tipoMedicamento, frequencyMed, recipQuantity, consumation)];
                     case 1:
                         _a.sent();
@@ -182,7 +182,7 @@ var MenuStarter = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        recipId = parseInt(readline_sync_1.default.question('ID do medicamento: '), 10);
+                        recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
                         return [4 /*yield*/, doctor_service_1.DoctorService.printMedicRecip(recipId)];
                     case 1:
                         receitas = _a.sent();

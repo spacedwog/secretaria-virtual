@@ -1,4 +1,4 @@
-import mysql from 'mysql2';
+import * as mysql from 'mysql2';
 
 export class Database {
   

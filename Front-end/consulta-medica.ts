@@ -1,4 +1,4 @@
-import readlineSync from 'readline-sync';
+import * as readlineSync from 'readline-sync';
 import { DoctorService } from '../Back-end/doctor.service';
 
 export class MenuSchedule {
