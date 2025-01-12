@@ -109,11 +109,11 @@ export class DoctorService {
     }
   }
 
-  static async printMedicRecip(id_receita: number): Promise<any[]> {
+  static async printMedicRecip(id_medicamento: number): Promise<any[]> {
     try {
       await Database.init(); // Alterado para chamar o método estático diretamente
       const result = await Database.query('SELECT * FROM vw_receitas_detalhadas WHERE id_medicamento = ?',
-        [id_receita]
+        [id_medicamento]
       );
       return result;
     } catch (error) {
