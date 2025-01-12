@@ -174,7 +174,7 @@ var DoctorService = /** @class */ (function () {
             });
         });
     };
-    DoctorService.printMedicRecip = function (id_receita) {
+    DoctorService.printMedicRecip = function (id_medicamento) {
         return __awaiter(this, void 0, void 0, function () {
             var result, error_6;
             return __generator(this, function (_a) {
@@ -184,7 +184,7 @@ var DoctorService = /** @class */ (function () {
                         return [4 /*yield*/, database_1.Database.init()];
                     case 1:
                         _a.sent(); // Alterado para chamar o método estático diretamente
-                        return [4 /*yield*/, database_1.Database.query('SELECT * FROM vw_receitas_detalhadas WHERE id_receita = ?', [id_receita])];
+                        return [4 /*yield*/, database_1.Database.query('SELECT * FROM vw_receitas_detalhadas WHERE id_medicamento = ?', [id_medicamento])];
                     case 2:
                         result = _a.sent();
                         return [2 /*return*/, result];
