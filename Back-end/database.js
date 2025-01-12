@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Database = void 0;
-var mysql2_1 = require("mysql2");
+var mysql = require("mysql2");
 var Database = /** @class */ (function () {
     function Database() {
     }
@@ -45,7 +45,7 @@ var Database = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (!this.pool) {
-                    this.pool = mysql2_1.default.createPool({
+                    this.pool = mysql.createPool({
                         host: 'localhost',
                         user: 'root',
                         password: '6z2h1j3k9F!',

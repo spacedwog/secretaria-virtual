@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MenuPacient = void 0;
-var readline_sync_1 = require("readline-sync");
+var readlineSync = require("readline-sync");
 var patient_service_1 = require("../Back-end/patient.service");
 var MenuPacient = /** @class */ (function () {
     function MenuPacient() {
@@ -54,7 +54,7 @@ var MenuPacient = /** @class */ (function () {
                         console.log('3. Editar Paciente');
                         console.log('4. Excluir Paciente');
                         console.log('v. Voltar');
-                        option = readline_sync_1.default.question('Escolha uma opcao: ');
+                        option = readlineSync.question('Escolha uma opcao: ');
                         _a = option;
                         switch (_a) {
                             case '1': return [3 /*break*/, 1];
@@ -136,11 +136,11 @@ var MenuPacient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        name_1 = readline_sync_1.default.question('Nome do paciente: ');
-                        age = parseInt(readline_sync_1.default.question('Idade: '), 10);
-                        phone = readline_sync_1.default.question('Telefone: ');
-                        email = readline_sync_1.default.question('Email: ');
-                        address = readline_sync_1.default.question('Endereco: ');
+                        name_1 = readlineSync.question('Nome do paciente: ');
+                        age = parseInt(readlineSync.question('Idade: '), 10);
+                        phone = readlineSync.question('Telefone: ');
+                        email = readlineSync.question('Email: ');
+                        address = readlineSync.question('Endereco: ');
                         return [4 /*yield*/, patient_service_1.PatientService.addPatient(name_1, age, phone, email, address)];
                     case 1:
                         _a.sent();
@@ -163,21 +163,21 @@ var MenuPacient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 4, , 5]);
-                        patientId = parseInt(readline_sync_1.default.question('ID do paciente a ser editado: '), 10);
+                        patientId = parseInt(readlineSync.question('ID do paciente a ser editado: '), 10);
                         fieldsToUpdate = {};
-                        name_2 = readline_sync_1.default.question('Novo nome (deixe vazio para nao alterar): ');
+                        name_2 = readlineSync.question('Novo nome (deixe vazio para nao alterar): ');
                         if (name_2)
                             fieldsToUpdate.name = name_2;
-                        age = readline_sync_1.default.question('Nova idade (deixe vazio para nao alterar): ');
+                        age = readlineSync.question('Nova idade (deixe vazio para nao alterar): ');
                         if (age)
                             fieldsToUpdate.age = parseInt(age, 10);
-                        phone = readline_sync_1.default.question('Novo telefone (deixe vazio para nao alterar): ');
+                        phone = readlineSync.question('Novo telefone (deixe vazio para nao alterar): ');
                         if (phone)
                             fieldsToUpdate.phone = phone;
-                        email = readline_sync_1.default.question('Novo email (deixe vazio para nao alterar): ');
+                        email = readlineSync.question('Novo email (deixe vazio para nao alterar): ');
                         if (email)
                             fieldsToUpdate.email = email;
-                        address = readline_sync_1.default.question('Novo endereco (deixe vazio para nao alterar): ');
+                        address = readlineSync.question('Novo endereco (deixe vazio para nao alterar): ');
                         if (address)
                             fieldsToUpdate.address = address;
                         if (!(Object.keys(fieldsToUpdate).length > 0)) return [3 /*break*/, 2];
@@ -207,7 +207,7 @@ var MenuPacient = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        patientId = parseInt(readline_sync_1.default.question('ID do paciente a ser excluido: '), 10);
+                        patientId = parseInt(readlineSync.question('ID do paciente a ser excluido: '), 10);
                         return [4 /*yield*/, patient_service_1.PatientService.deletePatient(patientId)];
                     case 1:
                         _a.sent();

@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MenuSchedule = void 0;
-var readline_sync_1 = require("readline-sync");
+var readlineSync = require("readline-sync");
 var doctor_service_1 = require("../Back-end/doctor.service");
 var MenuSchedule = /** @class */ (function () {
     function MenuSchedule() {
@@ -54,7 +54,7 @@ var MenuSchedule = /** @class */ (function () {
                         console.log('3. Registrar Visita');
                         console.log('4. Agendar Consulta');
                         console.log('v. Voltar');
-                        option = readline_sync_1.default.question('Escolha uma opcao: ');
+                        option = readlineSync.question('Escolha uma opcao: ');
                         _a = option;
                         switch (_a) {
                             case '1': return [3 /*break*/, 1];
@@ -140,10 +140,10 @@ var MenuSchedule = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        name_1 = readline_sync_1.default.question('Nome do doutor: ');
-                        phone = readline_sync_1.default.question('Telefone: ');
-                        email = readline_sync_1.default.question('Email: ');
-                        speciality = readline_sync_1.default.question('Especialidade: ');
+                        name_1 = readlineSync.question('Nome do doutor: ');
+                        phone = readlineSync.question('Telefone: ');
+                        email = readlineSync.question('Email: ');
+                        speciality = readlineSync.question('Especialidade: ');
                         return [4 /*yield*/, doctor_service_1.DoctorService.addDoctor(name_1, phone, email, speciality)];
                     case 1:
                         _a.sent();
@@ -166,8 +166,8 @@ var MenuSchedule = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
-                        doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
+                        patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
+                        doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
                         return [4 /*yield*/, doctor_service_1.DoctorService.visitDoctor(patientId, doctorId)];
                     case 1:
                         _a.sent();
@@ -190,12 +190,12 @@ var MenuSchedule = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        patientId = parseInt(readline_sync_1.default.question('ID do paciente: '), 10);
-                        doctorId = parseInt(readline_sync_1.default.question('ID do doutor: '), 10);
-                        appoitmentDate = readline_sync_1.default.question('Data da consulta (aaaa/mm/dd): ');
-                        appoitmentTime = readline_sync_1.default.question('Horario da consulta (hh:mm): ');
-                        reason = readline_sync_1.default.question('Motivo da consulta: ');
-                        status_1 = readline_sync_1.default.question('Status da consulta (agendado/realizado): ');
+                        patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
+                        doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
+                        appoitmentDate = readlineSync.question('Data da consulta (aaaa/mm/dd): ');
+                        appoitmentTime = readlineSync.question('Horario da consulta (hh:mm): ');
+                        reason = readlineSync.question('Motivo da consulta: ');
+                        status_1 = readlineSync.question('Status da consulta (agendado/realizado): ');
                         return [4 /*yield*/, doctor_service_1.DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status_1)];
                     case 1:
                         _a.sent();
