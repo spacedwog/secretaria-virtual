@@ -6,7 +6,7 @@ import time
 
 
 class Blackboard:
-    def __init__(self, arduino_port="COM3", baud_rate=9600):
+    def __init__(self, arduino_port="COM4", baud_rate=9600):
         self.data = {}
         self.arduino = None
 
