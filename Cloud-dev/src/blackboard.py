@@ -1,22 +1,20 @@
-# blackboard.py
+#blackboard.py
 import requests
 import json
-
-try:
-    import RPi.GPIO as GPIO  # Biblioteca para controle do GPIO na Raspberry Pi
-except ImportError:
-    GPIO = None  # Para permitir testes em sistemas sem GPIO
+import serial  # Para comunicação com o Arduino
 
 class Blackboard:
-    def __init__(self):
+    def __init__(self, arduino_port="COM4", baud_rate=16000):
         self.data = {}
-        self.led_pin = 18  # Pino GPIO para o LED (ajuste conforme necessário)
+        self.arduino = None
 
-        if GPIO:
-            # Configuração inicial do GPIO
-            GPIO.setmode(GPIO.BCM)  # Modo de numeração dos pinos
-            GPIO.setup(self.led_pin, GPIO.OUT)  # Configura o pino como saída
-            GPIO.output(self.led_pin, GPIO.LOW)  # Garante que o LED começa apagado
+        # Tenta conectar ao Arduino
+        try:
+            self.arduino = serial.Serial(arduino_port, baud_rate, timeout=1)
+            print(f"Conectado ao Arduino na porta {arduino_port}.")
+        except serial.SerialException as e:
+            print(f"Erro ao conectar ao Arduino: {e}")
+            self.arduino = None
 
     def add_input(self, key, value):
         """Adiciona um novo dado à blackboard com uma chave específica."""
@@ -41,7 +39,7 @@ class Blackboard:
 
     def send_data_to_server(self):
         """Envio de dados para o servidor TypeScript via POST."""
-        url = 'http://localhost:3000/receive-data'
+        url = 'http://localhost:3001/receive-data'
         headers = {'Content-Type': 'application/json'}
         response = requests.post(url, data=json.dumps(self.data), headers=headers)
         
@@ -51,24 +49,22 @@ class Blackboard:
             print(f"Falha no envio: {response.status_code}")
 
     def control_led(self, state):
-        """Controla o estado do LED (ON ou OFF)."""
-        if GPIO:
-            if state.lower() == 'on':
-                GPIO.output(self.led_pin, GPIO.HIGH)
-                print("LED ligado.")
-            elif state.lower() == 'off':
-                GPIO.output(self.led_pin, GPIO.LOW)
-                print("LED desligado.")
+        """Envia comandos para o Arduino controlar o LED."""
+        if self.arduino:
+            if state.lower() in ['on', 'off']:
+                command = state.upper()  # Arduino espera "ON" ou "OFF"
+                self.arduino.write(f"{command}\n".encode())  # Envia o comando via serial
+                print(f"Comando '{command}' enviado ao Arduino.")
             else:
                 print("Estado inválido. Use 'on' ou 'off'.")
         else:
-            print("Controle de LED não disponível. Certifique-se de estar em um dispositivo compatível com GPIO.")
+            print("Arduino não está conectado.")
 
     def cleanup(self):
-        """Limpa a configuração do GPIO antes de sair."""
-        if GPIO:
-            GPIO.cleanup()
-            print("Configuração do GPIO limpa.")
+        """Fecha a conexão com o Arduino."""
+        if self.arduino:
+            self.arduino.close()
+            print("Conexão com o Arduino encerrada.")
 
 if __name__ == "__main__":
     blackboard = Blackboard()
