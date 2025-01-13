@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as express from 'express';
 import { Request, Response, NextFunction } from 'express';
-import bodyParser from 'body-parser';
+import * as bodyParser from 'body-parser';
 
 dotenv.config();
 
