@@ -83,10 +83,8 @@ class Server {
             for (const [key, value] of Object.entries(data)) {
                 console.log(`Chave: ${key}, Valor: ${value}`);
 
-                this.setTipo_medicamento(data.key);
-                this.setCode_medicamento(data.value);
-
-                console.log("Data.Key: " + data.key);
+                this.setTipo_medicamento(key);
+                this.setCode_medicamento(""+value);
             }
     
             // Aqui você pode processar os dados conforme necessário
@@ -95,7 +93,7 @@ class Server {
     }
 
     private setupRoutes() {
-        this.app.get('/', this.viewWebsite.bind(this));
+        this.app.get('/', this.viewMedicInfo.bind(this));
         this.app.get('/consulta_medica', this.viewWebsite.bind(this));
         this.app.get('/paciente', this.getPacientes.bind(this));
         this.app.get('/receita_medica', this.getReceita_medica.bind(this));
@@ -127,20 +125,166 @@ class Server {
         }
     }
 
-        private async viewWebsite(req: Request, res: Response) {
-            try{
-                const query = `SELECT nome_consulta_medica, patient_name, DATE_FORMAT(appointment_date, '%d/%M/%Y') as appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view;`;
-                const [rows] = await this.connection.query(query);
+    private async viewMedicInfo(req: Request, res: Response) {
+        try{
+            const tipo_medicamento = this.getTipo_medicamento().toString();
+            const code_medicamento = this.getCode_medicamento().toString();
+            const query = "SELECT * FROM medicamento_info WHERE tipo_do_medicamento = '${tipo_medicamento}' AND med_code = '${code_medicamento}'";
+            const [rows] = await this.connection.query(query);
     
-                const appointment = rows as Array<{
-                    nome_consulta_medica: string;
-                    patient_name: string;
-                    appointment_date: string | null;
-                    appointment_time: string | null;
-                    status: string;
-                    doctor_name: string;
-                }>;
-                let html = `
+            const medicamento = rows as Array<{
+                med_code: string;
+                nome_do_medicamento: string;
+                tipo_medicamento: string;
+                dosagem_do_medicamento: string;
+                frequencia_de_administracao: string;
+                duracao_da_administracao: string;
+                observacoes_do_medicamento: string;
+                data_da_prescricao: string | null;
+            }>;
+            let html = `
+                <!DOCTYPE html>
+                <html lang="pt-br">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Secretaria Virtual</title>
+                        <style>
+                            table { width: 100%; border-collapse: collapse; }
+                            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                            th { background-color: #0078d4; color: white; }
+                            tr:nth-child(even) { background-color: #f2f2f2; }
+                            body {
+                                font-family: Arial, sans-serif;
+                                margin: 0;
+                                padding: 0;
+                                background-color: #f5f5f5;
+                                color: #333;
+                            }
+                            header {
+                                background-color: #0078d4;
+                                color: white;
+                                padding: 1rem;
+                                text-align: center;
+                            }
+                            nav {
+                                display: flex;
+                                justify-content: center;
+                                background-color: #005bb5;
+                                padding: 0.5rem;
+                            }
+                            nav a {
+                                color: white;
+                                text-decoration: none;
+                                margin: 0 1rem;
+                                font-weight: bold;
+                            }
+                            nav a:hover {
+                                text-decoration: underline;
+                            }
+                            main {
+                                padding: 2rem;
+                                max-width: 800px;
+                                margin: auto;
+                                background-color: white;
+                                border-radius: 8px;
+                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                            }
+                            form {
+                                display: flex;
+                                flex-direction: column;
+                            }
+                            form label {
+                                margin: 0.5rem 0 0.2rem;
+                            }
+                            form input, form select, form textarea, form button {
+                                padding: 0.8rem;
+                                margin-bottom: 1rem;
+                                border: 1px solid #ccc;
+                                border-radius: 4px;
+                            }
+                            form button {
+                                background-color: #0078d4;
+                                color: white;
+                                border: none;
+                                cursor: pointer;
+                            }
+                            form button:hover {
+                                background-color: #005bb5;
+                            }
+                            footer {
+                                text-align: center;
+                                padding: 1rem;
+                                background-color: #0078d4;
+                                color: white;
+                                margin-top: 2rem;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <header>
+                            <h1>Secretária Virtual</h1>
+                            <p>Gerencie seus pacientes de forma simples e eficiente</p>
+                        </header>
+                        <nav>
+                            <a href="/">Home</a>
+                            <a href="/consulta_medica">Consultas Médicas</a>
+                            <a href="/paciente">Lista de Pacientes</a>
+                            <a href="/receita_medica">Visualizar Receita Médica</a>
+                        </nav>
+                        <h1>Informações do Medicamento</h1>
+                        <table>
+                            <tr>
+                                <th>Código do Medicamento</th>
+                                <th>Nome do Medicamento</th>
+                                <th>Tipo do Medicamento</th>
+                                <th>Dosagem do Medicamento</th>
+                                <th>Frequencia de Administração</th>
+                                <th>Duração da Administração</th>
+                                <th>Observações do Medicamento</th>
+                                <th>Data da Prescrição</th>
+                            </tr>`;
+                            </tr>`;
+                            medicamento.forEach((m) => {
+                                html += `
+                                <tr>
+                                    <td>${m.med_code}</td>
+                                    <td>${m.nome_do_medicamento}</td>
+                                    <td>${m.tipo_medicamento}</td>
+                                    <td>${m.dosagem_do_medicamento}</td>
+                                    <td>${m.frequencia_de_administracao}</td>
+                                    <td>${m.duracao_da_administracao}</td>
+                                    <td>${m.observacoes_do_medicamento}</td>
+                                    <td>${m.data_da_prescricao}</td>
+                                </tr>`;
+                            });
+                                html += `
+                        </table>
+                    </body>
+                </html>`;
+                res.send(html);
+                
+        }
+        catch (error) {
+            console.error('Erro ao executar consulta:', error);
+            res.status(500).send('Erro ao carregar dados.');
+        }
+    }
+
+    private async viewWebsite(req: Request, res: Response) {
+        try{
+            const query = `SELECT nome_consulta_medica, patient_name, DATE_FORMAT(appointment_date, '%d/%M/%Y') as appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view;`;
+            const [rows] = await this.connection.query(query);
+    
+            const appointment = rows as Array<{
+                nome_consulta_medica: string;
+                patient_name: string;
+                appointment_date: string | null;
+                appointment_time: string | null;
+                status: string;
+                doctor_name: string;
+            }>;
+            let html = `
                 <!DOCTYPE html>
                 <html lang="pt-br">
                     <head>
@@ -257,11 +401,11 @@ class Server {
                 </html>`;
                 res.send(html);
                 
-            }
-            catch (error) {
-                console.error('Erro ao executar consulta:', error);
-                res.status(500).send('Erro ao carregar dados.');
-            }
+        }
+        catch (error) {
+            console.error('Erro ao executar consulta:', error);
+            res.status(500).send('Erro ao carregar dados.');
+        }
     }
 
     private async getPacientes(req: Request, res: Response) {
