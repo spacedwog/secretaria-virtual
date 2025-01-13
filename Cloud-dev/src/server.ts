@@ -30,8 +30,8 @@ class Server {
     private connection!: mysql.Connection;
     private pingInterval!: NodeJS.Timeout;
 
-    private tipo_medicamento: string = "";
-    private code_medicamento: string = "";
+    private tipo_medicamento: string = "%";
+    private code_medicamento: string = "%";
 
     constructor(port: number) {
         this.app = express();
@@ -129,13 +129,17 @@ class Server {
         try{
             const tipo_medicamento = this.getTipo_medicamento().toString();
             const code_medicamento = this.getCode_medicamento().toString();
-            const query = "SELECT * FROM medicamento_info WHERE tipo_do_medicamento = '${tipo_medicamento}' AND med_code = '${code_medicamento}'";
+            const select = "SELECT * ";
+            const tabela = "FROM medicamento_info ";
+            const condicao = "WHERE tipo_do_medicamento = '"+ tipo_medicamento +"' AND med_code = '"+ code_medicamento +"' ";
+            const query = select + tabela + condicao;
+            console.log(query)
             const [rows] = await this.connection.query(query);
     
             const medicamento = rows as Array<{
                 med_code: string;
                 nome_do_medicamento: string;
-                tipo_medicamento: string;
+                tipo_do_medicamento: string;
                 dosagem_do_medicamento: string;
                 frequencia_de_administracao: string;
                 duracao_da_administracao: string;
@@ -249,7 +253,7 @@ class Server {
                                 <tr>
                                     <td>${m.med_code}</td>
                                     <td>${m.nome_do_medicamento}</td>
-                                    <td>${m.tipo_medicamento}</td>
+                                    <td>${m.tipo_do_medicamento}</td>
                                     <td>${m.dosagem_do_medicamento}</td>
                                     <td>${m.frequencia_de_administracao}</td>
                                     <td>${m.duracao_da_administracao}</td>
