@@ -244,7 +244,6 @@ class Server {
                                 <th>Observações do Medicamento</th>
                                 <th>Data da Prescrição</th>
                             </tr>`;
-                            </tr>`;
                             medicamento.forEach((m) => {
                                 html += `
                                 <tr>
