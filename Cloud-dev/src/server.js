@@ -41,7 +41,7 @@ var path = require("path");
 var dotenv = require("dotenv");
 var mysql = require("mysql2/promise");
 var express = require("express");
-var body_parser_1 = require("body-parser");
+var bodyParser = require("body-parser");
 dotenv.config();
 var Server = /** @class */ (function () {
     function Server(port) {
@@ -71,7 +71,7 @@ var Server = /** @class */ (function () {
     Server.prototype.setupMiddlewares = function () {
         var _this = this;
         // Middleware para parsear o corpo das requisições como JSON
-        this.app.use(body_parser_1.default.json());
+        this.app.use(bodyParser.json());
         // Middleware para parse de JSON e form data
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
