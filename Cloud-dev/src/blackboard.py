@@ -55,11 +55,11 @@ class Blackboard:
         except requests.RequestException as e:
             print(f"Erro ao conectar ao servidor: {e}")
 
-    def control_led(self, led_number, state):
-        """Envia comandos para o Arduino controlar LEDs individuais ou múltiplos."""
+    def control_led(self, state):
+        """Envia comandos para o Arduino controlar o LED."""
         if self.arduino:
             if state.lower() in ['on', 'off']:
-                command = f"{led_number}:{state.upper()}"  # Formato: "LED_NUMBER:STATE"
+                command = state.upper()  # Arduino espera "ON" ou "OFF"
                 self.arduino.write(f"{command}\n".encode())  # Envia o comando via serial
                 print(f"Comando '{command}' enviado ao Arduino.")
                 time.sleep(0.1)  # Delay para garantir a entrega
@@ -80,19 +80,17 @@ if __name__ == "__main__":
 
     try:
         while True:
-            action = input("Escolha uma ação (add, send, led, display, exit): ").strip().lower()
+            action = input("Escolha uma ação (add, send, display, exit): ").strip().lower()
             if action == "add":
                 blackboard.prompt_for_input()
             elif action == "send":
                 blackboard.send_data_to_server()
-            elif action == "led":
-                led_number = input("Digite o número do LED (ou 'all' para todos): ").strip().lower()
-                state = input("Digite o estado do LED (on/off): ").strip().lower()
-                blackboard.control_led(led_number, state)
+                blackboard.control_led('on')
             elif action == "display":
                 blackboard.display()
             elif action == "exit":
                 print("Saindo do programa.")
+                blackboard.control_led('off')
                 break
             else:
                 print("Ação inválida. Tente novamente.")
