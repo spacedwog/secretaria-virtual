@@ -1,6 +1,6 @@
 import requests
-import json
 import serial  # Para comunicação com o Arduino
+import json
 import time
 
 
@@ -68,6 +68,19 @@ class Blackboard:
         else:
             print("Arduino não está conectado.")
 
+    def control_relay(self, state):
+        """Controla o estado do relé."""
+        if self.arduino:
+            if state.lower() in ['on', 'off']:
+                command = f"RELAY_{state.upper()}"  # Envia comando como 'RELAY_ON' ou 'RELAY_OFF'
+                self.arduino.write(f"{command}\n".encode())
+                print(f"Comando '{command}' enviado para o relé.")
+                time.sleep(0.1)  # Delay para garantir a entrega
+            else:
+                print("Estado inválido. Use 'on' ou 'off'.")
+        else:
+            print("Arduino não está conectado.")
+
     def cleanup(self):
         """Fecha a conexão com o Arduino."""
         if self.arduino:
@@ -80,17 +93,23 @@ if __name__ == "__main__":
 
     try:
         while True:
-            action = input("Escolha uma ação (add, send, display, exit): ").strip().lower()
+            action = input("Escolha uma ação (add, send, display, led, relay, exit): ").strip().lower()
             if action == "add":
                 blackboard.prompt_for_input()
             elif action == "send":
                 blackboard.send_data_to_server()
-                blackboard.control_led('on')
             elif action == "display":
                 blackboard.display()
+            elif action == "led":
+                state = input("Digite o estado do LED (on/off): ").strip()
+                blackboard.control_led(state)
+            elif action == "relay":
+                state = input("Digite o estado do relé (on/off): ").strip()
+                blackboard.control_relay(state)
             elif action == "exit":
                 print("Saindo do programa.")
                 blackboard.control_led('off')
+                blackboard.control_relay('off')
                 break
             else:
                 print("Ação inválida. Tente novamente.")
