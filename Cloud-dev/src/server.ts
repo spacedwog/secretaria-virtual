@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import express from 'express';
+import axios from "axios";
 import {Request, Response, NextFunction } from 'express';
 import * as bodyParser from 'body-parser';
 
@@ -553,11 +554,11 @@ class Server {
 
     private async getReceita_medica(req: Request, res: Response) {
         try {
-            const query = `SELECT id_receita, nome_paciente, nome_medicamento, DATE_FORMAT(data_prescricao, '%d/%M/%Y') as data_prescricao, dosagem, frequencia, duracao, observacoes, nome_medico FROM vw_receitas_detalhadas;`;
+            const query = `SELECT id_medicamento, nome_paciente, nome_medicamento, DATE_FORMAT(data_prescricao, '%d/%M/%Y') as data_prescricao, dosagem, frequencia, duracao, observacoes, nome_medico FROM vw_receitas_detalhadas;`;
             const [rows] = await this.connection.query(query);
 
             const receitas = rows as Array<{
-                id_receita: number;
+                id_medicamento: number;
                 nome_paciente: string;
                 nome_medicamento: number;
                 data_prescricao: string | null;
@@ -674,7 +675,7 @@ class Server {
                         receitas.forEach((r) => {
                             html += `
                             <tr>
-                                <td>${r.id_receita}</td>
+                                <td>${r.id_medicamento}</td>
                                 <td>${r.nome_paciente}</td>
                                 <td>${r.data_prescricao ?? ''}</td>
                                 <td>${r.nome_medicamento}</td>
