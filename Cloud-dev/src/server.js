@@ -40,7 +40,7 @@ var net = require("net");
 var path = require("path");
 var dotenv = require("dotenv");
 var mysql = require("mysql2/promise");
-var express = require("express");
+var express_1 = require("express");
 var bodyParser = require("body-parser");
 dotenv.config();
 var Server = /** @class */ (function () {
@@ -62,7 +62,7 @@ var Server = /** @class */ (function () {
         };
         this.tipo_medicamento = "";
         this.code_medicamento = "";
-        this.app = express();
+        this.app = (0, express_1.default)();
         this.port = port;
         this.setupMiddlewares();
         this.setupRoutes();
@@ -73,8 +73,8 @@ var Server = /** @class */ (function () {
         // Middleware para parsear o corpo das requisições como JSON
         this.app.use(bodyParser.json());
         // Middleware para parse de JSON e form data
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express_1.default.json());
+        this.app.use(express_1.default.urlencoded({ extended: true }));
         // Middleware para logar as requisições
         this.app.use(function (req, res, next) {
             console.log("[".concat(new Date().toISOString(), "] ").concat(req.method, " ").concat(req.url, " - User-Agent: ").concat(req.headers['user-agent']));
@@ -82,7 +82,7 @@ var Server = /** @class */ (function () {
         });
         // Middleware para servir arquivos estáticos
         var staticPath = path.join(__dirname, 'public');
-        this.app.use(express.static(staticPath));
+        this.app.use(express_1.default.static(staticPath));
         // Middleware para configurar headers (ex.: CORS)
         this.app.use(function (req, res, next) {
             res.setHeader('Access-Control-Allow-Origin', '*');
@@ -166,21 +166,28 @@ var Server = /** @class */ (function () {
     };
     Server.prototype.viewMedicInfo = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var tipo_medicamento, code_medicamento, query, rows, medicamento, html_1, error_3;
+            var tipo_medicamento, code_medicamento, select, tabela, condicao, query, rows, medicamento, html_1, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         tipo_medicamento = this.getTipo_medicamento().toString();
                         code_medicamento = this.getCode_medicamento().toString();
-                        query = "SELECT * FROM medicamento_info WHERE tipo_do_medicamento = '${tipo_medicamento}' AND med_code = '${code_medicamento}'";
+                        select = "SELECT * ";
+                        tabela = "FROM medicamento_info ";
+                        condicao = "";
+                        if (tipo_medicamento != "" || code_medicamento != "") {
+                            condicao = "WHERE tipo_do_medicamento = '" + tipo_medicamento + "' AND med_code = '" + code_medicamento + "' ";
+                        }
+                        query = select + tabela + condicao;
+                        console.log(query);
                         return [4 /*yield*/, this.connection.query(query)];
                     case 1:
                         rows = (_a.sent())[0];
                         medicamento = rows;
                         html_1 = "\n                <!DOCTYPE html>\n                <html lang=\"pt-br\">\n                    <head>\n                        <meta charset=\"UTF-8\">\n                        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n                        <title>Secretaria Virtual</title>\n                        <style>\n                            table { width: 100%; border-collapse: collapse; }\n                            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }\n                            th { background-color: #0078d4; color: white; }\n                            tr:nth-child(even) { background-color: #f2f2f2; }\n                            body {\n                                font-family: Arial, sans-serif;\n                                margin: 0;\n                                padding: 0;\n                                background-color: #f5f5f5;\n                                color: #333;\n                            }\n                            header {\n                                background-color: #0078d4;\n                                color: white;\n                                padding: 1rem;\n                                text-align: center;\n                            }\n                            nav {\n                                display: flex;\n                                justify-content: center;\n                                background-color: #005bb5;\n                                padding: 0.5rem;\n                            }\n                            nav a {\n                                color: white;\n                                text-decoration: none;\n                                margin: 0 1rem;\n                                font-weight: bold;\n                            }\n                            nav a:hover {\n                                text-decoration: underline;\n                            }\n                            main {\n                                padding: 2rem;\n                                max-width: 800px;\n                                margin: auto;\n                                background-color: white;\n                                border-radius: 8px;\n                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n                            }\n                            form {\n                                display: flex;\n                                flex-direction: column;\n                            }\n                            form label {\n                                margin: 0.5rem 0 0.2rem;\n                            }\n                            form input, form select, form textarea, form button {\n                                padding: 0.8rem;\n                                margin-bottom: 1rem;\n                                border: 1px solid #ccc;\n                                border-radius: 4px;\n                            }\n                            form button {\n                                background-color: #0078d4;\n                                color: white;\n                                border: none;\n                                cursor: pointer;\n                            }\n                            form button:hover {\n                                background-color: #005bb5;\n                            }\n                            footer {\n                                text-align: center;\n                                padding: 1rem;\n                                background-color: #0078d4;\n                                color: white;\n                                margin-top: 2rem;\n                            }\n                        </style>\n                    </head>\n                    <body>\n                        <header>\n                            <h1>Secret\u00E1ria Virtual</h1>\n                            <p>Gerencie seus pacientes de forma simples e eficiente</p>\n                        </header>\n                        <nav>\n                            <a href=\"/\">Home</a>\n                            <a href=\"/consulta_medica\">Consultas M\u00E9dicas</a>\n                            <a href=\"/paciente\">Lista de Pacientes</a>\n                            <a href=\"/receita_medica\">Visualizar Receita M\u00E9dica</a>\n                        </nav>\n                        <h1>Informa\u00E7\u00F5es do Medicamento</h1>\n                        <table>\n                            <tr>\n                                <th>C\u00F3digo do Medicamento</th>\n                                <th>Nome do Medicamento</th>\n                                <th>Tipo do Medicamento</th>\n                                <th>Dosagem do Medicamento</th>\n                                <th>Frequencia de Administra\u00E7\u00E3o</th>\n                                <th>Dura\u00E7\u00E3o da Administra\u00E7\u00E3o</th>\n                                <th>Observa\u00E7\u00F5es do Medicamento</th>\n                                <th>Data da Prescri\u00E7\u00E3o</th>\n                            </tr>";
                         medicamento.forEach(function (m) {
-                            html_1 += "\n                                <tr>\n                                    <td>".concat(m.med_code, "</td>\n                                    <td>").concat(m.nome_do_medicamento, "</td>\n                                    <td>").concat(m.tipo_medicamento, "</td>\n                                    <td>").concat(m.dosagem_do_medicamento, "</td>\n                                    <td>").concat(m.frequencia_de_administracao, "</td>\n                                    <td>").concat(m.duracao_da_administracao, "</td>\n                                    <td>").concat(m.observacoes_do_medicamento, "</td>\n                                    <td>").concat(m.data_da_prescricao, "</td>\n                                </tr>");
+                            html_1 += "\n                                <tr>\n                                    <td>".concat(m.med_code, "</td>\n                                    <td>").concat(m.nome_do_medicamento, "</td>\n                                    <td>").concat(m.tipo_do_medicamento, "</td>\n                                    <td>").concat(m.dosagem_do_medicamento, "</td>\n                                    <td>").concat(m.frequencia_de_administracao, "</td>\n                                    <td>").concat(m.duracao_da_administracao, "</td>\n                                    <td>").concat(m.observacoes_do_medicamento, "</td>\n                                    <td>").concat(m.data_da_prescricao, "</td>\n                                </tr>");
                         });
                         html_1 += "\n                        </table>\n                    </body>\n                </html>";
                         res.send(html_1);
