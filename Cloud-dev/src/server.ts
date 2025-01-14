@@ -3,7 +3,6 @@ import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import express from 'express';
-import axios from "axios";
 import {Request, Response, NextFunction } from 'express';
 import * as bodyParser from 'body-parser';
 
@@ -28,7 +27,7 @@ class Server {
         connectTimeout: 10000,
 
     }
-    
+
     private connection!: mysql.Connection;
     private pingInterval!: NodeJS.Timeout;
 
@@ -95,9 +94,10 @@ class Server {
     }
 
     private setupRoutes() {
+
         this.app.get('/', this.viewMedicInfo.bind(this));
-        this.app.get('/consulta_medica', this.viewWebsite.bind(this));
         this.app.get('/paciente', this.getPacientes.bind(this));
+        this.app.get('/consulta_medica', this.viewWebsite.bind(this));
         this.app.get('/receita_medica', this.getReceita_medica.bind(this));
 
         this.app.get('/gerar-relatorio', async (req: Request, res: Response) => {
@@ -419,7 +419,7 @@ class Server {
 
     private async getPacientes(req: Request, res: Response) {
         try {
-            const query = `SELECT patient_id, name, age, phone, email, address FROM patients;`;
+            const query = `SELECT * from pacient_view;`;
             const [rows] = await this.connection.query(query);
 
             const pacientes = rows as Array<{
@@ -429,6 +429,8 @@ class Server {
                 phone: string;
                 email: string;
                 address: string | null;
+                visit_date: string | null;
+                visit_time: string | null;
             }>;
 
             let html = `
@@ -530,6 +532,8 @@ class Server {
                             <th>Telefone</th>
                             <th>Email</th>
                             <th>Endereço</th>
+                            <th>Data da Visita</th>
+                            <th>Hora da Visita</th>
                         </tr>`;
                         pacientes.forEach((p) => {
                             html += `
@@ -540,6 +544,8 @@ class Server {
                                 <td>${p.phone}</td>
                                 <td>${p.email}</td>
                                 <td>${p.address ?? ''}</td>
+                                <td>${p.visit_date ?? ''}</td>
+                                <td>${p.visit_time ?? ''}</td>
                             </tr>`;
                         });
             html += `</table>
