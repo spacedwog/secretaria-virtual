@@ -419,7 +419,7 @@ class Server {
 
     private async getPacientes(req: Request, res: Response) {
         try {
-            const query = `SELECT * from pacient_view;`;
+            const query = `SELECT patient_id, name, age, phone, email, address, DATE_FORMAT(visit_date, '%d/%M/%Y') AS visit_date, visit_time from pacient_view;`;
             const [rows] = await this.connection.query(query);
 
             const pacientes = rows as Array<{
