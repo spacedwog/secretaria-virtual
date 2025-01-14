@@ -43,7 +43,7 @@ var getMessage = function () { return __awaiter(void 0, void 0, void 0, function
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, axios_1.default.get("http://127.0.0.1:8000/hello")];
+                return [4 /*yield*/, axios_1.default.get("http://127.0.0.1:8001/hello")];
             case 1:
                 response = _a.sent();
                 console.log(response.data.message);
