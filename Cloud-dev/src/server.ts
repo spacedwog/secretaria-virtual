@@ -28,6 +28,7 @@ class Server {
         connectTimeout: 10000,
 
     }
+    
     private connection!: mysql.Connection;
     private pingInterval!: NodeJS.Timeout;
 
