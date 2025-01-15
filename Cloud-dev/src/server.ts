@@ -2,11 +2,11 @@ import * as net from 'net';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
-import * as express from 'express';
+import express from 'express';
 import {Request, Response, NextFunction } from 'express';
 import * as bodyParser from 'body-parser';
 import * as axios from 'axios';
-import { exec } from 'child_process';
+import { executeExpoStart } from '../../Front-end/index';
 
 dotenv.config();
 
@@ -17,25 +17,6 @@ interface Entry {
 
 interface EntriesPayload {
     entries: Entry[];
-}
-
-    // Função para executar o comando
-function executeExpoStart(): void {
-    console.log('Iniciando o Expo...');
-    const process = exec('npx expo start');
-
-    // Captura e exibe a saída do comando
-    process.stdout?.on('data', (data) => {
-        console.log(data.toString());
-    });
-
-    process.stderr?.on('data', (data) => {
-        console.error(`Erro: ${data.toString()}`);
-    });
-
-    process.on('close', (code) => {
-        console.log(`Processo finalizado com o código ${code}`);
-    });
 }
 
 class Server {

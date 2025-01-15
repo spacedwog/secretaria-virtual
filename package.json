@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "Cloud-dev/src/server.js",
   "scripts": {
-    "start": "npx kill-port 3000 && ts-node-dev Cloud-dev/src/server.ts",
+    "start": "npx kill-port 3000 && ts-node-dev Cloud-dev/src/server.js",
     "test": "jest"
   },
   "keywords": [],
