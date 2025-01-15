@@ -42,24 +42,7 @@ var dotenv = require("dotenv");
 var mysql = require("mysql2/promise");
 var express = require("express");
 var bodyParser = require("body-parser");
-var child_process_1 = require("child_process");
 dotenv.config();
-// Função para executar o comando
-function executeExpoStart() {
-    var _a, _b;
-    console.log('Iniciando o Expo...');
-    var process = (0, child_process_1.exec)('npx expo start');
-    // Captura e exibe a saída do comando
-    (_a = process.stdout) === null || _a === void 0 ? void 0 : _a.on('data', function (data) {
-        console.log(data.toString());
-    });
-    (_b = process.stderr) === null || _b === void 0 ? void 0 : _b.on('data', function (data) {
-        console.error("Erro: ".concat(data.toString()));
-    });
-    process.on('close', function (code) {
-        console.log("Processo finalizado com o c\u00F3digo ".concat(code));
-    });
-}
 var Server = /** @class */ (function () {
     function Server(port) {
         var _a, _b, _c, _d, _e, _f, _g, _h;
@@ -169,8 +152,6 @@ var Server = /** @class */ (function () {
                         console.log('Conexão com o banco de dados estabelecida!');
                         this.pingInterval = setInterval(function () {
                             _this.connection.ping().then(function () { return console.log('Ping ao banco de dados.'); }).catch(console.error);
-                            // Chamando a função
-                            executeExpoStart();
                         }, 10000);
                         return [3 /*break*/, 3];
                     case 2:
