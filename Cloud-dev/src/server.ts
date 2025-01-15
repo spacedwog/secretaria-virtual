@@ -2,10 +2,10 @@ import * as net from 'net';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
-import express from 'express';
+import * as express from 'express';
 import {Request, Response, NextFunction } from 'express';
 import * as bodyParser from 'body-parser';
-import axios from 'axios';
+import * as axios from 'axios';
 import { exec } from 'child_process';
 
 dotenv.config();

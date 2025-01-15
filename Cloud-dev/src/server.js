@@ -42,7 +42,24 @@ var dotenv = require("dotenv");
 var mysql = require("mysql2/promise");
 var express_1 = require("express");
 var bodyParser = require("body-parser");
+var child_process_1 = require("child_process");
 dotenv.config();
+// Função para executar o comando
+function executeExpoStart() {
+    var _a, _b;
+    console.log('Iniciando o Expo...');
+    var process = (0, child_process_1.exec)('npx expo start');
+    // Captura e exibe a saída do comando
+    (_a = process.stdout) === null || _a === void 0 ? void 0 : _a.on('data', function (data) {
+        console.log(data.toString());
+    });
+    (_b = process.stderr) === null || _b === void 0 ? void 0 : _b.on('data', function (data) {
+        console.error("Erro: ".concat(data.toString()));
+    });
+    process.on('close', function (code) {
+        console.log("Processo finalizado com o c\u00F3digo ".concat(code));
+    });
+}
 var Server = /** @class */ (function () {
     function Server(port) {
         var _a, _b, _c, _d, _e, _f, _g, _h;
@@ -62,6 +79,7 @@ var Server = /** @class */ (function () {
         };
         this.tipo_medicamento = "";
         this.code_medicamento = "";
+        this.nome_da_tarefa = "";
         this.app = (0, express_1.default)();
         this.port = port;
         this.setupMiddlewares();
@@ -97,15 +115,14 @@ var Server = /** @class */ (function () {
         });
         // Endpoint para receber os dados do Python
         this.app.post('/receive-data', function (req, res) {
-            var data = req.body;
-            console.log("Dados recebidos da Blackboard:", data);
+            var payload = req.body;
+            console.log("Dados recebidos da Blackboard:", payload);
             // Acessando os valores dentro de `data` (o JSON enviado do Python)
-            for (var _i = 0, _a = Object.entries(data); _i < _a.length; _i++) {
-                var _b = _a[_i], key = _b[0], value = _b[1];
-                console.log("Chave: ".concat(key, ", Valor: ").concat(value));
-                _this.setTipo_medicamento(key);
-                _this.setCode_medicamento("" + value);
-            }
+            payload.entries.forEach(function (entry) {
+                console.log("Chave: ".concat(entry.key, ", Valor: ").concat(entry.value));
+                _this.setTipo_medicamento(entry.key);
+                _this.setCode_medicamento(entry.value);
+            });
             // Aqui você pode processar os dados conforme necessário
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
@@ -152,6 +169,8 @@ var Server = /** @class */ (function () {
                         console.log('Conexão com o banco de dados estabelecida!');
                         this.pingInterval = setInterval(function () {
                             _this.connection.ping().then(function () { return console.log('Ping ao banco de dados.'); }).catch(console.error);
+                            // Chamando a função
+                            executeExpoStart();
                         }, 10000);
                         return [3 /*break*/, 3];
                     case 2:
@@ -173,7 +192,7 @@ var Server = /** @class */ (function () {
                         _a.trys.push([0, 2, , 3]);
                         tipo_medicamento = this.getTipo_medicamento().toString();
                         code_medicamento = this.getCode_medicamento().toString();
-                        select = "SELECT * ";
+                        select = "SELECT med_code, nome_do_medicamento, tipo_do_medicamento, dosagem_do_medicamento, frequencia_de_administracao, duracao_da_administracao, observacoes_do_medicamento, DATE_FORMAT(data_da_prescricao, '%d/%M/%Y') AS data_da_prescricao ";
                         tabela = "FROM medicamento_info ";
                         condicao = "";
                         if (tipo_medicamento != "" || code_medicamento != "") {
@@ -238,7 +257,7 @@ var Server = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        query = "SELECT * from pacient_view;";
+                        query = "SELECT patient_id, name, age, phone, email, address, DATE_FORMAT(visit_date, '%d/%M/%Y') AS visit_date, visit_time from pacient_view;";
                         return [4 /*yield*/, this.connection.query(query)];
                     case 1:
                         rows = (_a.sent())[0];
@@ -384,11 +403,17 @@ var Server = /** @class */ (function () {
     Server.prototype.getCode_medicamento = function () {
         return this.code_medicamento;
     };
+    Server.prototype.getNome_da_tarefa = function () {
+        return this.nome_da_tarefa;
+    };
     Server.prototype.setTipo_medicamento = function (tipo_medicamento) {
         this.tipo_medicamento = tipo_medicamento;
     };
     Server.prototype.setCode_medicamento = function (code_medicamento) {
         this.code_medicamento = code_medicamento;
+    };
+    Server.prototype.setNome_da_tarefa = function (nome_da_tarefa) {
+        this.nome_da_tarefa = nome_da_tarefa;
     };
     return Server;
 }());
