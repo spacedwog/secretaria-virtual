@@ -23,7 +23,8 @@ class MockGPIO:
 GPIO = MockGPIO()  # Usando o mock GPIO
 
 class LEDController:
-    def __init__(self, pin=18):
+    def __init__(self, pin=13):
+        
         self.pin = pin
         GPIO.setmode(GPIO.BCM)  # Definindo o modo do GPIO
         GPIO.setup(self.pin, GPIO.OUT)  # Configurando o pino
