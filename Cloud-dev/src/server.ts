@@ -6,7 +6,6 @@ import express from 'express';
 import {Request, Response, NextFunction } from 'express';
 import * as bodyParser from 'body-parser';
 import * as axios from 'axios';
-import { executeExpoStart } from '../../Front-end/index';
 
 dotenv.config();
 

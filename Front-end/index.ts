@@ -4,25 +4,6 @@ import { MenuPacient } from './menu-paciente';
 import { MenuSchedule } from './consulta-medica';
 import { DoctorService } from '../Back-end/doctor.service';
 
-// Função para executar o comando
-export function executeExpoStart(): void {
-    console.log('Iniciando o Expo...');
-    const process = exec('npx expo start');
-
-    // Captura e exibe a saída do comando
-    process.stdout?.on('data', (data) => {
-        console.log(data.toString());
-    });
-
-    process.stderr?.on('data', (data) => {
-        console.error(`Erro: ${data.toString()}`);
-    });
-
-    process.on('close', (code) => {
-        console.log(`Processo finalizado com o código ${code}`);
-    });
-}
-
 class MenuStarter {
   // Método principal do menu
   public async menuPrincipal() {
