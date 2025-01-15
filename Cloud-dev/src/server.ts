@@ -77,11 +77,21 @@ class Server {
 
         // Endpoint para receber os dados do Python
         this.app.post('/receive-data', (req: Request, res: Response) => {
-            const data = req.body;
-            console.log("Dados recebidos da Blackboard:", data);
+            interface Entry {
+                key: string;
+                value: string;
+              }
+              
+              interface EntriesPayload {
+                entries: Entry[];
+              }
+
+            const payload: EntriesPayload = req.body;
+
+            console.log("Dados recebidos da Blackboard:", payload);
 
             // Acessando os valores dentro de `data` (o JSON enviado do Python)
-            for (const [key, value] of Object.entries(data)) {
+            for (const [key, value] of Object.entries(payload)) {
                 console.log(`Chave: ${key}, Valor: ${value}`);
 
                 this.setTipo_medicamento(key);
