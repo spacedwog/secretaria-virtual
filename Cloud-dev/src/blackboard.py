@@ -1,21 +1,41 @@
-import RPi.GPIO as GPIO
-import time
 import requests
+from time import sleep
 
-class Blackboard:
+# Simulação do GPIO para ambientes sem hardware (como no Windows)
+class MockGPIO:
+    BCM = "BCM"
+    OUT = "OUT"
+    HIGH = True
+    LOW = False
+
+    def setmode(self, mode):
+        print(f"Modo configurado para: {mode}")
+
+    def setup(self, pin, mode):
+        print(f"Pino {pin} configurado como {mode}")
+
+    def output(self, pin, state):
+        print(f"Pino {pin} definido como {'ALTO' if state else 'BAIXO'}")
+
+    def cleanup(self):
+        print("GPIO limpo")
+
+GPIO = MockGPIO()  # Usando o mock GPIO
+
+class LEDController:
     def __init__(self, pin=18):
         self.pin = pin
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.pin, GPIO.OUT)
-        self.state = False  # Estado inicial da LED (desligada)e
+        GPIO.setmode(GPIO.BCM)  # Definindo o modo do GPIO
+        GPIO.setup(self.pin, GPIO.OUT)  # Configurando o pino
+        self.state = False  # Estado inicial da LED (desligada)
 
     def turn_on(self):
-        GPIO.output(self.pin, GPIO.HIGH)
+        GPIO.output(self.pin, GPIO.HIGH)  # Ligando a LED
         self.state = True
         print("💡 LED Ligada")
 
     def turn_off(self):
-        GPIO.output(self.pin, GPIO.LOW)
+        GPIO.output(self.pin, GPIO.LOW)  # Desligando a LED
         self.state = False
         print("💡 LED Desligada")
 
@@ -26,7 +46,7 @@ class Blackboard:
             self.turn_on()
 
     def cleanup(self):
-        GPIO.cleanup()
+        GPIO.cleanup()  # Limpando a configuração GPIO
         print("✅ GPIO limpo")
 
 # Classes existentes
@@ -63,7 +83,7 @@ class DataSender:
             print(f"✅ Dados enviados com sucesso: {response.json()}")
             self.blackboard.clear_data()
             self.led_controller.turn_on()  # Liga a LED ao enviar dados com sucesso
-            time.sleep(1)
+            sleep(1)
             self.led_controller.turn_off()  # Desliga após 1 segundo
         except requests.ConnectionError:
             print("❌ Erro de conexão: Não foi possível acessar o servidor.")
