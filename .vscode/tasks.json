@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start",
+			"problemMatcher": [
+				"$python"
+			],
+			"label": "npm: start",
+			"detail": "npx kill-port 3000 && ts-node-dev Cloud-dev/src/server.ts"
+		}
+	]
+}

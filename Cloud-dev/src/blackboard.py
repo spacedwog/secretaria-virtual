@@ -6,14 +6,14 @@ class Blackboard:
 
     def add_data(self, data):
         self.data_store.append(data)
-        print(f"Dados adicionados ao Blackboard: {data}")
+        print(f"✅ Dados adicionados ao Blackboard: {data}")
 
     def get_data(self):
         return self.data_store
 
     def clear_data(self):
         self.data_store.clear()
-        print("Todos os dados foram limpos do Blackboard.")
+        print("✅ Todos os dados foram limpos do Blackboard.")
 
 class DataSender:
     def __init__(self, server_url, blackboard):
@@ -23,16 +23,20 @@ class DataSender:
     def send_data(self):
         data = self.blackboard.get_data()
         if not data:
-            print("Nenhum dado disponível no Blackboard para enviar.")
+            print("⚠️ Nenhum dado disponível no Blackboard para enviar.")
             return
 
         try:
             response = requests.post(f"{self.server_url}/receive-data", json={"entries": data})
             response.raise_for_status()
-            print("Dados enviados com sucesso:", response.json())
+            print(f"✅ Dados enviados com sucesso: {response.json()}")
             self.blackboard.clear_data()
+        except requests.ConnectionError:
+            print("❌ Erro de conexão: Não foi possível acessar o servidor.")
+        except requests.Timeout:
+            print("❌ Tempo de espera excedido ao tentar enviar os dados.")
         except requests.RequestException as e:
-            print(f"Erro ao enviar dados: {e}")
+            print(f"❌ Erro ao enviar dados: {e}")
 
     def display_menu(self):
         while True:
@@ -56,15 +60,19 @@ class DataSender:
             elif choice == "5":
                 self.change_server_url()
             elif choice == "6":
-                print("Saindo do programa...")
+                print("👋 Saindo do programa...")
                 break
             else:
-                print("Opção inválida. Tente novamente.")
+                print("⚠️ Opção inválida. Tente novamente.")
 
     def handle_add_data(self):
         print("\n--- Adicionar Dados ao Blackboard ---")
-        key = input("Digite o tipo do medicamento: ")
-        value = input("Digite o código do medicamento: ")
+        key = input("Digite o tipo do medicamento: ").strip()
+        value = input("Digite o código do medicamento: ").strip()
+
+        if not key or not value:
+            print("⚠️ Os campos não podem estar vazios. Tente novamente.")
+            return
 
         data = {"key": key, "value": value}
         self.blackboard.add_data(data)
@@ -73,19 +81,19 @@ class DataSender:
         print("\n--- Dados no Blackboard ---")
         data = self.blackboard.get_data()
         if not data:
-            print("Nenhum dado disponível.")
+            print("⚠️ Nenhum dado disponível.")
         else:
             for index, entry in enumerate(data, start=1):
-                print(f"{index}. {entry}")
+                print(f"{index}. Tipo: {entry['key']}, Código: {entry['value']}")
 
     def change_server_url(self):
         print(f"\nURL atual do servidor: {self.server_url}")
-        new_url = input("Digite a nova URL do servidor: ")
+        new_url = input("Digite a nova URL do servidor: ").strip()
         if new_url:
             self.server_url = new_url
-            print(f"URL do servidor atualizada para: {self.server_url}")
+            print(f"✅ URL do servidor atualizada para: {self.server_url}")
         else:
-            print("URL não alterada.")
+            print("⚠️ URL não alterada.")
 
 
 if __name__ == "__main__":

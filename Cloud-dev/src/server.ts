@@ -5,8 +5,18 @@ import * as mysql from 'mysql2/promise';
 import express from 'express';
 import {Request, Response, NextFunction } from 'express';
 import * as bodyParser from 'body-parser';
+import axios from 'axios';
 
 dotenv.config();
+
+interface Entry {
+    key: string;
+    value: string;
+}
+
+interface EntriesPayload {
+    entries: Entry[];
+}
 
 class Server {
     private readonly app: express.Express;
@@ -78,15 +88,6 @@ class Server {
         // Endpoint para receber os dados do Python
         this.app.post('/receive-data', (req: Request, res: Response) => {
 
-            interface Entry {
-                key: string;
-                value: string;
-            }
-
-            interface EntriesPayload {
-                entries: Entry[];
-            }
-
             const payload: EntriesPayload = req.body;
 
             console.log("Dados recebidos da Blackboard:", payload);
@@ -144,7 +145,7 @@ class Server {
         try{
             const tipo_medicamento = this.getTipo_medicamento().toString();
             const code_medicamento = this.getCode_medicamento().toString();
-            const select = "SELECT med_code, nome_do_medicamento, tipo_do_medicamento, dosagem_do_medicamento, frequencia_de_administracao, duracao_da_administracao, observacoes_do_medicamento, DATE_FORMAT(data_da_prescricao, '%d/%M/%Y')";
+            const select = "SELECT med_code, nome_do_medicamento, tipo_do_medicamento, dosagem_do_medicamento, frequencia_de_administracao, duracao_da_administracao, observacoes_do_medicamento, DATE_FORMAT(data_da_prescricao, '%d/%M/%Y') AS data_da_prescricao ";
             const tabela = "FROM medicamento_info ";
             let condicao = "";
             if(tipo_medicamento != "" || code_medicamento != ""){
