@@ -77,29 +77,32 @@ class Server {
 
         // Endpoint para receber os dados do Python
         this.app.post('/receive-data', (req: Request, res: Response) => {
+
             interface Entry {
                 key: string;
                 value: string;
-              }
-              
-              interface EntriesPayload {
+            }
+
+            interface EntriesPayload {
                 entries: Entry[];
-              }
+            }
 
             const payload: EntriesPayload = req.body;
 
             console.log("Dados recebidos da Blackboard:", payload);
 
             // Acessando os valores dentro de `data` (o JSON enviado do Python)
-            for (const [key, value] of Object.entries(payload)) {
-                console.log(`Chave: ${key}, Valor: ${value}`);
+            payload.entries.forEach((entry) => {
+                console.log(`Chave: ${entry.key}, Valor: ${entry.value}`);
 
-                this.setTipo_medicamento(key);
-                this.setCode_medicamento(""+value);
-            }
+                this.setTipo_medicamento(entry.key);
+                this.setCode_medicamento(entry.value);
+
+            });
     
             // Aqui você pode processar os dados conforme necessário
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
+
         });
     }
 
@@ -141,7 +144,7 @@ class Server {
         try{
             const tipo_medicamento = this.getTipo_medicamento().toString();
             const code_medicamento = this.getCode_medicamento().toString();
-            const select = "SELECT * ";
+            const select = "SELECT med_code, nome_do_medicamento, tipo_do_medicamento, dosagem_do_medicamento, frequencia_de_administracao, duracao_da_administracao, observacoes_do_medicamento, DATE_FORMAT(data_da_prescricao, '%d/%M/%Y')";
             const tabela = "FROM medicamento_info ";
             let condicao = "";
             if(tipo_medicamento != "" || code_medicamento != ""){
