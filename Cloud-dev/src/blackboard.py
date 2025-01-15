@@ -1,5 +1,35 @@
+import RPi.GPIO as GPIO
+import time
 import requests
 
+class Blackboard:
+    def __init__(self, pin=18):
+        self.pin = pin
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.pin, GPIO.OUT)
+        self.state = False  # Estado inicial da LED (desligada)e
+
+    def turn_on(self):
+        GPIO.output(self.pin, GPIO.HIGH)
+        self.state = True
+        print("💡 LED Ligada")
+
+    def turn_off(self):
+        GPIO.output(self.pin, GPIO.LOW)
+        self.state = False
+        print("💡 LED Desligada")
+
+    def toggle(self):
+        if self.state:
+            self.turn_off()
+        else:
+            self.turn_on()
+
+    def cleanup(self):
+        GPIO.cleanup()
+        print("✅ GPIO limpo")
+
+# Classes existentes
 class Blackboard:
     def __init__(self):
         self.data_store = []
@@ -16,9 +46,10 @@ class Blackboard:
         print("✅ Todos os dados foram limpos do Blackboard.")
 
 class DataSender:
-    def __init__(self, server_url, blackboard):
+    def __init__(self, server_url, blackboard, led_controller):
         self.server_url = server_url
         self.blackboard = blackboard
+        self.led_controller = led_controller
 
     def send_data(self):
         data = self.blackboard.get_data()
@@ -31,6 +62,9 @@ class DataSender:
             response.raise_for_status()
             print(f"✅ Dados enviados com sucesso: {response.json()}")
             self.blackboard.clear_data()
+            self.led_controller.turn_on()  # Liga a LED ao enviar dados com sucesso
+            time.sleep(1)
+            self.led_controller.turn_off()  # Desliga após 1 segundo
         except requests.ConnectionError:
             print("❌ Erro de conexão: Não foi possível acessar o servidor.")
         except requests.Timeout:
@@ -46,7 +80,8 @@ class DataSender:
             print("3. Enviar dados ao servidor")
             print("4. Limpar Blackboard")
             print("5. Alterar URL do servidor")
-            print("6. Sair")
+            print("6. Alternar LED")
+            print("7. Sair")
             choice = input("Escolha uma opção: ")
 
             if choice == "1":
@@ -60,7 +95,10 @@ class DataSender:
             elif choice == "5":
                 self.change_server_url()
             elif choice == "6":
+                self.led_controller.toggle()
+            elif choice == "7":
                 print("👋 Saindo do programa...")
+                self.led_controller.cleanup()
                 break
             else:
                 print("⚠️ Opção inválida. Tente novamente.")
@@ -95,7 +133,6 @@ class DataSender:
         else:
             print("⚠️ URL não alterada.")
 
-
 if __name__ == "__main__":
     # Instância do Blackboard
     blackboard = Blackboard()
@@ -103,8 +140,11 @@ if __name__ == "__main__":
     # URL padrão do servidor
     server_url = "http://localhost:3001"
 
-    # Instância do DataSender com integração ao Blackboard
-    sender = DataSender(server_url, blackboard)
+    # Instância do LEDController
+    led_controller = LEDController()
+
+    # Instância do DataSender com integração ao Blackboard e LEDController
+    sender = DataSender(server_url, blackboard, led_controller)
 
     # Exibir o menu
     sender.display_menu()
