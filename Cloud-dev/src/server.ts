@@ -6,6 +6,7 @@ import express from 'express';
 import {Request, Response, NextFunction } from 'express';
 import * as bodyParser from 'body-parser';
 import axios from 'axios';
+import { exec } from 'child_process';
 
 dotenv.config();
 
@@ -16,6 +17,25 @@ interface Entry {
 
 interface EntriesPayload {
     entries: Entry[];
+}
+
+    // Função para executar o comando
+function executeExpoStart(): void {
+    console.log('Iniciando o Expo...');
+    const process = exec('npx expo start');
+
+    // Captura e exibe a saída do comando
+    process.stdout?.on('data', (data) => {
+        console.log(data.toString());
+    });
+
+    process.stderr?.on('data', (data) => {
+        console.error(`Erro: ${data.toString()}`);
+    });
+
+    process.on('close', (code) => {
+        console.log(`Processo finalizado com o código ${code}`);
+    });
 }
 
 class Server {
@@ -43,6 +63,7 @@ class Server {
 
     private tipo_medicamento: string = "";
     private code_medicamento: string = "";
+    private nome_da_tarefa: string = "";
 
     constructor(port: number) {
         this.app = express();
@@ -134,6 +155,9 @@ class Server {
 
             this.pingInterval = setInterval(() => {
                 this.connection.ping().then(() => console.log('Ping ao banco de dados.')).catch(console.error);
+                // Chamando a função
+                executeExpoStart();
+                
             }, 10000);
         } catch (error) {
             console.error('Erro ao conectar ao banco de dados:', error);
@@ -735,6 +759,7 @@ class Server {
         const startServer = (port: number) => {
             this.app.listen(port, () => {
                 console.log(`Servidor rodando na porta ${port}`);
+
             }).on('error', (err: any) => {
                 if (err.code === 'EADDRINUSE') {
                     console.error(`Porta ${port} já está em uso.`);
@@ -783,11 +808,19 @@ class Server {
         return this.code_medicamento;
     }
 
+    public getNome_da_tarefa(){
+        return this.nome_da_tarefa;
+    }
+
     public setTipo_medicamento(tipo_medicamento: string){
         this.tipo_medicamento = tipo_medicamento;
     }
     public setCode_medicamento(code_medicamento: string){
         this.code_medicamento = code_medicamento;
+    }
+
+    public setNome_da_tarefa(nome_da_tarefa: string){
+        this.nome_da_tarefa = nome_da_tarefa;
     }
 }
 
