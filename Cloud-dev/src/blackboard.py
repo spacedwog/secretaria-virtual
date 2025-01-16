@@ -96,8 +96,8 @@ class DataSender:
 
         try:
             response = requests.post(
-                f"{self.server_url}/receive-data", 
-                json={"entries": data}, 
+                f"{self.server_url}/receive-data",
+                json={"entries": data},
                 timeout=self.timeout
             )
             response.raise_for_status()
