@@ -1,5 +1,13 @@
 import requests
-from time import sleep
+from time import sleep, strftime
+import logging
+
+# Configurar logs para depuração
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s]: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 
 # Simulação do GPIO para ambientes sem hardware (como no Windows)
 class MockGPIO:
@@ -8,90 +16,102 @@ class MockGPIO:
     HIGH = True
     LOW = False
 
+    def __init__(self):
+        self.pin_states = {}
+
     def setmode(self, mode):
-        print(f"Modo configurado para: {mode}")
+        logging.info(f"Modo GPIO configurado para: {mode}")
 
     def setup(self, pin, mode):
-        print(f"Pino {pin} configurado como {mode}")
+        self.pin_states[pin] = MockGPIO.LOW
+        logging.info(f"Pino {pin} configurado como {mode}")
 
     def output(self, pin, state):
-        print(f"Pino {pin} definido como {'ALTO' if state else 'BAIXO'}")
+        if pin in self.pin_states:
+            self.pin_states[pin] = state
+            logging.info(f"Pino {pin} definido como {'ALTO' if state else 'BAIXO'}")
+        else:
+            logging.error(f"Pino {pin} não configurado.")
 
     def cleanup(self):
-        print("GPIO limpo")
+        self.pin_states.clear()
+        logging.info("GPIO limpo e restaurado ao estado inicial")
 
 GPIO = MockGPIO()  # Usando o mock GPIO
 
 class LEDController:
     def __init__(self, pin=13):
-        
         self.pin = pin
         GPIO.setmode(GPIO.BCM)  # Definindo o modo do GPIO
         GPIO.setup(self.pin, GPIO.OUT)  # Configurando o pino
-        self.state = False  # Estado inicial da LED (desligada)
+        self.state = GPIO.LOW  # Estado inicial da LED (desligada)
 
     def turn_on(self):
         GPIO.output(self.pin, GPIO.HIGH)  # Ligando a LED
-        self.state = True
-        print("💡 LED Ligada")
+        self.state = GPIO.HIGH
+        logging.info("💡 LED ligada")
 
     def turn_off(self):
         GPIO.output(self.pin, GPIO.LOW)  # Desligando a LED
-        self.state = False
-        print("💡 LED Desligada")
+        self.state = GPIO.LOW
+        logging.info("💡 LED desligada")
 
     def toggle(self):
-        if self.state:
+        if self.state == GPIO.HIGH:
             self.turn_off()
         else:
             self.turn_on()
 
     def cleanup(self):
         GPIO.cleanup()  # Limpando a configuração GPIO
-        print("✅ GPIO limpo")
+        logging.info("✅ Configuração do LED restaurada")
 
-# Classes existentes
 class Blackboard:
     def __init__(self):
         self.data_store = []
 
     def add_data(self, data):
         self.data_store.append(data)
-        print(f"✅ Dados adicionados ao Blackboard: {data}")
+        logging.info(f"✅ Dados adicionados ao Blackboard: {data}")
 
     def get_data(self):
         return self.data_store
 
     def clear_data(self):
         self.data_store.clear()
-        print("✅ Todos os dados foram limpos do Blackboard.")
+        logging.info("✅ Todos os dados foram limpos do Blackboard.")
 
 class DataSender:
-    def __init__(self, server_url, blackboard, led_controller):
+    def __init__(self, server_url, blackboard, led_controller, timeout=5):
         self.server_url = server_url
         self.blackboard = blackboard
         self.led_controller = led_controller
+        self.timeout = timeout
 
     def send_data(self):
         data = self.blackboard.get_data()
         if not data:
-            print("⚠️ Nenhum dado disponível no Blackboard para enviar.")
+            logging.warning("⚠️ Nenhum dado disponível no Blackboard para enviar.")
             return
 
         try:
-            response = requests.post(f"{self.server_url}/receive-data", json={"entries": data})
+            response = requests.post(
+                f"{self.server_url}/receive-data", 
+                json={"entries": data}, 
+                timeout=self.timeout
+            )
             response.raise_for_status()
-            print(f"✅ Dados enviados com sucesso: {response.json()}")
+            logging.info(f"✅ Dados enviados com sucesso: {response.json()}")
             self.blackboard.clear_data()
-            self.led_controller.turn_on()  # Liga a LED ao enviar dados com sucesso
+            self.led_controller.turn_on()
             sleep(1)
-            self.led_controller.turn_off()  # Desliga após 1 segundo
+            self.led_controller.turn_off()
         except requests.ConnectionError:
-            print("❌ Erro de conexão: Não foi possível acessar o servidor.")
+            logging.error("❌ Erro de conexão: Não foi possível acessar o servidor.")
         except requests.Timeout:
-            print("❌ Tempo de espera excedido ao tentar enviar os dados.")
+            logging.error("❌ Tempo de espera excedido ao tentar enviar os dados.")
         except requests.RequestException as e:
-            print(f"❌ Erro ao enviar dados: {e}")
+            logging.error(f"❌ Erro ao enviar dados: {e}")
 
     def display_menu(self):
         while True:
@@ -103,7 +123,7 @@ class DataSender:
             print("5. Alterar URL do servidor")
             print("6. Alternar LED")
             print("7. Sair")
-            choice = input("Escolha uma opção: ")
+            choice = input("Escolha uma opção: ").strip()
 
             if choice == "1":
                 self.handle_add_data()
@@ -118,54 +138,38 @@ class DataSender:
             elif choice == "6":
                 self.led_controller.toggle()
             elif choice == "7":
-                print("👋 Saindo do programa...")
+                logging.info("👋 Saindo do programa...")
                 self.led_controller.cleanup()
                 break
             else:
-                print("⚠️ Opção inválida. Tente novamente.")
+                logging.warning("⚠️ Opção inválida. Tente novamente.")
 
     def handle_add_data(self):
-        print("\n--- Adicionar Dados ao Blackboard ---")
         key = input("Digite o tipo do medicamento: ").strip()
         value = input("Digite o código do medicamento: ").strip()
-
-        if not key or not value:
-            print("⚠️ Os campos não podem estar vazios. Tente novamente.")
-            return
-
-        data = {"key": key, "value": value}
-        self.blackboard.add_data(data)
+        if key and value:
+            self.blackboard.add_data({"key": key, "value": value})
+        else:
+            logging.warning("⚠️ Os campos não podem estar vazios.")
 
     def handle_view_data(self):
-        print("\n--- Dados no Blackboard ---")
         data = self.blackboard.get_data()
-        if not data:
-            print("⚠️ Nenhum dado disponível.")
-        else:
+        if data:
             for index, entry in enumerate(data, start=1):
                 print(f"{index}. Tipo: {entry['key']}, Código: {entry['value']}")
+        else:
+            logging.info("⚠️ Nenhum dado disponível no Blackboard.")
 
     def change_server_url(self):
-        print(f"\nURL atual do servidor: {self.server_url}")
-        new_url = input("Digite a nova URL do servidor: ").strip()
+        new_url = input(f"URL atual: {self.server_url}\nNova URL: ").strip()
         if new_url:
             self.server_url = new_url
-            print(f"✅ URL do servidor atualizada para: {self.server_url}")
+            logging.info(f"✅ URL do servidor atualizada para: {self.server_url}")
         else:
-            print("⚠️ URL não alterada.")
+            logging.warning("⚠️ URL não alterada.")
 
 if __name__ == "__main__":
-    # Instância do Blackboard
     blackboard = Blackboard()
-
-    # URL padrão do servidor
-    server_url = "http://localhost:3001"
-
-    # Instância do LEDController
     led_controller = LEDController()
-
-    # Instância do DataSender com integração ao Blackboard e LEDController
-    sender = DataSender(server_url, blackboard, led_controller)
-
-    # Exibir o menu
+    sender = DataSender("http://localhost:3001", blackboard, led_controller)
     sender.display_menu()
