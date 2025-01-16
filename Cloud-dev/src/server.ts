@@ -138,7 +138,6 @@ class Server {
                 
             }, 10000);
             const pingInterval = this.pingInterval;
-            console.log("Ping.: " + pingInterval);
         } catch (error) {
             console.error('Erro ao conectar ao banco de dados:', error);
             process.exit(1);
