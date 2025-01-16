@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var net = require("net");
 var path = require("path");
-var express_1 = require("express");
+var express = require("express");
 var dotenv = require("dotenv");
 var mysql = require("mysql2/promise");
 var bodyParser = require("body-parser");
@@ -64,7 +64,7 @@ var Server = /** @class */ (function () {
         this.tipo_medicamento = "";
         this.code_medicamento = "";
         this.nome_da_tarefa = "";
-        this.app = (0, express_1.default)();
+        this.app = express();
         this.port = port;
         this.setupMiddlewares();
         this.setupRoutes();
@@ -82,8 +82,8 @@ var Server = /** @class */ (function () {
             console.error('Erro ao registrar middleware no sistema:', err);
         }
         // Middleware para parse de JSON e form data
-        this.app.use(express_1.default.json());
-        this.app.use(express_1.default.urlencoded({ extended: true }));
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
         //Middleware do tipo: Log
         //Descrição: Serve para logar as requisições
         this.app.use(function (req, res, next) {
@@ -93,7 +93,7 @@ var Server = /** @class */ (function () {
         //Middleware do tipo: Join
         //Descrição: Serve para servir arquivos estáticos
         var staticPath = path.join(__dirname, 'public');
-        this.app.use(express_1.default.static(staticPath));
+        this.app.use(express.static(staticPath));
         //Middleware do tipo: Config
         //Descrição: Serve para configurar headers (ex.: CORS)
         this.app.use(function (req, res, next) {

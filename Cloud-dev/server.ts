@@ -53,7 +53,7 @@ class Server {
         this.setupRoutes();
     }
 
-    private setupMiddlewares() {
+    private async setupMiddlewares() {
 
         //Middleware do tipo: Parse
         //Descrição: Serve para parsear o corpo das requisições como JSON
