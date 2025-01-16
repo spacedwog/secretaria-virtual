@@ -61,10 +61,11 @@ class Server {
 
     try {
 
-      await SystemService.register_middleware("Parse", "json requirer");
-      console.log('Middleware registrado com sucesso!');
-    } catch (err) {
-      console.error('Erro ao registrar middleware no sistema:', err);
+        await SystemService.register_middleware("Parse", "json requirer");
+        console.log('Middleware registrado com sucesso!');
+    }
+    catch (err) {
+        console.error('Erro ao registrar middleware no sistema:', err);
     }
 
 
