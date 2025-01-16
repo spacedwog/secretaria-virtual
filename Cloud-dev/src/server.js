@@ -67,7 +67,6 @@ var Server = /** @class */ (function () {
         this.port = port;
         this.setupMiddlewares();
         this.setupRoutes();
-        this.initialize();
     }
     Server.prototype.setupMiddlewares = function () {
         var _this = this;
@@ -136,6 +135,7 @@ var Server = /** @class */ (function () {
                 }
             });
         }); });
+        this.initialize();
     };
     Server.prototype.connectToDatabase = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -152,7 +152,6 @@ var Server = /** @class */ (function () {
                         console.log('Conexão com o banco de dados estabelecida!');
                         this.pingInterval = setInterval(function () {
                             _this.connection.ping().then(function () { return console.log('Ping ao banco de dados.'); }).catch(console.error);
-                            console.log("Ping.: " + _this.connection.ping());
                         }, 10000);
                         return [3 /*break*/, 3];
                     case 2:
