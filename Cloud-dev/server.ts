@@ -6,7 +6,6 @@ import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
 import { Request, Response, NextFunction } from 'express';
 import { SystemService } from './system.service';
-import { SystemService } from './system.service';
 
 dotenv.config();
 
