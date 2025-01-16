@@ -5,6 +5,7 @@ import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
 import { Request, Response, NextFunction } from 'express';
+import { SystemService } from './system.service';
 
 dotenv.config();
 
@@ -54,23 +55,37 @@ class Server {
 
     private setupMiddlewares() {
 
-        // Middleware para parsear o corpo das requisições como JSON
+        //Middleware do tipo: Parse
+        //Descrição: Serve para parsear o corpo das requisições como JSON
         this.app.use(bodyParser.json());
+
+    try {
+
+      await SystemService.register_middleware("Parse", "json requirer");
+      console.log('Middleware registrado com sucesso!');
+    } catch (err) {
+      console.error('Erro ao registrar middleware no sistema:', err);
+    }
+
+
         // Middleware para parse de JSON e form data
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
     
-        // Middleware para logar as requisições
+        //Middleware do tipo: Log
+        //Descrição: Serve para logar as requisições
         this.app.use((req, res, next) => {
             console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - User-Agent: ${req.headers['user-agent']}`);
             next();
         });
     
-        // Middleware para servir arquivos estáticos
+        //Middleware do tipo: Join
+        //Descrição: Serve para servir arquivos estáticos
         const staticPath = path.join(__dirname, 'public');
         this.app.use(express.static(staticPath));
     
-        // Middleware para configurar headers (ex.: CORS)
+        //Middleware do tipo: Config
+        //Descrição: Serve para configurar headers (ex.: CORS)
         this.app.use((req, res, next) => {
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -78,20 +93,23 @@ class Server {
             next();
         });
     
-        // Middleware para tratar erros genéricos
+        //Middleware do tipo: Error
+        //Descrição: Serve para tratar erros genéricos
         this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
             console.error('Erro no middleware:', err);
             res.status(err.status || 500).json({ error: err.message || 'Erro interno do servidor' });
         });
 
-        // Endpoint para receber os dados do Python
+        //Middleware do tipo: Endpoint
+        //Descrição: recebe os dados do Python
         this.app.post('/receive-data', (req: Request, res: Response) => {
 
             const payload: EntriesPayload = req.body;
 
             console.log("Dados recebidos da Blackboard:", payload);
 
-            // Acessando os valores dentro de `data` (o JSON enviado do Python)
+            //Middleware do tipo: Access
+            //Descrição: Acessa valores dentro de `data` (o JSON enviado do Python)
             payload.entries.forEach((entry) => {
                 console.log(`Chave: ${entry.key}, Valor: ${entry.value}`);
 
@@ -100,7 +118,8 @@ class Server {
 
             });
     
-            // Aqui você pode processar os dados conforme necessário
+            //Middleware do tipo: Process
+            //Descrição: Aqui você pode processar os dados conforme necessário
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
 
         });
