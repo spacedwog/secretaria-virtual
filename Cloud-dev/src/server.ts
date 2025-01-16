@@ -5,7 +5,6 @@ import * as mysql from 'mysql2/promise';
 import express from 'express';
 import { Request, Response, NextFunction } from 'express';
 import * as bodyParser from 'body-parser';
-import * as axios from 'axios';
 
 dotenv.config();
 
@@ -51,7 +50,6 @@ class Server {
 
         this.setupMiddlewares();
         this.setupRoutes();
-        this.initialize();
     }
 
     private setupMiddlewares() {
@@ -126,6 +124,8 @@ class Server {
             }
         });
 
+        this.initialize();
+
     }
 
     private async connectToDatabase() {
@@ -135,9 +135,10 @@ class Server {
 
             this.pingInterval = setInterval(() => {
                 this.connection.ping().then(() => console.log('Ping ao banco de dados.')).catch(console.error);
-                console.log("Ping.: " + this.connection.ping());
                 
             }, 10000);
+            const pingInterval = this.pingInterval;
+            console.log("Ping.: " + pingInterval);
         } catch (error) {
             console.error('Erro ao conectar ao banco de dados:', error);
             process.exit(1);
