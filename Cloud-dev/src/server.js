@@ -152,7 +152,7 @@ var Server = /** @class */ (function () {
                         console.log('Conexão com o banco de dados estabelecida!');
                         this.pingInterval = setInterval(function () {
                             _this.connection.ping().then(function () { return console.log('Ping ao banco de dados.'); }).catch(console.error);
-                            console.log("Ping.: " + _this.connection.ping().then);
+                            console.log("Ping.: " + _this.connection.ping());
                         }, 10000);
                         return [3 /*break*/, 3];
                     case 2:
