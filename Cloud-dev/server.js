@@ -38,10 +38,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var net = require("net");
 var path = require("path");
+var express = require("express");
 var dotenv = require("dotenv");
 var mysql = require("mysql2/promise");
-var express = require("express");
 var bodyParser = require("body-parser");
+var system_service_1 = require("./system.service");
 dotenv.config();
 var Server = /** @class */ (function () {
     function Server(port) {
@@ -69,44 +70,72 @@ var Server = /** @class */ (function () {
         this.setupRoutes();
     }
     Server.prototype.setupMiddlewares = function () {
-        var _this = this;
-        // Middleware para parsear o corpo das requisições como JSON
-        this.app.use(bodyParser.json());
-        // Middleware para parse de JSON e form data
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
-        // Middleware para logar as requisições
-        this.app.use(function (req, res, next) {
-            console.log("[".concat(new Date().toISOString(), "] ").concat(req.method, " ").concat(req.url, " - User-Agent: ").concat(req.headers['user-agent']));
-            next();
-        });
-        // Middleware para servir arquivos estáticos
-        var staticPath = path.join(__dirname, 'public');
-        this.app.use(express.static(staticPath));
-        // Middleware para configurar headers (ex.: CORS)
-        this.app.use(function (req, res, next) {
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-            next();
-        });
-        // Middleware para tratar erros genéricos
-        this.app.use(function (err, req, res, next) {
-            console.error('Erro no middleware:', err);
-            res.status(err.status || 500).json({ error: err.message || 'Erro interno do servidor' });
-        });
-        // Endpoint para receber os dados do Python
-        this.app.post('/receive-data', function (req, res) {
-            var payload = req.body;
-            console.log("Dados recebidos da Blackboard:", payload);
-            // Acessando os valores dentro de `data` (o JSON enviado do Python)
-            payload.entries.forEach(function (entry) {
-                console.log("Chave: ".concat(entry.key, ", Valor: ").concat(entry.value));
-                _this.setTipo_medicamento(entry.key);
-                _this.setCode_medicamento(entry.value);
+        return __awaiter(this, void 0, void 0, function () {
+            var err_1, staticPath;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        //Middleware do tipo: Parse
+                        //Descrição: Serve para parsear o corpo das requisições como JSON
+                        this.app.use(bodyParser.json());
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, system_service_1.SystemService.register_middleware("Parse", "json requirer")];
+                    case 2:
+                        _a.sent();
+                        console.log('Middleware registrado com sucesso!');
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _a.sent();
+                        console.error('Erro ao registrar middleware no sistema:', err_1);
+                        return [3 /*break*/, 4];
+                    case 4:
+                        // Middleware para parse de JSON e form data
+                        this.app.use(express.json());
+                        this.app.use(express.urlencoded({ extended: true }));
+                        //Middleware do tipo: Log
+                        //Descrição: Serve para logar as requisições
+                        this.app.use(function (req, res, next) {
+                            console.log("[".concat(new Date().toISOString(), "] ").concat(req.method, " ").concat(req.url, " - User-Agent: ").concat(req.headers['user-agent']));
+                            next();
+                        });
+                        staticPath = path.join(__dirname, 'public');
+                        this.app.use(express.static(staticPath));
+                        //Middleware do tipo: Config
+                        //Descrição: Serve para configurar headers (ex.: CORS)
+                        this.app.use(function (req, res, next) {
+                            res.setHeader('Access-Control-Allow-Origin', '*');
+                            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+                            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+                            next();
+                        });
+                        //Middleware do tipo: Error
+                        //Descrição: Serve para tratar erros genéricos
+                        this.app.use(function (err, req, res, next) {
+                            console.error('Erro no middleware:', err);
+                            res.status(err.status || 500).json({ error: err.message || 'Erro interno do servidor' });
+                        });
+                        //Middleware do tipo: Endpoint
+                        //Descrição: recebe os dados do Python
+                        this.app.post('/receive-data', function (req, res) {
+                            var payload = req.body;
+                            console.log("Dados recebidos da Blackboard:", payload);
+                            //Middleware do tipo: Access
+                            //Descrição: Acessa valores dentro de `data` (o JSON enviado do Python)
+                            payload.entries.forEach(function (entry) {
+                                console.log("Chave: ".concat(entry.key, ", Valor: ").concat(entry.value));
+                                _this.setTipo_medicamento(entry.key);
+                                _this.setCode_medicamento(entry.value);
+                            });
+                            //Middleware do tipo: Process
+                            //Descrição: Aqui você pode processar os dados conforme necessário
+                            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
+                        });
+                        return [2 /*return*/];
+                }
             });
-            // Aqui você pode processar os dados conforme necessário
-            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
     };
     Server.prototype.setupRoutes = function () {
