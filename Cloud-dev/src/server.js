@@ -40,7 +40,7 @@ var net = require("net");
 var path = require("path");
 var dotenv = require("dotenv");
 var mysql = require("mysql2/promise");
-var express_1 = require("express");
+var express = require("express");
 var bodyParser = require("body-parser");
 dotenv.config();
 var Server = /** @class */ (function () {
@@ -63,7 +63,7 @@ var Server = /** @class */ (function () {
         this.tipo_medicamento = "";
         this.code_medicamento = "";
         this.nome_da_tarefa = "";
-        this.app = (0, express_1.default)();
+        this.app = express();
         this.port = port;
         this.setupMiddlewares();
         this.setupRoutes();
@@ -74,8 +74,8 @@ var Server = /** @class */ (function () {
         // Middleware para parsear o corpo das requisições como JSON
         this.app.use(bodyParser.json());
         // Middleware para parse de JSON e form data
-        this.app.use(express_1.default.json());
-        this.app.use(express_1.default.urlencoded({ extended: true }));
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
         // Middleware para logar as requisições
         this.app.use(function (req, res, next) {
             console.log("[".concat(new Date().toISOString(), "] ").concat(req.method, " ").concat(req.url, " - User-Agent: ").concat(req.headers['user-agent']));
@@ -83,7 +83,7 @@ var Server = /** @class */ (function () {
         });
         // Middleware para servir arquivos estáticos
         var staticPath = path.join(__dirname, 'public');
-        this.app.use(express_1.default.static(staticPath));
+        this.app.use(express.static(staticPath));
         // Middleware para configurar headers (ex.: CORS)
         this.app.use(function (req, res, next) {
             res.setHeader('Access-Control-Allow-Origin', '*');
