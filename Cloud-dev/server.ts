@@ -6,6 +6,7 @@ import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
 import { Request, Response, NextFunction } from 'express';
 import { SystemService } from './system.service';
+import { SystemService } from './system.service';
 
 dotenv.config();
 
@@ -53,7 +54,7 @@ class Server {
         this.setupRoutes();
     }
 
-    private async setupMiddlewares() {
+    private setupMiddlewares() {
 
         //Middleware do tipo: Parse
         //Descrição: Serve para parsear o corpo das requisições como JSON
@@ -61,11 +62,10 @@ class Server {
 
     try {
 
-        await SystemService.register_middleware("Parse", "json requirer");
-        console.log('Middleware registrado com sucesso!');
-    }
-    catch (err) {
-        console.error('Erro ao registrar middleware no sistema:', err);
+      await SystemService.register_middleware("Parse", "json requirer");
+      console.log('Middleware registrado com sucesso!');
+    } catch (err) {
+      console.error('Erro ao registrar middleware no sistema:', err);
     }
 
 
