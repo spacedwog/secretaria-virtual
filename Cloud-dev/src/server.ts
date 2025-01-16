@@ -135,6 +135,7 @@ class Server {
 
             this.pingInterval = setInterval(() => {
                 this.connection.ping().then(() => console.log('Ping ao banco de dados.')).catch(console.error);
+                console.log("Ping.: " + this.connection.ping());
                 
             }, 10000);
         } catch (error) {
