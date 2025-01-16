@@ -2,7 +2,7 @@ import * as net from 'net';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
-import express from 'express';
+import * as express from 'express';
 import { Request, Response, NextFunction } from 'express';
 import * as bodyParser from 'body-parser';
 
@@ -137,7 +137,6 @@ class Server {
                 this.connection.ping().then(() => console.log('Ping ao banco de dados.')).catch(console.error);
                 
             }, 10000);
-            const pingInterval = this.pingInterval;
         } catch (error) {
             console.error('Erro ao conectar ao banco de dados:', error);
             process.exit(1);
