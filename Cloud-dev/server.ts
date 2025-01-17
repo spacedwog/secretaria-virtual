@@ -53,23 +53,15 @@ class Server {
         this.setupRoutes();
     }
 
-    private async setupMiddlewares() {
+    private setupMiddlewares() {
 
         //Middleware do tipo: Parse
         //Descrição: Serve para parsear o corpo das requisições como JSON
         this.app.use(bodyParser.json());
 
-    try {
-
-      await SystemService.register_middleware("Parse", "json requirer");
-      console.log('Middleware registrado com sucesso!');
-    } catch (err) {
-      console.error('Erro ao registrar middleware no sistema:', err);
-    }
-
-
         // Middleware para parse de JSON e form data
         this.app.use(express.json());
+
         this.app.use(express.urlencoded({ extended: true }));
     
         //Middleware do tipo: Log
