@@ -9,7 +9,7 @@ class Blackboard:
     Também inclui controle de LED integrado a um Arduino via comunicação serial.
     """
 
-    def __init__(self, serial_port="COM3", baud_rate=9600):
+    def __init__(self, serial_port="COM4", baud_rate=9600):
         # Dicionário que armazena os dados da blackboard
         self.data = {}
         # Lock para controle de concorrência
