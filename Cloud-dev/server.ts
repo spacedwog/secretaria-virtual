@@ -4,19 +4,10 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
-import { Request, Response, NextFunction } from 'express';
 import { SystemService } from './system.service';
+import { Request, Response, NextFunction } from 'express';
 
 dotenv.config();
-
-interface Entry {
-    key: string;
-    value: string;
-}
-
-interface EntriesPayload {
-    entries: Entry[];
-}
 
 enum StatusCode {
     ExitSuccess = 0,
@@ -26,6 +17,7 @@ enum StatusCode {
 }
 
 class Server {
+
     private readonly app: express.Express;
     private readonly port: number;
     private readonly dbConfig = {
@@ -48,10 +40,6 @@ class Server {
 
     private connection!: mysql.Connection;
     private pingInterval!: NodeJS.Timeout;
-
-    private tipo_medicamento: string = "";
-    private code_medicamento: string = "";
-    private nome_da_tarefa: string = "";
 
     constructor(port: number) {
         this.app = express();
@@ -100,30 +88,6 @@ class Server {
             res.status(err.status || StatusCode.DatabaseError).json({ error: err.message || 'Erro interno do servidor' });
         });
 
-        //Middleware do tipo: Endpoint
-        //Descrição: recebe os dados do Python
-        this.app.post('/receive-data', (req: Request, res: Response) => {
-
-            const payload: EntriesPayload = req.body;
-
-            console.log("Dados recebidos da Blackboard:", payload);
-
-            //Middleware do tipo: Access
-            //Descrição: Acessa valores dentro de `data` (o JSON enviado do Python)
-            payload.entries.forEach((entry) => {
-                console.log(`Chave: ${entry.key}, Valor: ${entry.value}`);
-
-                this.setTipo_medicamento(entry.key);
-                this.setCode_medicamento(entry.value);
-
-            });
-    
-            //Middleware do tipo: Process
-            //Descrição: Aqui você pode processar os dados conforme necessário
-            res.status(StatusCode.DatabaseSuccess).json({ message: 'Dados recebidos com sucesso!' });
-
-        });
-
     }
 
     private setupRoutes() {
@@ -168,16 +132,11 @@ class Server {
 
     private async viewMedicInfo(req: Request, res: Response) {
         try{
-            const tipo_medicamento = this.getTipo_medicamento().toString();
-            const code_medicamento = this.getCode_medicamento().toString();
+
             const select = "SELECT med_code, nome_do_medicamento, tipo_do_medicamento, dosagem_do_medicamento, frequencia_de_administracao, duracao_da_administracao, observacoes_do_medicamento, DATE_FORMAT(data_da_prescricao, '%d/%M/%Y') AS data_da_prescricao ";
             const tabela = "FROM medicamento_info ";
-            let condicao = "";
-            if(tipo_medicamento != "" || code_medicamento != ""){
-                
-                condicao = "WHERE tipo_do_medicamento = '"+ tipo_medicamento +"' AND med_code = '"+ code_medicamento +"' ";
-            }
-            const query = select + tabela + condicao;
+
+            const query = select + tabela;
             console.log(query)
             const [rows] = await this.connection.query(query);
     
@@ -320,6 +279,7 @@ class Server {
     }
 
     private async viewWebsite(req: Request, res: Response) {
+
         try{
             const query = `SELECT nome_consulta_medica, patient_name, DATE_FORMAT(appointment_date, '%d/%M/%Y') as appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view;`;
             const [rows] = await this.connection.query(query);
@@ -332,6 +292,7 @@ class Server {
                 status: string;
                 doctor_name: string;
             }>;
+            
             let html = `
                 <!DOCTYPE html>
                 <html lang="pt-br">
@@ -800,28 +761,6 @@ class Server {
             });
             server.listen(this.port);
         });
-    }
-
-    public getTipo_medicamento(){
-        return this.tipo_medicamento;
-    }
-    public getCode_medicamento(){
-        return this.code_medicamento;
-    }
-
-    public getNome_da_tarefa(){
-        return this.nome_da_tarefa;
-    }
-
-    public setTipo_medicamento(tipo_medicamento: string){
-        this.tipo_medicamento = tipo_medicamento;
-    }
-    public setCode_medicamento(code_medicamento: string){
-        this.code_medicamento = code_medicamento;
-    }
-
-    public setNome_da_tarefa(nome_da_tarefa: string){
-        this.nome_da_tarefa = nome_da_tarefa;
     }
 }
 
