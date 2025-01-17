@@ -18,6 +18,13 @@ interface EntriesPayload {
     entries: Entry[];
 }
 
+enum StatusCode {
+    ExitSuccess = 0,
+    ExitFail    = 1,
+    DatabaseSuccess = 200,
+    DatabaseError   = 500,
+}
+
 class Server {
     private readonly app: express.Express;
     private readonly port: number;
@@ -28,6 +35,7 @@ class Server {
         database: process.env.DB_NAME ?? 'secretaria_virtual',
         connectTimeout: 10000,
     };
+
     private readonly dbRemidConfig = {
 
         host: process.env.DB_REMID_HOST?? 'localhost',
@@ -89,7 +97,7 @@ class Server {
         //Descrição: Serve para tratar erros genéricos
         this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
             console.error('Erro no middleware:', err);
-            res.status(err.status || 500).json({ error: err.message || 'Erro interno do servidor' });
+            res.status(err.status || StatusCode.DatabaseError).json({ error: err.message || 'Erro interno do servidor' });
         });
 
         //Middleware do tipo: Endpoint
@@ -112,9 +120,10 @@ class Server {
     
             //Middleware do tipo: Process
             //Descrição: Aqui você pode processar os dados conforme necessário
-            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
+            res.status(StatusCode.DatabaseSuccess).json({ message: 'Dados recebidos com sucesso!' });
 
         });
+
     }
 
     private setupRoutes() {
@@ -131,7 +140,7 @@ class Server {
             }
             catch (error) {
                 console.error('Erro ao gerar relatório:', error);
-                res.status(500).send('Erro ao gerar relatório.');
+                res.status(StatusCode.DatabaseError).send('Erro ao gerar relatório.');
             }
         });
 
@@ -140,6 +149,7 @@ class Server {
     }
 
     private async connectToDatabase() {
+
         try {
             this.connection = await mysql.createConnection(this.dbConfig);
             console.log('Conexão com o banco de dados estabelecida!');
@@ -148,10 +158,12 @@ class Server {
                 this.connection.ping().then(() => console.log('Ping ao banco de dados.')).catch(console.error);
                 
             }, 10000);
-        } catch (error) {
-            console.error('Erro ao conectar ao banco de dados:', error);
-            process.exit(1);
         }
+        catch (error) {
+            console.error('Erro ao conectar ao banco de dados:', error);
+            process.exit(StatusCode.ExitFail);
+        }
+
     }
 
     private async viewMedicInfo(req: Request, res: Response) {
@@ -303,7 +315,7 @@ class Server {
         }
         catch (error) {
             console.error('Erro ao executar consulta:', error);
-            res.status(500).send('Erro ao carregar dados.');
+            res.status(StatusCode.DatabaseError).send('Erro ao carregar dados.');
         }
     }
 
@@ -440,7 +452,7 @@ class Server {
         }
         catch (error) {
             console.error('Erro ao executar consulta:', error);
-            res.status(500).send('Erro ao carregar dados.');
+            res.status(StatusCode.DatabaseError).send('Erro ao carregar dados.');
         }
     }
 
@@ -582,7 +594,7 @@ class Server {
         }
         catch (error) {
             console.error('Erro ao buscar dados:', error);
-            res.status(500).send('Erro ao buscar pacientes.');
+            res.status(StatusCode.DatabaseError).send('Erro ao buscar pacientes.');
         }
     }
 
@@ -727,7 +739,7 @@ class Server {
         }
         catch (error) {
             console.error('Erro ao buscar dados:', error);
-            res.status(500).send('Erro ao buscar pacientes.');
+            res.status(StatusCode.DatabaseError).send('Erro ao buscar pacientes.');
         }
     }
 
@@ -768,7 +780,7 @@ class Server {
             clearInterval(this.pingInterval);
             await this.connection.end();
             console.log('Conexão com o banco de dados encerrada.');
-            process.exit(0);
+            process.exit(StatusCode.ExitSuccess);
         });
 
     }
