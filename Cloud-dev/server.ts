@@ -292,7 +292,7 @@ class Server {
                 status: string;
                 doctor_name: string;
             }>;
-            
+
             let html = `
                 <!DOCTYPE html>
                 <html lang="pt-br">
