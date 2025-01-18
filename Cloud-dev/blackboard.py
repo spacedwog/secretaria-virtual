@@ -4,6 +4,7 @@ import  serial
 from    flask import Flask, jsonify
 
 class Blackboard:
+    
     """
     Uma classe para simular um sistema de blackboard, permitindo que múltiplos agentes
     adicionem e consultem informações de forma concorrente.
