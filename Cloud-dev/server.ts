@@ -88,6 +88,12 @@ class Server {
             res.status(err.status || StatusCode.DatabaseError).json({ error: err.message || 'Erro interno do servidor' });
         });
 
+        // Endpoint para receber dados do Python
+        this.app.post("/update-data", (req, res) => {
+            const { key, value, ledState } = req.body;
+            console.log("Dados recebidos:", { key, value, ledState });
+            res.status(200).send({ message: "Dados recebidos com sucesso!" });
+        });
     }
 
     private setupRoutes() {
