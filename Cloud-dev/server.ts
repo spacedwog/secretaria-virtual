@@ -94,6 +94,18 @@ class Server {
             console.log("Dados recebidos:", { key, value, ledState });
             res.status(200).send({ message: "Dados recebidos com sucesso!" });
         });
+
+        this.app.post("/update-data", (req: Request, res: Response) => {
+            const { key, value, ledState } = req.body;
+        
+            if (typeof ledState !== 'boolean' || (key && typeof key !== 'string') || (value && typeof value !== 'string')) {
+                return res.status(400).json({ message: 'Dados inválidos enviados!' });
+            }
+        
+            console.log('Dados recebidos:', { key, value, ledState });
+        
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
+        });
     }
 
     private setupRoutes() {
