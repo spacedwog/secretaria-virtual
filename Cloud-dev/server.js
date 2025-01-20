@@ -68,12 +68,15 @@ var Server = /** @class */ (function () {
             database: (_h = process.env.DB_REMID_NAME) !== null && _h !== void 0 ? _h : 'gerenciamentomedicamentos',
             connectTimeout: 10000,
         };
+        this.key = "";
+        this.value = "";
         this.app = express();
         this.port = port;
         this.setupMiddlewares();
         this.setupRoutes();
     }
     Server.prototype.setupMiddlewares = function () {
+        var _this = this;
         //Middleware do tipo: Parse
         //Descrição: Serve para parsear o corpo das requisições como JSON
         this.app.use(bodyParser.json());
@@ -111,6 +114,8 @@ var Server = /** @class */ (function () {
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
             console.log('Dados recebidos:', { key: key, value: value });
+            _this.setKey(key);
+            _this.setValue(value);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
     };
@@ -171,14 +176,18 @@ var Server = /** @class */ (function () {
     };
     Server.prototype.viewMedicInfo = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var select, tabela, query, rows, medicamento, html_1, error_3;
+            var select, tabela, condicao, query, rows, medicamento, html_1, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         select = "SELECT med_code, nome_do_medicamento, tipo_do_medicamento, dosagem_do_medicamento, frequencia_de_administracao, duracao_da_administracao, observacoes_do_medicamento, DATE_FORMAT(data_da_prescricao, '%d/%M/%Y') AS data_da_prescricao ";
                         tabela = "FROM medicamento_info ";
-                        query = select + tabela;
+                        condicao = "";
+                        if (this.getKey() != "") {
+                            condicao = "WHERE med_code = " + this.getKey() + " AND tipo_do_medicamento = " + this.getValue();
+                        }
+                        query = select + tabela + condicao;
                         console.log(query);
                         return [4 /*yield*/, this.connection.query(query)];
                     case 1:
@@ -376,6 +385,18 @@ var Server = /** @class */ (function () {
                     })];
             });
         });
+    };
+    Server.prototype.getKey = function () {
+        return this.key;
+    };
+    Server.prototype.getValue = function () {
+        return this.value;
+    };
+    Server.prototype.setKey = function (key) {
+        this.key = key;
+    };
+    Server.prototype.setValue = function (value) {
+        this.value = value;
     };
     return Server;
 }());
