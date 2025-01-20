@@ -90,6 +90,7 @@ class Server {
 
         // Endpoint para receber dados do Python
         this.app.post("/update-data", (req: Request, res: Response) => {
+        
             const { key, value, ledState } = req.body;
         
             if (typeof ledState !== 'boolean' || (key && typeof key !== 'string') || (value && typeof value !== 'string')) {

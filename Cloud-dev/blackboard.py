@@ -40,7 +40,7 @@ class Blackboard:
                 self.data[key].append(value)
             else:
                 self.data[key] = [value]
-            print(f"Entrada adicionada: {key} -> {value}")
+            print(f"Entrada adicionada: {key} -> {value} no blackboard")
             self._send_to_server("/update-data", {"key": key, "value": value, "ledState": self.led_state})
 
     def get_entry(self, key):
