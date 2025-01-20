@@ -1,8 +1,9 @@
+import json
 import threading
 import time
 import serial
 import requests
-from flask import Flask, json, jsonify
+from flask import Flask, jsonify
 import tkinter as tk
 from tkinter import messagebox
 
