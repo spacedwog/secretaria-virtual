@@ -38,11 +38,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var net = require("net");
 var path = require("path");
-var express = require("express");
+var express_1 = require("express");
 var dotenv = require("dotenv");
 var mysql = require("mysql2/promise");
 var bodyParser = require("body-parser");
 dotenv.config();
+var StatusCode;
+(function (StatusCode) {
+    StatusCode[StatusCode["ExitSuccess"] = 0] = "ExitSuccess";
+    StatusCode[StatusCode["ExitFail"] = 1] = "ExitFail";
+    StatusCode[StatusCode["DatabaseSuccess"] = 200] = "DatabaseSuccess";
+    StatusCode[StatusCode["DatabaseError"] = 500] = "DatabaseError";
+})(StatusCode || (StatusCode = {}));
+var UPDATE_DATA_ENDPOINT = "/update-data";
 var Server = /** @class */ (function () {
     function Server(port) {
         var _a, _b, _c, _d, _e, _f, _g, _h;
@@ -60,22 +68,18 @@ var Server = /** @class */ (function () {
             database: (_h = process.env.DB_REMID_NAME) !== null && _h !== void 0 ? _h : 'gerenciamentomedicamentos',
             connectTimeout: 10000,
         };
-        this.tipo_medicamento = "";
-        this.code_medicamento = "";
-        this.nome_da_tarefa = "";
-        this.app = express();
+        this.app = (0, express_1.default)();
         this.port = port;
         this.setupMiddlewares();
         this.setupRoutes();
     }
     Server.prototype.setupMiddlewares = function () {
-        var _this = this;
         //Middleware do tipo: Parse
         //Descrição: Serve para parsear o corpo das requisições como JSON
         this.app.use(bodyParser.json());
         // Middleware para parse de JSON e form data
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express_1.default.json());
+        this.app.use(express_1.default.urlencoded({ extended: true }));
         //Middleware do tipo: Log
         //Descrição: Serve para logar as requisições
         this.app.use(function (req, res, next) {
@@ -85,7 +89,7 @@ var Server = /** @class */ (function () {
         //Middleware do tipo: Join
         //Descrição: Serve para servir arquivos estáticos
         var staticPath = path.join(__dirname, 'public');
-        this.app.use(express.static(staticPath));
+        this.app.use(express_1.default.static(staticPath));
         //Middleware do tipo: Config
         //Descrição: Serve para configurar headers (ex.: CORS)
         this.app.use(function (req, res, next) {
@@ -98,22 +102,15 @@ var Server = /** @class */ (function () {
         //Descrição: Serve para tratar erros genéricos
         this.app.use(function (err, req, res, next) {
             console.error('Erro no middleware:', err);
-            res.status(err.status || 500).json({ error: err.message || 'Erro interno do servidor' });
+            res.status(err.status || StatusCode.DatabaseError).json({ error: err.message || 'Erro interno do servidor' });
         });
-        //Middleware do tipo: Endpoint
-        //Descrição: recebe os dados do Python
-        this.app.post('/receive-data', function (req, res) {
-            var payload = req.body;
-            console.log("Dados recebidos da Blackboard:", payload);
-            //Middleware do tipo: Access
-            //Descrição: Acessa valores dentro de `data` (o JSON enviado do Python)
-            payload.entries.forEach(function (entry) {
-                console.log("Chave: ".concat(entry.key, ", Valor: ").concat(entry.value));
-                _this.setTipo_medicamento(entry.key);
-                _this.setCode_medicamento(entry.value);
-            });
-            //Middleware do tipo: Process
-            //Descrição: Aqui você pode processar os dados conforme necessário
+        // Endpoint para receber dados do Python
+        this.app.post(UPDATE_DATA_ENDPOINT, function (req, res) {
+            var _a = req.body, key = _a.key, value = _a.value;
+            if ((key && typeof key !== 'string') || (value && typeof value !== 'string')) {
+                res.status(400).json({ message: 'Dados inválidos enviados!' });
+            }
+            console.log('Dados recebidos:', { key: key, value: value });
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
     };
@@ -137,7 +134,7 @@ var Server = /** @class */ (function () {
                     case 2:
                         error_1 = _a.sent();
                         console.error('Erro ao gerar relatório:', error_1);
-                        res.status(500).send('Erro ao gerar relatório.');
+                        res.status(StatusCode.DatabaseError).send('Erro ao gerar relatório.');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -165,7 +162,7 @@ var Server = /** @class */ (function () {
                     case 2:
                         error_2 = _b.sent();
                         console.error('Erro ao conectar ao banco de dados:', error_2);
-                        process.exit(1);
+                        process.exit(StatusCode.ExitFail);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -174,20 +171,14 @@ var Server = /** @class */ (function () {
     };
     Server.prototype.viewMedicInfo = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var tipo_medicamento, code_medicamento, select, tabela, condicao, query, rows, medicamento, html_1, error_3;
+            var select, tabela, query, rows, medicamento, html_1, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        tipo_medicamento = this.getTipo_medicamento().toString();
-                        code_medicamento = this.getCode_medicamento().toString();
                         select = "SELECT med_code, nome_do_medicamento, tipo_do_medicamento, dosagem_do_medicamento, frequencia_de_administracao, duracao_da_administracao, observacoes_do_medicamento, DATE_FORMAT(data_da_prescricao, '%d/%M/%Y') AS data_da_prescricao ";
                         tabela = "FROM medicamento_info ";
-                        condicao = "";
-                        if (tipo_medicamento != "" || code_medicamento != "") {
-                            condicao = "WHERE tipo_do_medicamento = '" + tipo_medicamento + "' AND med_code = '" + code_medicamento + "' ";
-                        }
-                        query = select + tabela + condicao;
+                        query = select + tabela;
                         console.log(query);
                         return [4 /*yield*/, this.connection.query(query)];
                     case 1:
@@ -203,7 +194,7 @@ var Server = /** @class */ (function () {
                     case 2:
                         error_3 = _a.sent();
                         console.error('Erro ao executar consulta:', error_3);
-                        res.status(500).send('Erro ao carregar dados.');
+                        res.status(StatusCode.DatabaseError).send('Erro ao carregar dados.');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -232,7 +223,7 @@ var Server = /** @class */ (function () {
                     case 2:
                         error_4 = _a.sent();
                         console.error('Erro ao executar consulta:', error_4);
-                        res.status(500).send('Erro ao carregar dados.');
+                        res.status(StatusCode.DatabaseError).send('Erro ao carregar dados.');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -262,7 +253,7 @@ var Server = /** @class */ (function () {
                     case 2:
                         error_5 = _a.sent();
                         console.error('Erro ao buscar dados:', error_5);
-                        res.status(500).send('Erro ao buscar pacientes.');
+                        res.status(StatusCode.DatabaseError).send('Erro ao buscar pacientes.');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -292,7 +283,7 @@ var Server = /** @class */ (function () {
                     case 2:
                         error_6 = _a.sent();
                         console.error('Erro ao buscar dados:', error_6);
-                        res.status(500).send('Erro ao buscar pacientes.');
+                        res.status(StatusCode.DatabaseError).send('Erro ao buscar pacientes.');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -355,7 +346,7 @@ var Server = /** @class */ (function () {
                                     case 1:
                                         _a.sent();
                                         console.log('Conexão com o banco de dados encerrada.');
-                                        process.exit(0);
+                                        process.exit(StatusCode.ExitSuccess);
                                         return [2 /*return*/];
                                 }
                             });
@@ -385,24 +376,6 @@ var Server = /** @class */ (function () {
                     })];
             });
         });
-    };
-    Server.prototype.getTipo_medicamento = function () {
-        return this.tipo_medicamento;
-    };
-    Server.prototype.getCode_medicamento = function () {
-        return this.code_medicamento;
-    };
-    Server.prototype.getNome_da_tarefa = function () {
-        return this.nome_da_tarefa;
-    };
-    Server.prototype.setTipo_medicamento = function (tipo_medicamento) {
-        this.tipo_medicamento = tipo_medicamento;
-    };
-    Server.prototype.setCode_medicamento = function (code_medicamento) {
-        this.code_medicamento = code_medicamento;
-    };
-    Server.prototype.setNome_da_tarefa = function (nome_da_tarefa) {
-        this.nome_da_tarefa = nome_da_tarefa;
     };
     return Server;
 }());
