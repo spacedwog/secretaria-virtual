@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
@@ -158,7 +158,7 @@ class Server {
             const tabela = "FROM medicamento_info ";
             let condicao = "";
             if(this.getKey()!= ""){
-                condicao = "WHERE med_code = " + this.getKey() + " AND tipo_do_medicamento = " + this.getValue();
+                condicao = "WHERE med_code = '" + this.getKey() + "' AND tipo_do_medicamento = '" + this.getValue() + "'";
             }
 
             const query = select + tabela + condicao;
