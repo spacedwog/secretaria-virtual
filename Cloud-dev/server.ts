@@ -20,6 +20,7 @@ const UPDATE_DATA_ENDPOINT = "/update-data";
 class Server {
 
     private readonly app: express.Express;
+
     private readonly port: number;
     private readonly dbConfig = {
         host: process.env.DB_HOST ?? 'localhost',
@@ -41,6 +42,9 @@ class Server {
 
     private connection!: mysql.Connection;
     private pingInterval!: NodeJS.Timeout;
+    
+    private key = "";
+    private value = "";
 
     constructor(port: number) {
         this.app = express();
@@ -99,6 +103,9 @@ class Server {
             }
         
             console.log('Dados recebidos:', { key, value });
+
+            this.setKey(key);
+            this.setValue(value);
         
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
@@ -149,8 +156,12 @@ class Server {
 
             const select = "SELECT med_code, nome_do_medicamento, tipo_do_medicamento, dosagem_do_medicamento, frequencia_de_administracao, duracao_da_administracao, observacoes_do_medicamento, DATE_FORMAT(data_da_prescricao, '%d/%M/%Y') AS data_da_prescricao ";
             const tabela = "FROM medicamento_info ";
+            let condicao = "";
+            if(this.getKey()!= ""){
+                condicao = "WHERE med_code = " + this.getKey() + " AND tipo_do_medicamento = " + this.getValue();
+            }
 
-            const query = select + tabela;
+            const query = select + tabela + condicao;
             console.log(query)
             const [rows] = await this.connection.query(query);
     
@@ -775,6 +786,20 @@ class Server {
             });
             server.listen(this.port);
         });
+    }
+
+    private getKey(){
+        return this.key;
+    }
+    private getValue(){
+        return this.value;
+    }
+
+    private setKey(key: string){
+        this.key = key;
+    }
+    private setValue(value: string){
+        this.value = value;
     }
 }
 
