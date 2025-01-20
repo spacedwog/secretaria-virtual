@@ -43,7 +43,7 @@ class Blackboard:
             else:
                 self.data[key] = [value]
             print(f"Entrada adicionada: {key} -> {value} no blackboard")
-            self.send_data(self.UPDATE_DATA_ENDPOINT, {"key": key, "value": value})
+            self.send_data(key, value)
 
     def get_entry(self, key):
         """Recupera uma entrada da blackboard com base na chave."""
