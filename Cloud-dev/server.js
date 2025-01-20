@@ -185,7 +185,7 @@ var Server = /** @class */ (function () {
                         tabela = "FROM medicamento_info ";
                         condicao = "";
                         if (this.getKey() != "") {
-                            condicao = "WHERE med_code = '" + this.getKey() + "' AND tipo_do_medicamento = '" + this.getValue() + "'";
+                            condicao = "WHERE med_code = '" + this.getValue() + "' AND tipo_do_medicamento = '" + this.getKey() + "'";
                         }
                         query = select + tabela + condicao;
                         console.log(query);
