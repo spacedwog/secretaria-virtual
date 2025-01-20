@@ -4,7 +4,6 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
-import { SystemService } from './system.service';
 import { Request, Response, NextFunction } from 'express';
 
 dotenv.config();
@@ -15,6 +14,8 @@ enum StatusCode {
     DatabaseSuccess = 200,
     DatabaseError   = 500,
 }
+
+const UPDATE_DATA_ENDPOINT = "/update-data";
 
 class Server {
 
@@ -89,15 +90,15 @@ class Server {
         });
 
         // Endpoint para receber dados do Python
-        this.app.post("/update-data", (req: Request, res: Response) => {
+        this.app.post(UPDATE_DATA_ENDPOINT, (req: Request, res: Response) => {
+
+            const { key, value } = req.body;
         
-            const { key, value, ledState } = req.body;
-        
-            if (typeof ledState !== 'boolean' || (key && typeof key !== 'string') || (value && typeof value !== 'string')) {
+            if ((key && typeof key !== 'string') || (value && typeof value !== 'string')) {
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
         
-            console.log('Dados recebidos:', { key, value, ledState });
+            console.log('Dados recebidos:', { key, value });
         
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });

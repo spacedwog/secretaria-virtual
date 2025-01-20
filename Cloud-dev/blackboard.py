@@ -23,6 +23,7 @@ class Blackboard:
         self.led_state = False
         # URL do servidor TypeScript
         self.server_url = server_url
+        self.UPDATE_DATA_ENDPOINT = "/update-data"
 
         # Configuração da comunicação serial com o Arduino
         try:
@@ -41,7 +42,7 @@ class Blackboard:
             else:
                 self.data[key] = [value]
             print(f"Entrada adicionada: {key} -> {value} no blackboard")
-            self._send_to_server("/update-data", {"key": key, "value": value, "ledState": self.led_state})
+            self.send_data({"key": key, "value": value})
 
     def get_entry(self, key):
         """Recupera uma entrada da blackboard com base na chave."""
@@ -61,7 +62,6 @@ class Blackboard:
             self.led_state = True
             self._send_command_to_arduino("ON")
             print("LED ligado!")
-            self._send_to_server("/update-data", {"key": None, "value": None, "ledState": self.led_state})
 
     def turn_off_led(self):
         """Desliga o LED."""
@@ -69,7 +69,6 @@ class Blackboard:
             self.led_state = False
             self._send_command_to_arduino("OFF")
             print("LED desligado!")
-            self._send_to_server("/update-data", {"key": None, "value": None, "ledState": self.led_state})
 
     def get_led_state(self):
         """Retorna o estado atual do LED."""
@@ -86,20 +85,22 @@ class Blackboard:
             except serial.SerialException as e:
                 print(f"Erro ao enviar comando ao Arduino: {e}")
 
-    def _send_to_server(self, endpoint, data):
-        """Envia dados ao servidor TypeScript."""
+    def send_data(self, key, value):
+        url = f"{self.server_url}{self.UPDATE_DATA_ENDPOINT}"
+        payload = {
+            "key": key,
+            "value": value
+        }
+        headers = {"Content-Type": "application/json"}
+
         try:
-            url = self.server_url + endpoint
-            response = requests.post(url, json=data)
-            if response.status_code == 200:
-                try:
-                    print(f"Resposta do servidor: {response.json()}")
-                except ValueError:
-                    print("O servidor retornou uma resposta que não é JSON.")
-            else:
-                print(f"Erro no servidor: {response.status_code} - {response.text}")
-        except requests.RequestException as e:
-            print(f"Erro ao enviar dados ao servidor: {e}")
+            response = requests.post(url, data=json.dumps(payload), headers=headers)
+            response.raise_for_status()
+            print("Dados enviados com sucesso:", response.json())
+        except requests.exceptions.HTTPError as http_err:
+            print(f"Erro HTTP: {http_err}")
+        except Exception as err:
+            print(f"Erro ao enviar dados: {err}")
 
 # Interface gráfica usando Tkinter
 def create_gui():
