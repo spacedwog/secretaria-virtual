@@ -2,7 +2,7 @@ import threading
 import time
 import serial
 import requests
-from flask import Flask, jsonify
+from flask import Flask, json, jsonify
 import tkinter as tk
 from tkinter import messagebox
 
@@ -42,7 +42,7 @@ class Blackboard:
             else:
                 self.data[key] = [value]
             print(f"Entrada adicionada: {key} -> {value} no blackboard")
-            self.send_data({"key": key, "value": value})
+            self.send_data(self.UPDATE_DATA_ENDPOINT, {"key": key, "value": value})
 
     def get_entry(self, key):
         """Recupera uma entrada da blackboard com base na chave."""
