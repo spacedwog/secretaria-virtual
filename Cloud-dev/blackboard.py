@@ -14,7 +14,7 @@ class Blackboard:
     Integração com um servidor TypeScript via requisições HTTP.
     """
 
-    def __init__(self, serial_port="COM3", baud_rate=9600, server_url="http://localhost:3000"):
+    def __init__(self, serial_port="COM4", baud_rate=9600, server_url="http://localhost:3000"):
         # Dicionário que armazena os dados da blackboard
         self.data = {}
         # Lock para controle de concorrência
