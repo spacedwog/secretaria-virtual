@@ -14,7 +14,7 @@ class Blackboard:
     Integração com um servidor TypeScript via requisições HTTP.
     """
 
-    def __init__(self, serial_port="COM4", baud_rate=9600, server_url="http://localhost:3000"):
+    def __init__(self, serial_port="COM3", baud_rate=9600, server_url="http://localhost:3000"):
         # Dicionário que armazena os dados da blackboard
         self.data = {}
         # Lock para controle de concorrência
@@ -91,7 +91,13 @@ class Blackboard:
         try:
             url = self.server_url + endpoint
             response = requests.post(url, json=data)
-            print(f"Resposta do servidor: {response.json()}")
+            if response.status_code == 200:
+                try:
+                    print(f"Resposta do servidor: {response.json()}")
+                except ValueError:
+                    print("O servidor retornou uma resposta que não é JSON.")
+            else:
+                print(f"Erro no servidor: {response.status_code} - {response.text}")
         except requests.RequestException as e:
             print(f"Erro ao enviar dados ao servidor: {e}")
 
