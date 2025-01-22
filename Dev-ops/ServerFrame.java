@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ServerFrame extends JFrame {
 
@@ -13,10 +15,11 @@ public class ServerFrame extends JFrame {
     private JButton stopButton;
     private ServerSocket serverSocket;
     private boolean isRunning;
+    private final int PORT = 8000;
 
     public ServerFrame() {
         setTitle("Server JFrame");
-        setSize(500, 400);
+        setSize(600, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         initComponents();
@@ -26,6 +29,7 @@ public class ServerFrame extends JFrame {
         // Layout and components
         textArea = new JTextArea();
         textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
         JScrollPane scrollPane = new JScrollPane(textArea);
 
         startButton = new JButton("Start Server");
@@ -57,9 +61,9 @@ public class ServerFrame extends JFrame {
 
     private void startServer() {
         try {
-            serverSocket = new ServerSocket(8000);
+            serverSocket = new ServerSocket(PORT);
             isRunning = true;
-            textArea.append("Server started on port 8000...\n");
+            logMessage("Server started on port " + PORT + "...");
             startButton.setEnabled(false);
             stopButton.setEnabled(true);
 
@@ -67,29 +71,20 @@ public class ServerFrame extends JFrame {
                 while (isRunning) {
                     try {
                         Socket clientSocket = serverSocket.accept();
-                        textArea.append("Client connected: " + clientSocket.getInetAddress() + "\n");
+                        logMessage("Client connected: " + clientSocket.getInetAddress());
 
-                        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                        new Thread(new ClientHandler(clientSocket)).start();
 
-                        String message;
-                        while ((message = in.readLine()) != null) {
-                            textArea.append("Received: " + message + "\n");
-                            out.println("Echo: " + message);
-                        }
-
-                        clientSocket.close();
-                        textArea.append("Client disconnected.\n");
                     } catch (IOException ex) {
                         if (isRunning) {
-                            textArea.append("Error: " + ex.getMessage() + "\n");
+                            logMessage("Error: " + ex.getMessage());
                         }
                     }
                 }
             }).start();
 
         } catch (IOException ex) {
-            textArea.append("Failed to start server: " + ex.getMessage() + "\n");
+            logMessage("Failed to start server: " + ex.getMessage());
         }
     }
 
@@ -99,11 +94,48 @@ public class ServerFrame extends JFrame {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
             }
-            textArea.append("Server stopped.\n");
+            logMessage("Server stopped.");
             startButton.setEnabled(true);
             stopButton.setEnabled(false);
         } catch (IOException ex) {
-            textArea.append("Error stopping server: " + ex.getMessage() + "\n");
+            logMessage("Error stopping server: " + ex.getMessage());
+        }
+    }
+
+    private void logMessage(String message) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timestamp = formatter.format(new Date());
+        textArea.append("[" + timestamp + "] " + message + "\n");
+    }
+
+    private class ClientHandler implements Runnable {
+        private Socket clientSocket;
+
+        public ClientHandler(Socket clientSocket) {
+            this.clientSocket = clientSocket;
+        }
+
+        @Override
+        public void run() {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
+
+                String message;
+                while ((message = in.readLine()) != null) {
+                    logMessage("Received: " + message);
+                    out.println("Echo: " + message);
+                }
+
+            } catch (IOException ex) {
+                logMessage("Client error: " + ex.getMessage());
+            } finally {
+                try {
+                    clientSocket.close();
+                    logMessage("Client disconnected.");
+                } catch (IOException ex) {
+                    logMessage("Error closing client socket: " + ex.getMessage());
+                }
+            }
         }
     }
 
