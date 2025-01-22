@@ -4,7 +4,6 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
-import WebSocket, { WebSocketServer } from 'ws';
 import { Request, Response, NextFunction } from 'express';
 
 dotenv.config();
@@ -17,8 +16,6 @@ enum StatusCode {
 }
 
 const UPDATE_DATA_ENDPOINT = "/update-data";
-
-const wss = new WebSocketServer({ port: 3001 });
 
 export class Server{
 
@@ -179,13 +176,7 @@ export class Server{
                 observacoes_do_medicamento: string;
                 data_da_prescricao: string | null;
             }>;
-            let html = `
-                <!DOCTYPE html>
-                <html lang="pt-br">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>Secretaria Virtual</title>
+            let css = `
                         <style>
                             table { width: 100%; border-collapse: collapse; }
                             th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
@@ -256,7 +247,16 @@ export class Server{
                                 color: white;
                                 margin-top: 2rem;
                             }
-                        </style>
+                        </style>`;
+            let html = `
+                <!DOCTYPE html>
+                <html lang="pt-br">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Secretaria Virtual</title>`;
+                        html += css;
+                        html += `
                     </head>
                     <body>
                         <header>
@@ -744,28 +744,6 @@ export class Server{
     }
 
     private async initialize() {
-
-        wss.on("connection", (ws) => {
-            console.log("Novo cliente conectado!");
-          
-            // Enviar uma mensagem para o cliente
-            ws.send(JSON.stringify({ mensagem: "Bem-vindo ao servidor WebSocket!" }));
-          
-            // Lidar com mensagens recebidas do cliente
-            ws.on("message", (message) => {
-              console.log("Mensagem do cliente:", message.toString());
-            });
-          
-            // Notificar o cliente após 5 segundos
-            setTimeout(() => {
-              ws.send(JSON.stringify({ mensagem: "Notificação do servidor após 5 segundos!" }));
-            }, 5000);
-          
-            // Quando o cliente desconectar
-            ws.on("close", () => {
-              console.log("Cliente desconectado.");
-            });
-          });
         
         await this.connectToDatabase();
 
