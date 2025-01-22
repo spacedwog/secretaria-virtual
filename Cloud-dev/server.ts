@@ -4,6 +4,7 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
+import WebSocket, { WebSocketServer } from 'ws';
 import { Request, Response, NextFunction } from 'express';
 
 dotenv.config();
@@ -17,7 +18,9 @@ enum StatusCode {
 
 const UPDATE_DATA_ENDPOINT = "/update-data";
 
-class Server{
+const wss = new WebSocketServer({ port: 3001 });
+
+export class Server{
 
     private readonly app: express.Express;
 
