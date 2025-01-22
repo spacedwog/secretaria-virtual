@@ -36,12 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Server = void 0;
 var net = require("net");
 var path = require("path");
 var express = require("express");
 var dotenv = require("dotenv");
 var mysql = require("mysql2/promise");
 var bodyParser = require("body-parser");
+var ws_1 = require("ws");
 dotenv.config();
 var StatusCode;
 (function (StatusCode) {
@@ -51,6 +53,7 @@ var StatusCode;
     StatusCode[StatusCode["DatabaseError"] = 500] = "DatabaseError";
 })(StatusCode || (StatusCode = {}));
 var UPDATE_DATA_ENDPOINT = "/update-data";
+var wss = new ws_1.WebSocketServer({ port: 3001 });
 var Server = /** @class */ (function () {
     function Server(port) {
         var _a, _b, _c, _d, _e, _f, _g, _h;
@@ -326,7 +329,25 @@ var Server = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.connectToDatabase()];
+                    case 0:
+                        wss.on("connection", function (ws) {
+                            console.log("Novo cliente conectado!");
+                            // Enviar uma mensagem para o cliente
+                            ws.send(JSON.stringify({ mensagem: "Bem-vindo ao servidor WebSocket!" }));
+                            // Lidar com mensagens recebidas do cliente
+                            ws.on("message", function (message) {
+                                console.log("Mensagem do cliente:", message.toString());
+                            });
+                            // Notificar o cliente após 5 segundos
+                            setTimeout(function () {
+                                ws.send(JSON.stringify({ mensagem: "Notificação do servidor após 5 segundos!" }));
+                            }, 5000);
+                            // Quando o cliente desconectar
+                            ws.on("close", function () {
+                                console.log("Cliente desconectado.");
+                            });
+                        });
+                        return [4 /*yield*/, this.connectToDatabase()];
                     case 1:
                         _a.sent();
                         startServer = function (port) {
@@ -400,4 +421,5 @@ var Server = /** @class */ (function () {
     };
     return Server;
 }());
+exports.Server = Server;
 new Server(3000);

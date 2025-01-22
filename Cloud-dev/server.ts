@@ -4,7 +4,8 @@ import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
-import WebSocket, { WebSocketServer } from 'ws';
+import * as WebSocket from 'ws';
+import { WebSocketServer } from 'ws';
 import { Request, Response, NextFunction } from 'express';
 
 dotenv.config();
