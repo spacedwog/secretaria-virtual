@@ -57,9 +57,9 @@ public class ServerFrame extends JFrame {
 
     private void startServer() {
         try {
-            serverSocket = new ServerSocket(3000);
+            serverSocket = new ServerSocket(8000);
             isRunning = true;
-            textArea.append("Server started on port 3000...\n");
+            textArea.append("Server started on port 8000...\n");
             startButton.setEnabled(false);
             stopButton.setEnabled(true);
 
