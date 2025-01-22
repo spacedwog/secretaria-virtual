@@ -17,7 +17,7 @@ enum StatusCode {
 
 const UPDATE_DATA_ENDPOINT = "/update-data";
 
-class Server {
+class Server{
 
     private readonly app: express.Express;
 
@@ -47,6 +47,7 @@ class Server {
     private value = "";
 
     constructor(port: number) {
+        
         this.app = express();
         this.port = port;
 
