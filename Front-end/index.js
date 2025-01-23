@@ -64,7 +64,7 @@ var MenuStarter = /** @class */ (function () {
                         return [4 /*yield*/, etl.gerarCartaoPaciente()];
                     case 2:
                         _b.sent();
-                        console.log(etl.getCartaoCadastro());
+                        console.table(etl.getCartaoCadastro());
                         return [3 /*break*/, 4];
                     case 3:
                         err_1 = _b.sent();

@@ -11,6 +11,7 @@ class MenuStarter {
     let option: string;
 
     do {
+      
       console.log('\n--- Sistema de Secretaria Virtual ---');
       console.log('1. Menu Paciente');
       console.log('2. Menu Consulta Médica');
