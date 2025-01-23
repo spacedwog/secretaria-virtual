@@ -10,17 +10,6 @@ class MenuStarter {
     
     let option: string;
 
-    try{
-
-      const etl = new ETLProcess;
-      await etl.gerarCartaoPaciente();
-      console.log(etl.getCartaoCadastro());
-  
-    }
-    catch (err){
-      console.error('Erro ao executar o menu paciente:', err);
-    }
-
     do {
       console.log('\n--- Sistema de Secretaria Virtual ---');
       console.log('1. Menu Paciente');
@@ -28,6 +17,17 @@ class MenuStarter {
       console.log('3. Receita Médica');
       console.log('4. Imprimir Receita Médica');
       console.log('5. Sair');
+
+      try{
+
+        const etl = new ETLProcess;
+        await etl.gerarCartaoPaciente();
+        console.log(etl.getCartaoCadastro());
+    
+      }
+      catch (err){
+        console.error('Erro ao executar o menu paciente:', err);
+      }
 
       // Captura a escolha do usuário
       option = readlineSync.question('Escolha uma opcao: ');
