@@ -7,13 +7,14 @@ import { ETLProcess } from '../ELT/etl';
 class MenuStarter {
   // Método principal do menu
   public async menuPrincipal() {
-
+    
     let option: string;
 
     try{
 
       const etl = new ETLProcess;
-      console.log(await etl.gerarCartaoPaciente());
+      await etl.gerarCartaoPaciente();
+      console.log(etl.getCartaoCadastro());
   
     }
     catch (err){
