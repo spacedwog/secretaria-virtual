@@ -22,7 +22,7 @@ class MenuStarter {
 
         const etl = new ETLProcess;
         await etl.gerarCartaoPaciente();
-        console.log(etl.getCartaoCadastro());
+        console.table(etl.getCartaoCadastro());
     
       }
       catch (err){
