@@ -46,13 +46,13 @@ export class ETLProcess{
       const endereco_paciente = this.getPatientAddress();
       
       this.setCartaoCadastro(
-        "ID: " + id_paciente + "\nO Paciente: " + nome_paciente + " foi cadastrado no sistema" +
+        "\nID: "        + id_paciente   + "\nO Paciente: "  + nome_paciente + " foi cadastrado no sistema" +
         "\nDados do Paciente: " +
-        "\n Nome: " + nome_paciente + " Idade: " + idade_paciente +
-        "\n Telefone: " + telefone_paciente + " Email: " + email_paciente +
+        "\n Nome: "     + nome_paciente + " Idade: "        + idade_paciente +
+        "\n Telefone: " + telefone_paciente + " Email: "    + email_paciente +
         "\n Endereco: " + endereco_paciente
       );
-      
+
       this.loadDataPacient();
 
     }
