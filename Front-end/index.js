@@ -40,7 +40,7 @@ var readlineSync = require("readline-sync");
 var menu_paciente_1 = require("./menu-paciente");
 var consulta_medica_1 = require("./consulta-medica");
 var doctor_service_1 = require("../Back-end/doctor.service");
-var etl_1 = require("../ELT/etl");
+var etl_1 = require("../ETL/etl");
 var MenuStarter = /** @class */ (function () {
     function MenuStarter() {
     }
