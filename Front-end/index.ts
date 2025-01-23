@@ -3,7 +3,7 @@ import * as readlineSync from 'readline-sync';
 import { MenuPacient } from './menu-paciente';
 import { MenuSchedule } from './consulta-medica';
 import { DoctorService } from '../Back-end/doctor.service';
-import { ETLProcess } from '../ELT/etl';
+import { ETLProcess } from '../ETL/etl';
 class MenuStarter {
   // Método principal do menu
   public async menuPrincipal() {
