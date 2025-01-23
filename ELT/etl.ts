@@ -11,21 +11,22 @@ export class ETLProcess{
     private cartaoCadastro: string = "";
 
     public async extractData() {
-        try {
+      try {
         console.log('Extraindo Dados do Banco de Dados');
-          const patients = await PatientService.listPatients();
-          patients.forEach((patient) => {
-            this.setPatientId(patient.patient_id);
-            this.setPatientName(patient.name);
-            this.setPatientAge(patient.age);
-            this.setPatientPhone(patient.phone);
-            this.setPatientEmail(patient.email);
-            this.setPatientAddress(patient.address);
-            this.transformData();
-          });
-        } catch (err) {
-          console.error('Erro ao listar pacientes:', err);
-        }
+        const patients = await PatientService.listPatients();
+        patients.forEach((patient) => {
+          this.setPatientId(patient.patient_id);
+          this.setPatientName(patient.name);
+          this.setPatientAge(patient.age);
+          this.setPatientPhone(patient.phone);
+          this.setPatientEmail(patient.email);
+          this.setPatientAddress(patient.address);
+          this.transformData();
+        });
+      }
+      catch (err) {
+        console.error('Erro ao listar pacientes:', err);
+      }
     }
 
     public async transformData() {
