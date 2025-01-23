@@ -3,7 +3,6 @@ import * as readlineSync from 'readline-sync';
 import { MenuPacient } from './menu-paciente';
 import { MenuSchedule } from './consulta-medica';
 import { DoctorService } from '../Back-end/doctor.service';
-import { Server } from '../Cloud-dev/server';
 class MenuStarter {
   // Método principal do menu
   public async menuPrincipal() {
@@ -60,7 +59,8 @@ class MenuStarter {
     try {
       const medico = new MenuSchedule();
       await medico.consultaMedica();
-    } catch (err) {
+    }
+    catch (err) {
       console.error('Erro ao executar o menu consulta médica:', err);
     }
   }
