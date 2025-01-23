@@ -10,7 +10,12 @@ export class ETLProcess{
     private patientAddress: string = "";
     private cartaoCadastro: string = "";
 
-    public async extractData() {
+    public async gerarCartaoPaciente(){
+      console.log('Gerando Cartão de Paciente');
+      await this.extractDataPacient();
+    }
+
+    private async extractDataPacient() {
       try {
         console.log('Extraindo Dados do Banco de Dados');
         const patients = await PatientService.listPatients();
@@ -21,7 +26,7 @@ export class ETLProcess{
           this.setPatientPhone(patient.phone);
           this.setPatientEmail(patient.email);
           this.setPatientAddress(patient.address);
-          this.transformData();
+          this.transformDataPacient();
         });
       }
       catch (err) {
@@ -29,7 +34,7 @@ export class ETLProcess{
       }
     }
 
-    public async transformData() {
+    private async transformDataPacient() {
 
       console.log('Transformando Dados');
       // Implementar a transformação dos dados
@@ -47,11 +52,11 @@ export class ETLProcess{
         "\n Telefone: " + telefone_paciente + " Email: " + email_paciente +
         "\n Endereco: " + endereco_paciente
       );
-      this.loadData();
+      this.loadDataPacient();
 
     }
 
-    public async loadData() {
+    private async loadDataPacient() {
       console.log('Carregando Dados para o Sistema');
       // Implementar a carga dos dados para o sistema
       // Exemplo: Salvar no banco de dados, gravar em um arquivo, etc.

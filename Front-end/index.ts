@@ -3,10 +3,14 @@ import * as readlineSync from 'readline-sync';
 import { MenuPacient } from './menu-paciente';
 import { MenuSchedule } from './consulta-medica';
 import { DoctorService } from '../Back-end/doctor.service';
+import { ETLProcess } from '../ELT/etl';
 class MenuStarter {
   // Método principal do menu
   public async menuPrincipal() {
     let option: string;
+
+    const etl = new ETLProcess;
+    await etl.gerarCartaoPaciente();
 
     do {
       console.log('\n--- Sistema de Secretaria Virtual ---');
