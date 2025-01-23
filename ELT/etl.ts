@@ -3,8 +3,8 @@ import { PatientService } from '../Back-end/patient.service';
 export class ETLProcess{
 
     private patientId: number = 0;
-    private patientName: string = "";
     private patientAge: number = 0;
+    private patientName: string = "";
     private patientPhone: string = "";
     private patientEmail: string = "";
     private patientAddress: string = "";
