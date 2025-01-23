@@ -104,7 +104,7 @@ var ETLProcess = /** @class */ (function () {
                 email_paciente = this.getPatientEmail();
                 telefone_paciente = this.getPatientPhone();
                 endereco_paciente = this.getPatientAddress();
-                this.setCartaoCadastro("ID: " + id_paciente + "\nO Paciente: " + nome_paciente + " foi cadastrado no sistema" +
+                this.setCartaoCadastro("\nID: " + id_paciente + "\nO Paciente: " + nome_paciente + " foi cadastrado no sistema" +
                     "\nDados do Paciente: " +
                     "\n Nome: " + nome_paciente + " Idade: " + idade_paciente +
                     "\n Telefone: " + telefone_paciente + " Email: " + email_paciente +
