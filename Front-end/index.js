@@ -40,13 +40,14 @@ var readlineSync = require("readline-sync");
 var menu_paciente_1 = require("./menu-paciente");
 var consulta_medica_1 = require("./consulta-medica");
 var doctor_service_1 = require("../Back-end/doctor.service");
+var etl_1 = require("../ELT/etl");
 var MenuStarter = /** @class */ (function () {
     function MenuStarter() {
     }
     // Método principal do menu
     MenuStarter.prototype.menuPrincipal = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var option, _a;
+            var option, etl, err_1, _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -56,43 +57,57 @@ var MenuStarter = /** @class */ (function () {
                         console.log('3. Receita Médica');
                         console.log('4. Imprimir Receita Médica');
                         console.log('5. Sair');
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 3, , 4]);
+                        etl = new etl_1.ETLProcess;
+                        return [4 /*yield*/, etl.gerarCartaoPaciente()];
+                    case 2:
+                        _b.sent();
+                        console.log(etl.getCartaoCadastro());
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _b.sent();
+                        console.error('Erro ao executar o menu paciente:', err_1);
+                        return [3 /*break*/, 4];
+                    case 4:
                         // Captura a escolha do usuário
                         option = readlineSync.question('Escolha uma opcao: ');
                         _a = option;
                         switch (_a) {
-                            case '1': return [3 /*break*/, 1];
-                            case '2': return [3 /*break*/, 3];
-                            case '3': return [3 /*break*/, 5];
-                            case '4': return [3 /*break*/, 7];
-                            case '5': return [3 /*break*/, 9];
+                            case '1': return [3 /*break*/, 5];
+                            case '2': return [3 /*break*/, 7];
+                            case '3': return [3 /*break*/, 9];
+                            case '4': return [3 /*break*/, 11];
+                            case '5': return [3 /*break*/, 13];
                         }
-                        return [3 /*break*/, 10];
-                    case 1: return [4 /*yield*/, this.menuPaciente()];
-                    case 2:
-                        _b.sent();
-                        return [3 /*break*/, 11];
-                    case 3: return [4 /*yield*/, this.menuConsultaMedica()];
-                    case 4:
-                        _b.sent();
-                        return [3 /*break*/, 11];
-                    case 5: return [4 /*yield*/, this.receitaMedica()];
+                        return [3 /*break*/, 14];
+                    case 5: return [4 /*yield*/, this.menuPaciente()];
                     case 6:
                         _b.sent();
-                        return [3 /*break*/, 11];
-                    case 7: return [4 /*yield*/, this.imprimirReceitaMedica()];
+                        return [3 /*break*/, 15];
+                    case 7: return [4 /*yield*/, this.menuConsultaMedica()];
                     case 8:
                         _b.sent();
-                        return [3 /*break*/, 11];
-                    case 9:
-                        console.log('Saindo do sistema...');
-                        return [3 /*break*/, 11];
+                        return [3 /*break*/, 15];
+                    case 9: return [4 /*yield*/, this.receitaMedica()];
                     case 10:
-                        console.log('Opcao invalida. Escolha entre 1, 2 ou 5.');
-                        _b.label = 11;
-                    case 11:
-                        if (option !== '5') return [3 /*break*/, 0];
-                        _b.label = 12;
+                        _b.sent();
+                        return [3 /*break*/, 15];
+                    case 11: return [4 /*yield*/, this.imprimirReceitaMedica()];
                     case 12:
+                        _b.sent();
+                        return [3 /*break*/, 15];
+                    case 13:
+                        console.log('Saindo do sistema...');
+                        return [3 /*break*/, 15];
+                    case 14:
+                        console.log('Opcao invalida. Escolha entre 1, 2 ou 5.');
+                        _b.label = 15;
+                    case 15:
+                        if (option !== '5') return [3 /*break*/, 0];
+                        _b.label = 16;
+                    case 16:
                         console.log('Obrigado por usar o sistema. Até a próxima!');
                         return [2 /*return*/];
                 }
@@ -102,7 +117,7 @@ var MenuStarter = /** @class */ (function () {
     // Método para acessar o menu do paciente
     MenuStarter.prototype.menuPaciente = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var paciente, err_1;
+            var paciente, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -113,8 +128,8 @@ var MenuStarter = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        err_1 = _a.sent();
-                        console.error('Erro ao executar o menu paciente:', err_1);
+                        err_2 = _a.sent();
+                        console.error('Erro ao executar o menu paciente:', err_2);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -124,7 +139,7 @@ var MenuStarter = /** @class */ (function () {
     // Método para acessar o menu de consulta médica
     MenuStarter.prototype.menuConsultaMedica = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var medico, err_2;
+            var medico, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -135,8 +150,8 @@ var MenuStarter = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        err_2 = _a.sent();
-                        console.error('Erro ao executar o menu consulta médica:', err_2);
+                        err_3 = _a.sent();
+                        console.error('Erro ao executar o menu consulta médica:', err_3);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -146,7 +161,7 @@ var MenuStarter = /** @class */ (function () {
     // Registrar visita
     MenuStarter.prototype.receitaMedica = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var patientId, doctorId, codeMedicamento, recipId, recipName, tipoMedicamento, dataMed, recipQuantity, frequencyMed, consumation, observation, err_3;
+            var patientId, doctorId, codeMedicamento, recipId, recipName, tipoMedicamento, dataMed, recipQuantity, frequencyMed, consumation, observation, err_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -168,8 +183,8 @@ var MenuStarter = /** @class */ (function () {
                         console.log('Medicamento registrado com sucesso!');
                         return [3 /*break*/, 3];
                     case 2:
-                        err_3 = _a.sent();
-                        console.error('Erro ao registrar visita:', err_3);
+                        err_4 = _a.sent();
+                        console.error('Erro ao registrar visita:', err_4);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -213,7 +228,7 @@ var MenuStarter = /** @class */ (function () {
 }());
 // Ponto de entrada da aplicação
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var menu, err_4;
+    var menu, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -228,8 +243,8 @@ var MenuStarter = /** @class */ (function () {
                 console.log('Sistema encerrado com sucesso.');
                 return [3 /*break*/, 4];
             case 3:
-                err_4 = _a.sent();
-                console.error('Erro fatal na aplicação:', err_4);
+                err_5 = _a.sent();
+                console.error('Erro fatal na aplicação:', err_5);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
