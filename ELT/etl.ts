@@ -52,6 +52,7 @@ export class ETLProcess{
         "\n Telefone: " + telefone_paciente + " Email: " + email_paciente +
         "\n Endereco: " + endereco_paciente
       );
+      
       this.loadDataPacient();
 
     }

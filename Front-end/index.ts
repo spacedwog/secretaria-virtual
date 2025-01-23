@@ -9,8 +9,15 @@ class MenuStarter {
   public async menuPrincipal() {
     let option: string;
 
-    const etl = new ETLProcess;
-    await etl.gerarCartaoPaciente();
+    try{
+
+      const etl = new ETLProcess;
+      await etl.gerarCartaoPaciente();
+  
+    }
+    catch (err){
+      console.error('Erro ao executar o menu paciente:', err);
+    }
 
     do {
       console.log('\n--- Sistema de Secretaria Virtual ---');
