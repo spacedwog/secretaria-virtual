@@ -3,7 +3,6 @@ import * as readlineSync from 'readline-sync';
 import { MenuPacient } from './menu-paciente';
 import { MenuSchedule } from './consulta-medica';
 import { DoctorService } from '../Back-end/doctor.service';
-import { ETLProcess } from '../ETL/etl';
 class MenuStarter {
   // Método principal do menu
   public async menuPrincipal() {
@@ -18,17 +17,6 @@ class MenuStarter {
       console.log('3. Receita Médica');
       console.log('4. Imprimir Receita Médica');
       console.log('5. Sair');
-
-      try{
-
-        const etl = new ETLProcess;
-        await etl.gerarCartaoPaciente();
-        console.table(etl.getCartaoCadastro());
-    
-      }
-      catch (err){
-        console.error('Erro ao executar o menu paciente:', err);
-      }
 
       // Captura a escolha do usuário
       option = readlineSync.question('Escolha uma opcao: ');
