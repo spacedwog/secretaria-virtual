@@ -93,23 +93,6 @@ export class Server{
             console.error('Erro no middleware:', err);
             res.status(err.status || StatusCode.DatabaseError).json({ error: err.message || 'Erro interno do servidor' });
         });
-
-        // Endpoint para receber dados do Python
-        this.app.post(UPDATE_DATA_ENDPOINT, (req: Request, res: Response) => {
-
-            const { key, value } = req.body;
-        
-            if ((key && typeof key !== 'string') || (value && typeof value !== 'string')) {
-                res.status(400).json({ message: 'Dados inválidos enviados!' });
-            }
-        
-            console.log('Dados recebidos:', { key, value });
-
-            this.setKey(key);
-            this.setValue(value);
-        
-            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
-        });
     }
 
     private setupRoutes() {
@@ -128,6 +111,23 @@ export class Server{
                 console.error('Erro ao gerar relatório:', error);
                 res.status(StatusCode.DatabaseError).send('Erro ao gerar relatório.');
             }
+        });
+
+        // Endpoint para receber dados do Python
+        this.app.post(UPDATE_DATA_ENDPOINT, (req: Request, res: Response) => {
+
+            const { key, value } = req.body;
+        
+            if ((key && typeof key !== 'string') || (value && typeof value !== 'string')) {
+                res.status(400).json({ message: 'Dados inválidos enviados!' });
+            }
+        
+            console.log('Dados recebidos:', { key, value });
+
+            this.setKey(key);
+            this.setValue(value);
+        
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
 
         this.initialize();
