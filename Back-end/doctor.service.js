@@ -145,7 +145,7 @@ var DoctorService = /** @class */ (function () {
             });
         });
     };
-    DoctorService.recordSchedule = function (appointment_id, patient_id, doctor_id, date, time, reason, status, nome_consulta_medica) {
+    DoctorService.recordSchedule = function (patient_id, doctor_id, date, time, reason, status, nome_consulta_medica) {
         return __awaiter(this, void 0, void 0, function () {
             var error_4;
             return __generator(this, function (_a) {
@@ -155,7 +155,7 @@ var DoctorService = /** @class */ (function () {
                         return [4 /*yield*/, database_1.Database.init()];
                     case 1:
                         _a.sent(); // Alterado para chamar o método estático diretamente
-                        return [4 /*yield*/, database_1.Database.query('CALL make_appointment(?, ?, ?, ?, ?, ?, ?, ?)', [appointment_id, date, time, reason, status, patient_id, doctor_id, nome_consulta_medica])];
+                        return [4 /*yield*/, database_1.Database.query('CALL make_appointment(?, ?, ?, ?, ?, ?, ?)', [date, time, reason, status, patient_id, doctor_id, nome_consulta_medica])];
                     case 2:
                         _a.sent();
                         return [3 /*break*/, 4];
