@@ -43,7 +43,6 @@ var express = require("express");
 var dotenv = require("dotenv");
 var mysql = require("mysql2/promise");
 var bodyParser = require("body-parser");
-var ws_1 = require("ws");
 dotenv.config();
 var StatusCode;
 (function (StatusCode) {
@@ -53,7 +52,7 @@ var StatusCode;
     StatusCode[StatusCode["DatabaseError"] = 500] = "DatabaseError";
 })(StatusCode || (StatusCode = {}));
 var UPDATE_DATA_ENDPOINT = "/update-data";
-var wss = new ws_1.WebSocketServer({ port: 3001 });
+var RECORD_DATA_ENDPOINT = "/record-data";
 var Server = /** @class */ (function () {
     function Server(port) {
         var _a, _b, _c, _d, _e, _f, _g, _h;
@@ -79,7 +78,6 @@ var Server = /** @class */ (function () {
         this.setupRoutes();
     }
     Server.prototype.setupMiddlewares = function () {
-        var _this = this;
         //Middleware do tipo: Parse
         //Descrição: Serve para parsear o corpo das requisições como JSON
         this.app.use(bodyParser.json());
@@ -110,17 +108,6 @@ var Server = /** @class */ (function () {
             console.error('Erro no middleware:', err);
             res.status(err.status || StatusCode.DatabaseError).json({ error: err.message || 'Erro interno do servidor' });
         });
-        // Endpoint para receber dados do Python
-        this.app.post(UPDATE_DATA_ENDPOINT, function (req, res) {
-            var _a = req.body, key = _a.key, value = _a.value;
-            if ((key && typeof key !== 'string') || (value && typeof value !== 'string')) {
-                res.status(400).json({ message: 'Dados inválidos enviados!' });
-            }
-            console.log('Dados recebidos:', { key: key, value: value });
-            _this.setKey(key);
-            _this.setValue(value);
-            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
-        });
     };
     Server.prototype.setupRoutes = function () {
         var _this = this;
@@ -148,6 +135,38 @@ var Server = /** @class */ (function () {
                 }
             });
         }); });
+        // Endpoint para receber dados do Python
+        this.app.post(UPDATE_DATA_ENDPOINT, function (req, res) {
+            var _a = req.body, key = _a.key, value = _a.value;
+            if ((key && typeof key !== 'string') || (value && typeof value !== 'string')) {
+                res.status(400).json({ message: 'Dados inválidos enviados!' });
+            }
+            console.log('Dados recebidos:', { key: key, value: value });
+            _this.setKey(key);
+            _this.setValue(value);
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
+        });
+        // Endpoint para receber dados do Python
+        this.app.post(RECORD_DATA_ENDPOINT, function (req, res) {
+            var _a = req.body, id_paciente = _a.id_paciente, id_medico = _a.id_medico, id_receita = _a.id_receita, code_medic = _a.code_medic, id_medic = _a.id_medic, nome_medic = _a.nome_medic, tipo_medic = _a.tipo_medic, data_medic = _a.data_medic, dosagem = _a.dosagem, frequencia = _a.frequencia, consumo = _a.consumo, observacao = _a.observacao;
+            if ((id_paciente && typeof id_paciente !== 'number') ||
+                (id_medico && typeof id_medico !== 'number') ||
+                (id_receita && typeof id_receita !== 'number') ||
+                (code_medic && typeof code_medic !== 'string') ||
+                (id_medic && typeof id_medic !== 'number') ||
+                (nome_medic && typeof nome_medic !== 'string') ||
+                (tipo_medic && typeof tipo_medic !== 'string') ||
+                (data_medic && typeof data_medic !== 'string') ||
+                (dosagem && typeof dosagem !== 'number') ||
+                (frequencia && typeof frequencia !== 'string') ||
+                (consumo && typeof consumo !== 'string') ||
+                (observacao && typeof observacao !== 'string')) {
+                res.status(400).json({ message: 'Dados inválidos enviados!' });
+            }
+            console.log('Dados recebidos:', { id_paciente: id_paciente, id_medico: id_medico, code_medic: code_medic, id_medic: id_medic, nome_medic: nome_medic, tipo_medic: tipo_medic, data_medic: data_medic, dosagem: dosagem, frequencia: frequencia, consumo: consumo, observacao: observacao });
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
+            _this.connection.query('CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [code_medic, id_paciente, id_medico, data_medic, observacao, id_receita, nome_medic, tipo_medic, dosagem, frequencia, consumo, observacao]);
+        });
         this.initialize();
     };
     Server.prototype.connectToDatabase = function () {
@@ -179,7 +198,7 @@ var Server = /** @class */ (function () {
     };
     Server.prototype.viewMedicInfo = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var select, tabela, condicao, query, rows, medicamento, html_1, error_3;
+            var select, tabela, condicao, query, rows, medicamento, css, html_1, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -196,7 +215,10 @@ var Server = /** @class */ (function () {
                     case 1:
                         rows = (_a.sent())[0];
                         medicamento = rows;
-                        html_1 = "\n                <!DOCTYPE html>\n                <html lang=\"pt-br\">\n                    <head>\n                        <meta charset=\"UTF-8\">\n                        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n                        <title>Secretaria Virtual</title>\n                        <style>\n                            table { width: 100%; border-collapse: collapse; }\n                            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }\n                            th { background-color: #0078d4; color: white; }\n                            tr:nth-child(even) { background-color: #f2f2f2; }\n                            body {\n                                font-family: Arial, sans-serif;\n                                margin: 0;\n                                padding: 0;\n                                background-color: #f5f5f5;\n                                color: #333;\n                            }\n                            header {\n                                background-color: #0078d4;\n                                color: white;\n                                padding: 1rem;\n                                text-align: center;\n                            }\n                            nav {\n                                display: flex;\n                                justify-content: center;\n                                background-color: #005bb5;\n                                padding: 0.5rem;\n                            }\n                            nav a {\n                                color: white;\n                                text-decoration: none;\n                                margin: 0 1rem;\n                                font-weight: bold;\n                            }\n                            nav a:hover {\n                                text-decoration: underline;\n                            }\n                            main {\n                                padding: 2rem;\n                                max-width: 800px;\n                                margin: auto;\n                                background-color: white;\n                                border-radius: 8px;\n                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n                            }\n                            form {\n                                display: flex;\n                                flex-direction: column;\n                            }\n                            form label {\n                                margin: 0.5rem 0 0.2rem;\n                            }\n                            form input, form select, form textarea, form button {\n                                padding: 0.8rem;\n                                margin-bottom: 1rem;\n                                border: 1px solid #ccc;\n                                border-radius: 4px;\n                            }\n                            form button {\n                                background-color: #0078d4;\n                                color: white;\n                                border: none;\n                                cursor: pointer;\n                            }\n                            form button:hover {\n                                background-color: #005bb5;\n                            }\n                            footer {\n                                text-align: center;\n                                padding: 1rem;\n                                background-color: #0078d4;\n                                color: white;\n                                margin-top: 2rem;\n                            }\n                        </style>\n                    </head>\n                    <body>\n                        <header>\n                            <h1>Secret\u00E1ria Virtual</h1>\n                            <p>Gerencie seus pacientes de forma simples e eficiente</p>\n                        </header>\n                        <nav>\n                            <a href=\"/\">Home</a>\n                            <a href=\"/consulta_medica\">Consultas M\u00E9dicas</a>\n                            <a href=\"/paciente\">Lista de Pacientes</a>\n                            <a href=\"/receita_medica\">Visualizar Receita M\u00E9dica</a>\n                        </nav>\n                        <h1>Informa\u00E7\u00F5es do Medicamento</h1>\n                        <table>\n                            <tr>\n                                <th>C\u00F3digo do Medicamento</th>\n                                <th>Nome do Medicamento</th>\n                                <th>Tipo do Medicamento</th>\n                                <th>Dosagem do Medicamento</th>\n                                <th>Frequencia de Administra\u00E7\u00E3o</th>\n                                <th>Dura\u00E7\u00E3o da Administra\u00E7\u00E3o</th>\n                                <th>Observa\u00E7\u00F5es do Medicamento</th>\n                                <th>Data da Prescri\u00E7\u00E3o</th>\n                            </tr>";
+                        css = "\n                        <style>\n                            table { width: 100%; border-collapse: collapse; }\n                            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }\n                            th { background-color: #0078d4; color: white; }\n                            tr:nth-child(even) { background-color: #f2f2f2; }\n                            body {\n                                font-family: Arial, sans-serif;\n                                margin: 0;\n                                padding: 0;\n                                background-color: #f5f5f5;\n                                color: #333;\n                            }\n                            header {\n                                background-color: #0078d4;\n                                color: white;\n                                padding: 1rem;\n                                text-align: center;\n                            }\n                            nav {\n                                display: flex;\n                                justify-content: center;\n                                background-color: #005bb5;\n                                padding: 0.5rem;\n                            }\n                            nav a {\n                                color: white;\n                                text-decoration: none;\n                                margin: 0 1rem;\n                                font-weight: bold;\n                            }\n                            nav a:hover {\n                                text-decoration: underline;\n                            }\n                            main {\n                                padding: 2rem;\n                                max-width: 800px;\n                                margin: auto;\n                                background-color: white;\n                                border-radius: 8px;\n                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n                            }\n                            form {\n                                display: flex;\n                                flex-direction: column;\n                            }\n                            form label {\n                                margin: 0.5rem 0 0.2rem;\n                            }\n                            form input, form select, form textarea, form button {\n                                padding: 0.8rem;\n                                margin-bottom: 1rem;\n                                border: 1px solid #ccc;\n                                border-radius: 4px;\n                            }\n                            form button {\n                                background-color: #0078d4;\n                                color: white;\n                                border: none;\n                                cursor: pointer;\n                            }\n                            form button:hover {\n                                background-color: #005bb5;\n                            }\n                            footer {\n                                text-align: center;\n                                padding: 1rem;\n                                background-color: #0078d4;\n                                color: white;\n                                margin-top: 2rem;\n                            }\n                        </style>";
+                        html_1 = "\n                <!DOCTYPE html>\n                <html lang=\"pt-br\">\n                    <head>\n                        <meta charset=\"UTF-8\">\n                        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n                        <title>Secretaria Virtual</title>";
+                        html_1 += css;
+                        html_1 += "\n                    </head>\n                    <body>\n                        <header>\n                            <h1>Secret\u00E1ria Virtual</h1>\n                            <p>Gerencie seus pacientes de forma simples e eficiente</p>\n                        </header>\n                        <nav>\n                            <a href=\"/\">Home</a>\n                            <a href=\"/consulta_medica\">Consultas M\u00E9dicas</a>\n                            <a href=\"/paciente\">Lista de Pacientes</a>\n                            <a href=\"/receita_medica\">Visualizar Receita M\u00E9dica</a>\n                        </nav>\n                        <h1>Informa\u00E7\u00F5es do Medicamento</h1>\n                        <table>\n                            <tr>\n                                <th>C\u00F3digo do Medicamento</th>\n                                <th>Nome do Medicamento</th>\n                                <th>Tipo do Medicamento</th>\n                                <th>Dosagem do Medicamento</th>\n                                <th>Frequencia de Administra\u00E7\u00E3o</th>\n                                <th>Dura\u00E7\u00E3o da Administra\u00E7\u00E3o</th>\n                                <th>Observa\u00E7\u00F5es do Medicamento</th>\n                                <th>Data da Prescri\u00E7\u00E3o</th>\n                            </tr>";
                         medicamento.forEach(function (m) {
                             html_1 += "\n                                <tr>\n                                    <td>".concat(m.med_code, "</td>\n                                    <td>").concat(m.nome_do_medicamento, "</td>\n                                    <td>").concat(m.tipo_do_medicamento, "</td>\n                                    <td>").concat(m.dosagem_do_medicamento, "</td>\n                                    <td>").concat(m.frequencia_de_administracao, "</td>\n                                    <td>").concat(m.duracao_da_administracao, "</td>\n                                    <td>").concat(m.observacoes_do_medicamento, "</td>\n                                    <td>").concat(m.data_da_prescricao, "</td>\n                                </tr>");
                         });
@@ -329,25 +351,7 @@ var Server = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        wss.on("connection", function (ws) {
-                            console.log("Novo cliente conectado!");
-                            // Enviar uma mensagem para o cliente
-                            ws.send(JSON.stringify({ mensagem: "Bem-vindo ao servidor WebSocket!" }));
-                            // Lidar com mensagens recebidas do cliente
-                            ws.on("message", function (message) {
-                                console.log("Mensagem do cliente:", message.toString());
-                            });
-                            // Notificar o cliente após 5 segundos
-                            setTimeout(function () {
-                                ws.send(JSON.stringify({ mensagem: "Notificação do servidor após 5 segundos!" }));
-                            }, 5000);
-                            // Quando o cliente desconectar
-                            ws.on("close", function () {
-                                console.log("Cliente desconectado.");
-                            });
-                        });
-                        return [4 /*yield*/, this.connectToDatabase()];
+                    case 0: return [4 /*yield*/, this.connectToDatabase()];
                     case 1:
                         _a.sent();
                         startServer = function (port) {
