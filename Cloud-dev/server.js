@@ -147,8 +147,8 @@ var Server = /** @class */ (function () {
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
         // Endpoint para receber dados do Python
-        this.app.post(RECORD_DATA_ENDPOINT, function (reqt, resp) {
-            var _a = reqt.body, id_paciente = _a.id_paciente, id_medico = _a.id_medico, id_receita = _a.id_receita, code_medic = _a.code_medic, id_medic = _a.id_medic, nome_medic = _a.nome_medic, tipo_medic = _a.tipo_medic, data_medic = _a.data_medic, dosagem = _a.dosagem, frequencia = _a.frequencia, consumo = _a.consumo, observacao = _a.observacao;
+        this.app.post(RECORD_DATA_ENDPOINT, function (req, res) {
+            var _a = req.body, id_paciente = _a.id_paciente, id_medico = _a.id_medico, id_receita = _a.id_receita, code_medic = _a.code_medic, id_medic = _a.id_medic, nome_medic = _a.nome_medic, tipo_medic = _a.tipo_medic, data_medic = _a.data_medic, dosagem = _a.dosagem, frequencia = _a.frequencia, consumo = _a.consumo, observacao = _a.observacao;
             if ((id_paciente && typeof id_paciente !== 'number') ||
                 (id_medico && typeof id_medico !== 'number') ||
                 (id_receita && typeof id_receita !== 'number') ||
@@ -161,7 +161,7 @@ var Server = /** @class */ (function () {
                 (frequencia && typeof frequencia !== 'string') ||
                 (consumo && typeof consumo !== 'string') ||
                 (observacao && typeof observacao !== 'string')) {
-                resp.status(400).json({ message: 'Dados inválidos enviados!' });
+                res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
             console.log('Dados recebidos:', { id_paciente: id_paciente, id_medico: id_medico, id_receita: id_receita, code_medic: code_medic, id_medic: id_medic, nome_medic: nome_medic, tipo_medic: tipo_medic, data_medic: data_medic, dosagem: dosagem, frequencia: frequencia, consumo: consumo, observacao: observacao });
             var currentDate = new Date();
@@ -169,7 +169,8 @@ var Server = /** @class */ (function () {
             var time = "".concat(currentDate.getHours(), ":").concat(currentDate.getMinutes());
             _this.connection.query('CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [code_medic, id_paciente, id_medico, data_medic, observacao, id_receita, id_medic, nome_medic, tipo_medic, dosagem, frequencia, consumo, observacao]);
             _this.connection.query('CALL visit_doctor(?, ?, ?, ?)', [date, time, id_paciente, id_medico]);
-            resp.status(200).json({ message: 'Dados recebidos com sucesso!' });
+            res.redirect('/receita_medica');
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
         this.initialize();
     };
