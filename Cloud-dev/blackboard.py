@@ -201,9 +201,10 @@ class Blackboard:
             "consumo": consumo,
             "observacao": observacao
         }
+        headers = {"Content-Type": "application/json"}
 
         try:
-            response = requests.post(url, data=json.dumps(payload))
+            response = requests.post(url, data=json.dumps(payload), headers=headers)
             response.raise_for_status()
             print("Dados enviados com sucesso:", response.json())
         except requests.exceptions.HTTPError as http_err:
