@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
@@ -158,8 +158,8 @@ export class Server{
                                              dosagem, frequencia, consumo, observacao});
 
             this.connection.query(
-                'CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [code_medic, id_paciente, id_medico, data_medic, observacao, id_receita, nome_medic, tipo_medic, dosagem, frequencia, consumo, observacao]
+                'CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [code_medic, id_paciente, id_medico, data_medic, observacao, id_receita, id_medic, nome_medic, tipo_medic, dosagem, frequencia, consumo, observacao]
               
             );
         
