@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
@@ -153,7 +153,7 @@ export class Server{
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
         
-            console.log('Dados recebidos:', { id_paciente, id_medico,
+            console.log('Dados recebidos:', { id_paciente, id_medico, id_receita,
                                              code_medic, id_medic, nome_medic, tipo_medic, data_medic,
                                              dosagem, frequencia, consumo, observacao});
 
