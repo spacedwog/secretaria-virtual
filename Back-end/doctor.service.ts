@@ -94,6 +94,7 @@ export class DoctorService {
   }
 
   static async recordSchedule(
+    appointment_id: number,
     patient_id: number,
     doctor_id: number,
     date: string,
@@ -105,8 +106,8 @@ export class DoctorService {
     try {
       await Database.init(); // Alterado para chamar o método estático diretamente
       await Database.query(
-        'CALL make_appointment(?, ?, ?, ?, ?, ?, ?)',
-        [date, time, reason, status, patient_id, doctor_id, nome_consulta_medica]
+        'CALL make_appointment(?, ?, ?, ?, ?, ?, ?, ?)',
+        [appointment_id, date, time, reason, status, patient_id, doctor_id, nome_consulta_medica]
       );
     } catch (error) {
       console.error('Error recording schedule:', error);
