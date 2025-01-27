@@ -95,7 +95,6 @@ export class MenuSchedule {
   // Agendar consulta
   private async recordSchedule() {
     try {
-      const appointmentId = parseInt(readlineSync.question('ID da consulta: '), 10);
       const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
       const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
       const nomeConsultaMedica = readlineSync.question('Nome da consulta médica: ');
@@ -104,7 +103,7 @@ export class MenuSchedule {
       const reason = readlineSync.question('Motivo da consulta: ');
       const status = readlineSync.question('Status da consulta (agendado/realizado): ');
 
-      await DoctorService.recordSchedule(appointmentId, patientId, doctorId, appoitmentDate, appoitmentTime, reason, status, nomeConsultaMedica);
+      await DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status, nomeConsultaMedica);
       console.log('Consulta agendada com sucesso!');
     } catch (err) {
       console.error('Erro ao agendar consulta:', err);
