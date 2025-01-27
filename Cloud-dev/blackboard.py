@@ -85,6 +85,50 @@ class Blackboard:
             self.send_data(key, value)
             print(f"Entrada adicionada: {key} -> {value} no blackboard")
 
+    def record_entry(self, id_paciente, id_medico, id_receita,
+                            code_medic, id_medic, nome_medic, tipo_medic, data_medic,
+                            dosagem, frequencia, consumo, observacao):
+        """Grava dados de uma receita no blackboard."""
+        with self.lock:
+            if id_receita in self.data:
+                self.data[id_receita].append(
+                    {
+                        "id_paciente": id_paciente,
+                        "id_medico": id_medico,
+                        "id_receita": id_receita,
+                        "code_medic": code_medic,
+                        "id_medic": id_medic,
+                        "nome_medic": nome_medic,
+                        "tipo_medic": tipo_medic,
+                        "data_medic": data_medic,
+                        "dosagem": dosagem,
+                        "frequencia": frequencia,
+                        "consumo": consumo,
+                        "observacao": observacao
+                    }
+                )
+            else:
+                self.data[id_receita] = [
+                    {
+                        "id_paciente": id_paciente,
+                        "id_medico": id_medico,
+                        "id_receita": id_receita,
+                        "code_medic": code_medic,
+                        "id_medic": id_medic,
+                        "nome_medic": nome_medic,
+                        "tipo_medic": tipo_medic,
+                        "data_medic": data_medic,
+                        "dosagem": dosagem,
+                        "frequencia": frequencia,
+                        "consumo": consumo,
+                        "observacao": observacao
+                    }
+                ]
+            self.record_data(id_paciente, id_medico, id_receita,
+                            code_medic, id_medic, nome_medic, tipo_medic, data_medic,
+                            dosagem, frequencia, consumo, observacao)
+            print(f"Receita médica gravada no blackboard: {id_receita}")
+
     def get_led_state(self):
         """Retorna o estado do LED."""
         return self.led_state
@@ -217,10 +261,23 @@ def create_gui():
     def register_medic_recip():
         """Registrar a receita médica."""
 
-        blackboard.record_data(pacient_entry(), medico_entry(), receita_entry(),
-                        code_entry(), medicamento_entry(), nome_medicamento_entry(), 
-                        tipo_medicamento_entry(), data_medicacao_entry(),
-                        dosagem_entry(), frequencia_entry(), consumo_entry(), observacao_entry())
+        id_paciente = pacient_entry.get()
+        id_medico = medico_entry.get()
+        id_receita = receita_entry.get()
+        code_medic = code_entry.get()
+        id_medic = medicamento_entry.get()
+        nome_medic = nome_medicamento_entry.get()
+        tipo_medic = tipo_medicamento_entry.get()
+        data_medicacao = data_medicacao_entry.get()
+        dosagem = dosagem_entry.get()
+        frequencia = frequencia_entry.get()
+        consumo = consumo_entry.get()
+        observacao = observacao_entry.get()
+
+        blackboard.record_entry(id_paciente, id_medico, id_receita,
+                        code_medic, id_medic, nome_medic,
+                        tipo_medic, data_medicacao,
+                        dosagem, frequencia, consumo, observacao)
 
     def add_entry():
         """Adiciona uma entrada no Blackboard."""
@@ -291,40 +348,52 @@ def create_gui():
 
     #Tela de Recording
     tk.Label(record_frame, text="ID do Paciente").grid(row=0, column=0, padx=5, pady=5)
-    pacient_entry = tk.Entry(record_frame).grid(row=1, column=0, padx=5, pady=5)
+    pacient_entry = tk.Entry(record_frame)
+    pacient_entry.grid(row=1, column=0, padx=5, pady=5)
 
     tk.Label(record_frame, text="ID do Médico").grid(row=0, column=1, padx=5, pady=5)
-    medico_entry = tk.Entry(record_frame).grid(row=1, column=1, padx=5, pady=5)
+    medico_entry = tk.Entry(record_frame)
+    medico_entry.grid(row=1, column=1, padx=5, pady=5)
 
     tk.Label(record_frame, text="ID da Receita").grid(row=2, column=0, padx=5, pady=5)
-    receita_entry = tk.Entry(record_frame).grid(row=3, column=0, padx=5, pady=5)
+    receita_entry = tk.Entry(record_frame)
+    receita_entry.grid(row=3, column=0, padx=5, pady=5)
 
     tk.Label(record_frame, text="Código do Medicamento").grid(row=2, column=1, padx=5, pady=5)
-    code_entry = tk.Entry(record_frame).grid(row=3, column=1, padx=5, pady=5)
+    code_entry = tk.Entry(record_frame)
+    code_entry.grid(row=3, column=1, padx=5, pady=5)
 
     tk.Label(record_frame, text="ID do Medicamento").grid(row=4, column=0, padx=5, pady=5)
-    medicamento_entry = tk.Entry(record_frame).grid(row=5, column=0, padx=5, pady=5)
+    medicamento_entry = tk.Entry(record_frame)
+    medicamento_entry.grid(row=5, column=0, padx=5, pady=5)
 
     tk.Label(record_frame, text="Nome do Medicamento").grid(row=4, column=1, padx=5, pady=5)
-    nome_medicamento_entry = tk.Entry(record_frame).grid(row=5, column=1, padx=5, pady=5)
+    nome_medicamento_entry = tk.Entry(record_frame)
+    nome_medicamento_entry.grid(row=5, column=1, padx=5, pady=5)
 
     tk.Label(record_frame, text="Tipo do Medicamento").grid(row=6, column=0, padx=5, pady=5)
-    tipo_medicamento_entry = tk.Entry(record_frame).grid(row=7, column=0, padx=5, pady=5)
+    tipo_medicamento_entry = tk.Entry(record_frame)
+    tipo_medicamento_entry.grid(row=7, column=0, padx=5, pady=5)
 
     tk.Label(record_frame, text="Data da medicação").grid(row=6, column=1, padx=5, pady=5)
-    data_medicacao_entry = tk.Entry(record_frame).grid(row=7, column=1, padx=5, pady=5)
+    data_medicacao_entry = tk.Entry(record_frame)
+    data_medicacao_entry.grid(row=7, column=1, padx=5, pady=5)
 
     tk.Label(record_frame, text="Dosagem da medicação").grid(row=8, column=0, padx=5, pady=5)
-    dosagem_entry = tk.Entry(record_frame).grid(row=9, column=0, padx=5, pady=5)
+    dosagem_entry = tk.Entry(record_frame)
+    dosagem_entry.grid(row=9, column=0, padx=5, pady=5)
 
     tk.Label(record_frame, text="Frequência da medicação").grid(row=8, column=1, padx=5, pady=5)
-    frequencia_entry = tk.Entry(record_frame).grid(row=9, column=1, padx=5, pady=5)
+    frequencia_entry = tk.Entry(record_frame)
+    frequencia_entry.grid(row=9, column=1, padx=5, pady=5)
 
     tk.Label(record_frame, text="Duração da Dose").grid(row=10, column=0, padx=5, pady=5)
-    consumo_entry = tk.Entry(record_frame).grid(row=11, column=0, padx=5, pady=5)
+    consumo_entry = tk.Entry(record_frame)
+    consumo_entry.grid(row=11, column=0, padx=5, pady=5)
 
     tk.Label(record_frame, text="Observações").grid(row=10, column=1, padx=5, pady=5)
-    observacao_entry = tk.Entry(record_frame).grid(row=11, column=1, padx=5, pady=5)
+    observacao_entry = tk.Entry(record_frame)
+    observacao_entry.grid(row=11, column=1, padx=5, pady=5)
 
     tk.Button(record_frame, text="Registrar Receita Médica", command=register_medic_recip).grid(row=12, column=0, padx=5)
     tk.Button(record_frame, text="Voltar", command=lambda: switch_to_frame(main_frame)).grid(row=12, column=1, padx=5)
