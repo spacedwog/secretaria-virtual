@@ -49,9 +49,10 @@ class Blackboard:
             cursor = conn.cursor()
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS leds (
-                    id TEXT PRIMARY KEY,
-                    state BOOLEAN NOT NULL,
-                    intensity INTEGER NOT NULL
+                    id VARCHAR(50) NOT NULL,
+                    state tinyint(1) NOT NULL,
+                    intensity int NOT NULL,
+                    PRIMARY KEY(id)
                 )
             """)
             conn.commit()

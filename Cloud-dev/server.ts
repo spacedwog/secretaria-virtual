@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
@@ -132,11 +132,11 @@ export class Server{
         });
 
         // Endpoint para receber dados do Python
-        this.app.post(RECORD_DATA_ENDPOINT, (reqt: Request, resp: Response) => {
+        this.app.post(RECORD_DATA_ENDPOINT, (req: Request, res: Response) => {
 
             const { id_paciente, id_medico, id_receita,
                 code_medic, id_medic, nome_medic, tipo_medic, data_medic,
-                dosagem, frequencia, consumo, observacao } = reqt.body;
+                dosagem, frequencia, consumo, observacao } = req.body;
         
             if ((id_paciente && typeof id_paciente !== 'number') ||
                 (id_medico && typeof id_medico !== 'number') ||
@@ -150,7 +150,7 @@ export class Server{
                 (frequencia && typeof frequencia!== 'string') ||
                 (consumo && typeof consumo!== 'string') ||
                 (observacao && typeof observacao!== 'string')) {
-                resp.status(400).json({ message: 'Dados inválidos enviados!' });
+                res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
         
             console.log('Dados recebidos:', { id_paciente, id_medico, id_receita,
@@ -170,8 +170,10 @@ export class Server{
                 'CALL visit_doctor(?, ?, ?, ?)',
                 [date, time, id_paciente, id_medico]
             );
+
+            res.redirect('/receita_medica');
         
-            resp.status(200).json({ message: 'Dados recebidos com sucesso!' });
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
 
         this.initialize();
