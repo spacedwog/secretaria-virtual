@@ -20,12 +20,13 @@ class UserProfile:
 
 class Blackboard:
     """Classe principal para gerenciamento do sistema Blackboard."""
-    def __init__(self, serial_port="COM4", baud_rate=9600, server_url="http://localhost:3001", db_name="secretaria_virtual"):
+    def __init__(self, serial_port="COM4", baud_rate=9600, server_url="http://localhost:3002", db_name="secretaria_virtual"):
         self.data = {}
         self.lock = threading.Lock()
         self.led_state = False
         self.server_url = server_url
         self.UPDATE_DATA_ENDPOINT = "/update-data"
+        self.RECORD_DATA_ENDPOINT = "/record-data"
         self.db_name = db_name
         self.user_profile = None
         self.leds = {}  # Dicionário para armazenar o estado e intensidade dos LEDs
@@ -137,6 +138,36 @@ class Blackboard:
         except Exception as err:
             print(f"Erro ao enviar dados: {err}")
 
+    def record_data(self, id_paciente, id_medico, id_receita,
+                            code_medic, id_medic, nome_medic, tipo_medic, data_medic,
+                            dosagem, frequencia, consumo, observacao):
+        """Grava dados de uma receita no sistema."""
+        url = f"{self.server_url}{self.RECORD_DATA_ENDPOINT}"
+        payload = {
+            "id_paciente": id_paciente,
+            "id_medico": id_medico,
+            "id_receita": id_receita,
+            "code_medic": code_medic,
+            "id_medic": id_medic,
+            "nome_medic": nome_medic,
+            "tipo_medic": tipo_medic,
+            "data_medic": data_medic,
+            "dosagem": dosagem,
+            "frequencia": frequencia,
+            "consumo": consumo,
+            "observacao": observacao
+        }
+        headers = {"Content-Type": "application/json"}
+
+        try:
+            response = requests.post(url, data=json.dumps(payload), headers=headers)
+            response.raise_for_status()
+            print("Dados enviados com sucesso:", response.json())
+        except requests.exceptions.HTTPError as http_err:
+            print(f"Erro HTTP: {http_err}")
+        except Exception as err:
+            print(f"Erro ao enviar dados: {err}")
+
     def _send_command_to_arduino(self, command):
         """Envia comandos ao Arduino via Serial."""
         if self.arduino:
@@ -182,6 +213,14 @@ def create_gui():
             switch_to_frame(main_frame)
         else:
             messagebox.showwarning("Erro", "Por favor, preencha todos os campos.")
+
+    def register_medic_recip():
+        """Registrar a receita médica."""
+
+        blackboard.record_data(pacient_entry(), medico_entry(), receita_entry(),
+                        code_entry(), medicamento_entry(), nome_medicamento_entry(), 
+                        tipo_medicamento_entry(), data_medicacao_entry(),
+                        dosagem_entry(), frequencia_entry(), consumo_entry(), observacao_entry())
 
     def add_entry():
         """Adiciona uma entrada no Blackboard."""
@@ -229,24 +268,66 @@ def create_gui():
 
     # Frames para navegação
     main_frame = tk.Frame(root)
+    record_frame = tk.Frame(root)
     profile_frame = tk.Frame(root)
     led_control_frame = tk.Frame(root)
 
     # Lista de frames
-    frames = [main_frame, profile_frame, led_control_frame]
+    frames = [main_frame, record_frame, profile_frame, led_control_frame]
 
     # Tela principal
-    tk.Label(main_frame, text="Chave:").pack(pady=5)
+    tk.Label(main_frame, text="Tipo do Medicamento:").pack(pady=5)
     key_entry = tk.Entry(main_frame)
     key_entry.pack(pady=5)
 
-    tk.Label(main_frame, text="Valor:").pack(pady=5)
+    tk.Label(main_frame, text="Código do Medicamento:").pack(pady=5)
     value_entry = tk.Entry(main_frame)
     value_entry.pack(pady=5)
 
     tk.Button(main_frame, text="Adicionar Entrada", command=add_entry).pack(pady=5)
+    tk.Button(main_frame, text="Receita Médica", command=lambda: switch_to_frame(record_frame)).pack(pady=5)
     tk.Button(main_frame, text="Configurar Perfil", command=lambda: switch_to_frame(profile_frame)).pack(pady=5)
     tk.Button(main_frame, text="Controle de LED", command=lambda: switch_to_frame(led_control_frame)).pack(pady=5)
+
+    #Tela de Recording
+    tk.Label(record_frame, text="ID do Paciente").grid(row=0, column=0, padx=5, pady=5)
+    pacient_entry = tk.Entry(record_frame).grid(row=1, column=0, padx=5, pady=5)
+
+    tk.Label(record_frame, text="ID do Médico").grid(row=0, column=1, padx=5, pady=5)
+    medico_entry = tk.Entry(record_frame).grid(row=1, column=1, padx=5, pady=5)
+
+    tk.Label(record_frame, text="ID da Receita").grid(row=2, column=0, padx=5, pady=5)
+    receita_entry = tk.Entry(record_frame).grid(row=3, column=0, padx=5, pady=5)
+
+    tk.Label(record_frame, text="Código do Medicamento").grid(row=2, column=1, padx=5, pady=5)
+    code_entry = tk.Entry(record_frame).grid(row=3, column=1, padx=5, pady=5)
+
+    tk.Label(record_frame, text="ID do Medicamento").grid(row=4, column=0, padx=5, pady=5)
+    medicamento_entry = tk.Entry(record_frame).grid(row=5, column=0, padx=5, pady=5)
+
+    tk.Label(record_frame, text="Nome do Medicamento").grid(row=4, column=1, padx=5, pady=5)
+    nome_medicamento_entry = tk.Entry(record_frame).grid(row=5, column=1, padx=5, pady=5)
+
+    tk.Label(record_frame, text="Tipo do Medicamento").grid(row=6, column=0, padx=5, pady=5)
+    tipo_medicamento_entry = tk.Entry(record_frame).grid(row=7, column=0, padx=5, pady=5)
+
+    tk.Label(record_frame, text="Data da medicação").grid(row=6, column=1, padx=5, pady=5)
+    data_medicacao_entry = tk.Entry(record_frame).grid(row=7, column=1, padx=5, pady=5)
+
+    tk.Label(record_frame, text="Dosagem da medicação").grid(row=8, column=0, padx=5, pady=5)
+    dosagem_entry = tk.Entry(record_frame).grid(row=9, column=0, padx=5, pady=5)
+
+    tk.Label(record_frame, text="Frequência da medicação").grid(row=8, column=1, padx=5, pady=5)
+    frequencia_entry = tk.Entry(record_frame).grid(row=9, column=1, padx=5, pady=5)
+
+    tk.Label(record_frame, text="Duração da Dose").grid(row=10, column=0, padx=5, pady=5)
+    consumo_entry = tk.Entry(record_frame).grid(row=11, column=0, padx=5, pady=5)
+
+    tk.Label(record_frame, text="Observações").grid(row=10, column=1, padx=5, pady=5)
+    observacao_entry = tk.Entry(record_frame).grid(row=11, column=1, padx=5, pady=5)
+
+    tk.Button(record_frame, text="Registrar Receita Médica", command=register_medic_recip).grid(row=12, column=0, padx=5)
+    tk.Button(record_frame, text="Voltar", command=lambda: switch_to_frame(main_frame)).grid(row=12, column=1, padx=5)
 
     # Tela de perfil
     tk.Label(profile_frame, text="Nome:").pack(pady=5)

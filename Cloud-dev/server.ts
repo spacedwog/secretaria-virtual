@@ -16,6 +16,7 @@ enum StatusCode {
 }
 
 const UPDATE_DATA_ENDPOINT = "/update-data";
+const RECORD_DATA_ENDPOINT = "/record-data";
 
 export class Server{
 
@@ -128,6 +129,41 @@ export class Server{
             this.setValue(value);
         
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
+        });
+
+        // Endpoint para receber dados do Python
+        this.app.post(RECORD_DATA_ENDPOINT, (req: Request, res: Response) => {
+
+            const { id_paciente, id_medico, id_receita,
+                code_medic, id_medic, nome_medic, tipo_medic, data_medic,
+                dosagem, frequencia, consumo, observacao } = req.body;
+        
+            if ((id_paciente && typeof id_paciente !== 'number') ||
+                (id_medico && typeof id_medico !== 'number') ||
+                (id_receita && typeof id_receita !== 'number') ||
+                (code_medic && typeof code_medic!== 'string') ||
+                (id_medic && typeof id_medic !== 'number') ||
+                (nome_medic && typeof nome_medic!=='string') ||
+                (tipo_medic && typeof tipo_medic!=='string') ||
+                (data_medic && typeof data_medic!=='string') ||
+                (dosagem && typeof dosagem!== 'number') ||
+                (frequencia && typeof frequencia!== 'string') ||
+                (consumo && typeof consumo!== 'string') ||
+                (observacao && typeof observacao!== 'string')) {
+                res.status(400).json({ message: 'Dados inválidos enviados!' });
+            }
+        
+            console.log('Dados recebidos:', { id_paciente, id_medico,
+                                             code_medic, id_medic, nome_medic, tipo_medic, data_medic,
+                                             dosagem, frequencia, consumo, observacao});
+        
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
+
+            this.connection.query(
+                'CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [code_medic, id_paciente, id_medico, data_medic, observacao, id_receita, nome_medic, tipo_medic, dosagem, frequencia, consumo, observacao]
+              
+            );
         });
 
         this.initialize();
