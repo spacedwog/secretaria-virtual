@@ -146,23 +146,24 @@ var MenuStarter = /** @class */ (function () {
     // Registrar visita
     MenuStarter.prototype.receitaMedica = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var patientId, doctorId, codeMedicamento, recipId, recipName, tipoMedicamento, dataMed, recipQuantity, frequencyMed, consumation, observation, err_3;
+            var patientId, doctorId, codeMed, receitaId, medicamentoId, nomeMedicamento, tipoMedicamento, dataMed, dosage, frequency, consume, observation, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
                         doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
-                        codeMedicamento = readlineSync.question('Codigo do medicamento: ');
-                        recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
-                        recipName = readlineSync.question('Nome do medicamento: ');
+                        codeMed = readlineSync.question('Código do medicamento: ');
+                        receitaId = parseInt(readlineSync.question('ID da receita medica: '), 10);
+                        medicamentoId = parseInt(readlineSync.question('ID do medicamento: '), 10);
+                        nomeMedicamento = readlineSync.question('Nome do medicamento: ');
                         tipoMedicamento = readlineSync.question('Tipo do medicamento: ');
                         dataMed = readlineSync.question('Data da medicacao (aaaa/mm/dd): ');
-                        recipQuantity = readlineSync.question('Dosagem da medicacao: ');
-                        frequencyMed = readlineSync.question('Frequência de medicacao: ');
-                        consumation = readlineSync.question('Duracao da dose: ');
+                        dosage = readlineSync.question('Dosagem da medicacao: ');
+                        frequency = readlineSync.question('Frequência de medicacao: ');
+                        consume = readlineSync.question('Duracao da dose: ');
                         observation = readlineSync.question('Observacoes: ');
-                        return [4 /*yield*/, doctor_service_1.DoctorService.medicRecip(patientId, doctorId, codeMedicamento, recipId, dataMed, observation, recipName, tipoMedicamento, frequencyMed, recipQuantity, consumation)];
+                        return [4 /*yield*/, doctor_service_1.DoctorService.medicRecip({ patientId: patientId, doctorId: doctorId, codeMed: codeMed, receitaId: receitaId, medicamentoId: medicamentoId, dataMed: dataMed, observation: observation, nomeMedicamento: nomeMedicamento, tipoMedicamento: tipoMedicamento, frequency: frequency, dosage: dosage, consume: consume })];
                     case 1:
                         _a.sent();
                         console.log('Medicamento registrado com sucesso!');

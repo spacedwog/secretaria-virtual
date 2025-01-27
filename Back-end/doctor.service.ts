@@ -99,13 +99,14 @@ export class DoctorService {
     date: string,
     time: string,
     reason: string,
-    status: string
+    status: string,
+    nome_consulta_medica: string
   ): Promise<void> {
     try {
       await Database.init(); // Alterado para chamar o método estático diretamente
       await Database.query(
-        'CALL make_appointment(?, ?, ?, ?, ?, ?)',
-        [date, time, reason, status, patient_id, doctor_id]
+        'CALL make_appointment(?, ?, ?, ?, ?, ?, ?)',
+        [date, time, reason, status, patient_id, doctor_id, nome_consulta_medica]
       );
     } catch (error) {
       console.error('Error recording schedule:', error);

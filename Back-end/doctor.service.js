@@ -38,6 +38,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DoctorService = void 0;
 var database_1 = require("./database");
+var RecipDetails = /** @class */ (function () {
+    function RecipDetails(patientId, doctorId, codeMed, recipId, medicamentoId, dataMed, observacao, medicationName, medicationType, frequencia, dosagem, consumo) {
+        this.patientId = patientId;
+        this.doctorId = doctorId;
+        this.codeMed = codeMed;
+        this.receitaId = recipId;
+        this.medicamentoId = medicamentoId;
+        this.dataMed = dataMed;
+        this.observation = observacao;
+        this.nomeMedicamento = medicationName;
+        this.tipoMedicamento = medicationType;
+        this.frequency = frequencia;
+        this.dosage = dosagem;
+        this.consume = consumo;
+    }
+    return RecipDetails;
+}());
 var DoctorService = /** @class */ (function () {
     function DoctorService() {
     }
@@ -151,25 +168,40 @@ var DoctorService = /** @class */ (function () {
             });
         });
     };
-    DoctorService.medicRecip = function (id_paciente, id_medico, code_medicamento, id_receita, data_prescricao, observacao, nome_medicamento, tipo_medicamento, frequencia, dosagem, duracao) {
+    DoctorService.medicRecip = function (recipDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_5;
+            var patientId, doctorId, codeMed, receitaId, medicamentoId, dataMed, observation, nomeMedicamento, tipoMedicamento, frequency, dosage, consume, code_medicamento, id_paciente, id_medico, data_prescricao, observacao, id_receita, id_medicamento, nome_medicamento, tipo_medicamento, frequencia, dosagem, duracao, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, database_1.Database.init()];
+                        patientId = recipDetails.patientId, doctorId = recipDetails.doctorId, codeMed = recipDetails.codeMed, receitaId = recipDetails.receitaId, medicamentoId = recipDetails.medicamentoId, dataMed = recipDetails.dataMed, observation = recipDetails.observation, nomeMedicamento = recipDetails.nomeMedicamento, tipoMedicamento = recipDetails.tipoMedicamento, frequency = recipDetails.frequency, dosage = recipDetails.dosage, consume = recipDetails.consume;
+                        code_medicamento = codeMed;
+                        id_paciente = patientId;
+                        id_medico = doctorId;
+                        data_prescricao = dataMed.toString().split('T')[0];
+                        observacao = observation;
+                        id_receita = receitaId;
+                        id_medicamento = medicamentoId;
+                        nome_medicamento = nomeMedicamento;
+                        tipo_medicamento = tipoMedicamento;
+                        frequencia = frequency;
+                        dosagem = dosage;
+                        duracao = consume;
+                        _a.label = 1;
                     case 1:
-                        _a.sent(); // Alterado para chamar o método estático diretamente
-                        return [4 /*yield*/, database_1.Database.query('CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [code_medicamento, id_paciente, id_medico, data_prescricao, observacao, id_receita, nome_medicamento, tipo_medicamento, dosagem, frequencia, duracao])];
+                        _a.trys.push([1, 4, , 5]);
+                        return [4 /*yield*/, database_1.Database.init()];
                     case 2:
-                        _a.sent();
-                        return [3 /*break*/, 4];
+                        _a.sent(); // Alterado para chamar o método estático diretamente
+                        return [4 /*yield*/, database_1.Database.query('CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [code_medicamento, id_paciente, id_medico, data_prescricao, observacao, id_receita, id_medicamento, nome_medicamento, tipo_medicamento, dosagem, frequencia, duracao])];
                     case 3:
+                        _a.sent();
+                        return [3 /*break*/, 5];
+                    case 4:
                         error_5 = _a.sent();
                         console.error('Error adding medication:', error_5);
                         throw new Error('Failed to add medication. Please check the input data and try again.');
-                    case 4: return [2 /*return*/];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
