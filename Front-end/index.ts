@@ -1,4 +1,3 @@
-import { exec } from 'child_process';
 import * as readlineSync from 'readline-sync';
 import { MenuPacient } from './menu-paciente';
 import { MenuSchedule } from './consulta-medica';
@@ -73,28 +72,31 @@ class MenuStarter {
 
       const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
       const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
-      const codeMedicamento = readlineSync.question('Código do medicamento: ');
-      const recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
-      const recipName = readlineSync.question('Nome do medicamento: ');
+      const codeMed = readlineSync.question('Código do medicamento: ');
+      const receitaId = parseInt(readlineSync.question('ID da receita medica: '), 10);
+      const medicamentoId = parseInt(readlineSync.question('ID do medicamento: '), 10);
+      const nomeMedicamento = readlineSync.question('Nome do medicamento: ');
       const tipoMedicamento = readlineSync.question('Tipo do medicamento: ');
       const dataMed = readlineSync.question('Data da medicacao (aaaa/mm/dd): ');
-      const recipQuantity = readlineSync.question('Dosagem da medicacao: ');
-      const frequencyMed = readlineSync.question('Frequência de medicacao: ');
-      const consumation = readlineSync.question('Duracao da dose: ');
+      const dosage = readlineSync.question('Dosagem da medicacao: ');
+      const frequency = readlineSync.question('Frequência de medicacao: ');
+      const consume = readlineSync.question('Duracao da dose: ');
       const observation = readlineSync.question('Observacoes: ');
 
+
       await DoctorService.medicRecip(
-        patientId,
+        {patientId,
         doctorId,
-        codeMedicamento,
-        recipId,
+        codeMed,
+        receitaId,
+        medicamentoId,
         dataMed,
         observation,
-        recipName,
+        nomeMedicamento,
         tipoMedicamento,
-        frequencyMed,
-        recipQuantity,
-        consumation);
+        frequency,
+        dosage,
+        consume});
       
       console.log('Medicamento registrado com sucesso!');
     }

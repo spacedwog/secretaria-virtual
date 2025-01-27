@@ -1,5 +1,34 @@
 import { Database } from './database';
 
+class RecipDetails {
+  patientId: number;
+  doctorId: number;
+  codeMed: string;
+  receitaId: number;
+  medicamentoId: number;
+  dataMed: string;
+  observation?: string;
+  nomeMedicamento: string;
+  tipoMedicamento: string;
+  frequency: string;
+  dosage: string;
+  consume: string;
+
+  constructor(patientId: number, doctorId: number, codeMed: string, recipId: number, medicamentoId: number, dataMed: string, observacao: string, medicationName: string, medicationType: string, frequencia: string, dosagem: string, consumo: string) {
+    this.patientId = patientId;
+    this.doctorId = doctorId;
+    this.codeMed = codeMed;
+    this.receitaId = recipId;
+    this.medicamentoId = medicamentoId;
+    this.dataMed = dataMed;
+    this.observation = observacao;
+    this.nomeMedicamento = medicationName;
+    this.tipoMedicamento = medicationType;
+    this.frequency = frequencia;
+    this.dosage = dosagem;
+    this.consume = consumo;
+  }
+}
 export class DoctorService {
   private static _databaseInstance: Database;
 
@@ -84,24 +113,27 @@ export class DoctorService {
     }
   }
 
-  static async medicRecip(
-    id_paciente: number,
-    id_medico: number,
-    code_medicamento: string,
-    id_receita: number,
-    data_prescricao: string,
-    observacao: string,
-    nome_medicamento: string,
-    tipo_medicamento: string,
-    frequencia: string,
-    dosagem: string,
-    duracao: string
-  ): Promise<void> {
+  public static async medicRecip(recipDetails: RecipDetails): Promise<void> {
+    const { patientId, doctorId, codeMed, receitaId, medicamentoId, dataMed, observation, nomeMedicamento, tipoMedicamento, frequency, dosage, consume } = recipDetails;
+
+    const code_medicamento = codeMed;
+    const id_paciente = patientId;
+    const id_medico = doctorId;
+    const data_prescricao = dataMed.toString().split('T')[0];
+    const observacao = observation;
+    const id_receita = receitaId;
+    const id_medicamento = medicamentoId;
+    const nome_medicamento = nomeMedicamento;
+    const tipo_medicamento = tipoMedicamento;
+    const frequencia = frequency;
+    const dosagem = dosage;
+    const duracao = consume;
+  
     try {
       await Database.init(); // Alterado para chamar o método estático diretamente
       await Database.query(
-        'CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [code_medicamento, id_paciente, id_medico, data_prescricao, observacao, id_receita, nome_medicamento, tipo_medicamento, dosagem, frequencia, duracao]
+        'CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [code_medicamento, id_paciente, id_medico, data_prescricao, observacao, id_receita, id_medicamento, nome_medicamento, tipo_medicamento, dosagem, frequencia, duracao]
       );
     } catch (error) {
       console.error('Error adding medication:', error);
