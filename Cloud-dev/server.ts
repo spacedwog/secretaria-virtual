@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
@@ -302,7 +302,7 @@ export class Server{
                         <nav>
                             <a href="/">Home</a>
                             <a href="/consulta_medica">Consultas Médicas</a>
-                            <a href="/paciente">Lista de Pacientes</a>
+                            <a href="/paciente">Visitas Médicas</a>
                             <a href="/receita_medica">Visualizar Receita Médica</a>
                         </nav>
                         <h1>Informações do Medicamento</h1>
@@ -445,7 +445,7 @@ export class Server{
                         <nav>
                             <a href="/">Home</a>
                             <a href="/consulta_medica">Consultas Médicas</a>
-                            <a href="/paciente">Lista de Pacientes</a>
+                            <a href="/paciente">Visitas Médicas</a>
                             <a href="/receita_medica">Visualizar Receita Médica</a>
                         </nav>
                         <h1>Consultas Médicas</h1>
@@ -585,10 +585,10 @@ export class Server{
                     <nav>
                         <a href="/">Home</a>
                         <a href="/consulta_medica">Consultas Médicas</a>
-                        <a href="/paciente">Lista de Pacientes</a>
+                        <a href="/paciente">Visitas Médicas</a>
                         <a href="/receita_medica">Visualizar Receita Médica</a>
                     </nav>
-                    <h1>Lista de Pacientes</h1>
+                    <h1>Lista de Visitas Médicas</h1>
                     <table>
                         <tr>
                             <th>ID</th>
