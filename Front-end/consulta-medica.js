@@ -185,18 +185,19 @@ var MenuSchedule = /** @class */ (function () {
     // Agendar consulta
     MenuSchedule.prototype.recordSchedule = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var patientId, doctorId, appoitmentDate, appoitmentTime, reason, status_1, err_4;
+            var patientId, doctorId, nomeConsultaMedica, appoitmentDate, appoitmentTime, reason, status_1, err_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
                         doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
+                        nomeConsultaMedica = readlineSync.question('Nome da consulta médica: ');
                         appoitmentDate = readlineSync.question('Data da consulta (aaaa/mm/dd): ');
                         appoitmentTime = readlineSync.question('Horario da consulta (hh:mm): ');
                         reason = readlineSync.question('Motivo da consulta: ');
                         status_1 = readlineSync.question('Status da consulta (agendado/realizado): ');
-                        return [4 /*yield*/, doctor_service_1.DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status_1)];
+                        return [4 /*yield*/, doctor_service_1.DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status_1, nomeConsultaMedica)];
                     case 1:
                         _a.sent();
                         console.log('Consulta agendada com sucesso!');
