@@ -95,7 +95,7 @@ export class MenuSchedule {
   // Agendar consulta
   private async recordSchedule() {
     try {
-      const appoitmentId = parseInt(readlineSync.question('ID da consulta: '), 10);
+      const appointmentId = parseInt(readlineSync.question('ID da consulta: '), 10);
       const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
       const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
       const nomeConsultaMedica = readlineSync.question('Nome da consulta médica: ');
