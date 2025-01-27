@@ -163,9 +163,9 @@ var Server = /** @class */ (function () {
                 (observacao && typeof observacao !== 'string')) {
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
-            console.log('Dados recebidos:', { id_paciente: id_paciente, id_medico: id_medico, code_medic: code_medic, id_medic: id_medic, nome_medic: nome_medic, tipo_medic: tipo_medic, data_medic: data_medic, dosagem: dosagem, frequencia: frequencia, consumo: consumo, observacao: observacao });
-            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
+            console.log('Dados recebidos:', { id_paciente: id_paciente, id_medico: id_medico, id_receita: id_receita, code_medic: code_medic, id_medic: id_medic, nome_medic: nome_medic, tipo_medic: tipo_medic, data_medic: data_medic, dosagem: dosagem, frequencia: frequencia, consumo: consumo, observacao: observacao });
             _this.connection.query('CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [code_medic, id_paciente, id_medico, data_medic, observacao, id_receita, nome_medic, tipo_medic, dosagem, frequencia, consumo, observacao]);
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
         this.initialize();
     };
