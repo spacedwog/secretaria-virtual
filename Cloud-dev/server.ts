@@ -156,14 +156,14 @@ export class Server{
             console.log('Dados recebidos:', { id_paciente, id_medico,
                                              code_medic, id_medic, nome_medic, tipo_medic, data_medic,
                                              dosagem, frequencia, consumo, observacao});
-        
-            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
 
             this.connection.query(
                 'CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                 [code_medic, id_paciente, id_medico, data_medic, observacao, id_receita, nome_medic, tipo_medic, dosagem, frequencia, consumo, observacao]
               
             );
+        
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
 
         this.initialize();

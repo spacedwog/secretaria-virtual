@@ -20,7 +20,7 @@ class UserProfile:
 
 class Blackboard:
     """Classe principal para gerenciamento do sistema Blackboard."""
-    def __init__(self, serial_port="COM4", baud_rate=9600, server_url="http://localhost:3002", db_name="secretaria_virtual"):
+    def __init__(self, serial_port="COM4", baud_rate=9600, server_url="http://localhost:3001", db_name="secretaria_virtual"):
         self.data = {}
         self.lock = threading.Lock()
         self.led_state = False
@@ -201,10 +201,9 @@ class Blackboard:
             "consumo": consumo,
             "observacao": observacao
         }
-        headers = {"Content-Type": "application/json"}
 
         try:
-            response = requests.post(url, data=json.dumps(payload), headers=headers)
+            response = requests.post(url, data=json.dumps(payload))
             response.raise_for_status()
             print("Dados enviados com sucesso:", response.json())
         except requests.exceptions.HTTPError as http_err:
