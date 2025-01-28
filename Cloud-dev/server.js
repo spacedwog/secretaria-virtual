@@ -55,6 +55,7 @@ var StatusCode;
 var UPDATE_DATA_ENDPOINT = "/update-data";
 var RECORD_DATA_ENDPOINT = "/record-data";
 var SAVE_DATA_ENDPOINT = "/save-data";
+var scriptPath = './cloudengine.ps1';
 var Server = /** @class */ (function () {
     function Server(port) {
         var _a, _b, _c, _d, _e, _f, _g, _h;
@@ -107,6 +108,12 @@ var Server = /** @class */ (function () {
         //Middleware do tipo: Error
         //Descrição: Serve para tratar erros genéricos
         this.app.use(function (err, req, res, next) {
+            var params = {
+                function: "Middleware",
+                mensagem: "Erro genérico: " + err,
+                return_code: 4
+            };
+            runPowerShellScript(scriptPath, params);
             console.error('Erro no middleware:', err);
             res.status(err.status || StatusCode.DatabaseError).json({ error: err.message || 'Erro interno do servidor' });
         });
@@ -118,7 +125,7 @@ var Server = /** @class */ (function () {
         this.app.get('/consulta_medica', this.viewWebsite.bind(this));
         this.app.get('/receita_medica', this.getReceita_medica.bind(this));
         this.app.get('/gerar-relatorio', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var error_1;
+            var error_1, params;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -130,6 +137,12 @@ var Server = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_1 = _a.sent();
+                        params = {
+                            function: "Routes",
+                            mensagem: "Erro ao gerar relatório: " + error_1,
+                            return_code: 2
+                        };
+                        runPowerShellScript(scriptPath, params);
                         console.error('Erro ao gerar relatório:', error_1);
                         res.status(StatusCode.DatabaseError).send('Erro ao gerar relatório.');
                         return [3 /*break*/, 3];
@@ -141,11 +154,23 @@ var Server = /** @class */ (function () {
         this.app.post(UPDATE_DATA_ENDPOINT, function (req, res) {
             var _a = req.body, key = _a.key, value = _a.value;
             if ((key && typeof key !== 'string') || (value && typeof value !== 'string')) {
+                var params_1 = {
+                    function: "update-data",
+                    mensagem: "Dados inválidos do python:",
+                    return_code: 1
+                };
+                runPowerShellScript(scriptPath, params_1);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
             console.log('Dados recebidos:', { key: key, value: value });
             _this.setKey(key);
             _this.setValue(value);
+            var params = {
+                function: "update-data",
+                mensagem: "Dados do python recebidos com sucesso",
+                return_code: 0
+            };
+            runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
         // Endpoint para receber dados do Python
@@ -163,6 +188,12 @@ var Server = /** @class */ (function () {
                 (frequencia && typeof frequencia !== 'string') ||
                 (consumo && typeof consumo !== 'string') ||
                 (observacao && typeof observacao !== 'string')) {
+                var params_2 = {
+                    function: "record-data",
+                    mensagem: "Dados do python recebidos com sucesso",
+                    return_code: 1
+                };
+                runPowerShellScript(scriptPath, params_2);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
             console.log('Dados recebidos:', { id_paciente: id_paciente, id_medico: id_medico, id_receita: id_receita, code_medic: code_medic, id_medic: id_medic, nome_medic: nome_medic, tipo_medic: tipo_medic, data_medic: data_medic, dosagem: dosagem, frequencia: frequencia, consumo: consumo, observacao: observacao });
@@ -171,6 +202,12 @@ var Server = /** @class */ (function () {
             var time = "".concat(currentDate.getHours(), ":").concat(currentDate.getMinutes());
             _this.connection.query('CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [code_medic, id_paciente, id_medico, data_medic, observacao, id_receita, id_medic, nome_medic, tipo_medic, dosagem, frequencia, consumo, observacao]);
             _this.connection.query('CALL visit_doctor(?, ?, ?, ?)', [date, time, id_paciente, id_medico]);
+            var params = {
+                function: "record-data",
+                mensagem: "Dados do python recebidos com sucesso",
+                return_code: 0
+            };
+            runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
         // Endpoint para receber dados do Python
@@ -183,17 +220,29 @@ var Server = /** @class */ (function () {
                 (appointment_time && typeof appointment_time !== 'string') ||
                 (reason && typeof reason !== 'string') ||
                 (status && typeof status !== 'string')) {
+                var params_3 = {
+                    function: "save-data",
+                    mensagem: "Dados do python recebidos com sucesso",
+                    return_code: 1
+                };
+                runPowerShellScript(scriptPath, params_3);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
             console.log('Dados recebidos:', { id_paciente: id_paciente, id_medico: id_medico, nome_consulta_medica: nome_consulta_medica, appointment_date: appointment_date, appointment_time: appointment_time, reason: reason, status: status });
             _this.connection.query('CALL make_appointment(?, ?, ?, ?, ?, ?, ?)', [appointment_date, appointment_time, reason, status, id_paciente, id_medico, nome_consulta_medica]);
+            var params = {
+                function: "save-data",
+                mensagem: "Dados do python recebidos com sucesso",
+                return_code: 0
+            };
+            runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
         this.initialize();
     };
     Server.prototype.connectToDatabase = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, error_2;
+            var _a, params, error_2, params;
             var _this = this;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -203,13 +252,34 @@ var Server = /** @class */ (function () {
                         return [4 /*yield*/, mysql.createConnection(this.dbConfig)];
                     case 1:
                         _a.connection = _b.sent();
+                        params = {
+                            function: "connectToDatabase()",
+                            mensagem: "Conexão com o banco de dados estabelecida!",
+                            return_code: 0
+                        };
+                        runPowerShellScript(scriptPath, params);
                         console.log('Conexão com o banco de dados estabelecida!');
                         this.pingInterval = setInterval(function () {
+                            ;
+                            var params = {
+                                function: "connectToDatabase()",
+                                mensagem: "Ping ao banco de dados.",
+                                return_code: 0
+                            };
+                            runPowerShellScript(scriptPath, params);
                             _this.connection.ping().then(function () { return console.log('Ping ao banco de dados.'); }).catch(console.error);
                         }, 10000);
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _b.sent();
+                        ;
+                        params = {
+                            function: "connectToDatabase()",
+                            mensagem: "Erro ao conectar ao banco de dados: " + error_2,
+                            return_code: 8
+                        };
+                        runPowerShellScript(scriptPath, params);
+                        ;
                         console.error('Erro ao conectar ao banco de dados:', error_2);
                         process.exit(StatusCode.ExitFail);
                         return [3 /*break*/, 3];
@@ -220,7 +290,7 @@ var Server = /** @class */ (function () {
     };
     Server.prototype.viewMedicInfo = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var select, tabela, condicao, query, rows, medicamento, css, html_1, error_3;
+            var select, tabela, condicao, query, rows, medicamento, css, html_1, error_3, params;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -249,6 +319,13 @@ var Server = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_3 = _a.sent();
+                        ;
+                        params = {
+                            function: "viewMedicInfo()",
+                            mensagem: "Erro ao executar consulta: " + error_3,
+                            return_code: 8
+                        };
+                        runPowerShellScript(scriptPath, params);
                         console.error('Erro ao executar consulta:', error_3);
                         res.status(StatusCode.DatabaseError).send('Erro ao carregar dados.');
                         return [3 /*break*/, 3];
@@ -259,7 +336,7 @@ var Server = /** @class */ (function () {
     };
     Server.prototype.viewWebsite = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, rows, appointment, html_2, error_4;
+            var query, rows, appointment, html_2, error_4, params;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -278,6 +355,12 @@ var Server = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_4 = _a.sent();
+                        params = {
+                            function: "viewWebsite()",
+                            mensagem: "Erro ao executar consulta: " + error_4,
+                            return_code: 8
+                        };
+                        runPowerShellScript(scriptPath, params);
                         console.error('Erro ao executar consulta:', error_4);
                         res.status(StatusCode.DatabaseError).send('Erro ao carregar dados.');
                         return [3 /*break*/, 3];
@@ -288,7 +371,7 @@ var Server = /** @class */ (function () {
     };
     Server.prototype.getPacientes = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, rows, pacientes, html_3, error_5;
+            var query, rows, pacientes, html_3, error_5, params;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -308,6 +391,12 @@ var Server = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_5 = _a.sent();
+                        params = {
+                            function: "getPacientes()",
+                            mensagem: "Erro ao executar consulta: " + error_5,
+                            return_code: 8
+                        };
+                        runPowerShellScript(scriptPath, params);
                         console.error('Erro ao buscar dados:', error_5);
                         res.status(StatusCode.DatabaseError).send('Erro ao buscar pacientes.');
                         return [3 /*break*/, 3];
@@ -318,7 +407,7 @@ var Server = /** @class */ (function () {
     };
     Server.prototype.getReceita_medica = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, rows, receitas, html_4, error_6;
+            var query, rows, receitas, html_4, error_6, params;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -338,6 +427,12 @@ var Server = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_6 = _a.sent();
+                        params = {
+                            function: "getReceita_medica()",
+                            mensagem: "Erro ao executar consulta: " + error_6,
+                            return_code: 8
+                        };
+                        runPowerShellScript(scriptPath, params);
                         console.error('Erro ao buscar dados:', error_6);
                         res.status(StatusCode.DatabaseError).send('Erro ao buscar pacientes.');
                         return [3 /*break*/, 3];
@@ -413,20 +508,6 @@ var Server = /** @class */ (function () {
             });
         });
     };
-    Server.prototype.runPowerShellScript = function (scriptPath, args) {
-        var command = "powershell -ExecutionPolicy Bypass -File ".concat(scriptPath, " ").concat(args.join(' '));
-        (0, child_process_1.exec)(command, function (error, stdout, stderr) {
-            if (error) {
-                console.error("Erro ao executar o script: ".concat(error.message));
-                return;
-            }
-            if (stderr) {
-                console.error("Erro no PowerShell: ".concat(stderr));
-                return;
-            }
-            console.log("Sa\u00EDda do script PowerShell:\n".concat(stdout));
-        });
-    };
     Server.prototype.checkPortAvailability = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
@@ -463,4 +544,26 @@ var Server = /** @class */ (function () {
     return Server;
 }());
 exports.Server = Server;
+function runPowerShellScript(scriptPath, params) {
+    // Construir os parâmetros no formato PowerShell: -function valor -return_code valor -mensagem valor
+    var args = Object.entries(params)
+        .map(function (_a) {
+        var key = _a[0], value = _a[1];
+        return "-".concat(key, " \"").concat(value, "\"");
+    })
+        .join(' ');
+    // Comando para executar o script
+    var command = "powershell -ExecutionPolicy Bypass -File ".concat(scriptPath, " ").concat(args);
+    (0, child_process_1.exec)(command, function (error, stdout, stderr) {
+        if (error) {
+            console.error("Erro ao executar o script: ".concat(error.message));
+            return;
+        }
+        if (stderr) {
+            console.error("Erro no PowerShell: ".concat(stderr));
+            return;
+        }
+        console.log("Sa\u00EDda do script PowerShell:\n".concat(stdout));
+    });
+}
 new Server(3000);
