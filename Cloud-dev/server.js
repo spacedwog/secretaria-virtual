@@ -169,7 +169,6 @@ var Server = /** @class */ (function () {
             var time = "".concat(currentDate.getHours(), ":").concat(currentDate.getMinutes());
             _this.connection.query('CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [code_medic, id_paciente, id_medico, data_medic, observacao, id_receita, id_medic, nome_medic, tipo_medic, dosagem, frequencia, consumo, observacao]);
             _this.connection.query('CALL visit_doctor(?, ?, ?, ?)', [date, time, id_paciente, id_medico]);
-            res.redirect('/receita_medica');
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
         this.initialize();

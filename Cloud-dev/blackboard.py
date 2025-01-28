@@ -27,6 +27,9 @@ class Blackboard:
         self.server_url = server_url
         self.UPDATE_DATA_ENDPOINT = "/update-data"
         self.RECORD_DATA_ENDPOINT = "/record-data"
+        self.SAVE_DATA_ENDPOINT = "/save-data"
+        self.JSON_APPLICATION = "application/json"
+        self.PYTHON_MESSAGE = "Dados enviados com sucesso:"
         self.db_name = db_name
         self.user_profile = None
         self.leds = {}  # Dicionário para armazenar o estado e intensidade dos LEDs
@@ -91,8 +94,8 @@ class Blackboard:
                             dosagem, frequencia, consumo, observacao):
         """Grava dados de uma receita no blackboard."""
         with self.lock:
-            if id_receita in self.data:
-                self.data[id_receita].append(
+            if code_medic in self.data:
+                self.data[code_medic].append(
                     {
                         "id_paciente": id_paciente,
                         "id_medico": id_medico,
@@ -109,7 +112,7 @@ class Blackboard:
                     }
                 )
             else:
-                self.data[id_receita] = [
+                self.data[code_medic] = [
                     {
                         "id_paciente": id_paciente,
                         "id_medico": id_medico,
@@ -128,7 +131,40 @@ class Blackboard:
             self.record_data(id_paciente, id_medico, id_receita,
                             code_medic, id_medic, nome_medic, tipo_medic, data_medic,
                             dosagem, frequencia, consumo, observacao)
-            print(f"Receita médica gravada no blackboard: {id_receita}")
+            print(f"Receita médica gravada no blackboard: {code_medic}")
+
+    def save_entry(self, id_paciente, id_medico, nome_consulta_medica,
+                            appointment_date, appointment_time, reason, status):
+        """Grava dados de uma receita no blackboard."""
+        with self.lock:
+            if id_medico in self.data:
+                self.data[id_medico].append(
+                    {
+                        "id_paciente": id_paciente,
+                        "id_medico": id_medico,
+                        "nome_consulta_medica": nome_consulta_medica,
+                        "appointment_date": appointment_date,
+                        "appointment_time": appointment_time,
+                        "reason": reason,
+                        "status": status
+                    }
+                )
+            else:
+                self.data[id_medico] = [
+                    {
+                        "id_paciente": id_paciente,
+                        "id_medico": id_medico,
+                        "nome_consulta_medica": nome_consulta_medica,
+                        "appointment_date": appointment_date,
+                        "appointment_time": appointment_time,
+                        "reason": reason,
+                        "status": status
+                    }
+                ]
+            self.save_data(id_paciente, id_medico,
+                            nome_consulta_medica, appointment_date, appointment_time,
+                            reason, status)
+            print(f"Receita médica gravada no blackboard: {id_medico}")
 
     def get_led_state(self):
         """Retorna o estado do LED."""
@@ -172,12 +208,12 @@ class Blackboard:
         """Envia dados ao servidor TypeScript."""
         url = f"{self.server_url}{self.UPDATE_DATA_ENDPOINT}"
         payload = {"key": key, "value": value}
-        headers = {"Content-Type": "application/json"}
+        headers = {"Content-Type": self.JSON_APPLICATION}
 
         try:
             response = requests.post(url, data=json.dumps(payload), headers=headers)
             response.raise_for_status()
-            print("Dados enviados com sucesso:", response.json())
+            print(self.PYTHON_MESSAGE, response.json())
         except requests.exceptions.HTTPError as http_err:
             print(f"Erro HTTP: {http_err}")
         except Exception as err:
@@ -202,12 +238,36 @@ class Blackboard:
             "consumo": consumo,
             "observacao": observacao
         }
-        headers = {"Content-Type": "application/json"}
+        headers = {"Content-Type": self.JSON_APPLICATION}
 
         try:
             response = requests.post(url, data=json.dumps(payload), headers=headers)
             response.raise_for_status()
-            print("Dados enviados com sucesso:", response.json())
+            print(self.PYTHON_MESSAGE, response.json())
+        except requests.exceptions.HTTPError as http_err:
+            print(f"Erro HTTP: {http_err}")
+        except Exception as err:
+            print(f"Erro ao enviar dados: {err}")
+
+    def save_data(self, id_paciente, id_medico, nome_consulta_medica,
+                            appointment_date, appointment_time, reason, status):
+        """Grava dados de uma receita no sistema."""
+        url = f"{self.server_url}{self.SAVE_DATA_ENDPOINT}"
+        payload = {
+            "id_paciente": id_paciente,
+            "id_medico": id_medico,
+            "nome_consulta_medica": nome_consulta_medica,
+            "appointment_date": appointment_date,
+            "appointment_time": appointment_time,
+            "reason": reason,
+            "status": status
+        }
+        headers = {"Content-Type": self.JSON_APPLICATION}
+
+        try:
+            response = requests.post(url, data=json.dumps(payload), headers=headers)
+            response.raise_for_status()
+            print(self.PYTHON_MESSAGE, response.json())
         except requests.exceptions.HTTPError as http_err:
             print(f"Erro HTTP: {http_err}")
         except Exception as err:
@@ -279,6 +339,19 @@ def create_gui():
                         code_medic, id_medic, nome_medic,
                         tipo_medic, data_medicacao,
                         dosagem, frequencia, consumo, observacao)
+        
+    def save_appointment():
+        """Salva a consulta médica."""
+        id_paciente = paciente_entry.get()
+        id_medico = medico_entry.get()
+        nome_consulta_medica = nome_consulta_medica_entry.get()
+        appointment_date = appointment_date_entry.get()
+        appointment_time = appointment_time_entry.get()
+        reason = reason_entry.get()
+        status = status_entry.get()
+
+        blackboard.save_entry(id_paciente, id_medico, nome_consulta_medica,
+                        appointment_date, appointment_time, reason, status)
 
     def add_entry():
         """Adiciona uma entrada no Blackboard."""
@@ -329,9 +402,10 @@ def create_gui():
     record_frame = tk.Frame(root)
     profile_frame = tk.Frame(root)
     led_control_frame = tk.Frame(root)
+    appointment_frame = tk.Frame(root)
 
     # Lista de frames
-    frames = [main_frame, record_frame, profile_frame, led_control_frame]
+    frames = [main_frame, record_frame, profile_frame, led_control_frame, appointment_frame]
 
     # Tela principal
     tk.Label(main_frame, text="Tipo do Medicamento:").pack(pady=5)
@@ -414,6 +488,39 @@ def create_gui():
 
     tk.Button(profile_frame, text="Salvar Perfil", command=configure_user_profile).pack(pady=5)
     tk.Button(profile_frame, text="Voltar", command=lambda: switch_to_frame(main_frame)).pack(pady=5)
+
+    # Tela de Agendamento de Consultas
+    tk.Label(appointment_frame, text="ID do Paciente").grid(row=0, column=0, padx=5, pady=5)
+    paciente_entry = tk.Entry(appointment_frame)
+    paciente_entry.grid(row=1, column=0, padx=5, pady=5)
+
+    tk.Label(appointment_frame, text="ID do Médico").grid(row=0, column=1, padx=5, pady=5)
+    medico_entry = tk.Entry(appointment_frame)
+    medico_entry.grid(row=1, column=1, padx=5, pady=5)
+
+    tk.Label(appointment_frame, text="Nome da Consulta Médica").grid(row=2, column=0, padx=5, pady=5)
+    nome_consulta_medica_entry = tk.Entry(appointment_frame)
+    nome_consulta_medica_entry.grid(row=3, column=0, padx=5, pady=5)
+
+    tk.Label(appointment_frame, text="Data da Consulta").grid(row=2, column=1, padx=5, pady=5)
+    appointment_date_entry = tk.Entry(appointment_frame)
+    appointment_date_entry.grid(row=3, column=1, padx=5, pady=5)
+
+    tk.Label(appointment_frame, text="Hora da Consulta").grid(row=4, column=0, padx=5, pady=5)
+    appointment_time_entry = tk.Entry(appointment_frame)
+    appointment_time_entry.grid(row=5, column=0, padx=5, pady=5)
+
+    tk.Label(appointment_frame, text="Motivo da Consulta").grid(row=4, column=1, padx=5, pady=5)
+    reason_entry = tk.Entry(appointment_frame)
+    reason_entry.grid(row=5, column=1, padx=5, pady=5)
+
+    tk.Label(appointment_frame, text="Status da Consulta").grid(row=6, column=0, padx=5, pady=5)
+    status_entry = tk.Entry(appointment_frame)
+    status_entry.grid(row=7, column=0, padx=5, pady=5)
+
+    tk.Button(appointment_frame, text="Registrar Consulta Médica", command=save_appointment).grid(row=8, column=0, padx=5)
+    tk.Button(appointment_frame, text="Voltar", command=lambda: switch_to_frame(main_frame)).grid(row=8, column=1, padx=5)
+
 
     # Tela de controle de LED
     tk.Label(led_control_frame, text="Controle de LEDs", font=("Arial", 14)).pack(pady=10)

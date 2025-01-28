@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import * as express from 'express';
+import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
@@ -17,6 +17,7 @@ enum StatusCode {
 
 const UPDATE_DATA_ENDPOINT = "/update-data";
 const RECORD_DATA_ENDPOINT = "/record-data";
+const SAVE_DATA_ENDPOINT = "/save-data";
 
 export class Server{
 
@@ -169,6 +170,35 @@ export class Server{
             this.connection.query(
                 'CALL visit_doctor(?, ?, ?, ?)',
                 [date, time, id_paciente, id_medico]
+            );
+        
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
+        });
+
+        // Endpoint para receber dados do Python
+        this.app.post(SAVE_DATA_ENDPOINT, (req: Request, res: Response) => {
+
+            const { id_paciente, id_medico, nome_consulta_medica,
+                appointment_date, appointment_time, reason, status } = req.body;
+        
+            if ((id_paciente && typeof id_paciente !== 'number') ||
+                (id_medico && typeof id_medico !== 'number') ||
+                (nome_consulta_medica && typeof nome_consulta_medica !== 'string') ||
+                (appointment_date && typeof appointment_date!== 'string') ||
+                (appointment_time && typeof appointment_time !== 'string') ||
+                (reason && typeof reason!=='string') ||
+                (status && typeof status!== 'string')) {
+                res.status(400).json({ message: 'Dados inválidos enviados!' });
+            }
+        
+            console.log('Dados recebidos:', { id_paciente, id_medico,
+                                            nome_consulta_medica,
+                                            appointment_date, appointment_time,
+                                            reason, status });
+
+            this.connection.query(
+                'CALL make_appointment(?, ?, ?, ?, ?, ?, ?)',
+                [appointment_date, appointment_time, reason, status, id_paciente, id_medico, nome_consulta_medica]
             );
         
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
