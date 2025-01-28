@@ -1,6 +1,6 @@
 # cloudengine.ps1
 param (
-    [string]$name = "Usuário"
+    [string]$mensagem = "A tarefa foi executada com exito!"
 )
 
-Write-Host "Olá, $name! Este script foi executado via PowerShell."
+Write-Host "$mensagem"
