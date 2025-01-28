@@ -418,6 +418,7 @@ def create_gui():
 
     tk.Button(main_frame, text="Adicionar Entrada", command=add_entry).pack(pady=5)
     tk.Button(main_frame, text="Receita Médica", command=lambda: switch_to_frame(record_frame)).pack(pady=5)
+    tk.Button(main_frame, text="Consulta Médica", command=lambda: switch_to_frame(appointment_frame)).pack(pady=5)
     tk.Button(main_frame, text="Configurar Perfil", command=lambda: switch_to_frame(profile_frame)).pack(pady=5)
     tk.Button(main_frame, text="Controle de LED", command=lambda: switch_to_frame(led_control_frame)).pack(pady=5)
 
