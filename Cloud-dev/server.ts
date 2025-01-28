@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
@@ -384,7 +384,7 @@ export class Server{
     private async viewWebsite(req: Request, res: Response) {
 
         try{
-            const query = `SELECT nome_consulta_medica, patient_name, DATE_FORMAT(appointment_date, '%d/%M/%Y') as appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view;`;
+            const query = `SELECT nome_consulta_medica, patient_name, DATE_FORMAT(appointment_date, '%d/%M/%Y') as appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view ORDER BY appointment_date, appointment_time ASC;`;
             const [rows] = await this.connection.query(query);
     
             const appointment = rows as Array<{
