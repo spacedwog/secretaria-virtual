@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
@@ -820,6 +820,10 @@ export class Server{
     private async initialize() {
         
         await this.connectToDatabase();
+
+        this.connection.query(
+            'CALL conclude_appointment()'
+        );
 
         const startServer = (port: number) => {
             this.app.listen(port, () => {
