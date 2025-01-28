@@ -1,9 +1,10 @@
 import json
 import sqlite3
-import threading
 import time
 import serial
 import requests
+import threading
+import subprocess
 import tkinter as tk
 from tkinter import messagebox
 
@@ -38,6 +39,13 @@ class Blackboard:
         try:
             self.arduino = serial.Serial(serial_port, baud_rate, timeout=1)
             time.sleep(2)
+            script_path = "./cloudengine.ps1"
+            params = {
+                "function": "__init__()",
+                "mensagem": "Conectado ao Arduino em " + serial_port + ".",
+                "return_code": 0
+            }
+            self.run_powershell_script(script_path, params)
             print(f"Conectado ao Arduino em {serial_port}.")
         except serial.SerialException as e:
             print(f"Erro ao conectar ao Arduino: {e}")
@@ -60,6 +68,25 @@ class Blackboard:
             """)
             conn.commit()
             print("Banco de dados configurado.")
+
+    def run_powershell_script(self, script_path, params):
+        # Construir os parâmetros no formato PowerShell: -nome "valor" -idade valor
+        args = [f"-{key} {value}" for key, value in params.items()]
+        command = f"powershell -ExecutionPolicy Bypass -File {script_path} {' '.join(args)}"
+
+        try:
+            # Executar o script com subprocess
+            result = subprocess.run(command, capture_output=True, text=True, shell=True)
+            
+            # Verificar a saída
+            if result.returncode == 0:
+                print("Saída do script PowerShell:")
+                print(result.stdout)
+            else:
+                print("Erro ao executar o script:")
+                print(result.stderr)
+        except Exception as e:
+            print(f"Ocorreu um erro: {e}")
     def add_led(self, led_id):
         """Adiciona um LED ao sistema e ao banco de dados."""
         if led_id not in self.leds:
@@ -215,6 +242,13 @@ class Blackboard:
             response.raise_for_status()
             print(self.PYTHON_MESSAGE, response.json())
         except requests.exceptions.HTTPError as http_err:
+            script_path = "./cloudengine.ps1"
+            params = {
+                "function": "send_data()",
+                "mensagem": "Erro HTTP: " + http_err,
+                "return_code": 6
+            }
+            self.run_powershell_script(script_path, params)
             print(f"Erro HTTP: {http_err}")
         except Exception as err:
             print(f"Erro ao enviar dados: {err}")
@@ -245,6 +279,13 @@ class Blackboard:
             response.raise_for_status()
             print(self.PYTHON_MESSAGE, response.json())
         except requests.exceptions.HTTPError as http_err:
+            script_path = "./cloudengine.ps1"
+            params = {
+                "function": "record_data()",
+                "mensagem": "Erro HTTP: " + http_err,
+                "return_code": 6
+            }
+            self.run_powershell_script(script_path, params)
             print(f"Erro HTTP: {http_err}")
         except Exception as err:
             print(f"Erro ao enviar dados: {err}")
@@ -269,6 +310,13 @@ class Blackboard:
             response.raise_for_status()
             print(self.PYTHON_MESSAGE, response.json())
         except requests.exceptions.HTTPError as http_err:
+            script_path = "./cloudengine.ps1"
+            params = {
+                "function": "save_data()",
+                "mensagem": "Erro HTTP: " + http_err,
+                "return_code": 6
+            }
+            self.run_powershell_script(script_path, params)
             print(f"Erro HTTP: {http_err}")
         except Exception as err:
             print(f"Erro ao enviar dados: {err}")
@@ -281,6 +329,13 @@ class Blackboard:
                 response = self.arduino.readline().decode().strip()
                 print(f"Resposta do Arduino: {response}")
             except serial.SerialException as e:
+                script_path = "./cloudengine.ps1"
+                params = {
+                    "function": "send_command_to_arduino()",
+                    "mensagem": "Erro HTTP: " + e,
+                    "return_code": 8
+                }
+                self.run_powershell_script(script_path, params)
                 print(f"Erro ao enviar comando ao Arduino: {e}")
 
     def load_leds_from_database(self):
