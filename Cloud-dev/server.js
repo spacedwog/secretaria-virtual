@@ -55,7 +55,7 @@ var StatusCode;
 var UPDATE_DATA_ENDPOINT = "/update-data";
 var RECORD_DATA_ENDPOINT = "/record-data";
 var SAVE_DATA_ENDPOINT = "/save-data";
-var scriptPath = '/Cloud-dev/cloudengine.ps1';
+var scriptPath = './cloudengine.ps1';
 var Server = /** @class */ (function () {
     function Server(port) {
         var _a, _b, _c, _d, _e, _f, _g, _h;
