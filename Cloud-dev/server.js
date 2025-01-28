@@ -375,6 +375,7 @@ var Server = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.connectToDatabase()];
                     case 1:
                         _a.sent();
+                        this.connection.query('CALL conclude_appointment()');
                         startServer = function (port) {
                             _this.app.listen(port, function () {
                                 console.log("Servidor rodando na porta ".concat(port));
