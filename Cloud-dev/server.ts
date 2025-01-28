@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import { exec } from 'child_process';
 import * as mysql from 'mysql2/promise';
@@ -20,7 +20,7 @@ const UPDATE_DATA_ENDPOINT = "/update-data";
 const RECORD_DATA_ENDPOINT = "/record-data";
 const SAVE_DATA_ENDPOINT = "/save-data";
 
-const scriptPath = './cloudengine.ps1';
+const scriptPath = '/Cloud-dev/cloudengine.ps1';
 
 export class Server{
 
