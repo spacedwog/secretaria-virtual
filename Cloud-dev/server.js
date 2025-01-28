@@ -41,6 +41,7 @@ var net = require("net");
 var path = require("path");
 var express = require("express");
 var dotenv = require("dotenv");
+var child_process_1 = require("child_process");
 var mysql = require("mysql2/promise");
 var bodyParser = require("body-parser");
 dotenv.config();
@@ -410,6 +411,20 @@ var Server = /** @class */ (function () {
                         return [2 /*return*/];
                 }
             });
+        });
+    };
+    Server.prototype.runPowerShellScript = function (scriptPath, args) {
+        var command = "powershell -ExecutionPolicy Bypass -File ".concat(scriptPath, " ").concat(args.join(' '));
+        (0, child_process_1.exec)(command, function (error, stdout, stderr) {
+            if (error) {
+                console.error("Erro ao executar o script: ".concat(error.message));
+                return;
+            }
+            if (stderr) {
+                console.error("Erro no PowerShell: ".concat(stderr));
+                return;
+            }
+            console.log("Sa\u00EDda do script PowerShell:\n".concat(stdout));
         });
     };
     Server.prototype.checkPortAvailability = function () {
