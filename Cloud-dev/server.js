@@ -263,7 +263,7 @@ var Server = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        query = "SELECT nome_consulta_medica, patient_name, DATE_FORMAT(appointment_date, '%d/%M/%Y') as appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view;";
+                        query = "SELECT nome_consulta_medica, patient_name, DATE_FORMAT(appointment_date, '%d/%M/%Y') as appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view ORDER BY appointment_date, appointment_time ASC;";
                         return [4 /*yield*/, this.connection.query(query)];
                     case 1:
                         rows = (_a.sent())[0];
