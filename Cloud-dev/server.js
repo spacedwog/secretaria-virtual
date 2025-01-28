@@ -53,6 +53,7 @@ var StatusCode;
 })(StatusCode || (StatusCode = {}));
 var UPDATE_DATA_ENDPOINT = "/update-data";
 var RECORD_DATA_ENDPOINT = "/record-data";
+var SAVE_DATA_ENDPOINT = "/save-data";
 var Server = /** @class */ (function () {
     function Server(port) {
         var _a, _b, _c, _d, _e, _f, _g, _h;
@@ -169,6 +170,22 @@ var Server = /** @class */ (function () {
             var time = "".concat(currentDate.getHours(), ":").concat(currentDate.getMinutes());
             _this.connection.query('CALL create_medic_recip(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [code_medic, id_paciente, id_medico, data_medic, observacao, id_receita, id_medic, nome_medic, tipo_medic, dosagem, frequencia, consumo, observacao]);
             _this.connection.query('CALL visit_doctor(?, ?, ?, ?)', [date, time, id_paciente, id_medico]);
+            res.status(200).json({ message: 'Dados recebidos com sucesso!' });
+        });
+        // Endpoint para receber dados do Python
+        this.app.post(SAVE_DATA_ENDPOINT, function (req, res) {
+            var _a = req.body, id_paciente = _a.id_paciente, id_medico = _a.id_medico, nome_consulta_medica = _a.nome_consulta_medica, appointment_date = _a.appointment_date, appointment_time = _a.appointment_time, reason = _a.reason, status = _a.status;
+            if ((id_paciente && typeof id_paciente !== 'number') ||
+                (id_medico && typeof id_medico !== 'number') ||
+                (nome_consulta_medica && typeof nome_consulta_medica !== 'string') ||
+                (appointment_date && typeof appointment_date !== 'string') ||
+                (appointment_time && typeof appointment_time !== 'string') ||
+                (reason && typeof reason !== 'string') ||
+                (status && typeof status !== 'string')) {
+                res.status(400).json({ message: 'Dados inválidos enviados!' });
+            }
+            console.log('Dados recebidos:', { id_paciente: id_paciente, id_medico: id_medico, nome_consulta_medica: nome_consulta_medica, appointment_date: appointment_date, appointment_time: appointment_time, reason: reason, status: status });
+            _this.connection.query('CALL make_appointment(?, ?, ?, ?, ?, ?, ?)', [appointment_date, appointment_time, reason, status, id_paciente, id_medico, nome_consulta_medica]);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
         this.initialize();
