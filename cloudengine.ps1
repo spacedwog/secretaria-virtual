@@ -5,6 +5,6 @@ param (
     [string]$return_code = ""
 )
 
-Write-Host "$function"
-Write-Host "$mensagem"
-Write-Host "$return_code"
+Write-Host "Function: $function"
+Write-Host "Mensagem: $mensagem"
+Write-Host "Return Code: $return_code"
