@@ -1,6 +1,10 @@
 # cloudengine.ps1
 param (
-    [string]$mensagem = "A tarefa foi executada com exito!"
+    [string]$function = "",
+    [string]$mensagem = "",
+    [string]$return_code = ""
 )
 
+Write-Host "$function"
 Write-Host "$mensagem"
+Write-Host "$return_code"
