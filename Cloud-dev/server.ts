@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
@@ -170,8 +170,6 @@ export class Server{
                 'CALL visit_doctor(?, ?, ?, ?)',
                 [date, time, id_paciente, id_medico]
             );
-
-            res.redirect('/receita_medica');
         
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
