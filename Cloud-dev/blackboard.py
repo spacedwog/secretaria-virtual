@@ -299,6 +299,7 @@ def create_gui():
     blackboard = Blackboard()
     blackboard.add_led("led1")
     blackboard.add_led("led2")
+    blackboard.add_led("led3")
     blackboard.load_leds_from_database()
 
     def switch_to_frame(frame_to_show):
@@ -312,12 +313,13 @@ def create_gui():
         name = name_entry.get()
         email = email_entry.get()
         role = role_entry.get()
+        ERROR_MESSAGE = "Formulário Incompleto"
         if name and email and role:
             blackboard.set_user_profile(name, email, role)
             messagebox.showinfo("Sucesso", "Perfil configurado com sucesso!")
             switch_to_frame(main_frame)
         else:
-            messagebox.showwarning("Erro", "Por favor, preencha todos os campos.")
+            messagebox.showwarning("Erro", ERROR_MESSAGE)
 
     def register_medic_recip():
         """Registrar a receita médica."""
@@ -334,11 +336,17 @@ def create_gui():
         frequencia = frequencia_entry.get()
         consumo = consumo_entry.get()
         observacao = observacao_entry.get()
+        ERROR_MESSAGE = "Registro médico incompleto."
 
-        blackboard.record_entry(id_paciente, id_medico, id_receita,
+        if  id_paciente and id_medico and id_receita and code_medic and id_medic and nome_medic and tipo_medic and data_medicacao and dosagem and frequencia and consumo and observacao:
+            blackboard.record_data(id_paciente, id_medico, id_receita,
                         code_medic, id_medic, nome_medic,
                         tipo_medic, data_medicacao,
                         dosagem, frequencia, consumo, observacao)
+            messagebox.showinfo("Sucesso", "Medicamento registrado com sucesso!")
+            switch_to_frame(main_frame)
+        else:
+            messagebox.showwarning("Erro", ERROR_MESSAGE)
         
     def save_appointment():
         """Salva a consulta médica."""
@@ -349,19 +357,26 @@ def create_gui():
         appointment_time = appointment_time_entry.get()
         reason = reason_entry.get()
         status = status_entry.get()
+        ERROR_MESSAGE = "Consulta médica inválida."
 
-        blackboard.save_entry(id_paciente, id_medico, nome_consulta_medica,
+        if  id_paciente and id_medico and nome_consulta_medica and appointment_date and appointment_time and reason and status:
+            blackboard.save_entry(id_paciente, id_medico, nome_consulta_medica,
                         appointment_date, appointment_time, reason, status)
+            messagebox.showinfo("Sucesso", "Consulta médica registrada com sucesso!")
+            switch_to_frame(main_frame)
+        else:
+            messagebox.showwarning("Erro", ERROR_MESSAGE)
 
     def add_entry():
         """Adiciona uma entrada no Blackboard."""
         key = key_entry.get()
         value = value_entry.get()
+        ERROR_MESSAGE = "Por favor, preencha todos os campos."
         if key and value:
             blackboard.add_entry(key, value)
             messagebox.showinfo("Sucesso", f"Entrada adicionada: {key} -> {value}")
         else:
-            messagebox.showwarning("Erro", "Por favor, preencha ambos os campos.")
+            messagebox.showwarning("Erro", ERROR_MESSAGE)
 
     def update_led_list():
         """Atualiza a lista de LEDs na interface."""
@@ -382,6 +397,7 @@ def create_gui():
     def set_selected_led_intensity():
         """Define a intensidade do LED selecionado."""
         selected = led_list.curselection()
+        ERROR_MESSAGE = "Por favor, insira um valor válido para a intensidade."
         if selected:
             led_id = list(blackboard.leds.keys())[selected[0]]
             try:
@@ -389,7 +405,7 @@ def create_gui():
                 blackboard.set_led_intensity(led_id, intensity)
                 update_led_list()
             except ValueError:
-                messagebox.showerror("Erro", "Por favor, insira um valor válido para a intensidade.")
+                messagebox.showerror("Erro", ERROR_MESSAGE)
 
 
     # Janela principal

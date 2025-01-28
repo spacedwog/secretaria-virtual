@@ -2,6 +2,7 @@ import * as net from 'net';
 import * as path from 'path';
 import express from 'express';
 import * as dotenv from 'dotenv';
+import { exec } from 'child-process';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
 import { Request, Response, NextFunction } from 'express';
@@ -851,6 +852,24 @@ export class Server{
             process.exit(StatusCode.ExitSuccess);
         });
 
+    }
+
+    private runPowerShellScript(scriptPath: string, args: string[]) {
+        const command = `powershell -ExecutionPolicy Bypass -File ${scriptPath} ${args.join(' ')}`;
+
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Erro ao executar o script: ${error.message}`);
+                return;
+            }
+
+            if (stderr) {
+                console.error(`Erro no PowerShell: ${stderr}`);
+                return;
+            }
+
+            console.log(`Saída do script PowerShell:\n${stdout}`);
+        });
     }
 
     private async checkPortAvailability() {
