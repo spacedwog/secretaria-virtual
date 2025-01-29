@@ -560,25 +560,21 @@ var Server = /** @class */ (function () {
 }());
 exports.Server = Server;
 function runPowerShellScript(scriptPath, params) {
-    // Construir os parâmetros no formato PowerShell: -function valor -return_code valor -mensagem valor
-    var args = Object.entries(params)
-        .map(function (_a) {
+    var args = Object.entries(params).map(function (_a) {
         var key = _a[0], value = _a[1];
         return "-".concat(key, " \"").concat(value, "\"");
-    })
-        .join(' ');
-    // Comando para executar o script
+    }).join(" ");
     var command = "powershell -ExecutionPolicy Bypass -File ".concat(scriptPath, " ").concat(args);
     (0, child_process_1.exec)(command, function (error, stdout, stderr) {
         if (error) {
-            console.error("Erro ao executar o script: ".concat(error.message));
+            console.error("Erro ao executar PowerShell: ".concat(error.message));
             return;
         }
         if (stderr) {
             console.error("Erro no PowerShell: ".concat(stderr));
             return;
         }
-        console.log("Sa\u00EDda do script PowerShell:\n".concat(stdout));
+        console.log("Saída do PowerShell:\n", stdout);
     });
 }
 new Server(3000);
