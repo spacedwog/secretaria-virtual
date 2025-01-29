@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import { exec } from 'child_process';
 import * as mysql from 'mysql2/promise';
@@ -98,7 +98,8 @@ export class Server{
             const params = {
                 function: "Middleware",
                 mensagem: "Erro genérico: " + err,
-                return_code: 4
+                return_code: 4,
+                type_server: "typescript"
             }
             runPowerShellScript(scriptPath, params);
             console.error('Erro no middleware:', err);
@@ -122,7 +123,8 @@ export class Server{
                 const params = {
                     function: "Routes",
                     mensagem: "Erro ao gerar relatório: " + error,
-                    return_code: 2
+                    return_code: 2,
+                    type_server: "typescript"
                 }
                 runPowerShellScript(scriptPath, params);
                 console.error('Erro ao gerar relatório:', error);
@@ -139,7 +141,8 @@ export class Server{
                 const params = {
                     function: "update-data",
                     mensagem: "Dados inválidos do python:",
-                    return_code: 1
+                    return_code: 1,
+                    type_server: "typescript"
                 }
                 runPowerShellScript(scriptPath, params);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
@@ -152,7 +155,8 @@ export class Server{
             const params = {
                 function: "update-data",
                 mensagem: "Dados do python recebidos com sucesso",
-                return_code: 0
+                return_code: 0,                
+                type_server: "typescript"
             }
             runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
@@ -180,7 +184,8 @@ export class Server{
                     const params = {
                         function: "record-data",
                         mensagem: "Dados do python recebidos com sucesso",
-                        return_code: 1
+                        return_code: 1,
+                        type_server: "typescript"
                     }
                     runPowerShellScript(scriptPath, params);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
@@ -206,7 +211,8 @@ export class Server{
             const params = {
                 function: "record-data",
                 mensagem: "Dados do python recebidos com sucesso",
-                return_code: 0
+                return_code: 0,
+                type_server: "typescript"
             }
             runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
@@ -228,7 +234,8 @@ export class Server{
                     const params = {
                         function: "save-data",
                         mensagem: "Dados do python recebidos com sucesso",
-                        return_code: 1
+                        return_code: 1,
+                        type_server: "typescript"
                     }
                     runPowerShellScript(scriptPath, params);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
@@ -246,7 +253,8 @@ export class Server{
             const params = {
                 function: "save-data",
                 mensagem: "Dados do python recebidos com sucesso",
-                return_code: 0
+                return_code: 0,
+                type_server: "typescript"
             }
             runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
@@ -263,7 +271,8 @@ export class Server{
             const params = {
                 function: "connectToDatabase()",
                 mensagem: "Conexão com o banco de dados estabelecida!",
-                return_code: 0
+                return_code: 0,
+                type_server: "typescript"
             }
             runPowerShellScript(scriptPath, params);
             console.log('Conexão com o banco de dados estabelecida!');
@@ -272,7 +281,8 @@ export class Server{
                 const params = {
                     function: "connectToDatabase()",
                     mensagem: "Ping ao banco de dados.",
-                    return_code: 0
+                    return_code: 0,
+                    type_server: "typescript"
                 }
                 runPowerShellScript(scriptPath, params);
                 this.connection.ping().then(() => console.log('Ping ao banco de dados.')).catch(console.error);
@@ -283,7 +293,8 @@ export class Server{
             const params = {
                 function: "connectToDatabase()",
                 mensagem: "Erro ao conectar ao banco de dados: " + error,
-                return_code: 8
+                return_code: 8,
+                type_server: "typescript"
             }
             runPowerShellScript(scriptPath, params);;
             console.error('Erro ao conectar ao banco de dados:', error);
@@ -445,7 +456,8 @@ export class Server{
             const params = {
                 function: "viewMedicInfo()",
                 mensagem: "Erro ao executar consulta: " + error,
-                return_code: 8
+                return_code: 8,
+                type_server: "typescript"
             }
             runPowerShellScript(scriptPath, params);
             console.error('Erro ao executar consulta:', error);
@@ -590,7 +602,8 @@ export class Server{
             const params = {
                 function: "viewWebsite()",
                 mensagem: "Erro ao executar consulta: " + error,
-                return_code: 8
+                return_code: 8,
+                type_server: "typescript"
             }
             runPowerShellScript(scriptPath, params);
             console.error('Erro ao executar consulta:', error);
@@ -738,7 +751,8 @@ export class Server{
             const params = {
                 function: "getPacientes()",
                 mensagem: "Erro ao executar consulta: " + error,
-                return_code: 8
+                return_code: 8,
+                type_server: "typescript"
             }
             runPowerShellScript(scriptPath, params);
             console.error('Erro ao buscar dados:', error);
@@ -889,7 +903,8 @@ export class Server{
             const params = {
                 function: "getReceita_medica()",
                 mensagem: "Erro ao executar consulta: " + error,
-                return_code: 8
+                return_code: 8,
+                type_server: "typescript"
             }
             runPowerShellScript(scriptPath, params);
             console.error('Erro ao buscar dados:', error);

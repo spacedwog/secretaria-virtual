@@ -43,7 +43,8 @@ class Blackboard:
             params = {
                 "function": "__init__()",
                 "mensagem": "Conectado ao Arduino em " + serial_port + ".",
-                "return_code": 0
+                "return_code": 0,
+                "type_server": "python"
             }
             self.run_powershell_script(script_path, params)
             print(f"Conectado ao Arduino em {serial_port}.")
