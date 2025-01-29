@@ -5,7 +5,7 @@ param (
 )
 
 # Diretório de Logs
-$logPath = "C:\Logs\Automacao.log"
+$logPath = "C:\Windows\Logs\StorGroupPolicy.log"
 if (!(Test-Path $logPath)) {
     New-Item -ItemType File -Path $logPath -Force | Out-Null
 }
