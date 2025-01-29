@@ -72,14 +72,14 @@ class Blackboard:
         }
     if __name__ == "__main__":
         # Captura argumentos passados pelo PowerShell
-        type_server = sys.argv[0] if len(sys.argv) > 1 else "Typescript"
-        function = sys.argv[1] if len(sys.argv) > 1 else "processar_dados()"
-        mensagem = sys.argv[2] if len(sys.argv) > 1 else "Ocorreu um erro"
-        return_code = int(sys.argv[3]) if len(sys.argv) > 0 else 2
+        type_server = sys.argv[1] if len(sys.argv) > 1 else "Typescript"
+        function = sys.argv[2] if len(sys.argv) > 1 else "processar_dados()"
+        mensagem = sys.argv[3] if len(sys.argv) > 1 else "Ocorreu um erro"
+        return_code = int(sys.argv[4]) if len(sys.argv) > 0 else 2
 
         # Processar os dados e imprimir JSON
-        resultado = processar_dados(function, mensagem, return_code, type_server)
-        print(json.dumps(resultado))
+        resultado = processar_dados(type_server, function, mensagem, return_code)
+        print(json.dumps(resultado), flush = True)
         messagebox.showinfo("Sucesso", json.dumps(resultado))
 
     def add_led(self, led_id):
