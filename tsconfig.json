@@ -10,5 +10,10 @@
     "typeRoots": ["./@types", "./node_modules/@types"],
     "lib": ["esnext", "dom.iterable", "scripthost"]
   },
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
+  "exclude": [
+    "node_modules",
+    "node_modules/react-native-tcp-socket/lib/types",
+    "node_modules/react-native/types/modules"  // Adicione aqui qualquer biblioteca com conflitos
+  ]
 }
