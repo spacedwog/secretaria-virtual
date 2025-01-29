@@ -206,7 +206,7 @@ var Server = /** @class */ (function () {
                         _a.connection = _b.sent();
                         params = {
                             function: "connectToDatabase()",
-                            mensagem: "Conexão com o banco de dados estabelecida!",
+                            mensagem: "Conexao com o banco de dados estabelecida!",
                             return_code: 0,
                             type_server: "typescript"
                         };
