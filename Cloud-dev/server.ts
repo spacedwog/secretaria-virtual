@@ -875,9 +875,6 @@ export class Server{
                 });
             });
         });
-        server.listen({port: port, host: "localhost"}, () => {
-            console.log("Servidor TCP rodando na porta 3000");
-        });
     }
 
     private getKey(){
