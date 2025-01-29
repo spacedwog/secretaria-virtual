@@ -42,7 +42,6 @@ var path = require("path");
 var express = require("express");
 var dotenv = require("dotenv");
 var child_process_1 = require("child_process");
-var mysql = require("mysql2/promise");
 var bodyParser = require("body-parser");
 dotenv.config();
 var StatusCode;
