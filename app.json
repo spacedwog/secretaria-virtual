@@ -7,6 +7,9 @@
     },
     "ios": {
       "bundleIdentifier": "com.spacedwog.secretariavirtual"
+    },
+    "android": {
+      "package": "com.spacedwog.secretariavirtual"
     }
   }
 }
