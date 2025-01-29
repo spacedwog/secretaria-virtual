@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import { exec } from 'child_process';
 import * as mysql from 'mysql2/promise';
@@ -155,7 +155,7 @@ export class Server{
             const params = {
                 function: "update-data",
                 mensagem: "Dados do python recebidos com sucesso",
-                return_code: 0,                
+                return_code: 0,
                 type_server: "typescript"
             }
             runPowerShellScript(scriptPath, params);
@@ -991,26 +991,19 @@ export class Server{
 }
 
 function runPowerShellScript(scriptPath: string, params: Record<string, string | number>) {
-    // Construir os parâmetros no formato PowerShell: -function valor -return_code valor -mensagem valor
-    const args = Object.entries(params)
-        .map(([key, value]) => `-${key} "${value}"`)
-        .join(' ');
-
-    // Comando para executar o script
+    const args = Object.entries(params).map(([key, value]) => `-${key} "${value}"`).join(" ");
     const command = `powershell -ExecutionPolicy Bypass -File ${scriptPath} ${args}`;
 
     exec(command, (error, stdout, stderr) => {
         if (error) {
-            console.error(`Erro ao executar o script: ${error.message}`);
+            console.error(`Erro ao executar PowerShell: ${error.message}`);
             return;
         }
-
         if (stderr) {
             console.error(`Erro no PowerShell: ${stderr}`);
             return;
         }
-
-        console.log(`Saída do script PowerShell:\n${stdout}`);
+        console.log("Saída do PowerShell:\n", stdout);
     });
 }
 

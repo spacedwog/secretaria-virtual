@@ -1,3 +1,4 @@
+import sys
 import json
 import sqlite3
 import time
@@ -70,24 +71,24 @@ class Blackboard:
             conn.commit()
             print("Banco de dados configurado.")
 
-    def run_powershell_script(self, script_path, params):
-        # Construir os parâmetros no formato PowerShell: -nome "valor" -idade valor
-        args = [f"-{key} {value}" for key, value in params.items()]
-        command = f"powershell -ExecutionPolicy Bypass -File {script_path} {' '.join(args)}"
+    def processar_dados(function, mensagem, return_code, type_server):
+        return {
+            "type_server": type_server,
+            "function": function,
+            "mensagem": mensagem,
+            "return_code": return_code
+        }
+    if __name__ == "__main__":
+        # Captura argumentos passados pelo PowerShell
+        type_server = sys.argv[1] if len(sys.argv) > 1 else "Python"
+        function = sys.argv[2] if len(sys.argv) > 1 else "processar_dados()"
+        mensagem = sys.argv[3] if len(sys.argv) > 1 else "Ocorreu um erro"
+        return_code = int(sys.argv[4]) if len(sys.argv) > 0 else 2
 
-        try:
-            # Executar o script com subprocess
-            result = subprocess.run(command, capture_output=True, text=True, shell=True)
-            
-            # Verificar a saída
-            if result.returncode == 0:
-                print("Saída do script PowerShell:")
-                print(result.stdout)
-            else:
-                print("Erro ao executar o script:")
-                print(result.stderr)
-        except Exception as e:
-            print(f"Ocorreu um erro: {e}")
+        # Processar os dados e imprimir JSON
+        resultado = processar_dados(function, mensagem, return_code, type_server)
+        print(json.dumps(resultado))
+
     def add_led(self, led_id):
         """Adiciona um LED ao sistema e ao banco de dados."""
         if led_id not in self.leds:
