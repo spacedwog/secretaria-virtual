@@ -590,4 +590,3 @@ def create_gui():
 # Executa a GUI
 if __name__ == "__main__" and contador == 0:
     create_gui()
-    Blackboard.toggle_led("led3", "ON")
