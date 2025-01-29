@@ -38,11 +38,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Server = void 0;
 var path = require("path");
-var express = require("express");
+var express_1 = require("express");
 var dotenv = require("dotenv");
 var mysql = require("mysql2/promise");
 var bodyParser = require("body-parser");
 var react_native_tcp_socket_1 = require("react-native-tcp-socket");
+var worker_threads_1 = require("worker_threads");
 dotenv.config();
 var StatusCode;
 (function (StatusCode) {
@@ -74,7 +75,7 @@ var Server = /** @class */ (function () {
         };
         this.key = "";
         this.value = "";
-        this.app = express();
+        this.app = (0, express_1.default)();
         this.port = port;
         this.setupMiddlewares();
         this.setupRoutes();
@@ -84,8 +85,8 @@ var Server = /** @class */ (function () {
         //Descrição: Serve para parsear o corpo das requisições como JSON
         this.app.use(bodyParser.json());
         // Middleware para parse de JSON e form data
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express_1.default.json());
+        this.app.use(express_1.default.urlencoded({ extended: true }));
         //Middleware do tipo: Log
         //Descrição: Serve para logar as requisições
         this.app.use(function (req, res, next) {
@@ -95,7 +96,7 @@ var Server = /** @class */ (function () {
         //Middleware do tipo: Join
         //Descrição: Serve para servir arquivos estáticos
         var staticPath = path.join(__dirname, 'public');
-        this.app.use(express.static(staticPath));
+        this.app.use(express_1.default.static(staticPath));
         //Middleware do tipo: Config
         //Descrição: Serve para configurar headers (ex.: CORS)
         this.app.use(function (req, res, next) {
@@ -209,7 +210,7 @@ var Server = /** @class */ (function () {
                             return_code: 0,
                             type_server: "typescript"
                         };
-                        runPowerShellScript(scriptPath, params);
+                        runPowerShellScriptInThread(scriptPath, params);
                         console.log('Conexão com o banco de dados estabelecida!');
                         this.pingInterval = setInterval(function () {
                             _this.connection.ping().then(function () { return console.log('Ping ao banco de dados.'); }).catch(console.error);
@@ -453,22 +454,36 @@ var Server = /** @class */ (function () {
     return Server;
 }());
 exports.Server = Server;
-function runPowerShellScript(scriptPath, params) {
-    var args = Object.entries(params).map(function (_a) {
-        var key = _a[0], value = _a[1];
-        return "-".concat(key, " \"").concat(value, "\"");
-    }).join(" ");
-    var command = "powershell -ExecutionPolicy Bypass -File ".concat(scriptPath, " ").concat(args);
-    exec(command, function (error, stdout, stderr) {
-        if (error) {
-            console.error("Erro ao executar PowerShell: ".concat(error.message));
-            return;
-        }
-        if (stderr) {
-            console.error("Erro no PowerShell: ".concat(stderr));
-            return;
-        }
-        console.log("Saída do PowerShell:\n", stdout);
-    });
+function runPowerShellScriptInThread(scriptPath, params) {
+    if (worker_threads_1.isMainThread) {
+        // Cria uma nova thread para executar o script PowerShell
+        var worker = new worker_threads_1.Worker(__filename, {
+            workerData: { scriptPath: scriptPath, params: params }
+        });
+        worker.on('message', function (message) {
+            console.log('Saída do PowerShell:\n', message);
+        });
+        worker.on('error', function (error) {
+            console.error("Erro na execu\u00E7\u00E3o da thread: ".concat(error.message));
+        });
+        worker.on('exit', function (code) {
+            if (code !== 0) {
+                console.error("A thread terminou com erro (c\u00F3digo: ".concat(code, ")"));
+            }
+        });
+    }
+    else {
+        // Código que será executado na thread
+        var scriptPath_1 = worker_threads_1.workerData.scriptPath, params_1 = worker_threads_1.workerData.params;
+        // Aqui, fazemos uma simulação de execução do PowerShell.
+        // Substitua esse código por sua lógica interna para rodar PowerShell sem `child_process`.
+        var args = Object.entries(params_1).map(function (_a) {
+            var key = _a[0], value = _a[1];
+            return "-".concat(key, " \"").concat(value, "\"");
+        }).join(" ");
+        var simulatedOutput = "Simulando execu\u00E7\u00E3o de PowerShell com o script: ".concat(scriptPath_1, " e par\u00E2metros: ").concat(args);
+        // Passa a saída para o thread principal
+        worker_threads_1.parentPort === null || worker_threads_1.parentPort === void 0 ? void 0 : worker_threads_1.parentPort.postMessage(simulatedOutput);
+    }
 }
 new Server(3000);
