@@ -23,7 +23,7 @@ class UserProfile:
 contador = 0
 class Blackboard:
     """Classe principal para gerenciamento do sistema Blackboard."""
-    def __init__(self, serial_port="COM4", baud_rate=9600, server_url="http://localhost:3001", db_name="secretaria_virtual"):
+    def __init__(self, serial_port="COM4", baud_rate=9600, server_url="http://localhost:3000", db_name="secretaria_virtual"):
         self.data = {}
         self.lock = threading.Lock()
         self.led_state = False
@@ -76,9 +76,9 @@ class Blackboard:
         # Captura argumentos passados pelo PowerShell
         script_path = sys.argv[0] if len(sys.argv) > 1 else "C:/users/felip/secretaria-virtual"
         function = sys.argv[1] if len(sys.argv) > 1 else "processar_dados()"
-        mensagem = sys.argv[2] if len(sys.argv) > 1 else "Ocorreu um erro"
-        type_server = sys.argv[4] if len(sys.argv) > 1 else "Typescript"
-        return_code = int(sys.argv[3]) if len(sys.argv) > 0 else 2
+        mensagem = sys.argv[2] if len(sys.argv) > 2 else "Ocorreu um erro"
+        type_server = sys.argv[4] if len(sys.argv) > 4 else "Typescript"
+        return_code = int(sys.argv[3]) if len(sys.argv) > 3 else 2
 
         # Processar os dados e imprimir JSON
         resultado = processar_dados(script_path, function, mensagem, return_code, type_server)
