@@ -10,8 +10,8 @@ param (
 $pythonScript = "C:\users\felip\secretaria-virtual\Cloud-dev\blackboard.py"
 
 # Executa o script Python e captura a saída JSON
-$saida = $saida.Trim()
 $saida = python $pythonScript $function $mensagem $return_code $type_server
+$saida = $saida.Trim()
 
 Write-Output "Saída bruta do Python: $saida"
 

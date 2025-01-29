@@ -36,6 +36,7 @@ class Blackboard:
         self.user_profile = None
         self.leds = {}  # Dicionário para armazenar o estado e intensidade dos LEDs
         self.arduino = None
+        self.contador = 0;
 
         try:
             self.arduino = serial.Serial(serial_port, baud_rate, timeout=1)
@@ -73,16 +74,17 @@ class Blackboard:
         }
     if __name__ == "__main__":
         # Captura argumentos passados pelo PowerShell
-        script_path = sys.argv[0] if len(sys.argv) > 1 else "Typescript"
-        type_server = sys.argv[4] if len(sys.argv) > 1 else "Typescript"
+        script_path = sys.argv[0] if len(sys.argv) > 1 else "C:/users/felip/secretaria-virtual"
         function = sys.argv[1] if len(sys.argv) > 1 else "processar_dados()"
         mensagem = sys.argv[2] if len(sys.argv) > 1 else "Ocorreu um erro"
+        type_server = sys.argv[4] if len(sys.argv) > 1 else "Typescript"
         return_code = int(sys.argv[3]) if len(sys.argv) > 0 else 2
 
         # Processar os dados e imprimir JSON
         resultado = processar_dados(script_path, function, mensagem, return_code, type_server)
         print(json.dumps(resultado), flush = True)
         messagebox.showinfo("Sucesso", json.dumps(resultado))
+        self.contador++
 
     def add_led(self, led_id):
         """Adiciona um LED ao sistema e ao banco de dados."""
@@ -586,5 +588,5 @@ def create_gui():
 
 
 # Executa a GUI
-if __name__ == "__main__":
+if __name__ == "__main__" and self.contador == 0:
     create_gui()
