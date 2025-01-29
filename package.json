@@ -37,6 +37,7 @@
     "react-native-tcp-socket": "^6.2.0",
     "react-native-threads": "^0.0.19",
     "react-native-web": "~0.19.13",
+    "react-native-websocket": "^1.0.2",
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
