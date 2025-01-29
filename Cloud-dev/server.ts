@@ -1,5 +1,5 @@
 import * as path from 'path';
-import * as express from 'express';
+import express from 'express';
 import * as dotenv from 'dotenv';
 import { exec } from 'child_process';
 import * as mysql from 'mysql2/promise';
@@ -862,18 +862,21 @@ export class Server{
 
     private async checkPortAvailability() {
         return new Promise<void>((resolve, reject) => {
-            const server = net.createServer();
-            server.once('error', (err: any) => {
-                if (err.code === 'EADDRINUSE') {
-                    console.error(`A porta ${this.port} já está em uso.`);
-                    reject(err);
-                }
+            const server = TcpSocket.createServer((socket) => {
+                console.log("Cliente conectado");
+
+                socket.on("data", (data) =>{
+                    console.log("Recebido: ", data.toString());
+                    socket.write("Mensagem recebida!");
+                });
+
+                socket.on("close", () => {
+                    console.log("Conexão encerrada");
+                });
             });
-            server.once('listening', () => {
-                server.close();
-                resolve();
-            });
-            server.listen(this.port);
+        });
+        server.listen({port: port, host: "localhost"}, () => {
+            console.log("Servidor TCP rodando na porta 3000");
         });
     }
 
