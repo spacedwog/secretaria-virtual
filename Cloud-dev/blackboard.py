@@ -83,29 +83,8 @@ class Blackboard:
         # Processar os dados e imprimir JSON
         resultado = processar_dados(script_path, function, mensagem, return_code, type_server)
         print(json.dumps(resultado), flush = True)
-        messagebox.showinfo("Sucesso", json.dumps(resultado))
-        contador += 1
-
-    def executar_dados(script_path, name, email, funcao, comando):
-        return {
-            "pythonScript": script_path,
-            "name": name,
-            "email": email,
-            "funcao": funcao,
-            "acao": comando
-        }
-    if __name__ == "__main__":
-        # Captura argumentos passados pelo PowerShell
-        script_path = sys.argv[0] if len(sys.argv) > 1 else "C:/users/felip/secretaria-virtual"
-        name = sys.argv[1] if len(sys.argv) > 1 else "processar_dados()"
-        email = sys.argv[2] if len(sys.argv) > 1 else "Ocorreu um erro"
-        funcao = sys.argv[4] if len(sys.argv) > 1 else "Typescript"
-        acao = sys.argv[3] if len(sys.argv) > 1 else "listar_processos"
-
-        # Processar os dados e imprimir JSON
-        resultado = processar_dados(script_path, name, email, acao, funcao)
-        print(json.dumps(resultado), flush = True)
-        messagebox.showinfo("Sucesso", json.dumps(resultado))
+        script_path = json.dumps(resultado).get("pythonScript")
+        messagebox.showinfo("Sucesso", "Script Path: " + script_path)
         contador += 1
 
     def add_led(self, led_id):
@@ -368,19 +347,6 @@ def create_gui():
         else:
             messagebox.showwarning("Erro", ERROR_MESSAGE)
 
-    def execute_command():
-        """Configura o perfil do usuário."""
-        name = name_entry.get()
-        email = email_entry.get()
-        role = role_entry.get()
-        command = command_entry.get()
-        ERROR_MESSAGE = "Formulário Incompleto"
-        if name and email and role:
-            blackboard.set_user_profile(name, email, role)
-            messagebox.showinfo("Sucesso", "Perfil configurado com sucesso!")
-        else:
-            messagebox.showwarning("Erro", ERROR_MESSAGE)
-
 
     def register_medic_recip():
         """Registrar a receita médica."""
@@ -480,10 +446,9 @@ def create_gui():
     profile_frame = tk.Frame(root)
     led_control_frame = tk.Frame(root)
     appointment_frame = tk.Frame(root)
-    cloudengine_frame = tk.Frame(root)
 
     # Lista de frames
-    frames = [main_frame, record_frame, profile_frame, led_control_frame, appointment_frame, cloudengine_frame]
+    frames = [main_frame, record_frame, profile_frame, led_control_frame, appointment_frame]
 
     # Tela principal
     tk.Label(main_frame, text="Tipo do Medicamento:").pack(pady=5)
@@ -567,26 +532,6 @@ def create_gui():
 
     tk.Button(profile_frame, text="Salvar Perfil", command=configure_user_profile).pack(pady=5)
     tk.Button(profile_frame, text="Voltar", command=lambda: switch_to_frame(main_frame)).pack(pady=5)
-
-    # Tela de Cloud Engine
-    tk.Label(cloudengine_frame, text="Nome:").pack(pady=5)
-    name_entry = tk.Entry(cloudengine_frame)
-    name_entry.pack(pady=5)
-
-    tk.Label(cloudengine_frame, text="Email:").pack(pady=5)
-    email_entry = tk.Entry(cloudengine_frame)
-    email_entry.pack(pady=5)
-
-    tk.Label(cloudengine_frame, text="Função:").pack(pady=5)
-    role_entry = tk.Entry(cloudengine_frame)
-    role_entry.pack(pady=5)
-
-    tk.Label(cloudengine_frame, text="Comando:").pack(pady=5)
-    command_entry = tk.Entry(cloudengine_frame)
-    command_entry.pack(pady=5)
-
-    tk.Button(cloudengine_frame, text="Executar Comando", command=execute_command).pack(pady=5)
-    tk.Button(cloudengine_frame, text="Voltar", command=lambda: switch_to_frame(main_frame)).pack(pady=5)
 
     # Tela de Agendamento de Consultas
     tk.Label(appointment_frame, text="ID do Paciente").grid(row=0, column=0, padx=5, pady=5)
