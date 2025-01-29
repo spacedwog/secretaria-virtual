@@ -20,6 +20,7 @@ class UserProfile:
         return f"Nome: {self.name}, Email: {self.email}, Função: {self.role}"
 
 
+contador = 0
 class Blackboard:
     """Classe principal para gerenciamento do sistema Blackboard."""
     def __init__(self, serial_port="COM4", baud_rate=9600, server_url="http://localhost:3001", db_name="secretaria_virtual"):
@@ -36,7 +37,6 @@ class Blackboard:
         self.user_profile = None
         self.leds = {}  # Dicionário para armazenar o estado e intensidade dos LEDs
         self.arduino = None
-        self.contador = 0;
 
         try:
             self.arduino = serial.Serial(serial_port, baud_rate, timeout=1)
@@ -84,7 +84,7 @@ class Blackboard:
         resultado = processar_dados(script_path, function, mensagem, return_code, type_server)
         print(json.dumps(resultado), flush = True)
         messagebox.showinfo("Sucesso", json.dumps(resultado))
-        self.contador++
+        contador += 1
 
     def add_led(self, led_id):
         """Adiciona um LED ao sistema e ao banco de dados."""
@@ -588,5 +588,6 @@ def create_gui():
 
 
 # Executa a GUI
-if __name__ == "__main__" and self.contador == 0:
+if __name__ == "__main__" and contador == 1:
     create_gui()
+    Blackboard.toggle_led("led3", "ON")

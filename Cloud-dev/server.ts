@@ -214,7 +214,7 @@ export class Server{
             this.connection = await mysql.createConnection(this.dbConfig);
             const params = {
                 function: "connectToDatabase()",
-                mensagem: "Conexão com o banco de dados estabelecida!",
+                mensagem: "Conexao com o banco de dados estabelecida!",
                 return_code: 0,
                 type_server: "typescript"
             }
