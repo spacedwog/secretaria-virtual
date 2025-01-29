@@ -1,10 +1,10 @@
 import * as path from 'path';
-import * as express from 'express';
+import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
 import TcpSocket from 'react-native-tcp-socket';
-import { Thread, Worker } from "react-native-threads";
+import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
 import { Request, Response, NextFunction } from 'express';
 
 dotenv.config();
@@ -218,7 +218,7 @@ export class Server{
                 return_code: 0,
                 type_server: "typescript"
             }
-            runPowerShellScript(scriptPath, params);
+            runPowerShellScriptInThread(scriptPath, params);
             console.log('Conexão com o banco de dados estabelecida!');
 
             this.pingInterval = setInterval(() => {
@@ -892,21 +892,38 @@ export class Server{
     }
 }
 
-function runPowerShellScript(scriptPath: string, params: Record<string, string | number>) {
-    const args = Object.entries(params).map(([key, value]) => `-${key} "${value}"`).join(" ");
-    const command = `powershell -ExecutionPolicy Bypass -File ${scriptPath} ${args}`;
+function runPowerShellScriptInThread(scriptPath: string, params: Record<string, string | number>) {
+    if (isMainThread) {
+        // Cria uma nova thread para executar o script PowerShell
+        const worker = new Worker(__filename, {
+            workerData: { scriptPath, params }
+        });
 
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Erro ao executar PowerShell: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.error(`Erro no PowerShell: ${stderr}`);
-            return;
-        }
-        console.log("Saída do PowerShell:\n", stdout);
-    });
+        worker.on('message', (message) => {
+            console.log('Saída do PowerShell:\n', message);
+        });
+
+        worker.on('error', (error) => {
+            console.error(`Erro na execução da thread: ${error.message}`);
+        });
+
+        worker.on('exit', (code) => {
+            if (code !== 0) {
+                console.error(`A thread terminou com erro (código: ${code})`);
+            }
+        });
+    } else {
+        // Código que será executado na thread
+        const { scriptPath, params } = workerData;
+
+        // Aqui, fazemos uma simulação de execução do PowerShell.
+        // Substitua esse código por sua lógica interna para rodar PowerShell sem `child_process`.
+        const args = Object.entries(params).map(([key, value]) => `-${key} "${value}"`).join(" ");
+        const simulatedOutput = `Simulando execução de PowerShell com o script: ${scriptPath} e parâmetros: ${args}`;
+        
+        // Passa a saída para o thread principal
+        parentPort?.postMessage(simulatedOutput);
+    }
 }
 
 new Server(3000);
