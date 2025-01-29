@@ -30,7 +30,7 @@
     "pg": "^8.13.1",
     "prompt-sync": "^4.2.0",
     "react": "18.3.1",
-    "react-native": "0.76.6",
+    "react-native": "^0.76.6",
     "react-native-audio-recorder-player": "^3.6.12",
     "react-native-fs": "^2.20.0",
     "react-native-polyfill-globals": "^3.1.0",
@@ -41,6 +41,7 @@
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
+    "@react-native-community/cli": "latest",
     "@types/axios": "^0.9.36",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
