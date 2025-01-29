@@ -2,7 +2,7 @@
 param (
     [string]$function = "",
     [string]$mensagem = "",
-    [string]$return_code = "",
+    [int]$return_code = 0,
     [string]$type_server = ""
 )
 

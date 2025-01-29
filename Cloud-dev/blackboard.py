@@ -40,14 +40,6 @@ class Blackboard:
         try:
             self.arduino = serial.Serial(serial_port, baud_rate, timeout=1)
             time.sleep(2)
-            script_path = "./cloudengine.ps1"
-            params = {
-                "function": "__init__()",
-                "mensagem": "Conectado ao Arduino em " + serial_port + ".",
-                "return_code": 0,
-                "type_server": "python"
-            }
-            self.run_powershell_script(script_path, params)
             print(f"Conectado ao Arduino em {serial_port}.")
         except serial.SerialException as e:
             print(f"Erro ao conectar ao Arduino: {e}")
@@ -80,14 +72,15 @@ class Blackboard:
         }
     if __name__ == "__main__":
         # Captura argumentos passados pelo PowerShell
-        type_server = sys.argv[1] if len(sys.argv) > 1 else "Python"
-        function = sys.argv[2] if len(sys.argv) > 1 else "processar_dados()"
-        mensagem = sys.argv[3] if len(sys.argv) > 1 else "Ocorreu um erro"
-        return_code = int(sys.argv[4]) if len(sys.argv) > 0 else 2
+        type_server = sys.argv[0] if len(sys.argv) > 1 else "Typescript"
+        function = sys.argv[1] if len(sys.argv) > 1 else "processar_dados()"
+        mensagem = sys.argv[2] if len(sys.argv) > 1 else "Ocorreu um erro"
+        return_code = int(sys.argv[3]) if len(sys.argv) > 0 else 2
 
         # Processar os dados e imprimir JSON
         resultado = processar_dados(function, mensagem, return_code, type_server)
         print(json.dumps(resultado))
+        messagebox.showinfo(json.dumps(resultado))
 
     def add_led(self, led_id):
         """Adiciona um LED ao sistema e ao banco de dados."""
@@ -244,13 +237,6 @@ class Blackboard:
             response.raise_for_status()
             print(self.PYTHON_MESSAGE, response.json())
         except requests.exceptions.HTTPError as http_err:
-            script_path = "./cloudengine.ps1"
-            params = {
-                "function": "send_data()",
-                "mensagem": "Erro HTTP: " + http_err,
-                "return_code": 6
-            }
-            self.run_powershell_script(script_path, params)
             print(f"Erro HTTP: {http_err}")
         except Exception as err:
             print(f"Erro ao enviar dados: {err}")
@@ -281,13 +267,6 @@ class Blackboard:
             response.raise_for_status()
             print(self.PYTHON_MESSAGE, response.json())
         except requests.exceptions.HTTPError as http_err:
-            script_path = "./cloudengine.ps1"
-            params = {
-                "function": "record_data()",
-                "mensagem": "Erro HTTP: " + http_err,
-                "return_code": 6
-            }
-            self.run_powershell_script(script_path, params)
             print(f"Erro HTTP: {http_err}")
         except Exception as err:
             print(f"Erro ao enviar dados: {err}")
@@ -312,13 +291,6 @@ class Blackboard:
             response.raise_for_status()
             print(self.PYTHON_MESSAGE, response.json())
         except requests.exceptions.HTTPError as http_err:
-            script_path = "./cloudengine.ps1"
-            params = {
-                "function": "save_data()",
-                "mensagem": "Erro HTTP: " + http_err,
-                "return_code": 6
-            }
-            self.run_powershell_script(script_path, params)
             print(f"Erro HTTP: {http_err}")
         except Exception as err:
             print(f"Erro ao enviar dados: {err}")
@@ -331,13 +303,6 @@ class Blackboard:
                 response = self.arduino.readline().decode().strip()
                 print(f"Resposta do Arduino: {response}")
             except serial.SerialException as e:
-                script_path = "./cloudengine.ps1"
-                params = {
-                    "function": "send_command_to_arduino()",
-                    "mensagem": "Erro HTTP: " + e,
-                    "return_code": 8
-                }
-                self.run_powershell_script(script_path, params)
                 print(f"Erro ao enviar comando ao Arduino: {e}")
 
     def load_leds_from_database(self):
