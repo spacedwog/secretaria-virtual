@@ -343,7 +343,6 @@ def create_gui():
         if name and email and role:
             blackboard.set_user_profile(name, email, role)
             messagebox.showinfo("Sucesso", "Perfil configurado com sucesso!")
-            switch_to_frame(main_frame)
         else:
             messagebox.showwarning("Erro", ERROR_MESSAGE)
 
