@@ -89,8 +89,8 @@ class Blackboard:
         mensagem = json.dumps(resultado.get("mensagem"))
         return_code = json.dumps(resultado.get("return_code"))
 
-        message = "Script Path: " + script_path + "\n Function: " + function + "\n"
-        message += "Mensagem: " + mensagem + "\n Type Server: " + type_server + "\n"
+        message = "Script Path: " + script_path + "\nFunction: " + function + "\n"
+        message += "Mensagem: " + mensagem + "\nType Server: " + type_server + "\n"
         message += "Return Code: " + return_code
         messagebox.showinfo("Sucesso", message)
         contador += 1
