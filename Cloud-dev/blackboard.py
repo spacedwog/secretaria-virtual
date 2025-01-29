@@ -74,26 +74,31 @@ class Blackboard:
         }
     if __name__ == "__main__":
         # Captura argumentos passados pelo PowerShell
-        script_path = sys.argv[0] if len(sys.argv) > 1 else "C:/users/felip/secretaria-virtual"
-        function = sys.argv[1] if len(sys.argv) > 1 else "processar_dados()"
-        mensagem = sys.argv[2] if len(sys.argv) > 2 else "Ocorreu um erro"
-        type_server = sys.argv[4] if len(sys.argv) > 4 else "Typescript"
-        return_code = int(sys.argv[3]) if len(sys.argv) > 3 else 2
+        try:
+            script_path = sys.argv[0] if len(sys.argv) > 0 else "C:/users/felip/secretaria-virtual"
+            function = sys.argv[1] if len(sys.argv) > 1 else "processar_dados()"
+            mensagem = sys.argv[2] if len(sys.argv) > 2 else "Ocorreu um erro"
+            type_server = sys.argv[4] if len(sys.argv) > 4 else "Typescript"
+            return_code = int(sys.argv[3]) if len(sys.argv) > 3 else 2
 
-        # Processar os dados e imprimir JSON
-        resultado = processar_dados(script_path, function, mensagem, return_code, type_server)
-        print(json.dumps(resultado), flush = True)
-        script_path = json.dumps(resultado.get("pythonScript"))
-        type_server = json.dumps(resultado.get("type_server"))
-        function = json.dumps(resultado.get("function"))
-        mensagem = json.dumps(resultado.get("mensagem"))
-        return_code = json.dumps(resultado.get("return_code"))
+            # Processar os dados e imprimir JSON
+            resultado = processar_dados(script_path, function, mensagem, return_code, type_server)
+            print(json.dumps(resultado), flush = True)
+            script_path = json.dumps(resultado.get("pythonScript"))
+            type_server = json.dumps(resultado.get("type_server"))
+            function = json.dumps(resultado.get("function"))
+            mensagem = json.dumps(resultado.get("mensagem"))
+            return_code = json.dumps(resultado.get("return_code"))
 
-        message = "Script Path: " + script_path + "\nFunction: " + function + "\n"
-        message += "Mensagem: " + mensagem + "\nType Server: " + type_server + "\n"
-        message += "Return Code: " + return_code
-        messagebox.showinfo("Sucesso", message)
-        contador += 1
+            message = "Script Path: " + script_path + "\nFunction: " + function + "\n"
+            message += "Mensagem: " + mensagem + "\nType Server: " + type_server + "\n"
+            message += "Return Code: " + return_code
+            messagebox.showinfo("Sucesso", message)
+            contador += 1
+        except Exception as e:
+            # Em caso de erro, imprime JSON de erro para evitar mensagens quebradas
+            print(json.dumps({"erro": str(e)}), file=sys.stderr)
+            sys.exit(1)
 
     def add_led(self, led_id):
         """Adiciona um LED ao sistema e ao banco de dados."""
