@@ -80,7 +80,7 @@ class Blackboard:
         # Processar os dados e imprimir JSON
         resultado = processar_dados(function, mensagem, return_code, type_server)
         print(json.dumps(resultado))
-        messagebox.showinfo(json.dumps(resultado))
+        messagebox.showinfo("Sucesso", json.dumps(resultado))
 
     def add_led(self, led_id):
         """Adiciona um LED ao sistema e ao banco de dados."""

@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import { exec } from 'child_process';
 import * as mysql from 'mysql2/promise';
@@ -95,13 +95,6 @@ export class Server{
         //Middleware do tipo: Error
         //Descrição: Serve para tratar erros genéricos
         this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-            const params = {
-                function: "Middleware",
-                mensagem: "Erro genérico: " + err,
-                return_code: 4,
-                type_server: "typescript"
-            }
-            runPowerShellScript(scriptPath, params);
             console.error('Erro no middleware:', err);
             res.status(err.status || StatusCode.DatabaseError).json({ error: err.message || 'Erro interno do servidor' });
         });
@@ -120,13 +113,6 @@ export class Server{
                 res.redirect('/'); // Redireciona diretamente
             }
             catch (error) {
-                const params = {
-                    function: "Routes",
-                    mensagem: "Erro ao gerar relatório: " + error,
-                    return_code: 2,
-                    type_server: "typescript"
-                }
-                runPowerShellScript(scriptPath, params);
                 console.error('Erro ao gerar relatório:', error);
                 res.status(StatusCode.DatabaseError).send('Erro ao gerar relatório.');
             }
@@ -138,13 +124,6 @@ export class Server{
             const { key, value } = req.body;
         
             if ((key && typeof key !== 'string') || (value && typeof value !== 'string')) {
-                const params = {
-                    function: "update-data",
-                    mensagem: "Dados inválidos do python:",
-                    return_code: 1,
-                    type_server: "typescript"
-                }
-                runPowerShellScript(scriptPath, params);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
         
@@ -152,13 +131,6 @@ export class Server{
 
             this.setKey(key);
             this.setValue(value);
-            const params = {
-                function: "update-data",
-                mensagem: "Dados do python recebidos com sucesso",
-                return_code: 0,
-                type_server: "typescript"
-            }
-            runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
 
@@ -181,13 +153,6 @@ export class Server{
                 (frequencia && typeof frequencia!== 'string') ||
                 (consumo && typeof consumo!== 'string') ||
                 (observacao && typeof observacao!== 'string')) {
-                    const params = {
-                        function: "record-data",
-                        mensagem: "Dados do python recebidos com sucesso",
-                        return_code: 1,
-                        type_server: "typescript"
-                    }
-                    runPowerShellScript(scriptPath, params);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
         
@@ -208,13 +173,6 @@ export class Server{
                 'CALL visit_doctor(?, ?, ?, ?)',
                 [date, time, id_paciente, id_medico]
             );
-            const params = {
-                function: "record-data",
-                mensagem: "Dados do python recebidos com sucesso",
-                return_code: 0,
-                type_server: "typescript"
-            }
-            runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
 
@@ -231,13 +189,6 @@ export class Server{
                 (appointment_time && typeof appointment_time !== 'string') ||
                 (reason && typeof reason!=='string') ||
                 (status && typeof status!== 'string')) {
-                    const params = {
-                        function: "save-data",
-                        mensagem: "Dados do python recebidos com sucesso",
-                        return_code: 1,
-                        type_server: "typescript"
-                    }
-                    runPowerShellScript(scriptPath, params);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
             }
         
@@ -250,13 +201,6 @@ export class Server{
                 'CALL make_appointment(?, ?, ?, ?, ?, ?, ?)',
                 [appointment_date, appointment_time, reason, status, id_paciente, id_medico, nome_consulta_medica]
             );
-            const params = {
-                function: "save-data",
-                mensagem: "Dados do python recebidos com sucesso",
-                return_code: 0,
-                type_server: "typescript"
-            }
-            runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
 
@@ -277,26 +221,12 @@ export class Server{
             runPowerShellScript(scriptPath, params);
             console.log('Conexão com o banco de dados estabelecida!');
 
-            this.pingInterval = setInterval(() => {;
-                const params = {
-                    function: "connectToDatabase()",
-                    mensagem: "Ping ao banco de dados.",
-                    return_code: 0,
-                    type_server: "typescript"
-                }
-                runPowerShellScript(scriptPath, params);
+            this.pingInterval = setInterval(() => {
                 this.connection.ping().then(() => console.log('Ping ao banco de dados.')).catch(console.error);
                 
             }, 10000);
         }
-        catch (error) {;
-            const params = {
-                function: "connectToDatabase()",
-                mensagem: "Erro ao conectar ao banco de dados: " + error,
-                return_code: 8,
-                type_server: "typescript"
-            }
-            runPowerShellScript(scriptPath, params);;
+        catch (error) {
             console.error('Erro ao conectar ao banco de dados:', error);
             process.exit(StatusCode.ExitFail);
         }
@@ -452,14 +382,7 @@ export class Server{
                 res.send(html);
                 
         }
-        catch (error) {;
-            const params = {
-                function: "viewMedicInfo()",
-                mensagem: "Erro ao executar consulta: " + error,
-                return_code: 8,
-                type_server: "typescript"
-            }
-            runPowerShellScript(scriptPath, params);
+        catch (error) {
             console.error('Erro ao executar consulta:', error);
             res.status(StatusCode.DatabaseError).send('Erro ao carregar dados.');
         }
@@ -599,13 +522,6 @@ export class Server{
                 
         }
         catch (error) {
-            const params = {
-                function: "viewWebsite()",
-                mensagem: "Erro ao executar consulta: " + error,
-                return_code: 8,
-                type_server: "typescript"
-            }
-            runPowerShellScript(scriptPath, params);
             console.error('Erro ao executar consulta:', error);
             res.status(StatusCode.DatabaseError).send('Erro ao carregar dados.');
         }
@@ -748,13 +664,6 @@ export class Server{
             res.send(html);
         }
         catch (error) {
-            const params = {
-                function: "getPacientes()",
-                mensagem: "Erro ao executar consulta: " + error,
-                return_code: 8,
-                type_server: "typescript"
-            }
-            runPowerShellScript(scriptPath, params);
             console.error('Erro ao buscar dados:', error);
             res.status(StatusCode.DatabaseError).send('Erro ao buscar pacientes.');
         }
@@ -900,13 +809,6 @@ export class Server{
             res.send(html);
         }
         catch (error) {
-            const params = {
-                function: "getReceita_medica()",
-                mensagem: "Erro ao executar consulta: " + error,
-                return_code: 8,
-                type_server: "typescript"
-            }
-            runPowerShellScript(scriptPath, params);
             console.error('Erro ao buscar dados:', error);
             res.status(StatusCode.DatabaseError).send('Erro ao buscar pacientes.');
         }
