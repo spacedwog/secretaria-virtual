@@ -111,7 +111,8 @@ var Server = /** @class */ (function () {
             var params = {
                 function: "Middleware",
                 mensagem: "Erro genérico: " + err,
-                return_code: 4
+                return_code: 4,
+                type_server: "typescript"
             };
             runPowerShellScript(scriptPath, params);
             console.error('Erro no middleware:', err);
@@ -140,7 +141,8 @@ var Server = /** @class */ (function () {
                         params = {
                             function: "Routes",
                             mensagem: "Erro ao gerar relatório: " + error_1,
-                            return_code: 2
+                            return_code: 2,
+                            type_server: "typescript"
                         };
                         runPowerShellScript(scriptPath, params);
                         console.error('Erro ao gerar relatório:', error_1);
@@ -157,7 +159,8 @@ var Server = /** @class */ (function () {
                 var params_1 = {
                     function: "update-data",
                     mensagem: "Dados inválidos do python:",
-                    return_code: 1
+                    return_code: 1,
+                    type_server: "typescript"
                 };
                 runPowerShellScript(scriptPath, params_1);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
@@ -168,7 +171,8 @@ var Server = /** @class */ (function () {
             var params = {
                 function: "update-data",
                 mensagem: "Dados do python recebidos com sucesso",
-                return_code: 0
+                return_code: 0,
+                type_server: "typescript"
             };
             runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
@@ -191,7 +195,8 @@ var Server = /** @class */ (function () {
                 var params_2 = {
                     function: "record-data",
                     mensagem: "Dados do python recebidos com sucesso",
-                    return_code: 1
+                    return_code: 1,
+                    type_server: "typescript"
                 };
                 runPowerShellScript(scriptPath, params_2);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
@@ -205,7 +210,8 @@ var Server = /** @class */ (function () {
             var params = {
                 function: "record-data",
                 mensagem: "Dados do python recebidos com sucesso",
-                return_code: 0
+                return_code: 0,
+                type_server: "typescript"
             };
             runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
@@ -223,7 +229,8 @@ var Server = /** @class */ (function () {
                 var params_3 = {
                     function: "save-data",
                     mensagem: "Dados do python recebidos com sucesso",
-                    return_code: 1
+                    return_code: 1,
+                    type_server: "typescript"
                 };
                 runPowerShellScript(scriptPath, params_3);
                 res.status(400).json({ message: 'Dados inválidos enviados!' });
@@ -233,7 +240,8 @@ var Server = /** @class */ (function () {
             var params = {
                 function: "save-data",
                 mensagem: "Dados do python recebidos com sucesso",
-                return_code: 0
+                return_code: 0,
+                type_server: "typescript"
             };
             runPowerShellScript(scriptPath, params);
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
@@ -255,7 +263,8 @@ var Server = /** @class */ (function () {
                         params = {
                             function: "connectToDatabase()",
                             mensagem: "Conexão com o banco de dados estabelecida!",
-                            return_code: 0
+                            return_code: 0,
+                            type_server: "typescript"
                         };
                         runPowerShellScript(scriptPath, params);
                         console.log('Conexão com o banco de dados estabelecida!');
@@ -264,7 +273,8 @@ var Server = /** @class */ (function () {
                             var params = {
                                 function: "connectToDatabase()",
                                 mensagem: "Ping ao banco de dados.",
-                                return_code: 0
+                                return_code: 0,
+                                type_server: "typescript"
                             };
                             runPowerShellScript(scriptPath, params);
                             _this.connection.ping().then(function () { return console.log('Ping ao banco de dados.'); }).catch(console.error);
@@ -276,7 +286,8 @@ var Server = /** @class */ (function () {
                         params = {
                             function: "connectToDatabase()",
                             mensagem: "Erro ao conectar ao banco de dados: " + error_2,
-                            return_code: 8
+                            return_code: 8,
+                            type_server: "typescript"
                         };
                         runPowerShellScript(scriptPath, params);
                         ;
@@ -323,7 +334,8 @@ var Server = /** @class */ (function () {
                         params = {
                             function: "viewMedicInfo()",
                             mensagem: "Erro ao executar consulta: " + error_3,
-                            return_code: 8
+                            return_code: 8,
+                            type_server: "typescript"
                         };
                         runPowerShellScript(scriptPath, params);
                         console.error('Erro ao executar consulta:', error_3);
@@ -358,7 +370,8 @@ var Server = /** @class */ (function () {
                         params = {
                             function: "viewWebsite()",
                             mensagem: "Erro ao executar consulta: " + error_4,
-                            return_code: 8
+                            return_code: 8,
+                            type_server: "typescript"
                         };
                         runPowerShellScript(scriptPath, params);
                         console.error('Erro ao executar consulta:', error_4);
@@ -394,7 +407,8 @@ var Server = /** @class */ (function () {
                         params = {
                             function: "getPacientes()",
                             mensagem: "Erro ao executar consulta: " + error_5,
-                            return_code: 8
+                            return_code: 8,
+                            type_server: "typescript"
                         };
                         runPowerShellScript(scriptPath, params);
                         console.error('Erro ao buscar dados:', error_5);
@@ -430,7 +444,8 @@ var Server = /** @class */ (function () {
                         params = {
                             function: "getReceita_medica()",
                             mensagem: "Erro ao executar consulta: " + error_6,
-                            return_code: 8
+                            return_code: 8,
+                            type_server: "typescript"
                         };
                         runPowerShellScript(scriptPath, params);
                         console.error('Erro ao buscar dados:', error_6);
