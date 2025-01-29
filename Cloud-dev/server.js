@@ -38,11 +38,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Server = void 0;
 var path = require("path");
-var express = require("express");
+var express_1 = require("express");
 var dotenv = require("dotenv");
-var child_process_1 = require("child_process");
 var mysql = require("mysql2/promise");
 var bodyParser = require("body-parser");
+var react_native_tcp_socket_1 = require("react-native-tcp-socket");
 dotenv.config();
 var StatusCode;
 (function (StatusCode) {
@@ -74,7 +74,7 @@ var Server = /** @class */ (function () {
         };
         this.key = "";
         this.value = "";
-        this.app = express();
+        this.app = (0, express_1.default)();
         this.port = port;
         this.setupMiddlewares();
         this.setupRoutes();
@@ -84,8 +84,8 @@ var Server = /** @class */ (function () {
         //Descrição: Serve para parsear o corpo das requisições como JSON
         this.app.use(bodyParser.json());
         // Middleware para parse de JSON e form data
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express_1.default.json());
+        this.app.use(express_1.default.urlencoded({ extended: true }));
         //Middleware do tipo: Log
         //Descrição: Serve para logar as requisições
         this.app.use(function (req, res, next) {
@@ -95,7 +95,7 @@ var Server = /** @class */ (function () {
         //Middleware do tipo: Join
         //Descrição: Serve para servir arquivos estáticos
         var staticPath = path.join(__dirname, 'public');
-        this.app.use(express.static(staticPath));
+        this.app.use(express_1.default.static(staticPath));
         //Middleware do tipo: Config
         //Descrição: Serve para configurar headers (ex.: CORS)
         this.app.use(function (req, res, next) {
@@ -422,21 +422,18 @@ var Server = /** @class */ (function () {
     };
     Server.prototype.checkPortAvailability = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
             return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var server = net.createServer();
-                        server.once('error', function (err) {
-                            if (err.code === 'EADDRINUSE') {
-                                console.error("A porta ".concat(_this.port, " j\u00E1 est\u00E1 em uso."));
-                                reject(err);
-                            }
+                        var server = react_native_tcp_socket_1.default.createServer(function (socket) {
+                            console.log("Cliente conectado");
+                            socket.on("data", function (data) {
+                                console.log("Recebido: ", data.toString());
+                                socket.write("Mensagem recebida!");
+                            });
+                            socket.on("close", function () {
+                                console.log("Conexão encerrada");
+                            });
                         });
-                        server.once('listening', function () {
-                            server.close();
-                            resolve();
-                        });
-                        server.listen(_this.port);
                     })];
             });
         });
@@ -462,7 +459,7 @@ function runPowerShellScript(scriptPath, params) {
         return "-".concat(key, " \"").concat(value, "\"");
     }).join(" ");
     var command = "powershell -ExecutionPolicy Bypass -File ".concat(scriptPath, " ").concat(args);
-    (0, child_process_1.exec)(command, function (error, stdout, stderr) {
+    exec(command, function (error, stdout, stderr) {
         if (error) {
             console.error("Erro ao executar PowerShell: ".concat(error.message));
             return;
