@@ -83,8 +83,16 @@ class Blackboard:
         # Processar os dados e imprimir JSON
         resultado = processar_dados(script_path, function, mensagem, return_code, type_server)
         print(json.dumps(resultado), flush = True)
-        script_path = json.dumps(resultado).get("pythonScript")
-        messagebox.showinfo("Sucesso", "Script Path: " + script_path)
+        script_path = json.dumps(resultado.get("pythonScript"))
+        type_server = json.dumps(resultado.get("type_server"))
+        function = json.dumps(resultado.get("function"))
+        mensagem = json.dumps(resultado.get("mensagem"))
+        return_code = json.dumps(resultado.get("return_code"))
+
+        message = "Script Path: " + script_path + "\n Function: " + function + "\n"
+        message += "Mensagem: " + mensagem + "\n Type Server: " + type_server + "\n"
+        message += "Return Code: " + return_code
+        messagebox.showinfo("Sucesso", message)
         contador += 1
 
     def add_led(self, led_id):
