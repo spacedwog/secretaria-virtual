@@ -1,20 +1,11 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "moduleResolution": "node",
+    "jsx": "react-native",
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowImportingTsExtensions": true,
-    "strict": true,
     "skipLibCheck": true,
-    "types": ["react-native", "node"],
-    "typeRoots": ["./@types", "./node_modules/@types"],
-    "lib": ["esnext"]
+    "strict": true
   },
-  "extends": "expo/tsconfig.base",
-  "exclude": [
-    "node_modules",
-    "node_modules/react-native-tcp-socket/lib/types",
-    "node_modules/react-native/types/modules"  // Adicione aqui qualquer biblioteca com conflitos
-  ]
+  "include": ["Cloud-dev/**/*", "node_modules/@react-native/virtualized-lists"]
 }
