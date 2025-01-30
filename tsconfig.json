@@ -27,5 +27,6 @@
     "**/__tests__/*",
     "public",
     "dist"
-  ]
+  ],
+  "extends": "expo/tsconfig.base"
 }
