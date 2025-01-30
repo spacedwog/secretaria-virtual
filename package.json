@@ -4,7 +4,7 @@
   "main": "Cloud-dev/server.js",
   "type": "commonjs",
   "scripts": {
-    "start": "npx kill-port 3000 && ts-node-dev Cloud-dev/server.js",
+    "start": "npx kill-port 3000 && ts-node-dev --transpile-only Cloud-dev/server.js",
     "test": "jest",
     "android": "expo run:android",
     "ios": "expo run:ios"
