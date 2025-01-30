@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "type": "module",
     "target": "es6", 
     "module": "commonjs",
     "lib": ["esnext"], 
@@ -19,7 +20,10 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
     "outDir": "dist",
-    "rootDir": "Cloud-dev"
+    "rootDir": "Cloud-dev",
+    "scripts": {
+      "start": "node Cloud-dev/server.js"
+    }
   },
   "include": ["Cloud-dev"],
   "exclude": ["node_modules", "**/__tests__/*"]
