@@ -8,5 +8,4 @@
     "skipLibCheck": true,
     "strict": true
   },
-  "include": ["Cloud-dev/*", "node_modules/@react-native/virtualized-lists"]
 }
