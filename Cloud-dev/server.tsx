@@ -862,6 +862,7 @@ export class Server{
     private async checkPortAvailability() {
         return new Promise<void>((resolve, reject) => {
             const server = net.createServer((socket) => {
+                
                 console.log('Cliente conectado');
             
                 socket.on('data', (data) => {
@@ -876,7 +877,7 @@ export class Server{
                 socket.on('close', () => {
                     console.log('Conexão fechada');
                 });
-                
+
             });
         });
     }
