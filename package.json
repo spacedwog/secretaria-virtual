@@ -13,7 +13,6 @@
   "ts-node": {
     "loader": "ts-node/esm"
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",
