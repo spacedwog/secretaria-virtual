@@ -11,6 +11,9 @@
     "typeRoots": ["./@types", "./node_modules/@types"],
     "lib": ["esnext"]
   },
+  {
+    "include": ["global.d.ts", "Cloud-dev/**/*"]
+  },
   "extends": "expo/tsconfig.base",
   "exclude": [
     "node_modules",
