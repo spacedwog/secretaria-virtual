@@ -10,6 +10,10 @@
     "android": "expo run:android",
     "ios": "expo run:ios"
   },
+  "ts-node": {
+    "loader": "ts-node/esm"
+  },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
