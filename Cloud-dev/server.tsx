@@ -3,7 +3,7 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
-import TcpSocket from 'react-native-tcp-socket';
+const TcpSocket = require('react-native-tcp-socket').default;
 import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
 import { Request, Response, NextFunction } from 'express';
 
