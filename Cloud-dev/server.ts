@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as express from 'express';
 import * as dotenv from 'dotenv';
+import { EventEmitter } from "events";
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
 import TcpSocket from 'react-native-tcp-socket';
