@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
+    "type": "module",
     "moduleResolution": "node",
     "jsx": "react-native",
     "esModuleInterop": true,
