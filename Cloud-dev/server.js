@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as path from 'path';
+import path from 'path';
 import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
