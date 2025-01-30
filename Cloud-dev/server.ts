@@ -1,5 +1,5 @@
 import * as path from 'path';
-import * as express from 'express';
+import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
@@ -866,7 +866,7 @@ export class Server{
 
                 console.log("Cliente conectado");
 
-                socket.on("data", (data) =>{
+                socket.on("data", (data, buffer) =>{
                     console.log("Recebido: ", data.toString());
                     socket.write("Mensagem recebida!");
                 });

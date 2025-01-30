@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,231 +7,141 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var readlineSync = require("readline-sync");
-var menu_paciente_1 = require("./menu-paciente");
-var consulta_medica_1 = require("./consulta-medica");
-var doctor_service_1 = require("../Back-end/doctor.service");
-var MenuStarter = /** @class */ (function () {
-    function MenuStarter() {
-    }
+import * as readlineSync from 'readline-sync';
+import { MenuPacient } from './menu-paciente';
+import { MenuSchedule } from './consulta-medica';
+import { DoctorService } from '../Back-end/doctor.service';
+class MenuStarter {
     // Método principal do menu
-    MenuStarter.prototype.menuPrincipal = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var option, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        console.log('\n--- Sistema de Secretaria Virtual ---');
-                        console.log('1. Menu Paciente');
-                        console.log('2. Menu Consulta Médica');
-                        console.log('3. Receita Médica');
-                        console.log('4. Imprimir Receita Médica');
-                        console.log('5. Sair');
-                        // Captura a escolha do usuário
-                        option = readlineSync.question('Escolha uma opcao: ');
-                        _a = option;
-                        switch (_a) {
-                            case '1': return [3 /*break*/, 1];
-                            case '2': return [3 /*break*/, 3];
-                            case '3': return [3 /*break*/, 5];
-                            case '4': return [3 /*break*/, 7];
-                            case '5': return [3 /*break*/, 9];
-                        }
-                        return [3 /*break*/, 10];
-                    case 1: return [4 /*yield*/, this.menuPaciente()];
-                    case 2:
-                        _b.sent();
-                        return [3 /*break*/, 11];
-                    case 3: return [4 /*yield*/, this.menuConsultaMedica()];
-                    case 4:
-                        _b.sent();
-                        return [3 /*break*/, 11];
-                    case 5: return [4 /*yield*/, this.receitaMedica()];
-                    case 6:
-                        _b.sent();
-                        return [3 /*break*/, 11];
-                    case 7: return [4 /*yield*/, this.imprimirReceitaMedica()];
-                    case 8:
-                        _b.sent();
-                        return [3 /*break*/, 11];
-                    case 9:
+    menuPrincipal() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let option;
+            do {
+                console.log('\n--- Sistema de Secretaria Virtual ---');
+                console.log('1. Menu Paciente');
+                console.log('2. Menu Consulta Médica');
+                console.log('3. Receita Médica');
+                console.log('4. Imprimir Receita Médica');
+                console.log('5. Sair');
+                // Captura a escolha do usuário
+                option = readlineSync.question('Escolha uma opcao: ');
+                // Executa a funcionalidade correspondente
+                switch (option) {
+                    case '1':
+                        yield this.menuPaciente();
+                        break;
+                    case '2':
+                        yield this.menuConsultaMedica();
+                        break;
+                    case '3':
+                        yield this.receitaMedica();
+                        break;
+                    case '4':
+                        yield this.imprimirReceitaMedica();
+                        break;
+                    case '5':
                         console.log('Saindo do sistema...');
-                        return [3 /*break*/, 11];
-                    case 10:
+                        break;
+                    default:
                         console.log('Opcao invalida. Escolha entre 1, 2 ou 5.');
-                        _b.label = 11;
-                    case 11:
-                        if (option !== '5') return [3 /*break*/, 0];
-                        _b.label = 12;
-                    case 12:
-                        console.log('Obrigado por usar o sistema. Até a próxima!');
-                        return [2 /*return*/];
                 }
-            });
+            } while (option !== '5');
+            console.log('Obrigado por usar o sistema. Até a próxima!');
         });
-    };
+    }
     // Método para acessar o menu do paciente
-    MenuStarter.prototype.menuPaciente = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var paciente, err_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        paciente = new menu_paciente_1.MenuPacient();
-                        return [4 /*yield*/, paciente.menuPaciente()];
-                    case 1:
-                        _a.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        err_1 = _a.sent();
-                        console.error('Erro ao executar o menu paciente:', err_1);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
+    menuPaciente() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const paciente = new MenuPacient();
+                yield paciente.menuPaciente();
+            }
+            catch (err) {
+                console.error('Erro ao executar o menu paciente:', err);
+            }
         });
-    };
+    }
     // Método para acessar o menu de consulta médica
-    MenuStarter.prototype.menuConsultaMedica = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var medico, err_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        medico = new consulta_medica_1.MenuSchedule();
-                        return [4 /*yield*/, medico.consultaMedica()];
-                    case 1:
-                        _a.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        err_2 = _a.sent();
-                        console.error('Erro ao executar o menu consulta médica:', err_2);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
+    menuConsultaMedica() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const medico = new MenuSchedule();
+                yield medico.consultaMedica();
+            }
+            catch (err) {
+                console.error('Erro ao executar o menu consulta médica:', err);
+            }
         });
-    };
+    }
     // Registrar visita
-    MenuStarter.prototype.receitaMedica = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var patientId, doctorId, codeMed, receitaId, medicamentoId, nomeMedicamento, tipoMedicamento, dataMed, dosage, frequency, consume, observation, err_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
-                        doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
-                        codeMed = readlineSync.question('Código do medicamento: ');
-                        receitaId = parseInt(readlineSync.question('ID da receita medica: '), 10);
-                        medicamentoId = parseInt(readlineSync.question('ID do medicamento: '), 10);
-                        nomeMedicamento = readlineSync.question('Nome do medicamento: ');
-                        tipoMedicamento = readlineSync.question('Tipo do medicamento: ');
-                        dataMed = readlineSync.question('Data da medicacao (aaaa/mm/dd): ');
-                        dosage = readlineSync.question('Dosagem da medicacao: ');
-                        frequency = readlineSync.question('Frequência de medicacao: ');
-                        consume = readlineSync.question('Duracao da dose: ');
-                        observation = readlineSync.question('Observacoes: ');
-                        return [4 /*yield*/, doctor_service_1.DoctorService.medicRecip({ patientId: patientId, doctorId: doctorId, codeMed: codeMed, receitaId: receitaId, medicamentoId: medicamentoId, dataMed: dataMed, observation: observation, nomeMedicamento: nomeMedicamento, tipoMedicamento: tipoMedicamento, frequency: frequency, dosage: dosage, consume: consume })];
-                    case 1:
-                        _a.sent();
-                        console.log('Medicamento registrado com sucesso!');
-                        return [3 /*break*/, 3];
-                    case 2:
-                        err_3 = _a.sent();
-                        console.error('Erro ao registrar visita:', err_3);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
+    receitaMedica() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
+                const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
+                const codeMed = readlineSync.question('Código do medicamento: ');
+                const receitaId = parseInt(readlineSync.question('ID da receita medica: '), 10);
+                const medicamentoId = parseInt(readlineSync.question('ID do medicamento: '), 10);
+                const nomeMedicamento = readlineSync.question('Nome do medicamento: ');
+                const tipoMedicamento = readlineSync.question('Tipo do medicamento: ');
+                const dataMed = readlineSync.question('Data da medicacao (aaaa/mm/dd): ');
+                const dosage = readlineSync.question('Dosagem da medicacao: ');
+                const frequency = readlineSync.question('Frequência de medicacao: ');
+                const consume = readlineSync.question('Duracao da dose: ');
+                const observation = readlineSync.question('Observacoes: ');
+                yield DoctorService.medicRecip({ patientId,
+                    doctorId,
+                    codeMed,
+                    receitaId,
+                    medicamentoId,
+                    dataMed,
+                    observation,
+                    nomeMedicamento,
+                    tipoMedicamento,
+                    frequency,
+                    dosage,
+                    consume });
+                console.log('Medicamento registrado com sucesso!');
+            }
+            catch (err) {
+                console.error('Erro ao registrar visita:', err);
+            }
+        });
+    }
+    imprimirReceitaMedica() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
+            const receitas = yield DoctorService.printMedicRecip(recipId);
+            console.log('\n--- Lista de Receitas Médicas ---');
+            receitas.forEach((receitas) => {
+                const date = new Date(receitas.data_prescricao).toDateString();
+                const dosagem = receitas.dosagem;
+                const frequencia = receitas.frequencia;
+                const duracao = receitas.duracao;
+                const observacao = receitas.observacoes;
+                console.table([
+                    {
+                        Medicamento: receitas.nome_medicamento,
+                        Dosagem: dosagem,
+                        Frequencia: frequencia,
+                        Duracao: duracao,
+                        Observacao: observacao,
+                        Data: date
+                    }
+                ]);
             });
         });
-    };
-    MenuStarter.prototype.imprimirReceitaMedica = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var recipId, receitas;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        recipId = parseInt(readlineSync.question('ID do medicamento: '), 10);
-                        return [4 /*yield*/, doctor_service_1.DoctorService.printMedicRecip(recipId)];
-                    case 1:
-                        receitas = _a.sent();
-                        console.log('\n--- Lista de Receitas Médicas ---');
-                        receitas.forEach(function (receitas) {
-                            var date = new Date(receitas.data_prescricao).toDateString();
-                            var dosagem = receitas.dosagem;
-                            var frequencia = receitas.frequencia;
-                            var duracao = receitas.duracao;
-                            var observacao = receitas.observacoes;
-                            console.table([
-                                {
-                                    Medicamento: receitas.nome_medicamento,
-                                    Dosagem: dosagem,
-                                    Frequencia: frequencia,
-                                    Duracao: duracao,
-                                    Observacao: observacao,
-                                    Data: date
-                                }
-                            ]);
-                        });
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return MenuStarter;
-}());
+    }
+}
 // Ponto de entrada da aplicação
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var menu, err_4;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                menu = new MenuStarter();
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                console.log('Iniciando sistema de secretaria virtual...');
-                return [4 /*yield*/, menu.menuPrincipal()];
-            case 2:
-                _a.sent();
-                console.log('Sistema encerrado com sucesso.');
-                return [3 /*break*/, 4];
-            case 3:
-                err_4 = _a.sent();
-                console.error('Erro fatal na aplicação:', err_4);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
-    });
-}); })();
+(() => __awaiter(void 0, void 0, void 0, function* () {
+    const menu = new MenuStarter();
+    try {
+        console.log('Iniciando sistema de secretaria virtual...');
+        yield menu.menuPrincipal();
+        console.log('Sistema encerrado com sucesso.');
+    }
+    catch (err) {
+        console.error('Erro fatal na aplicação:', err);
+    }
+}))();
