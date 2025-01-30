@@ -1,4 +1,4 @@
-import * as path from 'path';
+import path from 'path';
 import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';

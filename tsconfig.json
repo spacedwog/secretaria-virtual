@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "CommonJS",
+    "target": "ES6",
+    "module": "ESNext",
     "allowJs": true,
     "strict": true,
     "noImplicitAny": true,
@@ -19,11 +19,10 @@
     "baseUrl": "./",
     "outDir": "./dist",
     "rootDir": "./",
-    "jsx": "react-native"
+    "jsx": "react"
   },
   "exclude": [
     "node_modules",
     "**/__tests__/*"
-  ],
-  "extends": "expo/tsconfig.base"
+  ]
 }

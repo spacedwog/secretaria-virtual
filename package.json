@@ -1,10 +1,11 @@
 {
   "name": "secretaria-virtual",
   "version": "1.0.0",
-  "main": "Cloud-dev/server.js",
-  "type": "commonjs",
+  "main": "Cloud-dev/server.tsx",
+  "target": "ESNext",
+  "type": "module",
   "scripts": {
-    "start": "npx tsc && npx kill-port 3000 && npx ts-node-dev --transpile-only Cloud-dev/server.ts",
+    "start": "npx tsc && npx kill-port 3000 && npx ts-node-dev --transpile-only Cloud-dev/server.tsx",
     "test": "jest",
     "android": "expo run:android",
     "ios": "expo run:ios"
