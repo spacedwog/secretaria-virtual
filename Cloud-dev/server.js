@@ -764,7 +764,7 @@ export class Server {
             return new Promise((resolve, reject) => {
                 const server = TcpSocket.createServer((socket) => {
                     console.log("Cliente conectado");
-                    socket.on("data", (data, buffer) => {
+                    socket.on("data", (data) => {
                         console.log("Recebido: ", data.toString());
                         socket.write("Mensagem recebida!");
                     });
