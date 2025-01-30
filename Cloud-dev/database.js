@@ -21,8 +21,8 @@ export class Database {
             }
         });
     }
-    static query(queryText_1) {
-        return __awaiter(this, arguments, void 0, function* (queryText, params = []) {
+    static query(queryText, params = []) {
+        return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
                 this.pool.execute(queryText, params, (err, results) => {
                     if (err) {
