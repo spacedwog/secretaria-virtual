@@ -867,14 +867,12 @@ export class Server{
 
                 console.log("Cliente conectado");
 
-                const socketServer = new Socket() as unknown as EventEmitter;
-
-                socketServer.on("data", (data) =>{
+                socket.on("data", (data) =>{
                     console.log("Recebido: ", data.toString());
                     socket.write("Mensagem recebida!");
                 });
 
-                socketServer.on("close", () => {
+                socket.on("close", () => {
                     console.log("Conexão encerrada");
                 });
             });
