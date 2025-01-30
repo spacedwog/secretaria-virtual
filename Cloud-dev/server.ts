@@ -862,12 +862,11 @@ export class Server{
     }
 
     private async checkPortAvailability() {
+        const socket = new Socket() as unknown as EventEmitter;
         return new Promise<void>((resolve, reject) => {
             const server = TcpSocket.createServer((socket) => {
 
                 console.log("Cliente conectado");
-
-                const socket = new Socket() as unknown as EventEmitter;
 
                 socket.on("data", (data) =>{
                     console.log("Recebido: ", data.toString());
