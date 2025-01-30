@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "types": ["react-native", "node"],
     "typeRoots": ["./@types", "./node_modules/@types"],
-    "lib": ["esnext", "dom.iterable", "scripthost"]
+    "lib": ["esnext"]
   },
   "extends": "expo/tsconfig.base",
   "exclude": [
