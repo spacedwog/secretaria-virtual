@@ -2,6 +2,7 @@
   "name": "secretaria-virtual",
   "version": "1.0.0",
   "main": "Cloud-dev/server.js",
+  "type": "module",
   "scripts": {
     "start": "npx kill-port 3000 && ts-node-dev Cloud-dev/server.js",
     "test": "jest",
