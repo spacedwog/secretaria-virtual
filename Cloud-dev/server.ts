@@ -862,18 +862,19 @@ export class Server{
     }
 
     private async checkPortAvailability() {
-        const socket = new Socket() as unknown as EventEmitter;
         return new Promise<void>((resolve, reject) => {
             const server = TcpSocket.createServer((socket) => {
 
                 console.log("Cliente conectado");
 
-                socket.on("data", (data) =>{
+                const socketServer = new Socket() as unknown as EventEmitter;
+
+                socketServer.on("data", (data) =>{
                     console.log("Recebido: ", data.toString());
                     socket.write("Mensagem recebida!");
                 });
 
-                socket.on("close", () => {
+                socketServer.on("close", () => {
                     console.log("Conexão encerrada");
                 });
             });
