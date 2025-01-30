@@ -5,7 +5,7 @@
     "lib": [
       "esnext"
     ],
-    "allowJs": false,
+    "allowJs": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -21,10 +21,10 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
     "outDir": "dist",
-    "rootDir": "Cloud-dev"
+    "rootDir": "./"
   },
   "include": [
-    "Cloud-dev"
+    "./"
   ],
   "exclude": [
     "node_modules",
