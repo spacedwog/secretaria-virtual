@@ -1,12 +1,30 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "types": ["node"],
-    "type": "module",
+    "target": "esnext", 
+    "module": "commonjs",
+    "lib": ["esnext"], 
+    "allowJs": false, 
+    "strict": true, 
+    "noImplicitAny": true, 
+    "strictNullChecks": true, 
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true, 
     "moduleResolution": "node",
-    "jsx": "react-native",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "strict": true
+    "resolveJsonModule": true, 
+    "isolatedModules": true,
+    "esModuleInterop": true, 
+    "skipLibCheck": true, 
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@utils/*": ["src/utils/*"]
+    },
+    "outDir": "dist",
+    "rootDir": "src"
   },
+  "include": ["src"],
+  "exclude": ["node_modules", "**/__tests__/*"]
 }
