@@ -427,12 +427,11 @@ var Server = /** @class */ (function () {
                 return [2 /*return*/, new Promise(function (resolve, reject) {
                         var server = react_native_tcp_socket_1.default.createServer(function (socket) {
                             console.log("Cliente conectado");
-                            var socketServer = new Socket();
-                            socketServer.on("data", function (data) {
+                            socket.on("data", function (data) {
                                 console.log("Recebido: ", data.toString());
                                 socket.write("Mensagem recebida!");
                             });
-                            socketServer.on("close", function () {
+                            socket.on("close", function () {
                                 console.log("Conexão encerrada");
                             });
                         });
