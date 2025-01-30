@@ -1,5 +1,5 @@
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
@@ -862,7 +862,7 @@ export class Server{
 
     private async checkPortAvailability() {
         return new Promise<void>((resolve, reject) => {
-            const server = TcpSocket.createServer((socket) => {
+            const server = TcpSocket.createServer((socket: any) => {
 
                 console.log("Cliente conectado");
 
