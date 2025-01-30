@@ -18,11 +18,9 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
     "outDir": "./dist",
-    "rootDir": "./"
+    "rootDir": "./",
+    "jsx": "react-native"
   },
-  "include": [
-    "./"
-  ],
   "exclude": [
     "node_modules",
     "**/__tests__/*"
