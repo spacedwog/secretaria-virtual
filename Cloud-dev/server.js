@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.Server = void 0;
 var path = require("path");
 var express = require("express");
@@ -64,14 +64,14 @@ var Server = /** @class */ (function () {
             user: (_b = process.env.DB_USER) !== null && _b !== void 0 ? _b : 'root',
             password: (_c = process.env.DB_PASSWORD) !== null && _c !== void 0 ? _c : '6z2h1j3k9F!',
             database: (_d = process.env.DB_NAME) !== null && _d !== void 0 ? _d : 'secretaria_virtual',
-            connectTimeout: 10000,
+            connectTimeout: 10000
         };
         this.dbRemidConfig = {
             host: (_e = process.env.DB_REMID_HOST) !== null && _e !== void 0 ? _e : 'localhost',
             user: (_f = process.env.DB_REMID_USER) !== null && _f !== void 0 ? _f : 'root',
             password: (_g = process.env.DB_REMID_PASSWORD) !== null && _g !== void 0 ? _g : '6z2h1j3k9F!',
             database: (_h = process.env.DB_REMID_NAME) !== null && _h !== void 0 ? _h : 'gerenciamentomedicamentos',
-            connectTimeout: 10000,
+            connectTimeout: 10000
         };
         this.key = "";
         this.value = "";
@@ -205,7 +205,7 @@ var Server = /** @class */ (function () {
                     case 1:
                         _a.connection = _b.sent();
                         params = {
-                            function: "connectToDatabase()",
+                            "function": "connectToDatabase()",
                             mensagem: "Conexao com o banco de dados estabelecida!",
                             return_code: 0,
                             type_server: "typescript"
@@ -213,7 +213,7 @@ var Server = /** @class */ (function () {
                         runPowerShellScriptInThread(scriptPath, params);
                         console.log('Conexão com o banco de dados estabelecida!');
                         this.pingInterval = setInterval(function () {
-                            _this.connection.ping().then(function () { return console.log('Ping ao banco de dados.'); }).catch(console.error);
+                            _this.connection.ping().then(function () { return console.log('Ping ao banco de dados.'); })["catch"](console.error);
                         }, 10000);
                         return [3 /*break*/, 3];
                     case 2:
@@ -425,7 +425,7 @@ var Server = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var server = react_native_tcp_socket_1.default.createServer(function (socket) {
+                        var server = react_native_tcp_socket_1["default"].createServer(function (socket) {
                             console.log("Cliente conectado");
                             socket.on("data", function (data) {
                                 console.log("Recebido: ", data.toString());
