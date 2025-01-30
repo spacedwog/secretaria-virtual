@@ -1,4 +1,4 @@
-import { Database } from './database';
+import { Database } from './database.ts';
 
 export class PatientService {
   static async listPatients(): Promise<any[]> {

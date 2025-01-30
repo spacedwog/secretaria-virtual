@@ -1,5 +1,5 @@
 import * as readlineSync from 'readline-sync';
-import { PatientService } from '../Back-end/patient.service';
+import { PatientService } from '../Back-end/patient.service.ts';
 
 export class MenuPacient {
   public async menuPaciente() {
