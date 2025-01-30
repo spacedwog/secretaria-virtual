@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext", 
+    "target": "es6", 
     "module": "commonjs",
     "lib": ["esnext"], 
     "allowJs": false, 
@@ -18,13 +18,9 @@
     "skipLibCheck": true, 
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
-    "paths": {
-      "@components/*": ["src/components/*"],
-      "@utils/*": ["src/utils/*"]
-    },
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "Cloud-dev"
   },
-  "include": ["src"],
+  "include": ["Cloud-dev"],
   "exclude": ["node_modules", "**/__tests__/*"]
 }
