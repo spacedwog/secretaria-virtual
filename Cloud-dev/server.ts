@@ -866,7 +866,7 @@ export class Server{
 
                 console.log("Cliente conectado");
 
-                socket.on("data", (data, buffer) =>{
+                socket.on("data", (data) =>{
                     console.log("Recebido: ", data.toString());
                     socket.write("Mensagem recebida!");
                 });
