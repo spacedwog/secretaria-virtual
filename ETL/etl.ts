@@ -1,4 +1,4 @@
-import { PatientService } from '../Back-end/patient.service';
+import { PatientService } from '../Back-end/patient.service.ts';
 
 export class ETLProcess{
 
