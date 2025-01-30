@@ -3,8 +3,7 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
-const TcpSocket = require('react-native-tcp-socket').default;
-import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
+import net from 'net';import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
 import { Request, Response, NextFunction } from 'express';
 
 dotenv.config();
@@ -862,18 +861,22 @@ export class Server{
 
     private async checkPortAvailability() {
         return new Promise<void>((resolve, reject) => {
-            const server = TcpSocket.createServer((socket: any) => {
-
-                console.log("Cliente conectado");
-
-                socket.on("data", (data: Buffer) => {
-                    console.log("Recebido: ", data.toString());
-                    socket.write("Mensagem recebida!");
+            const server = net.createServer((socket) => {
+                console.log('Cliente conectado');
+            
+                socket.on('data', (data) => {
+                    console.log('Recebido:', data.toString());
+                    socket.write('Mensagem recebida!');
                 });
-
-                socket.on("close", () => {
-                    console.log("Conexão encerrada");
+            
+                socket.on('error', (error) => {
+                    console.log('Erro no socket:', error);
                 });
+            
+                socket.on('close', () => {
+                    console.log('Conexão fechada');
+                });
+                
             });
         });
     }
