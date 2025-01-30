@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Server = void 0;
-const path_1 = __importDefault(require("path"));
+const path = __importStar(require("path"));
 const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
 const mysql = __importStar(require("mysql2/promise"));
@@ -94,7 +94,7 @@ class Server {
         });
         //Middleware do tipo: Join
         //Descrição: Serve para servir arquivos estáticos
-        const staticPath = path_1.default.join(__dirname, 'public');
+        const staticPath = path.join(__dirname, 'public');
         this.app.use(express_1.default.static(staticPath));
         //Middleware do tipo: Config
         //Descrição: Serve para configurar headers (ex.: CORS)
