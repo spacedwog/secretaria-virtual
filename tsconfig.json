@@ -17,12 +17,15 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
-    "outDir": "./dist",
     "rootDir": "./",
+    "outDir": "./dist",
     "jsx": "react"
   },
   "exclude": [
     "node_modules",
-    "**/__tests__/*"
+    "jest.config.js",
+    "**/__tests__/*",
+    "public",
+    "dist"
   ]
 }
