@@ -22,6 +22,7 @@
     "@google-cloud/speech": "^6.7.0",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.9",
+    "create-react-app": "^5.0.1",
     "dotenv": "^16.4.7",
     "eventemitter3": "^5.0.1",
     "expo": "^52.0.23",
