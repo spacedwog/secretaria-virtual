@@ -3,7 +3,8 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
-import net from 'net';import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
+const net = require('net');
+import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
 import { Request, Response, NextFunction } from 'express';
 
 dotenv.config();
@@ -861,24 +862,25 @@ export class Server{
 
     private async checkPortAvailability() {
         return new Promise<void>((resolve, reject) => {
-            const server = net.createServer((socket) => {
-                
+            const server = net.createServer((socket: any) => {
                 console.log('Cliente conectado');
             
-                socket.on('data', (data) => {
-                    console.log('Recebido:', data.toString());
-                    socket.write('Mensagem recebida!');
+                // Escutar dados recebidos
+                socket.on('data', (data: any) => {
+                console.log('Recebido:', data.toString());
+                socket.write('Mensagem recebida com sucesso!');
                 });
             
-                socket.on('error', (error) => {
-                    console.log('Erro no socket:', error);
+                // Quando o cliente se desconectar
+                socket.on('end', () => {
+                console.log('Cliente desconectado');
                 });
             
-                socket.on('close', () => {
-                    console.log('Conexão fechada');
+                // Tratamento de erros
+                socket.on('error', (err: any) => {
+                console.error('Erro:', err);
                 });
-
-            });
+          });
         });
     }
 

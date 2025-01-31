@@ -54,7 +54,8 @@
     "react-native-threads": "^0.0.19",
     "react-native-web": "~0.19.13",
     "react-native-websocket": "^1.0.2",
-    "readline-sync": "^1.4.10"
+    "readline-sync": "^1.4.10",
+    "expo-dev-client": "~5.0.10"
   },
   "devDependencies": {
     "@babel/cli": "^7.26.4",
