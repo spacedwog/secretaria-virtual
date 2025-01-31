@@ -8,7 +8,8 @@
     "start": "npx tsc && npx kill-port 3000 && npx ts-node-dev --transpile-only Cloud-dev/server.tsx",
     "test": "jest",
     "android": "expo run:android",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "web": "expo run:web"
   },
   "ts-node": {
     "loader": "ts-node/esm"
@@ -25,7 +26,7 @@
     "create-react-app": "^5.0.1",
     "dotenv": "^16.4.7",
     "eventemitter3": "^5.0.1",
-    "expo": "^52.0.23",
+    "expo": "^52.0.28",
     "expo-file-system": "~18.0.6",
     "expo-task-manager": "~12.0.5",
     "fs": "^0.0.1-security",
