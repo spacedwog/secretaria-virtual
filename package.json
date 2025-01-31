@@ -11,7 +11,8 @@
     "dev": "nodemon Cloud-dev/server.tsx",
     "build": "webpack",
     "android": "expo run:android",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "web": "npx expo start --web"
   },
   "ts-node": {
     "loader": "ts-node/esm"
