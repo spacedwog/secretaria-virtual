@@ -1,7 +1,7 @@
 {
   "name": "secretaria-virtual",
   "version": "1.0.0",
-  "main": "dist/server.js",
+  "main": "Cloud-dev/server.tsx",
   "target": "ESNext",
   "type": "module",
   "scripts": {
