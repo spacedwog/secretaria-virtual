@@ -1,4 +1,4 @@
-import * as readlineSync from 'readline-sync';
+import readlineSync from 'readline-sync';
 import { MenuPacient } from './menu-paciente.ts';
 import { MenuSchedule } from './consulta-medica.ts';
 import { DoctorService } from '../Back-end/doctor.service.ts';

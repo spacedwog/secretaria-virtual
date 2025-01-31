@@ -17,6 +17,8 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
+    "composite": true,
     "baseUrl": "./",
     "rootDir": "./",
     "outDir": "./dist",
