@@ -1,0 +1,670 @@
+{
+  "version": "6.0",
+  "nxVersion": "20.4.0",
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {
+      "secretaria-virtual": [
+        {
+          "file": ".expo/README.md",
+          "hash": "3221542717158311548"
+        },
+        {
+          "file": ".expo/devices.json",
+          "hash": "9079673538751451102"
+        },
+        {
+          "file": ".vscode/settings.json",
+          "hash": "16956121712500344108"
+        },
+        {
+          "file": "Back-end/database.ts",
+          "hash": "4075441987733929697",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "Back-end/doctor.service.ts",
+          "hash": "6528384942273966632"
+        },
+        {
+          "file": "Back-end/patient.service.ts",
+          "hash": "14925004179168356024"
+        },
+        {
+          "file": "Cloud-dev/blackboard.py",
+          "hash": "10596183312034043872"
+        },
+        {
+          "file": "Cloud-dev/database.ts",
+          "hash": "6914786564205540538",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "Cloud-dev/secretaria_virtual",
+          "hash": "475341669292973671"
+        },
+        {
+          "file": "Cloud-dev/server.tsx",
+          "hash": "3723119071762734356",
+          "deps": [
+            "npm:express",
+            "npm:dotenv",
+            "npm:mysql2",
+            "npm:body-parser"
+          ]
+        },
+        {
+          "file": "ETL/etl.js",
+          "hash": "1984956668327245812"
+        },
+        {
+          "file": "ETL/etl.ts",
+          "hash": "1990466101359347688"
+        },
+        {
+          "file": "Front-end/consulta-medica.ts",
+          "hash": "17266988852427670069",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "Front-end/index.ts",
+          "hash": "507045663579000639",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "Front-end/menu-paciente.ts",
+          "hash": "16130861048917477113",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "LICENSE.md",
+          "hash": "9770775180252903364"
+        },
+        {
+          "file": "README.md",
+          "hash": "17758938575011768190"
+        },
+        {
+          "file": "android/.gitignore",
+          "hash": "4781979786618174016"
+        },
+        {
+          "file": "android/app/build.gradle",
+          "hash": "1412198435771398534"
+        },
+        {
+          "file": "android/app/debug.keystore",
+          "hash": "5037686243849261810"
+        },
+        {
+          "file": "android/app/proguard-rules.pro",
+          "hash": "4481275573118336055"
+        },
+        {
+          "file": "android/app/src/debug/AndroidManifest.xml",
+          "hash": "1585159791921382059"
+        },
+        {
+          "file": "android/app/src/main/AndroidManifest.xml",
+          "hash": "5170086741597206385"
+        },
+        {
+          "file": "android/app/src/main/java/com/spacedwog/secretariavirtual/MainActivity.kt",
+          "hash": "12673505952569222357"
+        },
+        {
+          "file": "android/app/src/main/java/com/spacedwog/secretariavirtual/MainApplication.kt",
+          "hash": "310043075719222601"
+        },
+        {
+          "file": "android/app/src/main/res/drawable/ic_launcher_background.xml",
+          "hash": "14022140464391464271"
+        },
+        {
+          "file": "android/app/src/main/res/drawable/rn_edit_text_material.xml",
+          "hash": "4466596183044014152"
+        },
+        {
+          "file": "android/app/src/main/res/mipmap-hdpi/ic_launcher.webp",
+          "hash": "10788509195642110029"
+        },
+        {
+          "file": "android/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp",
+          "hash": "14348562046770238248"
+        },
+        {
+          "file": "android/app/src/main/res/mipmap-mdpi/ic_launcher.webp",
+          "hash": "328692529308011025"
+        },
+        {
+          "file": "android/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp",
+          "hash": "11802043336826859502"
+        },
+        {
+          "file": "android/app/src/main/res/mipmap-xhdpi/ic_launcher.webp",
+          "hash": "13006206334539413900"
+        },
+        {
+          "file": "android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp",
+          "hash": "1812825738055967771"
+        },
+        {
+          "file": "android/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp",
+          "hash": "6104457872863500683"
+        },
+        {
+          "file": "android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp",
+          "hash": "2478168592410677995"
+        },
+        {
+          "file": "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp",
+          "hash": "12283149652938275290"
+        },
+        {
+          "file": "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp",
+          "hash": "7126668675123994836"
+        },
+        {
+          "file": "android/app/src/main/res/values-night/colors.xml",
+          "hash": "5530507333983355112"
+        },
+        {
+          "file": "android/app/src/main/res/values/colors.xml",
+          "hash": "9252624423722002920"
+        },
+        {
+          "file": "android/app/src/main/res/values/strings.xml",
+          "hash": "11757361014699444526"
+        },
+        {
+          "file": "android/app/src/main/res/values/styles.xml",
+          "hash": "15965986080304516333"
+        },
+        {
+          "file": "android/build.gradle",
+          "hash": "8298899017083155939"
+        },
+        {
+          "file": "android/gradle.properties",
+          "hash": "11805329816603801778"
+        },
+        {
+          "file": "android/gradle/wrapper/gradle-wrapper.jar",
+          "hash": "5909086893679643373"
+        },
+        {
+          "file": "android/gradle/wrapper/gradle-wrapper.properties",
+          "hash": "14314964109440154932"
+        },
+        {
+          "file": "android/gradlew",
+          "hash": "8388103086298757654"
+        },
+        {
+          "file": "android/gradlew.bat",
+          "hash": "11557616393231824577"
+        },
+        {
+          "file": "android/settings.gradle",
+          "hash": "658318804019811817"
+        },
+        {
+          "file": "app.json",
+          "hash": "1298976926896573297"
+        },
+        {
+          "file": "cloudengine.ps1",
+          "hash": "11811191876726471732"
+        },
+        {
+          "file": "dist/App.js",
+          "hash": "9212142320751532577",
+          "deps": [
+            "npm:express",
+            "npm:dotenv",
+            "npm:mysql2",
+            "npm:body-parser",
+            "npm:react-native-tcp-socket"
+          ]
+        },
+        {
+          "file": "dist/Back-end/database.d.ts",
+          "hash": "251634775732542240"
+        },
+        {
+          "file": "dist/Back-end/database.js",
+          "hash": "11623820807465019607",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "dist/Back-end/doctor.service.d.ts",
+          "hash": "4237668886791240918"
+        },
+        {
+          "file": "dist/Back-end/doctor.service.js",
+          "hash": "9540321009680662016"
+        },
+        {
+          "file": "dist/Back-end/patient.service.d.ts",
+          "hash": "17310958197352012154"
+        },
+        {
+          "file": "dist/Back-end/patient.service.js",
+          "hash": "14276800462347217594"
+        },
+        {
+          "file": "dist/Cloud-dev/database.d.ts",
+          "hash": "251634775732542240"
+        },
+        {
+          "file": "dist/Cloud-dev/database.js",
+          "hash": "3056148517866451983",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "dist/Cloud-dev/server.d.ts",
+          "hash": "3710190500083808890"
+        },
+        {
+          "file": "dist/Cloud-dev/server.js",
+          "hash": "13832761616900070154",
+          "deps": [
+            "npm:express",
+            "npm:dotenv",
+            "npm:mysql2",
+            "npm:body-parser"
+          ]
+        },
+        {
+          "file": "dist/ETL/etl.d.ts",
+          "hash": "17750753162464223385"
+        },
+        {
+          "file": "dist/ETL/etl.js",
+          "hash": "2819582364420764871"
+        },
+        {
+          "file": "dist/Front-end/consulta-medica.d.ts",
+          "hash": "4716128619479039232"
+        },
+        {
+          "file": "dist/Front-end/consulta-medica.js",
+          "hash": "11807861765973357350",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "dist/Front-end/index.d.ts",
+          "hash": "4595979742548113990"
+        },
+        {
+          "file": "dist/Front-end/index.js",
+          "hash": "14913376987524895477",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "dist/Front-end/menu-paciente.d.ts",
+          "hash": "5011484560607322662"
+        },
+        {
+          "file": "dist/Front-end/menu-paciente.js",
+          "hash": "7968731836647951157",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "dist/database.js",
+          "hash": "3056148517866451983",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "dist/dist/Back-end/database.js",
+          "hash": "17577833276425395687",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "dist/dist/Back-end/doctor.service.js",
+          "hash": "18246362052373697234"
+        },
+        {
+          "file": "dist/dist/Back-end/patient.service.js",
+          "hash": "2063899580220960575"
+        },
+        {
+          "file": "dist/dist/Cloud-dev/database.js",
+          "hash": "10453200127908574479",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "dist/dist/Cloud-dev/server.js",
+          "hash": "11068194960980161071",
+          "deps": [
+            "npm:express",
+            "npm:dotenv",
+            "npm:mysql2",
+            "npm:body-parser",
+            "npm:react-native-tcp-socket"
+          ]
+        },
+        {
+          "file": "dist/dist/ETL/etl.js",
+          "hash": "6616637328773719203"
+        },
+        {
+          "file": "dist/dist/Front-end/consulta-medica.js",
+          "hash": "13676420497257269965",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "dist/dist/Front-end/index.js",
+          "hash": "1420705965102603267",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "dist/dist/Front-end/menu-paciente.js",
+          "hash": "11837024610644527895",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "dist/dist/database.js",
+          "hash": "8466463507813902979",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "dist/dist/dist/Back-end/database.js",
+          "hash": "5237836936794526038",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "dist/dist/dist/Back-end/doctor.service.js",
+          "hash": "15766943409326698353"
+        },
+        {
+          "file": "dist/dist/dist/Back-end/patient.service.js",
+          "hash": "15567929912686892560"
+        },
+        {
+          "file": "dist/dist/dist/Cloud-dev/database.js",
+          "hash": "10734853947272741363",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "dist/dist/dist/Cloud-dev/server.js",
+          "hash": "10038453172862731488",
+          "deps": [
+            "npm:express",
+            "npm:dotenv",
+            "npm:mysql2",
+            "npm:body-parser",
+            "npm:react-native-tcp-socket"
+          ]
+        },
+        {
+          "file": "dist/dist/dist/ETL/etl.js",
+          "hash": "13537557850057386661"
+        },
+        {
+          "file": "dist/dist/dist/Front-end/consulta-medica.js",
+          "hash": "15356584255890876792",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "dist/dist/dist/Front-end/index.js",
+          "hash": "11179562220410126753",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "dist/dist/dist/Front-end/menu-paciente.js",
+          "hash": "4955686331391343652",
+          "deps": [
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "dist/dist/dist/database.js",
+          "hash": "10453200127908574479",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "dist/dist/dist/dist/database.js",
+          "hash": "10734853947272741363",
+          "deps": [
+            "npm:mysql2"
+          ]
+        },
+        {
+          "file": "dist/dist/dist/dist/server.js",
+          "hash": "332210081367417617",
+          "deps": [
+            "npm:express",
+            "npm:dotenv",
+            "npm:mysql2",
+            "npm:body-parser",
+            "npm:react-native-tcp-socket"
+          ]
+        },
+        {
+          "file": "dist/dist/dist/jest.config.js",
+          "hash": "15313935449057403425"
+        },
+        {
+          "file": "dist/dist/dist/public/scripts.js",
+          "hash": "4469764048262876761"
+        },
+        {
+          "file": "dist/dist/dist/server.js",
+          "hash": "16999230393955528060",
+          "deps": [
+            "npm:express",
+            "npm:dotenv",
+            "npm:mysql2",
+            "npm:body-parser",
+            "npm:react-native-tcp-socket"
+          ]
+        },
+        {
+          "file": "dist/dist/jest.config.js",
+          "hash": "15313935449057403425"
+        },
+        {
+          "file": "dist/dist/public/scripts.js",
+          "hash": "4469764048262876761"
+        },
+        {
+          "file": "dist/dist/server.js",
+          "hash": "17185753451325009563",
+          "deps": [
+            "npm:express",
+            "npm:dotenv",
+            "npm:mysql2",
+            "npm:body-parser",
+            "npm:react-native-tcp-socket"
+          ]
+        },
+        {
+          "file": "dist/jest.config.js",
+          "hash": "15313935449057403425"
+        },
+        {
+          "file": "dist/public/scripts.js",
+          "hash": "4469764048262876761"
+        },
+        {
+          "file": "dist/server.js",
+          "hash": "5881468901834757407",
+          "deps": [
+            "npm:express",
+            "npm:dotenv",
+            "npm:mysql2",
+            "npm:body-parser",
+            "npm:react-native-tcp-socket"
+          ]
+        },
+        {
+          "file": "dist/tsconfig.tsbuildinfo",
+          "hash": "6274279907891354330"
+        },
+        {
+          "file": "eas.json",
+          "hash": "6620181604751578346"
+        },
+        {
+          "file": "index.html",
+          "hash": "3586420447916137866"
+        },
+        {
+          "file": "jest.config.js",
+          "hash": "11424294309760752008"
+        },
+        {
+          "file": "nx.json",
+          "hash": "9157343418114572877"
+        },
+        {
+          "file": "package-lock.json",
+          "hash": "16078648736680587792"
+        },
+        {
+          "file": "package.json",
+          "hash": "3864136662348932734",
+          "deps": [
+            "npm:@babel/cli",
+            "npm:@babel/preset-env",
+            "npm:@expo/cli",
+            "npm:@nx/expo",
+            "npm:@nx/gradle",
+            "npm:@nx/jest",
+            "npm:@nx/react-native",
+            "npm:@nx/web",
+            "npm:@nx/webpack",
+            "npm:@react-native-community/cli",
+            "npm:@types/axios",
+            "npm:@types/cors",
+            "npm:@types/express",
+            "npm:@types/jest",
+            "npm:@types/node",
+            "npm:@types/nodemailer",
+            "npm:@types/pdfkit",
+            "npm:@types/pg",
+            "npm:@types/react-native",
+            "npm:@types/readline-sync",
+            "npm:@types/ws",
+            "npm:body-parser",
+            "npm:cors",
+            "npm:express",
+            "npm:jest",
+            "npm:nodemon",
+            "npm:nx",
+            "npm:patch-package",
+            "npm:react-native",
+            "npm:ts-jest",
+            "npm:ts-node",
+            "npm:typescript",
+            "npm:webpack",
+            "npm:webpack-cli",
+            "npm:@expo/metro-runtime",
+            "npm:@google-cloud/speech",
+            "npm:@types/react-router-dom",
+            "npm:axios",
+            "npm:create-react-app",
+            "npm:dotenv",
+            "npm:eventemitter3",
+            "npm:expo",
+            "npm:expo-dev-client",
+            "npm:expo-file-system",
+            "npm:expo-task-manager",
+            "npm:fs",
+            "npm:jspdf",
+            "npm:mysql2",
+            "npm:node-fetch",
+            "npm:nodemailer",
+            "npm:path",
+            "npm:pdf-lib",
+            "npm:pdfkit",
+            "npm:pg",
+            "npm:postinstall-postinstall",
+            "npm:prompt-sync",
+            "npm:react",
+            "npm:react-dom",
+            "npm:react-native-audio-recorder-player",
+            "npm:react-native-fs",
+            "npm:react-native-polyfill-globals",
+            "npm:react-native-tcp-socket",
+            "npm:react-native-threads",
+            "npm:react-native-web",
+            "npm:react-native-websocket",
+            "npm:readline-sync"
+          ]
+        },
+        {
+          "file": "patches/react-native+0.76.6.patch",
+          "hash": "2778234401181362882"
+        },
+        {
+          "file": "public/index.html",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "public/scripts.js",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "public/styles.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "secretaria_virtual",
+          "hash": "6897668333471834262"
+        },
+        {
+          "file": "tsconfig.json",
+          "hash": "2440994187216068541"
+        }
+      ]
+    },
+    "nonProjectFiles": []
+  }
+}
