@@ -28,26 +28,42 @@
         "buildDepsTargetName": "build-deps",
         "watchDepsTargetName": "watch-deps"
       }
+    },
+    {
+      "name": "@nx/react-native/plugin",
+      "options": {
+        "startTargetName": "start",
+        "upgradeTargetName": "update",
+        "bundleTargetName": "bundle",
+        "podInstallTargetName": "pod-install",
+        "runIosTargetName": "run-ios",
+        "runAndroidTargetName": "run-android",
+        "buildIosTargetName": "build-ios",
+        "buildAndroidTargetName": "build-android",
+        "syncDepsTargetName": "sync-deps"
+      }
+    },
+    {
+      "name": "@nx/gradle",
+      "version": "20.4.0",
+      "options": {
+        "testTargetName": "test",
+        "classesTargetName": "classes",
+        "buildTargetName": "build",
+        "includeSubprojectsTasks": false
+      }
     }
   ],
   "fileMap": {
     "projectFileMap": {
       "secretaria-virtual": [
         {
-          "file": ".expo/README.md",
-          "hash": "3221542717158311548"
-        },
-        {
-          "file": ".expo/devices.json",
-          "hash": "9079673538751451102"
-        },
-        {
           "file": ".gitignore",
-          "hash": "6231254217645246023"
+          "hash": "8968981587161571645"
         },
         {
           "file": ".vscode/settings.json",
-          "hash": "16956121712500344108"
+          "hash": "11896231737777993237"
         },
         {
           "file": "Back-end/database.ts",
@@ -81,7 +97,7 @@
         },
         {
           "file": "Cloud-dev/server.tsx",
-          "hash": "3723119071762734356",
+          "hash": "10686367939473748087",
           "deps": [
             "npm:express",
             "npm:dotenv",
@@ -259,326 +275,6 @@
           "hash": "11811191876726471732"
         },
         {
-          "file": "dist/App.js",
-          "hash": "9212142320751532577",
-          "deps": [
-            "npm:express",
-            "npm:dotenv",
-            "npm:mysql2",
-            "npm:body-parser",
-            "npm:react-native-tcp-socket"
-          ]
-        },
-        {
-          "file": "dist/Back-end/database.d.ts",
-          "hash": "251634775732542240"
-        },
-        {
-          "file": "dist/Back-end/database.js",
-          "hash": "11623820807465019607",
-          "deps": [
-            "npm:mysql2"
-          ]
-        },
-        {
-          "file": "dist/Back-end/doctor.service.d.ts",
-          "hash": "4237668886791240918"
-        },
-        {
-          "file": "dist/Back-end/doctor.service.js",
-          "hash": "9540321009680662016"
-        },
-        {
-          "file": "dist/Back-end/patient.service.d.ts",
-          "hash": "17310958197352012154"
-        },
-        {
-          "file": "dist/Back-end/patient.service.js",
-          "hash": "14276800462347217594"
-        },
-        {
-          "file": "dist/Cloud-dev/database.d.ts",
-          "hash": "251634775732542240"
-        },
-        {
-          "file": "dist/Cloud-dev/database.js",
-          "hash": "3056148517866451983",
-          "deps": [
-            "npm:mysql2"
-          ]
-        },
-        {
-          "file": "dist/Cloud-dev/server.d.ts",
-          "hash": "3710190500083808890"
-        },
-        {
-          "file": "dist/Cloud-dev/server.js",
-          "hash": "13832761616900070154",
-          "deps": [
-            "npm:express",
-            "npm:dotenv",
-            "npm:mysql2",
-            "npm:body-parser"
-          ]
-        },
-        {
-          "file": "dist/ETL/etl.d.ts",
-          "hash": "17750753162464223385"
-        },
-        {
-          "file": "dist/ETL/etl.js",
-          "hash": "2819582364420764871"
-        },
-        {
-          "file": "dist/Front-end/consulta-medica.d.ts",
-          "hash": "4716128619479039232"
-        },
-        {
-          "file": "dist/Front-end/consulta-medica.js",
-          "hash": "11807861765973357350",
-          "deps": [
-            "npm:readline-sync"
-          ]
-        },
-        {
-          "file": "dist/Front-end/index.d.ts",
-          "hash": "4595979742548113990"
-        },
-        {
-          "file": "dist/Front-end/index.js",
-          "hash": "14913376987524895477",
-          "deps": [
-            "npm:readline-sync"
-          ]
-        },
-        {
-          "file": "dist/Front-end/menu-paciente.d.ts",
-          "hash": "5011484560607322662"
-        },
-        {
-          "file": "dist/Front-end/menu-paciente.js",
-          "hash": "7968731836647951157",
-          "deps": [
-            "npm:readline-sync"
-          ]
-        },
-        {
-          "file": "dist/database.js",
-          "hash": "3056148517866451983",
-          "deps": [
-            "npm:mysql2"
-          ]
-        },
-        {
-          "file": "dist/dist/Back-end/database.js",
-          "hash": "17577833276425395687",
-          "deps": [
-            "npm:mysql2"
-          ]
-        },
-        {
-          "file": "dist/dist/Back-end/doctor.service.js",
-          "hash": "18246362052373697234"
-        },
-        {
-          "file": "dist/dist/Back-end/patient.service.js",
-          "hash": "2063899580220960575"
-        },
-        {
-          "file": "dist/dist/Cloud-dev/database.js",
-          "hash": "10453200127908574479",
-          "deps": [
-            "npm:mysql2"
-          ]
-        },
-        {
-          "file": "dist/dist/Cloud-dev/server.js",
-          "hash": "11068194960980161071",
-          "deps": [
-            "npm:express",
-            "npm:dotenv",
-            "npm:mysql2",
-            "npm:body-parser",
-            "npm:react-native-tcp-socket"
-          ]
-        },
-        {
-          "file": "dist/dist/ETL/etl.js",
-          "hash": "6616637328773719203"
-        },
-        {
-          "file": "dist/dist/Front-end/consulta-medica.js",
-          "hash": "13676420497257269965",
-          "deps": [
-            "npm:readline-sync"
-          ]
-        },
-        {
-          "file": "dist/dist/Front-end/index.js",
-          "hash": "1420705965102603267",
-          "deps": [
-            "npm:readline-sync"
-          ]
-        },
-        {
-          "file": "dist/dist/Front-end/menu-paciente.js",
-          "hash": "11837024610644527895",
-          "deps": [
-            "npm:readline-sync"
-          ]
-        },
-        {
-          "file": "dist/dist/database.js",
-          "hash": "8466463507813902979",
-          "deps": [
-            "npm:mysql2"
-          ]
-        },
-        {
-          "file": "dist/dist/dist/Back-end/database.js",
-          "hash": "5237836936794526038",
-          "deps": [
-            "npm:mysql2"
-          ]
-        },
-        {
-          "file": "dist/dist/dist/Back-end/doctor.service.js",
-          "hash": "15766943409326698353"
-        },
-        {
-          "file": "dist/dist/dist/Back-end/patient.service.js",
-          "hash": "15567929912686892560"
-        },
-        {
-          "file": "dist/dist/dist/Cloud-dev/database.js",
-          "hash": "10734853947272741363",
-          "deps": [
-            "npm:mysql2"
-          ]
-        },
-        {
-          "file": "dist/dist/dist/Cloud-dev/server.js",
-          "hash": "10038453172862731488",
-          "deps": [
-            "npm:express",
-            "npm:dotenv",
-            "npm:mysql2",
-            "npm:body-parser",
-            "npm:react-native-tcp-socket"
-          ]
-        },
-        {
-          "file": "dist/dist/dist/ETL/etl.js",
-          "hash": "13537557850057386661"
-        },
-        {
-          "file": "dist/dist/dist/Front-end/consulta-medica.js",
-          "hash": "15356584255890876792",
-          "deps": [
-            "npm:readline-sync"
-          ]
-        },
-        {
-          "file": "dist/dist/dist/Front-end/index.js",
-          "hash": "11179562220410126753",
-          "deps": [
-            "npm:readline-sync"
-          ]
-        },
-        {
-          "file": "dist/dist/dist/Front-end/menu-paciente.js",
-          "hash": "4955686331391343652",
-          "deps": [
-            "npm:readline-sync"
-          ]
-        },
-        {
-          "file": "dist/dist/dist/database.js",
-          "hash": "10453200127908574479",
-          "deps": [
-            "npm:mysql2"
-          ]
-        },
-        {
-          "file": "dist/dist/dist/dist/database.js",
-          "hash": "10734853947272741363",
-          "deps": [
-            "npm:mysql2"
-          ]
-        },
-        {
-          "file": "dist/dist/dist/dist/server.js",
-          "hash": "332210081367417617",
-          "deps": [
-            "npm:express",
-            "npm:dotenv",
-            "npm:mysql2",
-            "npm:body-parser",
-            "npm:react-native-tcp-socket"
-          ]
-        },
-        {
-          "file": "dist/dist/dist/jest.config.js",
-          "hash": "15313935449057403425"
-        },
-        {
-          "file": "dist/dist/dist/public/scripts.js",
-          "hash": "4469764048262876761"
-        },
-        {
-          "file": "dist/dist/dist/server.js",
-          "hash": "16999230393955528060",
-          "deps": [
-            "npm:express",
-            "npm:dotenv",
-            "npm:mysql2",
-            "npm:body-parser",
-            "npm:react-native-tcp-socket"
-          ]
-        },
-        {
-          "file": "dist/dist/jest.config.js",
-          "hash": "15313935449057403425"
-        },
-        {
-          "file": "dist/dist/public/scripts.js",
-          "hash": "4469764048262876761"
-        },
-        {
-          "file": "dist/dist/server.js",
-          "hash": "17185753451325009563",
-          "deps": [
-            "npm:express",
-            "npm:dotenv",
-            "npm:mysql2",
-            "npm:body-parser",
-            "npm:react-native-tcp-socket"
-          ]
-        },
-        {
-          "file": "dist/jest.config.js",
-          "hash": "15313935449057403425"
-        },
-        {
-          "file": "dist/public/scripts.js",
-          "hash": "4469764048262876761"
-        },
-        {
-          "file": "dist/server.js",
-          "hash": "5881468901834757407",
-          "deps": [
-            "npm:express",
-            "npm:dotenv",
-            "npm:mysql2",
-            "npm:body-parser",
-            "npm:react-native-tcp-socket"
-          ]
-        },
-        {
-          "file": "dist/tsconfig.tsbuildinfo",
-          "hash": "6274279907891354330"
-        },
-        {
           "file": "eas.json",
           "hash": "6620181604751578346"
         },
@@ -592,15 +288,15 @@
         },
         {
           "file": "nx.json",
-          "hash": "9157343418114572877"
+          "hash": "5405855332341357824"
         },
         {
           "file": "package-lock.json",
-          "hash": "16078648736680587792"
+          "hash": "3059582369997273216"
         },
         {
           "file": "package.json",
-          "hash": "3864136662348932734",
+          "hash": "6678315931302024449",
           "deps": [
             "npm:@babel/cli",
             "npm:@babel/preset-env",
@@ -636,6 +332,7 @@
             "npm:typescript",
             "npm:webpack",
             "npm:webpack-cli",
+            "npm:@nx/workspace",
             "npm:@expo/metro-runtime",
             "npm:@google-cloud/speech",
             "npm:@types/react-router-dom",

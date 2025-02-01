@@ -34,7 +34,7 @@
               "script": "start"
             },
             "metadata": {
-              "scriptContent": "npx tsc && npx kill-port 3000 && npx ts-node-dev --transpile-only Cloud-dev/server.tsx",
+              "scriptContent": "npx kill-port 3000 && npx ts-node-dev --transpile-only Cloud-dev/server.tsx",
               "runCommand": "npm run start"
             },
             "configurations": {},
@@ -90,7 +90,8 @@
               "runCommand": "npm run android"
             },
             "configurations": {},
-            "parallelism": true
+            "parallelism": true,
+            "cache": true
           },
           "ios": {
             "executor": "nx:run-script",
@@ -102,7 +103,8 @@
               "runCommand": "npm run ios"
             },
             "configurations": {},
-            "parallelism": true
+            "parallelism": true,
+            "cache": true
           },
           "web": {
             "executor": "nx:run-script",
@@ -114,7 +116,8 @@
               "runCommand": "npm run web"
             },
             "configurations": {},
-            "parallelism": true
+            "parallelism": true,
+            "cache": true
           },
           "nx-release-publish": {
             "executor": "@nx/js:release-publish",
@@ -15326,11 +15329,6 @@
       },
       {
         "source": "secretaria-virtual",
-        "target": "npm:react-native-tcp-socket",
-        "type": "static"
-      },
-      {
-        "source": "secretaria-virtual",
         "target": "npm:@babel/cli",
         "type": "static"
       },
@@ -15491,6 +15489,11 @@
       },
       {
         "source": "secretaria-virtual",
+        "target": "npm:@nx/workspace",
+        "type": "static"
+      },
+      {
+        "source": "secretaria-virtual",
         "target": "npm:@expo/metro-runtime",
         "type": "static"
       },
@@ -15612,6 +15615,11 @@
       {
         "source": "secretaria-virtual",
         "target": "npm:react-native-polyfill-globals",
+        "type": "static"
+      },
+      {
+        "source": "secretaria-virtual",
+        "target": "npm:react-native-tcp-socket",
         "type": "static"
       },
       {
