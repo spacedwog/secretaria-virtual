@@ -6,7 +6,7 @@
   "target": "ESNext",
   "type": "module",
   "scripts": {
-    "start": "npx tsc && npx kill-port 3000 && npx ts-node-dev --transpile-only Cloud-dev/server.tsx",
+    "start": "npx kill-port 3000 && npx ts-node-dev --transpile-only Cloud-dev/server.tsx",
     "test": "jest",
     "dev": "nodemon Cloud-dev/server.tsx",
     "build": "webpack",

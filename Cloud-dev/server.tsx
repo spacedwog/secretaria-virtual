@@ -1,9 +1,9 @@
-import * as path from 'path';
+const path = require('path');
 import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import * as bodyParser from 'body-parser';
-const net = require('net');
+import net from 'net';
 import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
 import { Request, Response, NextFunction } from 'express';
 
