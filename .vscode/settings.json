@@ -6,5 +6,7 @@
         "{**/.c4z/.extsrcs/*.PROTSYM.cbl,**/.c4z/.extsrcs/*.PROTSYM.listing}": true
     },
     "cmake.sourceDirectory": "C:/Users/felip/secretaria-virtual/node_modules/expo-modules-core/android",
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.debug.settings.onBuildFailureProceed": true,
+    "terminal.integrated.scrollback": 1000000000,
+    "nxConsole.nxWorkspacePath": ""
 }
