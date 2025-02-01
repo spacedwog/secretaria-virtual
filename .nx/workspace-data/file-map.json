@@ -2,7 +2,34 @@
   "version": "6.0",
   "nxVersion": "20.4.0",
   "pathMappings": {},
-  "nxJsonPlugins": [],
+  "nxJsonPlugins": [
+    {
+      "name": "@nx/webpack/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
+    },
+    {
+      "name": "@nx/expo/plugin",
+      "options": {
+        "startTargetName": "start",
+        "buildTargetName": "build",
+        "prebuildTargetName": "prebuild",
+        "serveTargetName": "serve",
+        "installTargetName": "install",
+        "exportTargetName": "export",
+        "submitTargetName": "submit",
+        "runIosTargetName": "run-ios",
+        "runAndroidTargetName": "run-android",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
+    }
+  ],
   "fileMap": {
     "projectFileMap": {
       "secretaria-virtual": [
@@ -13,6 +40,10 @@
         {
           "file": ".expo/devices.json",
           "hash": "9079673538751451102"
+        },
+        {
+          "file": ".gitignore",
+          "hash": "6231254217645246023"
         },
         {
           "file": ".vscode/settings.json",
