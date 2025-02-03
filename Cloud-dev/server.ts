@@ -1,4 +1,4 @@
-import net from 'net';
+import * as net from 'net';
 import path from 'path';
 import express from 'express';
 import * as dotenv from 'dotenv';
