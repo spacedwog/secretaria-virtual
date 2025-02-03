@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
 import bodyParser from 'body-parser';
 import net from 'net';
+import { fileURLToPath } from 'url';
 import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
 import { Request, Response, NextFunction } from 'express';
 
@@ -79,9 +80,13 @@ export class Server{
     
         //Middleware do tipo: Join
         //Descrição: Serve para servir arquivos estáticos
+        // Definir __filename e __dirname manualmente
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+
         const staticPath = path.join(__dirname, 'public');
         this.app.use(express.static(staticPath));
-    
+        
         //Middleware do tipo: Config
         //Descrição: Serve para configurar headers (ex.: CORS)
         this.app.use((req, res, next) => {
