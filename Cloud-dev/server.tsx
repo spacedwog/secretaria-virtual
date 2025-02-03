@@ -356,19 +356,6 @@ export class Server{
                                 <th>Observações do Medicamento</th>
                                 <th>Data da Prescrição</th>
                             </tr>`;
-                            medicamento.forEach((m) => {
-                                html += `
-                                <tr>
-                                    <td>${m.med_code}</td>
-                                    <td>${m.nome_do_medicamento}</td>
-                                    <td>${m.tipo_do_medicamento}</td>
-                                    <td>${m.dosagem_do_medicamento}</td>
-                                    <td>${m.frequencia_de_administracao}</td>
-                                    <td>${m.duracao_da_administracao}</td>
-                                    <td>${m.observacoes_do_medicamento}</td>
-                                    <td>${m.data_da_prescricao}</td>
-                                </tr>`;
-                            });
                                 html += `
                         </table>
                     </body>
