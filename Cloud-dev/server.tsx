@@ -484,17 +484,6 @@ export class Server{
                                 <th>Status da Consulta Médica</th>
                                 <th>Nome do Doutor</th>
                             </tr>`;
-                            appointment.forEach((a) => {
-                                html += `
-                                <tr>
-                                    <td>${a.nome_consulta_medica}</td>
-                                    <td>${a.patient_name}</td>
-                                    <td>${a.appointment_date}</td>
-                                    <td>${a.appointment_time}</td>
-                                    <td>${a.status}</td>
-                                    <td>${a.doctor_name}</td>
-                                </tr>`;
-                            });
                                 html += `
                         </table>
                     </body>
@@ -626,19 +615,6 @@ export class Server{
                             <th>Data da Visita</th>
                             <th>Hora da Visita</th>
                         </tr>`;
-                        pacientes.forEach((p) => {
-                            html += `
-                            <tr>
-                                <td>${p.patient_id}</td>
-                                <td>${p.name}</td>
-                                <td>${p.age}</td>
-                                <td>${p.phone}</td>
-                                <td>${p.email}</td>
-                                <td>${p.address ?? ''}</td>
-                                <td>${p.visit_date ?? ''}</td>
-                                <td>${p.visit_time ?? ''}</td>
-                            </tr>`;
-                        });
             html += `</table>
                         </body>
             </html>`;
@@ -770,20 +746,6 @@ export class Server{
                             <th>Observações</th>
                             <th>Nome do Médico</th>
                         </tr>`;
-                        receitas.forEach((r) => {
-                            html += `
-                            <tr>
-                                <td>${r.id_medicamento}</td>
-                                <td>${r.nome_paciente}</td>
-                                <td>${r.data_prescricao ?? ''}</td>
-                                <td>${r.nome_medicamento}</td>
-                                <td>${r.dosagem}</td>
-                                <td>${r.frequencia}</td>
-                                <td>${r.duracao}</td>
-                                <td>${r.observacoes ?? ''}</td>
-                                <td>${r.nome_medico}</td>
-                            </tr>`;
-                        });
             html += `</table>
                         </body>
             </html>`;
