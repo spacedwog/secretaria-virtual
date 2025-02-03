@@ -62,14 +62,13 @@ export class Server{
 
     private setupMiddlewares() {
 
+        // Middleware para parse de JSON e form data
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+
         //Middleware do tipo: Parse
         //Descrição: Serve para parsear o corpo das requisições como JSON
         this.app.use(bodyParser.json());
-
-        // Middleware para parse de JSON e form data
-        this.app.use(express.json());
-
-        this.app.use(express.urlencoded({ extended: true }));
     
         //Middleware do tipo: Log
         //Descrição: Serve para logar as requisições
