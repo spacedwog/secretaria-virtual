@@ -1,12 +1,12 @@
+import net from 'net';
 import path from 'path';
 import express from 'express';
 import * as dotenv from 'dotenv';
-import * as mysql from 'mysql2/promise';
-import bodyParser from 'body-parser';
-import net from 'net';
 import { fileURLToPath } from 'url';
-import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
+import bodyParser from 'body-parser';
+import * as mysql from 'mysql2/promise';
 import { Request, Response, NextFunction } from 'express';
+import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
 
 dotenv.config();
 
