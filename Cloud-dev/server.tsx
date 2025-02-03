@@ -779,6 +779,15 @@ export class Server{
             const startServer = (port: number) => {
                 this.app.listen(port, () => {
                     console.log(`Servidor rodando na porta ${port}`);
+
+                    
+                    const params = {
+                        function: "initialize()",
+                        mensagem: "Servidor rodando na porta ${port}",
+                        return_code: 0,
+                        type_server: "typescript"
+                    }
+                    runPowerShellScriptInThread(scriptPath, params);
     
                 }).on('error', (err: any) => {
                     if (err.code === 'EADDRINUSE') {
