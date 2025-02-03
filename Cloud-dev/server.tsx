@@ -829,39 +829,44 @@ export class Server{
     }
 
     private async initialize() {
-        
-        await this.connectToDatabase();
 
-        this.connection.query(
-            'CALL conclude_appointment()'
-        );
+        try{
+            await this.connectToDatabase();
 
-        const startServer = (port: number) => {
-            this.app.listen(port, () => {
-                console.log(`Servidor rodando na porta ${port}`);
-
-            }).on('error', (err: any) => {
-                if (err.code === 'EADDRINUSE') {
-                    console.error(`Porta ${port} já está em uso.`);
-                    const alternativePort = port + 1;
-                    console.log(`Tentando porta alternativa ${alternativePort}...`);
-                    startServer(alternativePort);
-                } else {
-                    throw err;
-                }
+            this.connection.query(
+                'CALL conclude_appointment()'
+            );
+    
+            const startServer = (port: number) => {
+                this.app.listen(port, () => {
+                    console.log(`Servidor rodando na porta ${port}`);
+    
+                }).on('error', (err: any) => {
+                    if (err.code === 'EADDRINUSE') {
+                        console.error(`Porta ${port} já está em uso.`);
+                        const alternativePort = port + 1;
+                        console.log(`Tentando porta alternativa ${alternativePort}...`);
+                        startServer(alternativePort);
+                    } else {
+                        throw err;
+                    }
+                });
+            };
+    
+            startServer(this.port);
+    
+            process.on('SIGINT', async () => {
+                console.log('\nEncerrando servidor...');
+                clearInterval(this.pingInterval);
+                await this.connection.end();
+                console.log('Conexão com o banco de dados encerrada.');
+                process.exit(StatusCode.ExitSuccess);
             });
-        };
-
-        startServer(this.port);
-
-        process.on('SIGINT', async () => {
-            console.log('\nEncerrando servidor...');
-            clearInterval(this.pingInterval);
-            await this.connection.end();
-            console.log('Conexão com o banco de dados encerrada.');
-            process.exit(StatusCode.ExitSuccess);
-        });
-
+        }
+        catch (error) {
+            console.error('Erro ao conectar ao banco de dados:', error);
+            process.exit(StatusCode.ExitFail);
+        }
     }
 
     private async checkPortAvailability() {
