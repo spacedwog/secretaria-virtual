@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "NodeNext",
+    "module": "ESNext",
     "allowJs": true,
     "strict": true,
     "noImplicitAny": true,
@@ -10,7 +10,7 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
