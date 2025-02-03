@@ -9,19 +9,5 @@
     "java.debug.settings.onBuildFailureProceed": true,
     "terminal.integrated.scrollback": 1000000000,
     "nxConsole.nxWorkspacePath": "",
-    "sqltools.connections": [
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "previewLimit": 50,
-            "server": "127.0.0.1",
-            "port": 3306,
-            "driver": "MySQL",
-            "database": "secretaria_virtual",
-            "username": "root",
-            "name": "localhost"
-        }
-    ]
+    "sqltools.connections": []
 }
