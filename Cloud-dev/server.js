@@ -37,12 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Server = void 0;
-var net_1 = require("net");
-var path_1 = require("path");
-var express_1 = require("express");
+var net = require("net");
+var path = require("path");
+var express = require("express");
 var dotenv = require("dotenv");
 var url_1 = require("url");
-var body_parser_1 = require("body-parser");
+var bodyParser = require("body-parser");
 var worker_threads_1 = require("worker_threads");
 dotenv.config();
 var StatusCode;
@@ -57,24 +57,24 @@ var RECORD_DATA_ENDPOINT = "/record-data";
 var SAVE_DATA_ENDPOINT = "/save-data";
 var scriptPath = './cloudengine.ps1';
 var __filename = (0, url_1.fileURLToPath)(import.meta.url);
-var __dirname = path_1.default.dirname(__filename);
+var __dirname = path.dirname(__filename);
 var worker = new worker_threads_1.Worker(__filename); // Ou especifique outro arquivo
 var Server = /** @class */ (function () {
     function Server(port) {
         this.key = "";
         this.value = "";
-        this.app = (0, express_1.default)();
+        this.app = express();
         this.port = port;
         this.setupMiddlewares();
         this.setupRoutes();
     }
     Server.prototype.setupMiddlewares = function () {
         // Middleware para parse de JSON e form data
-        this.app.use(express_1.default.json());
-        this.app.use(express_1.default.urlencoded({ extended: true }));
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
         //Middleware do tipo: Parse
         //Descrição: Serve para parsear o corpo das requisições como JSON
-        this.app.use(body_parser_1.default.json());
+        this.app.use(bodyParser.json());
         //Middleware do tipo: Log
         //Descrição: Serve para logar as requisições
         this.app.use(function (req, res, next) {
@@ -85,9 +85,9 @@ var Server = /** @class */ (function () {
         //Descrição: Serve para servir arquivos estáticos
         // Definir __filename e __dirname manualmente
         var __filename = (0, url_1.fileURLToPath)(import.meta.url);
-        var __dirname = path_1.default.dirname(__filename);
-        var staticPath = path_1.default.join(__dirname, 'public');
-        this.app.use(express_1.default.static(staticPath));
+        var __dirname = path.dirname(__filename);
+        var staticPath = path.join(__dirname, 'public');
+        this.app.use(express.static(staticPath));
         //Middleware do tipo: Config
         //Descrição: Serve para configurar headers (ex.: CORS)
         this.app.use(function (req, res, next) {
@@ -368,7 +368,7 @@ var Server = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var server = net_1.default.createServer(function (socket) {
+                        var server = net.createServer(function (socket) {
                             console.log('Cliente conectado');
                             // Escutar dados recebidos
                             socket.on('data', function (data) {
