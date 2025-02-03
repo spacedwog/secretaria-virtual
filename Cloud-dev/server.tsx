@@ -880,7 +880,7 @@ export class Server{
                 socket.on('error', (err: any) => {
                 console.error('Erro:', err);
                 });
-          });
+            });
         });
     }
 
