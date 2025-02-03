@@ -2,7 +2,7 @@ import path from 'path';
 import express from 'express';
 import * as dotenv from 'dotenv';
 import * as mysql from 'mysql2/promise';
-import * as bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 import net from 'net';
 import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
 import { Request, Response, NextFunction } from 'express';
