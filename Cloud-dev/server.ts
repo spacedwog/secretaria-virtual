@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import * as express from 'express';
+import express from 'express';
 import * as dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import * as bodyParser from 'body-parser';

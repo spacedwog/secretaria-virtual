@@ -42,7 +42,6 @@ var path = require("path");
 var express = require("express");
 var dotenv = require("dotenv");
 var url_1 = require("url");
-var bodyParser = require("body-parser");
 var worker_threads_1 = require("worker_threads");
 dotenv.config();
 var StatusCode;
@@ -56,8 +55,8 @@ var UPDATE_DATA_ENDPOINT = "/update-data";
 var RECORD_DATA_ENDPOINT = "/record-data";
 var SAVE_DATA_ENDPOINT = "/save-data";
 var scriptPath = './cloudengine.ps1';
-var __filename = __filename || __dirname + "/server.ts";
-var __dirname = path.resolve();
+var __filename = (0, url_1.fileURLToPath)(import.meta.url);
+var __dirname = path.dirname(__filename);
 var worker = new worker_threads_1.Worker(__filename); // Ou especifique outro arquivo
 var Server = /** @class */ (function () {
     function Server(port) {
@@ -74,7 +73,7 @@ var Server = /** @class */ (function () {
         this.app.use(express.urlencoded({ extended: true }));
         //Middleware do tipo: Parse
         //Descrição: Serve para parsear o corpo das requisições como JSON
-        this.app.use(bodyParser.json());
+        //this.app.use(bodyParser.json());
         //Middleware do tipo: Log
         //Descrição: Serve para logar as requisições
         this.app.use(function (req, res, next) {
