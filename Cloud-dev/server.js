@@ -56,8 +56,8 @@ var UPDATE_DATA_ENDPOINT = "/update-data";
 var RECORD_DATA_ENDPOINT = "/record-data";
 var SAVE_DATA_ENDPOINT = "/save-data";
 var scriptPath = './cloudengine.ps1';
-var __filename = (0, url_1.fileURLToPath)(import.meta.url);
-var __dirname = path.dirname(__filename);
+var __filename = __filename || __dirname + "/server.ts";
+var __dirname = path.resolve();
 var worker = new worker_threads_1.Worker(__filename); // Ou especifique outro arquivo
 var Server = /** @class */ (function () {
     function Server(port) {
