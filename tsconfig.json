@@ -21,7 +21,7 @@
     "composite": true,
     "baseUrl": "./",
     "rootDir": "./",
-    "outDir": "./dist",
+    "outDir": "dist",
     "jsx": "react"
   },
   "exclude": [
