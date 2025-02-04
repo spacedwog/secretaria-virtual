@@ -1,6 +1,6 @@
 import * as net from 'net';
 import * as path from 'path';
-import express from 'express';
+import * as express from 'express';
 import * as dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import * as bodyParser from 'body-parser';
@@ -64,7 +64,7 @@ export class Server{
 
         //Middleware do tipo: Parse
         //Descrição: Serve para parsear o corpo das requisições como JSON
-        this.app.use(bodyParser.json());
+        //this.app.use(bodyParser.json());
     
         //Middleware do tipo: Log
         //Descrição: Serve para logar as requisições
