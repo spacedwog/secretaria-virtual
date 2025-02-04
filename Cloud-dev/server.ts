@@ -22,6 +22,7 @@ const RECORD_DATA_ENDPOINT = "/record-data";
 const SAVE_DATA_ENDPOINT = "/save-data";
 
 const scriptPath = './cloudengine.ps1';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
