@@ -69,4 +69,4 @@ npm run etl
 Contribuições são bem-vindas! Para sugerir melhorias ou corrigir problemas, abra uma _issue_ ou envie um _pull request_.
 
 ## Licença
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](license.md) para mais detalhes.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.
