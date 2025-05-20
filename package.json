@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "start": "npx kill-port 3000 && node --loader ts-node/esm Cloud-dev/server.ts",
+    "start-clean": "npx kill-port 3000 && node --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' Cloud-dev/server.ts",
     "test": "jest",
     "dev": "nodemon Cloud-dev/server.ts",
     "build": "webpack",
