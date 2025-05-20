@@ -164,29 +164,48 @@ function Imprimir-Receita {
             return
         }
 
-        # Buscar nomes
         $pacienteNome = ($pacientes | Where-Object { $_.id -eq $receita.paciente_id }).nome
         if (-not $pacienteNome) { $pacienteNome = "Desconhecido" }
 
         $doutorNome = ($doutores | Where-Object { $_.id -eq $receita.doutor_id }).nome
         if (-not $doutorNome) { $doutorNome = "Desconhecido" }
 
-        $info = @"
-RECEITA MEDICA
-
-ID Receita:     $($receita.id)
-Paciente:       $pacienteNome (ID: $($receita.paciente_id))
-Doutor:         $doutorNome (ID: $($receita.doutor_id))
-Data:           $($receita.data)
-
-Medicamento:    $($receita.medicamento)
-Dosagem:        $($receita.dosagem)
-
-Instrucoes:
-$($receita.instrucoes)
+        $htmlContent = @"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <title>Receita Médica - ID $($receita.id)</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { color: #2E86C1; }
+        .section { margin-bottom: 15px; }
+        .label { font-weight: bold; }
+        .instructions { white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Receita Médica</h1>
+    <div class='section'><span class='label'>ID Receita:</span> $($receita.id)</div>
+    <div class='section'><span class='label'>Paciente:</span> $pacienteNome (ID: $($receita.paciente_id))</div>
+    <div class='section'><span class='label'>Doutor:</span> $doutorNome (ID: $($receita.doutor_id))</div>
+    <div class='section'><span class='label'>Data:</span> $($receita.data)</div>
+    <div class='section'><span class='label'>Medicamento:</span> $($receita.medicamento)</div>
+    <div class='section'><span class='label'>Dosagem:</span> $($receita.dosagem)</div>
+    <div class='section'>
+        <span class='label'>Instruções:</span><br>
+        <div class='instructions'>$($receita.instrucoes)</div>
+    </div>
+</body>
+</html>
 "@
 
-        [System.Windows.Forms.MessageBox]::Show($info, "Detalhes da Receita", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
+        $filePath = "Receita_$($receita.id).html"
+        $htmlContent | Out-File -FilePath $filePath -Encoding UTF8
+        Start-Process $filePath
+
+        [System.Windows.Forms.MessageBox]::Show("Relatório HTML gerado com sucesso: $filePath", "Sucesso", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
+
         $formPrint.Close()
     })
 
