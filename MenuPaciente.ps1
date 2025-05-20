@@ -5,7 +5,12 @@ $arquivoJson = "pacientes.json"
 
 function Carregar-Pacientes {
     if (Test-Path $arquivoJson) {
-        return Get-Content $arquivoJson | ConvertFrom-Json
+        $dados = Get-Content $arquivoJson -Raw | ConvertFrom-Json
+        if ($dados -is [System.Collections.IEnumerable]) {
+            return @($dados)  # Garante que é array mesmo se tiver um só
+        } else {
+            return ,$dados    # Retorna como array com um elemento
+        }
     }
     return @()
 }
