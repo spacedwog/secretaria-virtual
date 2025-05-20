@@ -10,7 +10,7 @@ export class Database {
         host: 'localhost',
         user: 'root',
         password: '6z2h1j3k9F!',
-        database: 'cloud_server',
+        database: 'secretaria_virtual',
       });
     }
   }

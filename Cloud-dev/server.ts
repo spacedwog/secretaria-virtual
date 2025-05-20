@@ -33,7 +33,7 @@ export class Server{
 
     private readonly port: number;
     private readonly dbConfig = {
-        host: process.env.DB_HOST ?? '127.0.0.1',
+        host: process.env.DB_HOST ?? 'localhost',
         user: process.env.DB_USER ?? 'root',
         password: process.env.DB_PASSWORD ?? '6z2h1j3k9F!',
         database: process.env.DB_NAME ?? 'secretaria_virtual',
