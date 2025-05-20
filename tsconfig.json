@@ -31,5 +31,5 @@
     "public",
     "dist"
   ],
-  "extends": "expo/tsconfig.base"
+  "include": ["Cloud-dev/**/*.ts"]
 }
