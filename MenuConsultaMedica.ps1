@@ -180,42 +180,108 @@ function RegisterVisit {
 }
 
 function ScheduleAppointment {
+    Add-Type -AssemblyName System.Windows.Forms
+    Add-Type -AssemblyName System.Drawing
+
     $form2 = New-Object System.Windows.Forms.Form
     $form2.Text = "Agendar Consulta"
     $form2.Size = New-Object System.Drawing.Size(350, 400)
     $form2.StartPosition = "CenterScreen"
 
-    $fields = "ID Paciente", "ID Doutor", "Titulo", "Data (AAAA-MM-DD)", "Hora (HH:MM)", "Motivo", "Status"
+    # Label e ComboBox para Paciente
+    $lblPaciente = New-Object System.Windows.Forms.Label
+    $lblPaciente.Text = "Paciente:"
+    $lblPaciente.Location = New-Object System.Drawing.Point(10, 20)
+    $lblPaciente.Size = New-Object System.Drawing.Size(120, 20)
+
+    $cmbPaciente = New-Object System.Windows.Forms.ComboBox
+    $cmbPaciente.Location = New-Object System.Drawing.Point(140, 20)
+    $cmbPaciente.Size = New-Object System.Drawing.Size(170, 20)
+    $cmbPaciente.DropDownStyle = 'DropDownList'
+
+    # Label e ComboBox para Doutor
+    $lblDoutor = New-Object System.Windows.Forms.Label
+    $lblDoutor.Text = "Doutor:"
+    $lblDoutor.Location = New-Object System.Drawing.Point(10, 60)
+    $lblDoutor.Size = New-Object System.Drawing.Size(120, 20)
+
+    $cmbDoutor = New-Object System.Windows.Forms.ComboBox
+    $cmbDoutor.Location = New-Object System.Drawing.Point(140, 60)
+    $cmbDoutor.Size = New-Object System.Drawing.Size(170, 20)
+    $cmbDoutor.DropDownStyle = 'DropDownList'
+
+    # Campos restantes (Título, Data, Hora, Motivo, Status)
+    $fields = "Título", "Data (AAAA-MM-DD)", "Hora (HH:MM)", "Motivo", "Status"
     $inputs = @()
 
     for ($i = 0; $i -lt $fields.Length; $i++) {
         $label = New-Object System.Windows.Forms.Label
         $label.Text = "$($fields[$i]):"
-        $label.Location = [System.Drawing.Point]::new(10, (20 + ($i * 35)))
+        $label.Location = New-Object System.Drawing.Point(10, (100 + ($i * 35)))
         $label.Size = New-Object System.Drawing.Size(120, 20)
 
         $textBox = New-Object System.Windows.Forms.TextBox
-        $textBox.Location = [System.Drawing.Point]::new(140, (20 + ($i * 35)))
+        $textBox.Location = New-Object System.Drawing.Point(140, (100 + ($i * 35)))
         $textBox.Size = New-Object System.Drawing.Size(170, 20)
 
         $form2.Controls.AddRange(@($label, $textBox))
         $inputs += $textBox
     }
 
+    # Botão Agendar
     $submitBtn = New-Object System.Windows.Forms.Button
     $submitBtn.Text = "Agendar"
     $submitBtn.Location = New-Object System.Drawing.Point(120, 280)
+    $submitBtn.Size = New-Object System.Drawing.Size(100, 30)
+
+    # Carregar dados pacientes e doutores para popular os comboboxes
+    $pacientes = Load-JsonData "pacientes.json"
+    $doutores = Load-JsonData "doctors.json"
+
+    foreach ($p in $pacientes) {
+        $cmbPaciente.Items.Add("$($p.id) - $($p.nome)")
+    }
+    foreach ($d in $doutores) {
+        $cmbDoutor.Items.Add("$($d.id) - $($d.nome)")
+    }
+
+    if ($cmbPaciente.Items.Count -gt 0) { $cmbPaciente.SelectedIndex = 0 }
+    if ($cmbDoutor.Items.Count -gt 0) { $cmbDoutor.SelectedIndex = 0 }
+
+    # Evento clique do botão agendar
     $submitBtn.Add_Click({
+        if ($cmbPaciente.SelectedIndex -lt 0) {
+            [System.Windows.Forms.MessageBox]::Show("Selecione um paciente.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            return
+        }
+        if ($cmbDoutor.SelectedIndex -lt 0) {
+            [System.Windows.Forms.MessageBox]::Show("Selecione um doutor.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            return
+        }
+
+        # Extrair IDs selecionados
+        $paciente_id = ($cmbPaciente.SelectedItem -split ' - ')[0]
+        $doutor_id = ($cmbDoutor.SelectedItem -split ' - ')[0]
+
+        # Validar campos obrigatórios básicos (exemplo: título, data, hora)
+        if ([string]::IsNullOrWhiteSpace($inputs[0].Text) -or
+            [string]::IsNullOrWhiteSpace($inputs[1].Text) -or
+            [string]::IsNullOrWhiteSpace($inputs[2].Text)) {
+            [System.Windows.Forms.MessageBox]::Show("Preencha os campos Título, Data e Hora.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            return
+        }
+
         $appointment = @{
             id          = Get-NextId -filePath "appointments.json"
-            paciente_id = $inputs[0].Text
-            doutor_id   = $inputs[1].Text
-            titulo      = $inputs[2].Text
-            data        = $inputs[3].Text
-            hora        = $inputs[4].Text
-            motivo      = $inputs[5].Text
-            status      = $inputs[6].Text
+            paciente_id = [int]$paciente_id
+            doutor_id   = [int]$doutor_id
+            titulo      = $inputs[0].Text
+            data        = $inputs[1].Text
+            hora        = $inputs[2].Text
+            motivo      = $inputs[3].Text
+            status      = $inputs[4].Text
         }
+
         $file = "appointments.json"
         $data = Load-JsonData $file
         $data += $appointment
@@ -225,7 +291,7 @@ function ScheduleAppointment {
         $form2.Close()
     })
 
-    $form2.Controls.Add($submitBtn)
+    $form2.Controls.AddRange(@($lblPaciente, $cmbPaciente, $lblDoutor, $cmbDoutor, $submitBtn))
     $form2.ShowDialog()
 }
 
