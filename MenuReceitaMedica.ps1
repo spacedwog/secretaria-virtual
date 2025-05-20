@@ -1,6 +1,34 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+function Load-JsonData {
+    param([string]$filePath)
+    if (Test-Path $filePath) {
+        $json = Get-Content $filePath -Raw
+        if ($json.Trim() -eq '') { return @() }
+        return $json | ConvertFrom-Json
+    } else {
+        return @()
+    }
+}
+
+function Save-JsonData {
+    param(
+        [Parameter(Mandatory)]
+        [Object]$data,
+        [Parameter(Mandatory)]
+        [string]$filePath
+    )
+    $data | ConvertTo-Json -Depth 5 | Set-Content -Path $filePath -Encoding UTF8
+}
+
+function Get-NextId {
+    param([string]$filePath)
+    $items = Load-JsonData $filePath
+    if ($items.Count -eq 0) { return 1 }
+    return (($items | Measure-Object -Property id -Maximum).Maximum + 1)
+}
+
 function Registrar-Receita {
     $form = New-Object System.Windows.Forms.Form
     $form.Text = "Registrar Receita Medica"
@@ -29,7 +57,31 @@ function Registrar-Receita {
     $btnSave.Size = New-Object System.Drawing.Size(300, 35)
     $btnSave.Location = New-Object System.Drawing.Point(20, 320)
     $btnSave.Add_Click({
-        # Aqui você adicionaria a lógica para salvar a receita, por enquanto só mensagem
+        # Validações básicas
+        if ([string]::IsNullOrWhiteSpace($inputs[0].Text) -or
+            [string]::IsNullOrWhiteSpace($inputs[1].Text) -or
+            [string]::IsNullOrWhiteSpace($inputs[2].Text) -or
+            [string]::IsNullOrWhiteSpace($inputs[3].Text)) {
+            [System.Windows.Forms.MessageBox]::Show("Preencha os campos obrigatórios: ID Paciente, ID Doutor, Data e Medicamento.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            return
+        }
+
+        $file = "prescriptions.json"
+        $data = Load-JsonData $file
+
+        $receita = @{
+            id           = Get-NextId -filePath $file
+            paciente_id  = [int]$inputs[0].Text
+            doutor_id    = [int]$inputs[1].Text
+            data         = $inputs[2].Text
+            medicamento  = $inputs[3].Text
+            dosagem      = $inputs[4].Text
+            instrucoes   = $inputs[5].Text
+        }
+
+        $data += $receita
+        Save-JsonData -data $data -filePath $file
+
         [System.Windows.Forms.MessageBox]::Show("Receita registrada com sucesso!")
         $form.Close()
     })
@@ -41,25 +93,49 @@ function Registrar-Receita {
 function Imprimir-Receita {
     $formPrint = New-Object System.Windows.Forms.Form
     $formPrint.Text = "Imprimir Receita Medica"
-    $formPrint.Size = New-Object System.Drawing.Size(300, 150)
+    $formPrint.Size = New-Object System.Drawing.Size(350, 250)
     $formPrint.StartPosition = "CenterScreen"
 
     $lbl = New-Object System.Windows.Forms.Label
     $lbl.Text = "Digite o ID da Receita para impressão:"
     $lbl.Location = New-Object System.Drawing.Point(10, 20)
-    $lbl.Size = New-Object System.Drawing.Size(280, 20)
+    $lbl.Size = New-Object System.Drawing.Size(320, 20)
 
     $txtID = New-Object System.Windows.Forms.TextBox
     $txtID.Location = New-Object System.Drawing.Point(10, 50)
-    $txtID.Size = New-Object System.Drawing.Size(260, 25)
+    $txtID.Size = New-Object System.Drawing.Size(320, 25)
 
     $btnPrint = New-Object System.Windows.Forms.Button
     $btnPrint.Text = "Imprimir"
-    $btnPrint.Location = New-Object System.Drawing.Point(80, 90)
+    $btnPrint.Location = New-Object System.Drawing.Point(110, 90)
     $btnPrint.Size = New-Object System.Drawing.Size(120, 30)
+
     $btnPrint.Add_Click({
-        # Substituir pela lógica real de impressão
-        [System.Windows.Forms.MessageBox]::Show("Receita ID $($txtID.Text) enviada para impressão.")
+        $idBusca = $txtID.Text.Trim()
+        if (-not [int]::TryParse($idBusca, [ref]$null)) {
+            [System.Windows.Forms.MessageBox]::Show("Informe um ID válido (número).", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            return
+        }
+
+        $data = Load-JsonData "prescriptions.json"
+        $receita = $data | Where-Object { $_.id -eq [int]$idBusca }
+
+        if ($null -eq $receita) {
+            [System.Windows.Forms.MessageBox]::Show("Receita não encontrada.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            return
+        }
+
+        $info = @"
+Receita ID: $($receita.id)
+Paciente ID: $($receita.paciente_id)
+Doutor ID: $($receita.doutor_id)
+Data: $($receita.data)
+Medicamento: $($receita.medicamento)
+Dosagem: $($receita.dosagem)
+Instruções: $($receita.instrucoes)
+"@
+
+        [System.Windows.Forms.MessageBox]::Show($info, "Detalhes da Receita", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
         $formPrint.Close()
     })
 
