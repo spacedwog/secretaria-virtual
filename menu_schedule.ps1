@@ -29,7 +29,7 @@ function AddDoctor {
         $inputForm.Controls.Add($label)
 
         $textBox = New-Object System.Windows.Forms.TextBox
-        $txtBox.Location = [System.Drawing.Point]::new(110, 20 + ($i * 30))
+        $textBox.Location = [System.Drawing.Point]::new(110, 20 + ($i * 30))
         $textBox.Size = New-Object System.Drawing.Size(150, 20)
         $inputForm.Controls.Add($textBox)
 
@@ -40,7 +40,6 @@ function AddDoctor {
     $okButton.Text = "Salvar"
     $okButton.Location = New-Object System.Drawing.Point(90, 150)
     $okButton.Add_Click({
-        # Simule: aqui você chamaria algo como: DoctorService::addDoctor($...)
         [System.Windows.Forms.MessageBox]::Show("Doutor '$($boxes[0].Text)' adicionado com sucesso!")
         $inputForm.Close()
     })
@@ -92,11 +91,11 @@ function ScheduleAppointment {
     for ($i = 0; $i -lt $fields.Length; $i++) {
         $label = New-Object System.Windows.Forms.Label
         $label.Text = "$($fields[$i]):"
-        $label.Location = New-Object System.Drawing.Point(10, 20 + ($i * 35))
+        $label.Location = [System.Drawing.Point]::new(10, (20 + ($i * 35)))
         $label.Size = New-Object System.Drawing.Size(120, 20)
 
         $textBox = New-Object System.Windows.Forms.TextBox
-        $textBox.Location = New-Object System.Drawing.Point(140, 20 + ($i * 35))
+        $textBox.Location = [System.Drawing.Point]::new(140, (20 + ($i * 35)))
         $textBox.Size = New-Object System.Drawing.Size(170, 20)
 
         $form2.Controls.AddRange(@($label, $textBox))
