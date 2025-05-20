@@ -55,24 +55,10 @@ function Listar-Pacientes {
     $btnClose.Location = New-Object System.Drawing.Point(10, 370)
     $btnClose.Add_Click({ $formList.Close() })
 
-    $btnEditar = New-Object System.Windows.Forms.Button
-    $btnEditar.Text = "Editar"
-    $btnEditar.Size = New-Object System.Drawing.Size(100,30)
-    $btnEditar.Location = New-Object System.Drawing.Point(120, 370)
-    $btnEditar.Add_Click({
-        if ($listView.SelectedItems.Count -eq 0) {
-            [System.Windows.Forms.MessageBox]::Show("Selecione um paciente para editar.")
-            return
-        }
-        $index = $listView.SelectedItems[0].Index
-        $formList.Close()
-        Editar-Paciente -Index $index
-    })
-
     $btnExcluir = New-Object System.Windows.Forms.Button
     $btnExcluir.Text = "Excluir"
     $btnExcluir.Size = New-Object System.Drawing.Size(100,30)
-    $btnExcluir.Location = New-Object System.Drawing.Point(230, 370)
+    $btnExcluir.Location = New-Object System.Drawing.Point(120, 370)
     $btnExcluir.Add_Click({
         if ($listView.SelectedItems.Count -eq 0) {
             [System.Windows.Forms.MessageBox]::Show("Selecione um paciente para excluir.")
@@ -90,7 +76,7 @@ function Listar-Pacientes {
         }
     })
 
-    $formList.Controls.AddRange(@($listView, $btnClose, $btnEditar, $btnExcluir))
+    $formList.Controls.AddRange(@($listView, $btnClose, $btnExcluir))
     $formList.ShowDialog()
 }
 
@@ -98,25 +84,9 @@ function Adicionar-Paciente {
     Abrir-Formulario-Paciente
 }
 
-function Editar-Paciente {
-    param([int]$Index)
-
-    $pacientes = Carregar-Pacientes
-    if ($Index -lt 0 -or $Index -ge $pacientes.Count) {
-        [System.Windows.Forms.MessageBox]::Show("Indice invalido para editar.")
-        return
-    }
-    Abrir-Formulario-Paciente -Paciente $pacientes[$Index] -Index $Index
-}
-
 function Abrir-Formulario-Paciente {
-    param(
-        [PSCustomObject]$Paciente = $null,
-        [int]$Index = -1
-    )
-
     $formAdd = New-Object System.Windows.Forms.Form
-    $formAdd.Text = if ($Paciente) { "Editar Paciente" } else { "Adicionar Paciente" }
+    $formAdd.Text = "Adicionar Paciente"
     $formAdd.Size = New-Object System.Drawing.Size(300,350)
     $formAdd.StartPosition = "CenterScreen"
 
@@ -132,11 +102,6 @@ function Abrir-Formulario-Paciente {
         $txt = New-Object System.Windows.Forms.TextBox
         $txt.Location = [System.Drawing.Point]::new(10, ($i * 40) + 30)
         $txt.Size = [System.Drawing.Size]::new(260, 20)
-
-        if ($Paciente) {
-            $prop = $labels[$i]
-            $txt.Text = $Paciente.$prop
-        }
 
         $formAdd.Controls.Add($lbl)
         $formAdd.Controls.Add($txt)
@@ -169,12 +134,7 @@ function Abrir-Formulario-Paciente {
             Endereco = $endereco
         }
 
-        if ($Index -ge 0) {
-            $pacientes[$Index] = $novoPaciente
-        }
-        else {
-            $pacientes += $novoPaciente
-        }
+        $pacientes += $novoPaciente
 
         Salvar-Pacientes $pacientes
 
@@ -187,13 +147,13 @@ function Abrir-Formulario-Paciente {
 }
 
 function Excluir-Paciente {
-    [System.Windows.Forms.MessageBox]::Show("Use o botao 'Excluir' na lista de pacientes para remover.")
+    [System.Windows.Forms.MessageBox]::Show("Use o botão 'Excluir' na lista de pacientes para remover.")
 }
 
 # Janela principal do menu paciente
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Menu de Pacientes"
-$form.Size = New-Object System.Drawing.Size(400,300)
+$form.Size = New-Object System.Drawing.Size(400,250)
 $form.StartPosition = "CenterScreen"
 
 $btn1 = New-Object System.Windows.Forms.Button
@@ -208,28 +168,20 @@ $btn2.Size = New-Object System.Drawing.Size(300,40)
 $btn2.Location = New-Object System.Drawing.Point(50,80)
 $btn2.Add_Click({ Adicionar-Paciente })
 
-$btn3 = New-Object System.Windows.Forms.Button
-$btn3.Text = "3. Editar Paciente"
-$btn3.Size = New-Object System.Drawing.Size(300,40)
-$btn3.Location = New-Object System.Drawing.Point(50,130)
-$btn3.Add_Click({ 
-    [System.Windows.Forms.MessageBox]::Show("Para editar, use o botao 'Editar' na lista de pacientes.")
-})
-
 $btn4 = New-Object System.Windows.Forms.Button
-$btn4.Text = "4. Excluir Paciente"
+$btn4.Text = "3. Excluir Paciente"
 $btn4.Size = New-Object System.Drawing.Size(300,40)
-$btn4.Location = New-Object System.Drawing.Point(50,180)
+$btn4.Location = New-Object System.Drawing.Point(50,130)
 $btn4.Add_Click({ 
-    [System.Windows.Forms.MessageBox]::Show("Para excluir, use o botao 'Excluir' na lista de pacientes.")
+    [System.Windows.Forms.MessageBox]::Show("Para excluir, use o botão 'Excluir' na lista de pacientes.")
 })
 
 $btnBack = New-Object System.Windows.Forms.Button
 $btnBack.Text = "Voltar"
 $btnBack.Size = New-Object System.Drawing.Size(300,40)
-$btnBack.Location = New-Object System.Drawing.Point(50,230)
+$btnBack.Location = New-Object System.Drawing.Point(50,180)
 $btnBack.Add_Click({ $form.Close() })
 
-$form.Controls.AddRange(@($btn1, $btn2, $btn3, $btn4, $btnBack))
+$form.Controls.AddRange(@($btn1, $btn2, $btn4, $btnBack))
 
 [void]$form.ShowDialog()
