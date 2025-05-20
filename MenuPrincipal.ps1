@@ -38,12 +38,12 @@ $btn3 = New-Object System.Windows.Forms.Button
 $btn3.Text = "3. Receita Medica"
 $btn3.Size = New-Object System.Drawing.Size(300,40)
 $btn3.Location = New-Object System.Drawing.Point(50,130)
-$btn3.Add_Click({ Registrar-ReceitaMedica })
+$btn3.Add_Click({ ReceitaMedica })
 
 $btn4 = New-Object System.Windows.Forms.Button
 $btn4.Text = "4. Sair"
 $btn4.Size = New-Object System.Drawing.Size(300,40)
-$btn4.Location = New-Object System.Drawing.Point(50,230)
+$btn4.Location = New-Object System.Drawing.Point(50,180)
 $btn4.Add_Click({ $form.Close() })
 
 $form.Controls.AddRange(@($btn1, $btn2, $btn3, $btn4))
