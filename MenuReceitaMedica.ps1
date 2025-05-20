@@ -49,7 +49,7 @@ function Registrar-Receita {
     $cbPaciente.Location = [System.Drawing.Point]::new(140, 20)
     $cbPaciente.Size = New-Object System.Drawing.Size(200, 25)
     $cbPaciente.DropDownStyle = "DropDownList"
-    $pacientes | ForEach-Object { $cbPaciente.Items.Add("$_($($_.id)) - $($_.nome)") }
+    $pacientes | ForEach-Object { $cbPaciente.Items.Add("($($_.id)) - $($_.nome)") }
 
     # Label e ComboBox para Doutor
     $lblDoutor = New-Object System.Windows.Forms.Label
@@ -61,10 +61,10 @@ function Registrar-Receita {
     $cbDoutor.Location = [System.Drawing.Point]::new(140, 70)
     $cbDoutor.Size = New-Object System.Drawing.Size(200, 25)
     $cbDoutor.DropDownStyle = "DropDownList"
-    $doutores | ForEach-Object { $cbDoutor.Items.Add("$_($($_.id)) - $($_.nome)") }
+    $doutores | ForEach-Object { $cbDoutor.Items.Add("($($_.id)) - $($_.nome)") }
 
     # Campos de texto restantes
-    $labels = @("Data (AAAA-MM-DD)", "Medicamento", "Dosagem", "Instruções")
+    $labels = @("Data (AAAA-MM-DD)", "Medicamento", "Dosagem", "Instrucoes")
     $inputs = @()
     for ($i = 0; $i -lt $labels.Length; $i++) {
         $label = New-Object System.Windows.Forms.Label
@@ -89,7 +89,7 @@ function Registrar-Receita {
         if ($cbPaciente.SelectedIndex -lt 0 -or $cbDoutor.SelectedIndex -lt 0 -or
             [string]::IsNullOrWhiteSpace($inputs[0].Text) -or
             [string]::IsNullOrWhiteSpace($inputs[1].Text)) {
-            [System.Windows.Forms.MessageBox]::Show("Preencha os campos obrigatórios.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            [System.Windows.Forms.MessageBox]::Show("Preencha os campos obrigatorios.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
             return
         }
 
@@ -128,7 +128,7 @@ function Imprimir-Receita {
     $formPrint.StartPosition = "CenterScreen"
 
     $lbl = New-Object System.Windows.Forms.Label
-    $lbl.Text = "Digite o ID da Receita para impressão:"
+    $lbl.Text = "Digite o ID da Receita para impressao:"
     $lbl.Location = New-Object System.Drawing.Point(10, 20)
     $lbl.Size = New-Object System.Drawing.Size(320, 20)
 
@@ -144,7 +144,7 @@ function Imprimir-Receita {
     $btnPrint.Add_Click({
         $idBusca = $txtID.Text.Trim()
         if (-not [int]::TryParse($idBusca, [ref]$null)) {
-            [System.Windows.Forms.MessageBox]::Show("Informe um ID válido (número).", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            [System.Windows.Forms.MessageBox]::Show("Informe um ID valido (número).", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
             return
         }
 
@@ -155,7 +155,7 @@ function Imprimir-Receita {
         $receita = $receitas | Where-Object { $_.id -eq [int]$idBusca }
 
         if ($null -eq $receita) {
-            [System.Windows.Forms.MessageBox]::Show("Receita não encontrada.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            [System.Windows.Forms.MessageBox]::Show("Receita nao encontrada.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
             return
         }
 
@@ -177,7 +177,7 @@ Data:           $($receita.data)
 Medicamento:    $($receita.medicamento)
 Dosagem:        $($receita.dosagem)
 
-Instruções:
+Instrucoes:
 $($receita.instrucoes)
 "@
 
