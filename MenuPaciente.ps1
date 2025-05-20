@@ -1,39 +1,34 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+# Caminho para o arquivo JSON
 $global:arquivoJson = "$PSScriptRoot\pacientes.json"
 
-# Função para carregar pacientes
+# Função para carregar pacientes do JSON como array
 function Carregar-Pacientes {
     if (Test-Path $global:arquivoJson) {
         $dados = Get-Content $global:arquivoJson -Raw | ConvertFrom-Json
         if ($dados -is [System.Collections.IEnumerable] -and $dados -isnot [string]) {
-            return @($dados)
+            return @($dados) | ForEach-Object { $_ }
         } else {
-            return ,$dados
+            return @(@{ 
+                Nome = $dados.Nome
+                Idade = $dados.Idade
+                Telefone = $dados.Telefone
+                Email = $dados.Email
+                Endereco = $dados.Endereco
+            })
         }
     }
     return @()
 }
 
-# Função para salvar pacientes
-function Salvar-Pacientes {
-    param([array]$pacientes)
-
-    $pacientesObj = foreach ($p in $pacientes) {
-        [PSCustomObject]@{
-            Nome     = $p.Nome
-            Idade    = $p.Idade
-            Telefone = $p.Telefone
-            Email    = $p.Email
-            Endereco = $p.Endereco
-        }
-    }
-
-    $pacientesObj | ConvertTo-Json -Depth 3 | Set-Content $global:arquivoJson
+# Função para salvar pacientes no JSON
+function Salvar-Pacientes($pacientes) {
+    $pacientes | ConvertTo-Json -Depth 3 | Set-Content $global:arquivoJson
 }
 
-# Função para abrir formulário para adicionar ou editar paciente
+# Formulário para adicionar/editar pacientes
 function Abrir-Formulario-Paciente {
     param(
         [PSCustomObject]$Paciente,
@@ -89,14 +84,12 @@ function Abrir-Formulario-Paciente {
 
         $pacientes = Carregar-Pacientes
         if ($Index -ge 0) {
-            $lista = @($pacientes)
-            $lista[$Index] = $novoPaciente
-            Salvar-Pacientes $lista
+            $pacientes[$Index] = $novoPaciente
         } else {
             $pacientes += $novoPaciente
-            Salvar-Pacientes $pacientes
         }
 
+        Salvar-Pacientes $pacientes
         [System.Windows.Forms.MessageBox]::Show("Paciente salvo com sucesso!")
         $formAdd.Close()
     })
@@ -105,23 +98,25 @@ function Abrir-Formulario-Paciente {
     $formAdd.ShowDialog()
 }
 
+# Função para listar pacientes
 function Listar-Pacientes {
     $pacientes = Carregar-Pacientes
     $mensagem = if ($pacientes.Count -eq 0) {
-        "Nenhum paciente encontrado."
+        "Nenhum paciente cadastrado."
     } else {
         ($pacientes | ForEach-Object {
-            "Nome: $($_.Nome)`nIdade: $($_.Idade)`nTelefone: $($_.Telefone)`nEmail: $($_.Email)`nEndereço: $($_.Endereco)`n`n"
+            "$($_.Nome) - $($_.Idade) anos - $($_.Telefone)"
         }) -join "`n"
     }
-
     [System.Windows.Forms.MessageBox]::Show($mensagem, "Lista de Pacientes")
 }
 
+# Função para adicionar paciente
 function Adicionar-Paciente {
     Abrir-Formulario-Paciente
 }
 
+# Função para editar paciente
 function Editar-Paciente {
     $pacientes = Carregar-Pacientes
     if ($pacientes.Count -eq 0) {
@@ -129,14 +124,35 @@ function Editar-Paciente {
         return
     }
 
-    $input = [System.Windows.Forms.Interaction]::InputBox("Informe o número do paciente (0 a $($pacientes.Count - 1)):", "Editar Paciente", "0")
-    if ([int]::TryParse($input, [ref]$idx) -and $idx -ge 0 -and $idx -lt $pacientes.Count) {
-        Abrir-Formulario-Paciente -Paciente $pacientes[$idx] -Index $idx
-    } else {
-        [System.Windows.Forms.MessageBox]::Show("Índice inválido.")
-    }
+    $opcoes = $pacientes | ForEach-Object { "$($_.Nome) - $($_.Telefone)" }
+    $selecionado = [System.Windows.Forms.ComboBox]::new()
+    $selecionado.Width = 260
+    $opcoes | ForEach-Object { $selecionado.Items.Add($_) } 
+    $selecionado.SelectedIndex = 0
+
+    $formSel = New-Object System.Windows.Forms.Form
+    $formSel.Text = "Selecionar Paciente"
+    $formSel.Size = New-Object System.Drawing.Size(300,150)
+    $formSel.StartPosition = "CenterScreen"
+
+    $formSel.Controls.Add($selecionado)
+    $selecionado.Location = [System.Drawing.Point]::new(10, 20)
+
+    $btnOk = New-Object System.Windows.Forms.Button
+    $btnOk.Text = "Editar"
+    $btnOk.Size = New-Object System.Drawing.Size(260,30)
+    $btnOk.Location = New-Object System.Drawing.Point(10,60)
+    $btnOk.Add_Click({
+        $index = $selecionado.SelectedIndex
+        $formSel.Close()
+        Abrir-Formulario-Paciente -Paciente $pacientes[$index] -Index $index
+    })
+
+    $formSel.Controls.Add($btnOk)
+    $formSel.ShowDialog()
 }
 
+# Função para excluir paciente
 function Excluir-Paciente {
     $pacientes = Carregar-Pacientes
     if ($pacientes.Count -eq 0) {
@@ -144,21 +160,43 @@ function Excluir-Paciente {
         return
     }
 
-    $input = [System.Windows.Forms.Interaction]::InputBox("Informe o número do paciente (0 a $($pacientes.Count - 1)):", "Excluir Paciente", "0")
-    if ([int]::TryParse($input, [ref]$idx) -and $idx -ge 0 -and $idx -lt $pacientes.Count) {
-        $pacientes = @($pacientes)
-        $pacientes = $pacientes[0..($idx - 1)] + $pacientes[($idx + 1)..($pacientes.Count - 1)]
-        Salvar-Pacientes $pacientes
-        [System.Windows.Forms.MessageBox]::Show("Paciente excluído com sucesso.")
-    } else {
-        [System.Windows.Forms.MessageBox]::Show("Índice inválido.")
-    }
+    $opcoes = $pacientes | ForEach-Object { "$($_.Nome) - $($_.Telefone)" }
+    $selecionado = [System.Windows.Forms.ComboBox]::new()
+    $selecionado.Width = 260
+    $opcoes | ForEach-Object { $selecionado.Items.Add($_) }
+    $selecionado.SelectedIndex = 0
+
+    $formSel = New-Object System.Windows.Forms.Form
+    $formSel.Text = "Excluir Paciente"
+    $formSel.Size = New-Object System.Drawing.Size(300,150)
+    $formSel.StartPosition = "CenterScreen"
+
+    $formSel.Controls.Add($selecionado)
+    $selecionado.Location = [System.Drawing.Point]::new(10, 20)
+
+    $btnDel = New-Object System.Windows.Forms.Button
+    $btnDel.Text = "Excluir"
+    $btnDel.Size = New-Object System.Drawing.Size(260,30)
+    $btnDel.Location = New-Object System.Drawing.Point(10,60)
+    $btnDel.Add_Click({
+        $index = $selecionado.SelectedIndex
+        $confirm = [System.Windows.Forms.MessageBox]::Show("Tem certeza que deseja excluir?", "Confirmar", "YesNo")
+        if ($confirm -eq "Yes") {
+            $pacientes = $pacientes | Where-Object { $_ -ne $pacientes[$index] }
+            Salvar-Pacientes $pacientes
+            [System.Windows.Forms.MessageBox]::Show("Paciente excluído com sucesso.")
+        }
+        $formSel.Close()
+    })
+
+    $formSel.Controls.Add($btnDel)
+    $formSel.ShowDialog()
 }
 
-# Tela principal
+# Menu principal
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Menu de Pacientes"
-$form.Size = New-Object System.Drawing.Size(400, 300)
+$form.Size = New-Object System.Drawing.Size(400, 350)
 $form.StartPosition = "CenterScreen"
 
 $btn1 = New-Object System.Windows.Forms.Button
