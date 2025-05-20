@@ -33,7 +33,8 @@ function Listar-Pacientes {
     $listView.MultiSelect = $false
     $listView.Size = New-Object System.Drawing.Size(580, 350)
     $listView.Location = New-Object System.Drawing.Point(10, 10)
-
+    
+    $listView.Columns.Add("ID", 200) | Out-Null
     $listView.Columns.Add("Nome", 150) | Out-Null
     $listView.Columns.Add("Idade", 50) | Out-Null
     $listView.Columns.Add("Telefone", 120) | Out-Null
@@ -41,12 +42,12 @@ function Listar-Pacientes {
     $listView.Columns.Add("Endereco", 200) | Out-Null
 
     foreach ($paciente in $pacientes) {
-        $item = New-Object System.Windows.Forms.ListViewItem($paciente.Nome)
-        $item.SubItems.Add($paciente.Idade) | Out-Null
+        $item = New-Object System.Windows.Forms.ListViewItem($paciente.ID)
+        $item.SubItems.Add($paciente.Nome)     | Out-Null
+        $item.SubItems.Add($paciente.Idade)    | Out-Null
         $item.SubItems.Add($paciente.Telefone) | Out-Null
-        $item.SubItems.Add($paciente.Email) | Out-Null
+        $item.SubItems.Add($paciente.Email)    | Out-Null
         $item.SubItems.Add($paciente.Endereco) | Out-Null
-        $listView.Items.Add($item) | Out-Null
     }
 
     $btnClose = New-Object System.Windows.Forms.Button
@@ -70,7 +71,7 @@ function Listar-Pacientes {
             $pacientes = Carregar-Pacientes
             $pacientes = $pacientes | Where-Object { $_ -ne $pacientes[$index] }
             Salvar-Pacientes $pacientes
-            [System.Windows.Forms.MessageBox]::Show("Paciente excluido com sucesso.")
+            [System.Windows.Forms.MessageBox]::Show("Paciente excluído com sucesso.")
             $formList.Close()
             Listar-Pacientes
         }
@@ -127,6 +128,7 @@ function Abrir-Formulario-Paciente {
         $pacientes = Carregar-Pacientes
 
         $novoPaciente = [PSCustomObject]@{
+            ID       = [guid]::NewGuid().ToString()
             Nome     = $nome
             Idade    = $idade
             Telefone = $telefone
