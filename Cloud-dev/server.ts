@@ -33,10 +33,11 @@ export class Server{
 
     private readonly port: number;
     private readonly dbConfig = {
-        host: process.env.DB_HOST ?? 'http://127.0.0.1',
-        user: process.env.DB_USER ?? 'root',
-        password: process.env.DB_PASSWORD ?? '6z2h1j3k9F!',
-        database: process.env.DB_NAME ?? 'secretaria_virtual',
+        host: process.env.DB_HOST, // <-- aqui está o erro
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        port: parseInt(process.env.DB_PORT || '3306'),
         connectTimeout: 10000,
     }
 
