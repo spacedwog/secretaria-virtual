@@ -155,7 +155,7 @@ function Imprimir-Receita {
 
         $receitas = Load-JsonData "prescriptions.json"
         $pacientes = Load-JsonData "pacientes.json"
-        $doutores = Load-JsonData "doutores.json"
+        $doutores = Load-JsonData "doctors.json"
 
         $receita = $receitas | Where-Object { $_.id -eq [int]$idBusca }
 
