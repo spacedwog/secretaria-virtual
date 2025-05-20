@@ -32,13 +32,13 @@ export class Server{
     private readonly app: express.Express;
 
     private readonly port: number;
-    /*private readonly dbConfig = {
+    private readonly dbConfig = {
         host: process.env.DB_HOST ?? '127.0.0.1',
         user: process.env.DB_USER ?? 'root',
         password: process.env.DB_PASSWORD ?? '6z2h1j3k9F!',
         database: process.env.DB_NAME ?? 'secretaria_virtual',
         connectTimeout: 10000,
-    }*/
+    }
 
     private connection!: mysql.Connection;
     private pingInterval!: NodeJS.Timeout;
@@ -195,10 +195,10 @@ export class Server{
                                             appointment_date, appointment_time,
                                             reason, status });
 
-            /*this.connection.query(
+            this.connection.query(
                 'CALL make_appointment(?, ?, ?, ?, ?, ?, ?)',
                 [appointment_date, appointment_time, reason, status, id_paciente, id_medico, nome_consulta_medica]
-            );*/
+            );
             res.status(200).json({ message: 'Dados recebidos com sucesso!' });
         });
 
@@ -209,7 +209,7 @@ export class Server{
     private async connectToDatabase() {
 
         try {
-            //this.connection = await mysql.createConnection(this.dbConfig);
+            this.connection = await mysql.createConnection(this.dbConfig);
             const params = {
                 function: "connectToDatabase()",
                 mensagem: "Conexao com o banco de dados estabelecida!",
@@ -219,10 +219,10 @@ export class Server{
             runPowerShellScriptInThread(scriptPath, params);
             console.log('Conexão com o banco de dados estabelecida!');
 
-            /*this.pingInterval = setInterval(() => {
+            this.pingInterval = setInterval(() => {
                 this.connection.ping().then(() => console.log('Ping ao banco de dados.')).catch(console.error);
                 
-            }, 10000);*/
+            }, 10000);
         }
         catch (error) {
             console.error('Erro ao conectar ao banco de dados:', error);
@@ -234,7 +234,7 @@ export class Server{
     private async viewMedicInfo(req: Request, res: Response) {
         try{
 
-            /*const select = "SELECT med_code, nome_do_medicamento, tipo_do_medicamento, dosagem_do_medicamento, frequencia_de_administracao, duracao_da_administracao, observacoes_do_medicamento, DATE_FORMAT(data_da_prescricao, '%d/%M/%Y') AS data_da_prescricao ";
+            const select = "SELECT med_code, nome_do_medicamento, tipo_do_medicamento, dosagem_do_medicamento, frequencia_de_administracao, duracao_da_administracao, observacoes_do_medicamento, DATE_FORMAT(data_da_prescricao, '%d/%M/%Y') AS data_da_prescricao ";
             const tabela = "FROM medicamento_info ";
             let condicao = "";
             if(this.getKey()!= ""){
@@ -254,7 +254,7 @@ export class Server{
                 duracao_da_administracao: string;
                 observacoes_do_medicamento: string;
                 data_da_prescricao: string | null;
-            }>;*/
+            }>;
             let css = `
                         <style>
                             table { width: 100%; border-collapse: collapse; }
@@ -376,7 +376,7 @@ export class Server{
     private async viewWebsite(req: Request, res: Response) {
 
         try{
-            /*const query = `SELECT nome_consulta_medica, patient_name, DATE_FORMAT(appointment_date, '%d/%M/%Y') as appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view ORDER BY appointment_date, appointment_time ASC;`;
+            const query = `SELECT nome_consulta_medica, patient_name, DATE_FORMAT(appointment_date, '%d/%M/%Y') as appointment_date, appointment_time, status, doctor_name FROM patient_appointments_view ORDER BY appointment_date, appointment_time ASC;`;
             const [rows] = await this.connection.query(query);
     
             const appointment = rows as Array<{
@@ -386,7 +386,7 @@ export class Server{
                 appointment_time: string | null;
                 status: string;
                 doctor_name: string;
-            }>;*/
+            }>;
 
             let html = `
                 <!DOCTYPE html>
@@ -503,7 +503,7 @@ export class Server{
 
     private async getPacientes(req: Request, res: Response) {
         try {
-            /*const query = `SELECT patient_id, name, age, phone, email, address, DATE_FORMAT(visit_date, '%d/%M/%Y') AS visit_date, visit_time from pacient_view;`;
+            const query = `SELECT patient_id, name, age, phone, email, address, DATE_FORMAT(visit_date, '%d/%M/%Y') AS visit_date, visit_time from pacient_view;`;
             const [rows] = await this.connection.query(query);
 
             const pacientes = rows as Array<{
@@ -515,7 +515,7 @@ export class Server{
                 address: string | null;
                 visit_date: string | null;
                 visit_time: string | null;
-            }>;*/
+            }>;
 
             let html = `
                 <!DOCTYPE html>
@@ -632,7 +632,7 @@ export class Server{
 
     private async getReceita_medica(req: Request, res: Response) {
         try {
-            /*const query = `SELECT id_medicamento, nome_paciente, nome_medicamento, DATE_FORMAT(data_prescricao, '%d/%M/%Y') as data_prescricao, dosagem, frequencia, duracao, observacoes, nome_medico FROM vw_receitas_detalhadas;`;
+            const query = `SELECT id_medicamento, nome_paciente, nome_medicamento, DATE_FORMAT(data_prescricao, '%d/%M/%Y') as data_prescricao, dosagem, frequencia, duracao, observacoes, nome_medico FROM vw_receitas_detalhadas;`;
             const [rows] = await this.connection.query(query);
 
             const receitas = rows as Array<{
@@ -645,7 +645,7 @@ export class Server{
                 duracao: string;
                 observacoes: string | null;
                 nome_medico: string;
-            }>;*/
+            }>;
 
             let html = `
                 <!DOCTYPE html>
@@ -774,11 +774,11 @@ export class Server{
     private async initialize() {
 
         try{
-            /*await this.connectToDatabase();
+            await this.connectToDatabase();
 
             this.connection.query(
                 'CALL conclude_appointment()'
-            );*/
+            );
     
             const startServer = (port: number) => {
                 this.app.listen(port, () => {
