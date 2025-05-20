@@ -6,7 +6,7 @@
   "target": "ESNext",
   "type": "module",
   "scripts": {
-    "start": "npx kill-port 3000 && npx tsx Cloud-dev/server.ts",
+    "start": "npx kill-port 3000 && npx ts-node Cloud-dev/server.ts",
     "test": "jest",
     "dev": "nodemon Cloud-dev/server.ts",
     "build": "webpack",
@@ -94,7 +94,7 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.4",
-    "typescript": "^5.7.3",
+    "typescript": "^5.8.3",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
