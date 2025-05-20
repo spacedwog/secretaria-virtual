@@ -172,7 +172,7 @@ function Imprimir-Receita {
         if (-not $doutorNome) { $doutorNome = "Desconhecido" }
 
         $info = @"
-RECEITA MÉDICA
+RECEITA MEDICA
 
 ID Receita:     $($receita.id)
 Paciente:       $pacienteNome (ID: $($receita.paciente_id))
