@@ -1,20 +1,34 @@
 ﻿[
     {
-        "id":  1,
-        "data":  "2025-02-15",
-        "instrucoes":  "Guardar em um lugar arejado",
-        "doutor_id":  1,
-        "medicamento":  "Hidantal",
-        "dosagem":  "20mg",
-        "paciente_id":  1
+        "value":  [
+                      {
+                          "id":  1,
+                          "data":  "2025-02-15",
+                          "instrucoes":  "Guardar em um lugar arejado",
+                          "doutor_id":  1,
+                          "medicamento":  "Hidantal",
+                          "dosagem":  "20mg",
+                          "paciente_id":  1
+                      },
+                      {
+                          "id":  2,
+                          "paciente_id":  1,
+                          "doutor_id":  1,
+                          "data":  "2025-07-20",
+                          "medicamento":  "Neural",
+                          "dosagem":  "20MG",
+                          "instrucoes":  "Guardar em um lugar arejado"
+                      }
+                  ],
+        "Count":  2
     },
     {
-        "id":  2,
+        "id":  1,
         "paciente_id":  1,
         "doutor_id":  1,
-        "data":  "2025-07-20",
+        "data":  "Teste",
         "medicamento":  "Neural",
-        "dosagem":  "20MG",
-        "instrucoes":  "Guardar em um lugar arejado"
+        "dosagem":  "20mg",
+        "instrucoes":  "Guardar em um lugar isolado"
     }
 ]
