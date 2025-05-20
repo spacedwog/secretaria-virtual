@@ -175,7 +175,7 @@ function Imprimir-Receita {
 <html>
 <head>
     <meta charset='UTF-8'>
-    <title>Receita Médica - ID $($receita.id)</title>
+    <title>Receita Medica - ID $($receita.id)</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
         h1 { color: #2E86C1; }
@@ -185,7 +185,7 @@ function Imprimir-Receita {
     </style>
 </head>
 <body>
-    <h1>Receita Médica</h1>
+    <h1>Receita Medica</h1>
     <div class='section'><span class='label'>ID Receita:</span> $($receita.id)</div>
     <div class='section'><span class='label'>Paciente:</span> $pacienteNome (ID: $($receita.paciente_id))</div>
     <div class='section'><span class='label'>Doutor:</span> $doutorNome (ID: $($receita.doutor_id))</div>
@@ -193,7 +193,7 @@ function Imprimir-Receita {
     <div class='section'><span class='label'>Medicamento:</span> $($receita.medicamento)</div>
     <div class='section'><span class='label'>Dosagem:</span> $($receita.dosagem)</div>
     <div class='section'>
-        <span class='label'>Instruções:</span><br>
+        <span class='label'>Instrucoes:</span><br>
         <div class='instructions'>$($receita.instrucoes)</div>
     </div>
 </body>
@@ -204,7 +204,7 @@ function Imprimir-Receita {
         $htmlContent | Out-File -FilePath $filePath -Encoding UTF8
         Start-Process $filePath
 
-        [System.Windows.Forms.MessageBox]::Show("Relatório HTML gerado com sucesso: $filePath", "Sucesso", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
+        [System.Windows.Forms.MessageBox]::Show("Relatorio HTML gerado com sucesso: $filePath", "Sucesso", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
 
         $formPrint.Close()
     })
