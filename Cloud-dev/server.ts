@@ -883,14 +883,11 @@ function runPowerShellScriptInThread(scriptPath: string, params: Record<string, 
         });
     } else {
         // Código que será executado na thread
-        const { scriptPath, params } = workerData ?? {};
+        const { scriptPath, params = {} } = workerData ?? {};
 
-        // Aqui, fazemos uma simulação de execução do PowerShell.
-        // Substitua esse código por sua lógica interna para rodar PowerShell sem `child_process`.
         const args = Object.entries(params).map(([key, value]) => `-${key} "${value}"`).join(" ");
         const simulatedOutput = `Simulando execução de PowerShell com o script: ${scriptPath} e parâmetros: ${args}`;
         
-        // Passa a saída para o thread principal
         parentPort?.postMessage(simulatedOutput);
     }
 }
