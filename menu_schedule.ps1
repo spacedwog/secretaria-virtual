@@ -24,12 +24,12 @@ function AddDoctor {
     for ($i = 0; $i -lt $labels.Length; $i++) {
         $label = New-Object System.Windows.Forms.Label
         $label.Text = "$($labels[$i]):"
-        $label.Location = New-Object System.Drawing.Point(10, 20 + ($i * 30))
+        $label.Location = [System.Drawing.Point]::new(10, 20 + ($i * 30))
         $label.Size = New-Object System.Drawing.Size(100, 20)
         $inputForm.Controls.Add($label)
 
         $textBox = New-Object System.Windows.Forms.TextBox
-        $textBox.Location = New-Object System.Drawing.Point(110, 20 + ($i * 30))
+        $txtBox.Location = [System.Drawing.Point]::new(110, 20 + ($i * 30))
         $textBox.Size = New-Object System.Drawing.Size(150, 20)
         $inputForm.Controls.Add($textBox)
 
