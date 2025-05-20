@@ -9,9 +9,15 @@ function Carregar-Pacientes {
     if (Test-Path $global:arquivoJson) {
         $dados = Get-Content $global:arquivoJson -Raw | ConvertFrom-Json
         if ($dados -is [System.Collections.IEnumerable] -and $dados -isnot [string]) {
-            return @($dados)
+            return @($dados) | ForEach-Object { $_ }
         } else {
-            return ,$dados
+            return @(@{ 
+                Nome = $dados.Nome
+                Idade = $dados.Idade
+                Telefone = $dados.Telefone
+                Email = $dados.Email
+                Endereco = $dados.Endereco
+            })
         }
     }
     return @()
