@@ -1,0 +1,9 @@
+﻿{
+    "id":  1,
+    "data":  "2025-02-15",
+    "instrucoes":  "Guardar em um lugar arejado",
+    "doutor_id":  11,
+    "medicamento":  "Hidantal",
+    "dosagem":  "20mg",
+    "paciente_id":  11
+}

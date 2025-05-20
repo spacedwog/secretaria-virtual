@@ -148,22 +148,37 @@ function Imprimir-Receita {
             return
         }
 
-        $data = Load-JsonData "prescriptions.json"
-        $receita = $data | Where-Object { $_.id -eq [int]$idBusca }
+        $receitas = Load-JsonData "prescriptions.json"
+        $pacientes = Load-JsonData "pacientes.json"
+        $doutores = Load-JsonData "doutores.json"
+
+        $receita = $receitas | Where-Object { $_.id -eq [int]$idBusca }
 
         if ($null -eq $receita) {
             [System.Windows.Forms.MessageBox]::Show("Receita não encontrada.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
             return
         }
 
+        # Buscar nomes
+        $pacienteNome = ($pacientes | Where-Object { $_.id -eq $receita.paciente_id }).nome
+        if (-not $pacienteNome) { $pacienteNome = "Desconhecido" }
+
+        $doutorNome = ($doutores | Where-Object { $_.id -eq $receita.doutor_id }).nome
+        if (-not $doutorNome) { $doutorNome = "Desconhecido" }
+
         $info = @"
-Receita ID: $($receita.id)
-Paciente ID: $($receita.paciente_id)
-Doutor ID: $($receita.doutor_id)
-Data: $($receita.data)
-Medicamento: $($receita.medicamento)
-Dosagem: $($receita.dosagem)
-Instruções: $($receita.instrucoes)
+RECEITA MÉDICA
+
+ID Receita:     $($receita.id)
+Paciente:       $pacienteNome (ID: $($receita.paciente_id))
+Doutor:         $doutorNome (ID: $($receita.doutor_id))
+Data:           $($receita.data)
+
+Medicamento:    $($receita.medicamento)
+Dosagem:        $($receita.dosagem)
+
+Instruções:
+$($receita.instrucoes)
 "@
 
         [System.Windows.Forms.MessageBox]::Show($info, "Detalhes da Receita", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
