@@ -18,7 +18,7 @@ function Load-JsonData($filePath) {
 }
 
 function ListAppointments {
-    $file = "appointments.json"
+    $file = "./data/appointments.json"
     $data = Load-JsonData $file
     if ($data.Count -eq 0) {
         [System.Windows.Forms.MessageBox]::Show("Nenhuma consulta encontrada.")
