@@ -891,4 +891,4 @@ function runPowerShellScriptInThread(scriptPath: string, params: Record<string, 
     }
 }
 
-new Server(8080);
+new Server(3000);

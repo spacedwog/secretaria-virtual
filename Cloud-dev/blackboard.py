@@ -23,7 +23,7 @@ class UserProfile:
 contador = 0
 class Blackboard:
     """Classe principal para gerenciamento do sistema Blackboard."""
-    def __init__(self, serial_port="COM4", baud_rate=9600, server_url="http://localhost:3000", db_name="secretaria_virtual"):
+    def __init__(self, serial_port="COM3", baud_rate=9600, server_url="http://localhost:3000", db_name="secretaria_virtual"):
         self.data = {}
         self.lock = threading.Lock()
         self.led_state = False
