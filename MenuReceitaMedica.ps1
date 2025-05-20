@@ -68,7 +68,7 @@ function Registrar-Receita {
     $cbDoutor.DropDownStyle = "DropDownList"
     $doutores | ForEach-Object { $cbDoutor.Items.Add("($($_.id)) - $($_.nome)") }
 
-    # Campos de texto restantes
+    # Campos de texto: Data, Medicamento, Dosagem, Instrucoes
     $labels = @("Data (AAAA-MM-DD)", "Medicamento", "Dosagem", "Instrucoes")
     $inputs = @()
     for ($i = 0; $i -lt $labels.Length; $i++) {
@@ -98,17 +98,21 @@ function Registrar-Receita {
             return
         }
 
-        $file = "prescriptions.json"
-        $data = @(Load-JsonData $file)
+        # Extrair o ID numérico dos ComboBoxes
+        $pacienteId = [int]($cbPaciente.SelectedItem -split '[()]')[1]
+        $doutorId = [int]($cbDoutor.SelectedItem -split '[()]')[1]
 
-        $receita = @{
+        $file = "prescriptions.json"
+        $data = @(Load-JsonData $file)  # Garante que seja array
+
+        $receita = [PSCustomObject]@{
             id           = Get-NextId -filePath $file
-            paciente_id  = [int]$inputs[0].Text
-            doutor_id    = [int]$inputs[1].Text
-            data         = $inputs[2].Text
-            medicamento  = $inputs[3].Text
-            dosagem      = $inputs[4].Text
-            instrucoes   = $inputs[5].Text
+            paciente_id  = $pacienteId
+            doutor_id    = $doutorId
+            data         = $inputs[0].Text
+            medicamento  = $inputs[1].Text
+            dosagem      = $inputs[2].Text
+            instrucoes   = $inputs[3].Text
         }
 
         $data += $receita
