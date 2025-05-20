@@ -24,9 +24,14 @@ function Save-JsonData {
 
 function Get-NextId {
     param([string]$filePath)
-    $items = Load-JsonData $filePath
-    if ($items.Count -eq 0) { return 1 }
-    return (($items | Measure-Object -Property id -Maximum).Maximum + 1)
+    $items = @(Load-JsonData $filePath)
+
+    # Filtra apenas objetos com id numérico válido
+    $validItems = $items | Where-Object { ($_ -ne $null) -and ($_ | Get-Member -Name "id") -and ([int]::TryParse($_.id.ToString(), [ref]$null)) }
+
+    if ($validItems.Count -eq 0) { return 1 }
+
+    return ($validItems | Measure-Object -Property id -Maximum).Maximum + 1
 }
 
 function Registrar-Receita {
