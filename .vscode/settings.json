@@ -9,5 +9,16 @@
     "java.debug.settings.onBuildFailureProceed": true,
     "terminal.integrated.scrollback": 1000000000,
     "nxConsole.nxWorkspacePath": "",
-    "sqltools.connections": []
+    "sqltools.connections": [],
+    "cSpell.words": [
+        "acessível",
+        "Caminho",
+        "captura",
+        "caso",
+        "chamar",
+        "cloudengine",
+        "começa",
+        "concluído",
+        "Conteúdo"
+    ]
 }
