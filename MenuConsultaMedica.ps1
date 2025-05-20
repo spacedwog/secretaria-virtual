@@ -211,7 +211,7 @@ function ScheduleAppointment {
     $cmbDoutor.DropDownStyle = 'DropDownList'
 
     # Campos restantes (Título, Data, Hora, Motivo, Status)
-    $fields = "Título", "Data (AAAA-MM-DD)", "Hora (HH:MM)", "Motivo", "Status"
+    $fields = "Titulo", "Data (AAAA-MM-DD)", "Hora (HH:MM)", "Motivo", "Status"
     $inputs = @()
 
     for ($i = 0; $i -lt $fields.Length; $i++) {
@@ -267,7 +267,7 @@ function ScheduleAppointment {
         if ([string]::IsNullOrWhiteSpace($inputs[0].Text) -or
             [string]::IsNullOrWhiteSpace($inputs[1].Text) -or
             [string]::IsNullOrWhiteSpace($inputs[2].Text)) {
-            [System.Windows.Forms.MessageBox]::Show("Preencha os campos Título, Data e Hora.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            [System.Windows.Forms.MessageBox]::Show("Preencha os campos Titulo, Data e Hora.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
             return
         }
 
