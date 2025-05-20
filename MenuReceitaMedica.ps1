@@ -32,51 +32,82 @@ function Get-NextId {
 function Registrar-Receita {
     $form = New-Object System.Windows.Forms.Form
     $form.Text = "Registrar Receita Medica"
-    $form.Size = New-Object System.Drawing.Size(350, 400)
+    $form.Size = New-Object System.Drawing.Size(380, 430)
     $form.StartPosition = "CenterScreen"
 
-    $labels = @("ID Paciente", "ID Doutor", "Data (AAAA-MM-DD)", "Medicamento", "Dosagem", "Instruções")
-    $inputs = @()
+    # Carregar dados JSON
+    $pacientes = Load-JsonData "pacientes.json"
+    $doutores = Load-JsonData "doctors.json"
 
+    # Label e ComboBox para Paciente
+    $lblPaciente = New-Object System.Windows.Forms.Label
+    $lblPaciente.Text = "Paciente:"
+    $lblPaciente.Location = [System.Drawing.Point]::new(10, 20)
+    $lblPaciente.Size = New-Object System.Drawing.Size(120, 20)
+
+    $cbPaciente = New-Object System.Windows.Forms.ComboBox
+    $cbPaciente.Location = [System.Drawing.Point]::new(140, 20)
+    $cbPaciente.Size = New-Object System.Drawing.Size(200, 25)
+    $cbPaciente.DropDownStyle = "DropDownList"
+    $pacientes | ForEach-Object { $cbPaciente.Items.Add("$_($($_.id)) - $($_.nome)") }
+
+    # Label e ComboBox para Doutor
+    $lblDoutor = New-Object System.Windows.Forms.Label
+    $lblDoutor.Text = "Doutor:"
+    $lblDoutor.Location = [System.Drawing.Point]::new(10, 70)
+    $lblDoutor.Size = New-Object System.Drawing.Size(120, 20)
+
+    $cbDoutor = New-Object System.Windows.Forms.ComboBox
+    $cbDoutor.Location = [System.Drawing.Point]::new(140, 70)
+    $cbDoutor.Size = New-Object System.Drawing.Size(200, 25)
+    $cbDoutor.DropDownStyle = "DropDownList"
+    $doutores | ForEach-Object { $cbDoutor.Items.Add("$_($($_.id)) - $($_.nome)") }
+
+    # Campos de texto restantes
+    $labels = @("Data (AAAA-MM-DD)", "Medicamento", "Dosagem", "Instruções")
+    $inputs = @()
     for ($i = 0; $i -lt $labels.Length; $i++) {
         $label = New-Object System.Windows.Forms.Label
         $label.Text = "$($labels[$i]):"
-        $label.Location = [System.Drawing.Point]::new(10, 20 + ($i * 50))
+        $label.Location = [System.Drawing.Point]::new(10, 120 + ($i * 50))
         $label.Size = New-Object System.Drawing.Size(120, 20)
 
         $textBox = New-Object System.Windows.Forms.TextBox
-        $textBox.Location = [System.Drawing.Point]::new(140, 20 + ($i * 50))
-        $textBox.Size = New-Object System.Drawing.Size(180, 25)
+        $textBox.Location = [System.Drawing.Point]::new(140, 120 + ($i * 50))
+        $textBox.Size = New-Object System.Drawing.Size(200, 25)
 
         $form.Controls.AddRange(@($label, $textBox))
         $inputs += $textBox
     }
 
+    # Botão Registrar
     $btnSave = New-Object System.Windows.Forms.Button
     $btnSave.Text = "Registrar"
-    $btnSave.Size = New-Object System.Drawing.Size(300, 35)
-    $btnSave.Location = New-Object System.Drawing.Point(20, 320)
+    $btnSave.Size = New-Object System.Drawing.Size(330, 35)
+    $btnSave.Location = New-Object System.Drawing.Point(20, 330)
     $btnSave.Add_Click({
-        # Validações básicas
-        if ([string]::IsNullOrWhiteSpace($inputs[0].Text) -or
-            [string]::IsNullOrWhiteSpace($inputs[1].Text) -or
-            [string]::IsNullOrWhiteSpace($inputs[2].Text) -or
-            [string]::IsNullOrWhiteSpace($inputs[3].Text)) {
-            [System.Windows.Forms.MessageBox]::Show("Preencha os campos obrigatórios: ID Paciente, ID Doutor, Data e Medicamento.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+        if ($cbPaciente.SelectedIndex -lt 0 -or $cbDoutor.SelectedIndex -lt 0 -or
+            [string]::IsNullOrWhiteSpace($inputs[0].Text) -or
+            [string]::IsNullOrWhiteSpace($inputs[1].Text)) {
+            [System.Windows.Forms.MessageBox]::Show("Preencha os campos obrigatórios.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
             return
         }
 
         $file = "prescriptions.json"
         $data = Load-JsonData $file
 
+        # Extrair ID selecionado
+        $idPaciente = [int]($cbPaciente.SelectedItem -split '[()]')[1]
+        $idDoutor = [int]($cbDoutor.SelectedItem -split '[()]')[1]
+
         $receita = @{
             id           = Get-NextId -filePath $file
-            paciente_id  = [int]$inputs[0].Text
-            doutor_id    = [int]$inputs[1].Text
-            data         = $inputs[2].Text
-            medicamento  = $inputs[3].Text
-            dosagem      = $inputs[4].Text
-            instrucoes   = $inputs[5].Text
+            paciente_id  = $idPaciente
+            doutor_id    = $idDoutor
+            data         = $inputs[0].Text
+            medicamento  = $inputs[1].Text
+            dosagem      = $inputs[2].Text
+            instrucoes   = $inputs[3].Text
         }
 
         $data += $receita
@@ -86,7 +117,7 @@ function Registrar-Receita {
         $form.Close()
     })
 
-    $form.Controls.Add($btnSave)
+    $form.Controls.AddRange(@($lblPaciente, $cbPaciente, $lblDoutor, $cbDoutor, $btnSave))
     $form.ShowDialog()
 }
 
