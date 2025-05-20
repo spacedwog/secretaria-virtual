@@ -19,12 +19,12 @@ function Adicionar-Paciente {
     for ($i = 0; $i -lt $labels.Length; $i++) {
         $lbl = New-Object System.Windows.Forms.Label
         $lbl.Text = $labels[$i]
-        $lbl.Location = New-Object System.Drawing.Point(10, ($i * 40) + 10)
-        $lbl.Size = New-Object System.Drawing.Size(280, 20)
+        $lbl.Location = [System.Drawing.Point]::new(10, ($i * 40) + 10)
+        $lbl.Size = [System.Drawing.Size]::new(280, 20)
 
         $txt = New-Object System.Windows.Forms.TextBox
-        $txt.Location = New-Object System.Drawing.Point(10, ($i * 40) + 30)
-        $txt.Size = New-Object System.Drawing.Size(260, 20)
+        $txt.Location = [System.Drawing.Point]::new(10, ($i * 40) + 30)
+        $txt.Size = [System.Drawing.Size]::new(260, 20)
 
         $formAdd.Controls.Add($lbl)
         $formAdd.Controls.Add($txt)

@@ -45,7 +45,7 @@ export class DoctorService {
     this._databaseInstance = database;
   }
 
-  static async appoitmentView(): Promise<any[]> {
+  static async appointmentView(): Promise<any[]> {
     try {
       await Database.init(); // Alterado para chamar o método estático diretamente
       const result = await Database.query("SELECT * FROM patient_appointments_view");
@@ -93,7 +93,7 @@ export class DoctorService {
     }
   }
 
-  static async recordSchedule(
+  static async scheduleAppointment(
     patient_id: number,
     doctor_id: number,
     date: string,

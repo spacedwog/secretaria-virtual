@@ -2,22 +2,22 @@ import * as readlineSync from 'readline-sync';
 import { DoctorService } from '../Back-end/doctor.service.ts';
 
 export class MenuSchedule {
-  public async consultaMedica() {
+  public async menuConsultaMedica() {
     let option: string;
 
     do {
-      console.log('\n--- Painel de consulta médica ---');
+      console.log('\n--- Painel de Consulta Médica ---');
       console.log('1. Listar Consultas');
       console.log('2. Adicionar Doutor');
       console.log('3. Registrar Visita');
       console.log('4. Agendar Consulta');
       console.log('v. Voltar');
 
-      option = readlineSync.question('Escolha uma opcao: ');
+      option = readlineSync.question('Escolha uma opção: ');
 
       switch (option) {
         case '1':
-          await this.listAppoitment();
+          await this.listAppointments();
           break;
         case '2':
           await this.addDoctor();
@@ -26,41 +26,35 @@ export class MenuSchedule {
           await this.registerVisit();
           break;
         case '4':
-          await this.recordSchedule();
+          await this.scheduleAppointment();
           break;
         case 'v':
-          console.log('Saindo do sistema...');
+          console.log('Voltando ao menu principal...');
           break;
         default:
-          console.log('Opcao invalida. Tente novamente.');
+          console.log('Opção inválida. Tente novamente.');
       }
     } while (option !== 'v');
   }
 
-  // Listar todos os pacientes
-  private async listAppoitment() {
+  // Listar todas as consultas
+  private async listAppointments() {
     try {
-      const appoitments = await DoctorService.appoitmentView();
+      const appointments = await DoctorService.appointmentView();
       console.log('\n--- Lista de Consultas Médicas ---');
-      appoitments.forEach((appoitment) => {
-        const date = new Date(appoitment.appointment_date).toDateString();
-        const paciente = appoitment.patient_name;
-        const doutor = appoitment.doctor_name;
-        const time = appoitment.appointment_time;
-        const status = appoitment.status;
-
+      appointments.forEach((appointment) => {
         console.table([
           {
-            Paciente: paciente,
-            Doutor: doutor,
-            Data: date,
-            Hora: time,
-            Status: status,
+            Paciente: appointment.patient_name,
+            Doutor: appointment.doctor_name,
+            Data: new Date(appointment.appointment_date).toLocaleDateString(),
+            Hora: appointment.appointment_time,
+            Status: appointment.status,
           },
         ]);
       });
     } catch (err) {
-      console.error('Erro ao listar consultas medicas:', err);
+      console.error('Erro ao listar consultas médicas:', err);
     }
   }
 
@@ -86,24 +80,24 @@ export class MenuSchedule {
       const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
 
       await DoctorService.visitDoctor(patientId, doctorId);
-      console.log('Visita ao consultório medico registrada com sucesso!');
+      console.log('Visita registrada com sucesso!');
     } catch (err) {
       console.error('Erro ao registrar visita:', err);
     }
   }
 
   // Agendar consulta
-  private async recordSchedule() {
+  private async scheduleAppointment() {
     try {
       const patientId = parseInt(readlineSync.question('ID do paciente: '), 10);
       const doctorId = parseInt(readlineSync.question('ID do doutor: '), 10);
-      const nomeConsultaMedica = readlineSync.question('Nome da consulta médica: ');
-      const appoitmentDate = readlineSync.question('Data da consulta (aaaa/mm/dd): ');
-      const appoitmentTime = readlineSync.question('Horario da consulta (hh:mm): ');
+      const title = readlineSync.question('Nome da consulta médica: ');
+      const appointmentDate = readlineSync.question('Data da consulta (AAAA-MM-DD): ');
+      const appointmentTime = readlineSync.question('Horário da consulta (HH:MM): ');
       const reason = readlineSync.question('Motivo da consulta: ');
-      const status = readlineSync.question('Status da consulta (agendado/realizado): ');
+      const status = readlineSync.question('Status (agendado/realizado): ');
 
-      await DoctorService.recordSchedule(patientId, doctorId, appoitmentDate, appoitmentTime, reason, status, nomeConsultaMedica);
+      await DoctorService.scheduleAppointment(patientId, doctorId, appointmentDate, appointmentTime, reason, status, title);
       console.log('Consulta agendada com sucesso!');
     } catch (err) {
       console.error('Erro ao agendar consulta:', err);
