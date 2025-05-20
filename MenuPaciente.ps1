@@ -23,7 +23,7 @@ function Listar-Pacientes {
 
     $formList = New-Object System.Windows.Forms.Form
     $formList.Text = "Lista de Pacientes"
-    $formList.Size = New-Object System.Drawing.Size(600,450)
+    $formList.Size = New-Object System.Drawing.Size(700, 450)
     $formList.StartPosition = "CenterScreen"
 
     $listView = New-Object System.Windows.Forms.ListView
@@ -31,9 +31,9 @@ function Listar-Pacientes {
     $listView.FullRowSelect = $true
     $listView.GridLines = $true
     $listView.MultiSelect = $false
-    $listView.Size = New-Object System.Drawing.Size(580, 350)
+    $listView.Size = New-Object System.Drawing.Size(680, 350)
     $listView.Location = New-Object System.Drawing.Point(10, 10)
-    
+
     $listView.Columns.Add("ID", 200) | Out-Null
     $listView.Columns.Add("Nome", 150) | Out-Null
     $listView.Columns.Add("Idade", 50) | Out-Null
@@ -48,6 +48,7 @@ function Listar-Pacientes {
         $item.SubItems.Add($paciente.Telefone) | Out-Null
         $item.SubItems.Add($paciente.Email)    | Out-Null
         $item.SubItems.Add($paciente.Endereco) | Out-Null
+        $listView.Items.Add($item) | Out-Null
     }
 
     $btnClose = New-Object System.Windows.Forms.Button
@@ -66,10 +67,10 @@ function Listar-Pacientes {
             return
         }
         $index = $listView.SelectedItems[0].Index
-        $confirm = [System.Windows.Forms.MessageBox]::Show("Confirma exclusão do paciente '$($pacientes[$index].Nome)'?", "Confirmação", [System.Windows.Forms.MessageBoxButtons]::YesNo)
+        $pacienteSelecionado = $pacientes[$index]
+        $confirm = [System.Windows.Forms.MessageBox]::Show("Confirma exclusão do paciente '$($pacienteSelecionado.Nome)'?", "Confirmação", [System.Windows.Forms.MessageBoxButtons]::YesNo)
         if ($confirm -eq [System.Windows.Forms.DialogResult]::Yes) {
-            $pacientes = Carregar-Pacientes
-            $pacientes = $pacientes | Where-Object { $_ -ne $pacientes[$index] }
+            $pacientes = $pacientes | Where-Object { $_.ID -ne $pacienteSelecionado.ID }
             Salvar-Pacientes $pacientes
             [System.Windows.Forms.MessageBox]::Show("Paciente excluído com sucesso.")
             $formList.Close()
@@ -137,7 +138,6 @@ function Abrir-Formulario-Paciente {
         }
 
         $pacientes += $novoPaciente
-
         Salvar-Pacientes $pacientes
 
         [System.Windows.Forms.MessageBox]::Show("Paciente salvo com sucesso!")

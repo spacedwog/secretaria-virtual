@@ -17,6 +17,20 @@ function Load-JsonData($filePath) {
     return @()
 }
 
+function Get-NextId {
+    param (
+        [string]$filePath,
+        [string]$idField = "id"
+    )
+    $data = Load-JsonData $filePath
+    if ($data.Count -eq 0) {
+        return 1
+    } else {
+        $ids = $data | ForEach-Object { [int]($_[$idField]) }
+        return ($ids | Measure-Object -Maximum).Maximum + 1
+    }
+}
+
 function ListAppointments {
     $file = "appointments.json"
     $data = Load-JsonData $file
@@ -60,10 +74,11 @@ function AddDoctor {
     $okButton.Location = New-Object System.Drawing.Point(90, 150)
     $okButton.Add_Click({
         $doctor = @{
-            nome         = $boxes[0].Text
-            telefone     = $boxes[1].Text
-            email        = $boxes[2].Text
-            especialidade= $boxes[3].Text
+            id            = Get-NextId -filePath "doctors.json"
+            nome          = $boxes[0].Text
+            telefone      = $boxes[1].Text
+            email         = $boxes[2].Text
+            especialidade = $boxes[3].Text
         }
         $file = "doctors.json"
         $data = Load-JsonData $file
@@ -100,6 +115,7 @@ function RegisterVisit {
     $btn.Location = New-Object System.Drawing.Point(80, 100)
     $btn.Add_Click({
         $visita = @{
+            id          = Get-NextId -filePath "visits.json"
             paciente_id = $txt1.Text
             doutor_id   = $txt2.Text
             timestamp   = (Get-Date).ToString("s")
@@ -145,6 +161,7 @@ function ScheduleAppointment {
     $submitBtn.Location = New-Object System.Drawing.Point(120, 280)
     $submitBtn.Add_Click({
         $appointment = @{
+            id          = Get-NextId -filePath "appointments.json"
             paciente_id = $inputs[0].Text
             doutor_id   = $inputs[1].Text
             titulo      = $inputs[2].Text
