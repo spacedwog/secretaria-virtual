@@ -1,16 +1,87 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+# Carregar DLL iTextSharp
+$dllPath = ".\itextsharp.dll"  # ajuste o caminho se necessário
+Add-Type -Path $dllPath
+
+function ExportarRelatorioPDF {
+    param(
+        [string]$filePath,
+        [string]$titulo,
+        [string[]]$conteudo
+    )
+    
+    $doc = New-Object iTextSharp.text.Document
+    $writer = [iTextSharp.text.pdf.PdfWriter]::GetInstance($doc, [System.IO.File]::Create($filePath))
+    $doc.Open()
+
+    $fontTitle = [iTextSharp.text.FontFactory]::GetFont("Arial", 16, [iTextSharp.text.Font]::BOLD)
+    $titleParagraph = New-Object iTextSharp.text.Paragraph($titulo, $fontTitle)
+    $titleParagraph.Alignment = [iTextSharp.text.Element]::ALIGN_CENTER
+    $doc.Add($titleParagraph)
+
+    $fontContent = [iTextSharp.text.FontFactory]::GetFont("Arial", 12)
+    foreach ($line in $conteudo) {
+        $p = New-Object iTextSharp.text.Paragraph($line, $fontContent)
+        $p.SpacingBefore = 10
+        $doc.Add($p)
+    }
+
+    $doc.Close()
+    $writer.Close()
+}
+
 function Relatorio-Pacientes {
-    [System.Windows.Forms.MessageBox]::Show("Gerando relatório de Pacientes (simulado).")
+    $relatorioConteudo = @(
+        "Paciente 1: João Silva, 35 anos, joao@email.com",
+        "Paciente 2: Maria Oliveira, 28 anos, maria@email.com",
+        "Paciente 3: Carlos Souza, 42 anos, carlos@email.com"
+    )
+
+    $fileName = "$env:USERPROFILE\Desktop\RelatorioPacientes.pdf"
+    ExportarRelatorioPDF -filePath $fileName -titulo "Relatório de Pacientes" -conteudo $relatorioConteudo
+
+    [System.Windows.Forms.MessageBox]::Show("Relatório de Pacientes exportado para:`n$fileName")
 }
 
 function Relatorio-Consultas {
-    [System.Windows.Forms.MessageBox]::Show("Gerando relatório de Consultas Médicas (simulado).")
+    $jsonPath = ".\consultas.json"
+    if (-not (Test-Path $jsonPath)) {
+        [System.Windows.Forms.MessageBox]::Show("Arquivo consultas.json não encontrado.")
+        return
+    }
+    $consultas = Get-Content $jsonPath | ConvertFrom-Json
+    $conteudo = @()
+    foreach ($c in $consultas) {
+        $linha = "ID: $($c.id), Paciente: $($c.paciente), Doutor: $($c.doutor), Data: $($c.data) $($c.hora), Motivo: $($c.motivo), Status: $($c.status)"
+        $conteudo += $linha
+    }
+
+    $fileName = "$env:USERPROFILE\Desktop\RelatorioConsultas.pdf"
+    ExportarRelatorioPDF -filePath $fileName -titulo "Relatório de Consultas Médicas" -conteudo $conteudo
+
+    [System.Windows.Forms.MessageBox]::Show("Relatório de Consultas exportado para:`n$fileName")
 }
 
 function Relatorio-Receitas {
-    [System.Windows.Forms.MessageBox]::Show("Gerando relatório de Receitas Médicas (simulado).")
+    $jsonPath = ".\receitas.json"
+    if (-not (Test-Path $jsonPath)) {
+        [System.Windows.Forms.MessageBox]::Show("Arquivo receitas.json não encontrado.")
+        return
+    }
+    $receitas = Get-Content $jsonPath | ConvertFrom-Json
+    $conteudo = @()
+    foreach ($r in $receitas) {
+        $meds = $r.medicamentos -join ", "
+        $linha = "ID: $($r.id), Paciente: $($r.paciente), Doutor: $($r.doutor), Medicamentos: $meds, Data: $($r.data)"
+        $conteudo += $linha
+    }
+
+    $fileName = "$env:USERPROFILE\Desktop\RelatorioReceitas.pdf"
+    ExportarRelatorioPDF -filePath $fileName -titulo "Relatório de Receitas Médicas" -conteudo $conteudo
+
+    [System.Windows.Forms.MessageBox]::Show("Relatório de Receitas exportado para:`n$fileName")
 }
 
 # Janela principal do Menu de Relatórios
