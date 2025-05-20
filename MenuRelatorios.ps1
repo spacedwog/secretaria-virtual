@@ -48,7 +48,7 @@ function Relatorio-Pacientes {
 function Relatorio-Consultas {
     $jsonPath = ".\consultas.json"
     if (-not (Test-Path $jsonPath)) {
-        [System.Windows.Forms.MessageBox]::Show("Arquivo consultas.json não encontrado.")
+        [System.Windows.Forms.MessageBox]::Show("Arquivo consultas.json nao encontrado.")
         return
     }
     $consultas = Get-Content $jsonPath | ConvertFrom-Json
@@ -59,15 +59,15 @@ function Relatorio-Consultas {
     }
 
     $fileName = "$env:USERPROFILE\Desktop\RelatorioConsultas.pdf"
-    ExportarRelatorioPDF -filePath $fileName -titulo "Relatório de Consultas Médicas" -conteudo $conteudo
+    ExportarRelatorioPDF -filePath $fileName -titulo "Relatorio de Consultas Medicas" -conteudo $conteudo
 
-    [System.Windows.Forms.MessageBox]::Show("Relatório de Consultas exportado para:`n$fileName")
+    [System.Windows.Forms.MessageBox]::Show("Relatorio de Consultas exportado para:`n$fileName")
 }
 
 function Relatorio-Receitas {
     $jsonPath = ".\receitas.json"
     if (-not (Test-Path $jsonPath)) {
-        [System.Windows.Forms.MessageBox]::Show("Arquivo receitas.json não encontrado.")
+        [System.Windows.Forms.MessageBox]::Show("Arquivo receitas.json nao encontrado.")
         return
     }
     $receitas = Get-Content $jsonPath | ConvertFrom-Json
@@ -79,31 +79,31 @@ function Relatorio-Receitas {
     }
 
     $fileName = "$env:USERPROFILE\Desktop\RelatorioReceitas.pdf"
-    ExportarRelatorioPDF -filePath $fileName -titulo "Relatório de Receitas Médicas" -conteudo $conteudo
+    ExportarRelatorioPDF -filePath $fileName -titulo "Relatorio de Receitas e" -conteudo $conteudo
 
-    [System.Windows.Forms.MessageBox]::Show("Relatório de Receitas exportado para:`n$fileName")
+    [System.Windows.Forms.MessageBox]::Show("Relatorio de Receitas exportado para:`n$fileName")
 }
 
 # Janela principal do Menu de Relatórios
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "Menu de Relatórios"
+$form.Text = "Menu de Relatorios"
 $form.Size = New-Object System.Drawing.Size(350, 250)
 $form.StartPosition = "CenterScreen"
 
 $btn1 = New-Object System.Windows.Forms.Button
-$btn1.Text = "1. Relatório de Pacientes"
+$btn1.Text = "1. Relatorio de Pacientes"
 $btn1.Size = New-Object System.Drawing.Size(300, 40)
 $btn1.Location = New-Object System.Drawing.Point(20, 20)
 $btn1.Add_Click({ Relatorio-Pacientes })
 
 $btn2 = New-Object System.Windows.Forms.Button
-$btn2.Text = "2. Relatório de Consultas"
+$btn2.Text = "2. Relatorio de Consultas"
 $btn2.Size = New-Object System.Drawing.Size(300, 40)
 $btn2.Location = New-Object System.Drawing.Point(20, 70)
 $btn2.Add_Click({ Relatorio-Consultas })
 
 $btn3 = New-Object System.Windows.Forms.Button
-$btn3.Text = "3. Relatório de Receitas"
+$btn3.Text = "3. Relatorio de Receitas"
 $btn3.Size = New-Object System.Drawing.Size(300, 40)
 $btn3.Location = New-Object System.Drawing.Point(20, 120)
 $btn3.Add_Click({ Relatorio-Receitas })

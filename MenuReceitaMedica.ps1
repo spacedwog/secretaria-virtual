@@ -3,7 +3,7 @@ Add-Type -AssemblyName System.Drawing
 
 function Registrar-Receita {
     $form = New-Object System.Windows.Forms.Form
-    $form.Text = "Registrar Receita Médica"
+    $form.Text = "Registrar Receita Medica"
     $form.Size = New-Object System.Drawing.Size(350, 400)
     $form.StartPosition = "CenterScreen"
 
@@ -40,7 +40,7 @@ function Registrar-Receita {
 
 function Imprimir-Receita {
     $formPrint = New-Object System.Windows.Forms.Form
-    $formPrint.Text = "Imprimir Receita Médica"
+    $formPrint.Text = "Imprimir Receita Medica"
     $formPrint.Size = New-Object System.Drawing.Size(300, 150)
     $formPrint.StartPosition = "CenterScreen"
 
@@ -69,18 +69,18 @@ function Imprimir-Receita {
 
 # Janela principal do Menu Receita Médica
 $formMain = New-Object System.Windows.Forms.Form
-$formMain.Text = "Menu Receita Médica"
+$formMain.Text = "Menu Receita Medica"
 $formMain.Size = New-Object System.Drawing.Size(350, 220)
 $formMain.StartPosition = "CenterScreen"
 
 $btnReg = New-Object System.Windows.Forms.Button
-$btnReg.Text = "1. Registrar Receita Médica"
+$btnReg.Text = "1. Registrar Receita Medica"
 $btnReg.Size = New-Object System.Drawing.Size(300, 40)
 $btnReg.Location = New-Object System.Drawing.Point(20, 30)
 $btnReg.Add_Click({ Registrar-Receita })
 
 $btnPrint = New-Object System.Windows.Forms.Button
-$btnPrint.Text = "2. Imprimir Receita Médica"
+$btnPrint.Text = "2. Imprimir Receita Medica"
 $btnPrint.Size = New-Object System.Drawing.Size(300, 40)
 $btnPrint.Location = New-Object System.Drawing.Point(20, 90)
 $btnPrint.Add_Click({ Imprimir-Receita })

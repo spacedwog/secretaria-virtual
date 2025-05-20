@@ -2,7 +2,7 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 function ListAppointments {
-    [System.Windows.Forms.MessageBox]::Show("Listando consultas médicas (implementar lógica real).")
+    [System.Windows.Forms.MessageBox]::Show("Listando consultas medicas (implementar lógica real).")
 }
 
 function AddDoctor {
@@ -77,7 +77,7 @@ function ScheduleAppointment {
     $form2.Size = New-Object System.Drawing.Size(350, 400)
     $form2.StartPosition = "CenterScreen"
 
-    $fields = "ID Paciente", "ID Doutor", "Título", "Data (AAAA-MM-DD)", "Hora (HH:MM)", "Motivo", "Status"
+    $fields = "ID Paciente", "ID Doutor", "Titulo", "Data (AAAA-MM-DD)", "Hora (HH:MM)", "Motivo", "Status"
     $inputs = @()
 
     for ($i = 0; $i -lt $fields.Length; $i++) {
@@ -108,7 +108,7 @@ function ScheduleAppointment {
 
 # Janela principal do menu consulta médica
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "Painel de Consulta Médica"
+$form.Text = "Painel de Consulta Medica"
 $form.Size = New-Object System.Drawing.Size(400, 300)
 $form.StartPosition = "CenterScreen"
 

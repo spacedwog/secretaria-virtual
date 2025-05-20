@@ -12,11 +12,11 @@ function Abrir-MenuConsultaMedica {
 }
 
 function Registrar-ReceitaMedica {
-    [System.Windows.Forms.MessageBox]::Show("Registrando Receita Médica...")
+    [System.Windows.Forms.MessageBox]::Show("Registrando Receita Medica...")
 }
 
 function Imprimir-ReceitaMedica {
-    [System.Windows.Forms.MessageBox]::Show("Imprimindo Receita Médica...")
+    [System.Windows.Forms.MessageBox]::Show("Imprimindo Receita Medica...")
 }
 
 # Janela principal
@@ -33,19 +33,19 @@ $btn1.Location = New-Object System.Drawing.Point(50,30)
 $btn1.Add_Click({ Abrir-MenuPaciente })
 
 $btn2 = New-Object System.Windows.Forms.Button
-$btn2.Text = "2. Menu Consulta Médica"
+$btn2.Text = "2. Menu Consulta Medica"
 $btn2.Size = New-Object System.Drawing.Size(300,40)
 $btn2.Location = New-Object System.Drawing.Point(50,80)
 $btn2.Add_Click({ Abrir-MenuConsultaMedica })
 
 $btn3 = New-Object System.Windows.Forms.Button
-$btn3.Text = "3. Receita Médica"
+$btn3.Text = "3. Receita Medica"
 $btn3.Size = New-Object System.Drawing.Size(300,40)
 $btn3.Location = New-Object System.Drawing.Point(50,130)
 $btn3.Add_Click({ Registrar-ReceitaMedica })
 
 $btn4 = New-Object System.Windows.Forms.Button
-$btn4.Text = "4. Imprimir Receita Médica"
+$btn4.Text = "4. Imprimir Receita Medica"
 $btn4.Size = New-Object System.Drawing.Size(300,40)
 $btn4.Location = New-Object System.Drawing.Point(50,180)
 $btn4.Add_Click({ Imprimir-ReceitaMedica })
