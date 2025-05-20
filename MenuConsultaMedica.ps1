@@ -58,14 +58,12 @@ function AddDoctor {
     $okButton = New-Object System.Windows.Forms.Button
     $okButton.Text = "Salvar"
     $okButton.Location = New-Object System.Drawing.Point(90, 150)
-    $id = [guid]::NewGuid().ToString()
     $okButton.Add_Click({
         $doctor = @{
-            ID           = $boxes[0].Text
-            nome         = $boxes[1].Text
-            telefone     = $boxes[2].Text
-            email        = $boxes[3].Text
-            especialidade= $boxes[4].Text
+            nome         = $boxes[0].Text
+            telefone     = $boxes[1].Text
+            email        = $boxes[2].Text
+            especialidade= $boxes[3].Text
         }
         $file = "doctors.json"
         $data = Load-JsonData $file
