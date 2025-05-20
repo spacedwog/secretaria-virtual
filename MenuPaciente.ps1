@@ -3,6 +3,26 @@ Add-Type -AssemblyName System.Drawing
 
 $arquivoJson = ".\pacientes.json"
 
+function Get-NextId {
+    param (
+        [string]$filePath
+    )
+    if (-not (Test-Path $filePath)) {
+        return 1
+    }
+    $data = Get-Content $filePath | ConvertFrom-Json
+    if ($data -isnot [System.Collections.IEnumerable]) {
+        $data = @($data)
+    }
+    $ids = $data | ForEach-Object { $_.ID }
+    $maxId = ($ids | Measure-Object -Maximum).Maximum
+    if ($maxId -match '^\d+$') {
+        return ([int]$maxId) + 1
+    } else {
+        return 1
+    }
+}
+
 function Carregar-Pacientes {
     if (-not (Test-Path $arquivoJson)) {
         return @()
@@ -129,7 +149,7 @@ function Abrir-Formulario-Paciente {
         $pacientes = Carregar-Pacientes
 
         $novoPaciente = [PSCustomObject]@{
-            ID       = [guid]::NewGuid().ToString()
+            ID       = Get-NextId -filePath $arquivoJson
             Nome     = $nome
             Idade    = $idade
             Telefone = $telefone
