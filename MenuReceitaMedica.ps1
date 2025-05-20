@@ -94,20 +94,16 @@ function Registrar-Receita {
         }
 
         $file = "prescriptions.json"
-        $data = Load-JsonData $file
-
-        # Extrair ID selecionado
-        $idPaciente = [int]($cbPaciente.SelectedItem -split '[()]')[1]
-        $idDoutor = [int]($cbDoutor.SelectedItem -split '[()]')[1]
+        $data = @(Load-JsonData $file)
 
         $receita = @{
             id           = Get-NextId -filePath $file
-            paciente_id  = $idPaciente
-            doutor_id    = $idDoutor
-            data         = $inputs[0].Text
-            medicamento  = $inputs[1].Text
-            dosagem      = $inputs[2].Text
-            instrucoes   = $inputs[3].Text
+            paciente_id  = [int]$inputs[0].Text
+            doutor_id    = [int]$inputs[1].Text
+            data         = $inputs[2].Text
+            medicamento  = $inputs[3].Text
+            dosagem      = $inputs[4].Text
+            instrucoes   = $inputs[5].Text
         }
 
         $data += $receita
