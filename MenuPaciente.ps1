@@ -10,7 +10,11 @@ function Get-NextId {
     if (-not (Test-Path $filePath)) {
         return 1
     }
-    $data = Get-Content $filePath | ConvertFrom-Json
+    $content = Get-Content $filePath -Raw
+    if ([string]::IsNullOrWhiteSpace($content)) {
+        return 1
+    }
+    $data = $content | ConvertFrom-Json
     if ($data -isnot [System.Collections.IEnumerable]) {
         $data = @($data)
     }
@@ -27,9 +31,16 @@ function Carregar-Pacientes {
     if (-not (Test-Path $arquivoJson)) {
         return @()
     }
-    $pacientes = Get-Content $arquivoJson | ConvertFrom-Json
+    $content = Get-Content $arquivoJson -Raw
+    if ([string]::IsNullOrWhiteSpace($content)) {
+        return @()
+    }
+    $pacientes = $content | ConvertFrom-Json
     if ($pacientes -isnot [System.Collections.IEnumerable]) {
         $pacientes = @($pacientes)
+    }
+    if ($null -eq $pacientes) {
+        $pacientes = @()
     }
     return $pacientes
 }
@@ -54,7 +65,7 @@ function Listar-Pacientes {
     $listView.Size = New-Object System.Drawing.Size(680, 350)
     $listView.Location = New-Object System.Drawing.Point(10, 10)
 
-    $listView.Columns.Add("ID", 200) | Out-Null
+    $listView.Columns.Add("ID", 100) | Out-Null
     $listView.Columns.Add("Nome", 150) | Out-Null
     $listView.Columns.Add("Idade", 50) | Out-Null
     $listView.Columns.Add("Telefone", 120) | Out-Null
@@ -62,7 +73,7 @@ function Listar-Pacientes {
     $listView.Columns.Add("Endereco", 200) | Out-Null
 
     foreach ($paciente in $pacientes) {
-        $item = New-Object System.Windows.Forms.ListViewItem($paciente.ID)
+        $item = New-Object System.Windows.Forms.ListViewItem($paciente.ID.ToString())
         $item.SubItems.Add($paciente.Nome)     | Out-Null
         $item.SubItems.Add($paciente.Idade)    | Out-Null
         $item.SubItems.Add($paciente.Telefone) | Out-Null
@@ -147,6 +158,13 @@ function Abrir-Formulario-Paciente {
         }
 
         $pacientes = Carregar-Pacientes
+
+        # Garante que $pacientes seja sempre um array antes de adicionar
+        if ($pacientes -eq $null) {
+            $pacientes = @()
+        } elseif ($pacientes -isnot [System.Collections.IEnumerable]) {
+            $pacientes = @($pacientes)
+        }
 
         $novoPaciente = [PSCustomObject]@{
             ID       = Get-NextId -filePath $arquivoJson

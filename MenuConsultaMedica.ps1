@@ -95,31 +95,76 @@ function AddDoctor {
 function RegisterVisit {
     $idForm = New-Object System.Windows.Forms.Form
     $idForm.Text = "Registrar Visita"
-    $idForm.Size = New-Object System.Drawing.Size(280, 180)
+    $idForm.Size = New-Object System.Drawing.Size(350, 220)
     $idForm.StartPosition = "CenterScreen"
 
-    $lbl1 = New-Object System.Windows.Forms.Label
-    $lbl1.Text = "ID Paciente:"
-    $lbl1.Location = New-Object System.Drawing.Point(10, 20)
-    $txt1 = New-Object System.Windows.Forms.TextBox
-    $txt1.Location = New-Object System.Drawing.Point(100, 20)
+    # Label e ComboBox para Paciente
+    $lblPaciente = New-Object System.Windows.Forms.Label
+    $lblPaciente.Text = "Paciente:"
+    $lblPaciente.Location = New-Object System.Drawing.Point(10, 20)
+    $lblPaciente.Size = New-Object System.Drawing.Size(80, 20)
 
-    $lbl2 = New-Object System.Windows.Forms.Label
-    $lbl2.Text = "ID Doutor:"
-    $lbl2.Location = New-Object System.Drawing.Point(10, 60)
-    $txt2 = New-Object System.Windows.Forms.TextBox
-    $txt2.Location = New-Object System.Drawing.Point(100, 60)
+    $cmbPaciente = New-Object System.Windows.Forms.ComboBox
+    $cmbPaciente.Location = New-Object System.Drawing.Point(100, 20)
+    $cmbPaciente.Size = New-Object System.Drawing.Size(220, 20)
+    $cmbPaciente.DropDownStyle = 'DropDownList'
 
-    $btn = New-Object System.Windows.Forms.Button
-    $btn.Text = "Registrar"
-    $btn.Location = New-Object System.Drawing.Point(80, 100)
-    $btn.Add_Click({
+    # Label e ComboBox para Doutor
+    $lblDoutor = New-Object System.Windows.Forms.Label
+    $lblDoutor.Text = "Doutor:"
+    $lblDoutor.Location = New-Object System.Drawing.Point(10, 60)
+    $lblDoutor.Size = New-Object System.Drawing.Size(80, 20)
+
+    $cmbDoutor = New-Object System.Windows.Forms.ComboBox
+    $cmbDoutor.Location = New-Object System.Drawing.Point(100, 60)
+    $cmbDoutor.Size = New-Object System.Drawing.Size(220, 20)
+    $cmbDoutor.DropDownStyle = 'DropDownList'
+
+    # Botão Registrar
+    $btnRegistrar = New-Object System.Windows.Forms.Button
+    $btnRegistrar.Text = "Registrar"
+    $btnRegistrar.Location = New-Object System.Drawing.Point(120, 110)
+    $btnRegistrar.Size = New-Object System.Drawing.Size(100, 30)
+
+    # Carregar pacientes e doutores para popular os comboboxes
+    $pacientes = Load-JsonData "patients.json"
+    $doutores = Load-JsonData "doctors.json"
+
+    # Popula pacientes: texto exibido = "ID - Nome", valor armazenado = id
+    foreach ($p in $pacientes) {
+        $cmbPaciente.Items.Add("$($p.id) - $($p.nome)")
+    }
+
+    # Popula doutores: texto exibido = "ID - Nome", valor armazenado = id
+    foreach ($d in $doutores) {
+        $cmbDoutor.Items.Add("$($d.id) - $($d.nome)")
+    }
+
+    # Seleciona o primeiro item para evitar erro de seleção vazia
+    if ($cmbPaciente.Items.Count -gt 0) { $cmbPaciente.SelectedIndex = 0 }
+    if ($cmbDoutor.Items.Count -gt 0) { $cmbDoutor.SelectedIndex = 0 }
+
+    $btnRegistrar.Add_Click({
+        if ($cmbPaciente.SelectedIndex -lt 0) {
+            [System.Windows.Forms.MessageBox]::Show("Selecione um paciente.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            return
+        }
+        if ($cmbDoutor.SelectedIndex -lt 0) {
+            [System.Windows.Forms.MessageBox]::Show("Selecione um doutor.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+            return
+        }
+
+        # Extrair ID da string selecionada no formato "ID - Nome"
+        $paciente_id = ($cmbPaciente.SelectedItem -split ' - ')[0]
+        $doutor_id = ($cmbDoutor.SelectedItem -split ' - ')[0]
+
         $visita = @{
             id          = Get-NextId -filePath "visits.json"
-            paciente_id = $txt1.Text
-            doutor_id   = $txt2.Text
+            paciente_id = [int]$paciente_id
+            doutor_id   = [int]$doutor_id
             timestamp   = (Get-Date).ToString("s")
         }
+
         $file = "visits.json"
         $data = Load-JsonData $file
         $data += $visita
@@ -129,7 +174,7 @@ function RegisterVisit {
         $idForm.Close()
     })
 
-    $idForm.Controls.AddRange(@($lbl1, $txt1, $lbl2, $txt2, $btn))
+    $idForm.Controls.AddRange(@($lblPaciente, $cmbPaciente, $lblDoutor, $cmbDoutor, $btnRegistrar))
     $idForm.ShowDialog()
 }
 
