@@ -1,24 +1,34 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
+Add-Type -AssemblyName System.Web.Extensions  # Para conversão JSON
 
-function Generate-UUID {
-    return [guid]::NewGuid().ToString()
+function Save-JsonData($data, $filePath) {
+    $json = [System.Web.Script.Serialization.JavaScriptSerializer]::new().Serialize($data)
+    Set-Content -Path $filePath -Value $json -Encoding UTF8
 }
 
-function Save-JsonData {
-    param (
-        [string]$FilePath,
-        [object]$NewData
-    )
-
-    if (Test-Path $FilePath) {
-        $existingData = Get-Content $FilePath -Raw | ConvertFrom-Json
-    } else {
-        $existingData = @()
+function Load-JsonData($filePath) {
+    if (Test-Path $filePath) {
+        $content = Get-Content $filePath -Raw
+        if ($content.Trim()) {
+            return [System.Web.Script.Serialization.JavaScriptSerializer]::new().DeserializeObject($content)
+        }
     }
+    return @()
+}
 
-    $updatedData = $existingData + $NewData
-    $updatedData | ConvertTo-Json -Depth 5 | Set-Content $FilePath
+function ListAppointments {
+    $file = "appointments.json"
+    $data = Load-JsonData $file
+    if ($data.Count -eq 0) {
+        [System.Windows.Forms.MessageBox]::Show("Nenhuma consulta encontrada.")
+    } else {
+        $msg = "Consultas Registradas:`n"
+        foreach ($item in $data) {
+            $msg += "`nTítulo: $($item.titulo)`nPaciente: $($item.paciente_id)`nDoutor: $($item.doutor_id)`nData: $($item.data) $($item.hora)`nStatus: $($item.status)`n---"
+        }
+        [System.Windows.Forms.MessageBox]::Show($msg, "Consultas")
+    }
 }
 
 function AddDoctor {
@@ -48,21 +58,65 @@ function AddDoctor {
     $okButton = New-Object System.Windows.Forms.Button
     $okButton.Text = "Salvar"
     $okButton.Location = New-Object System.Drawing.Point(90, 150)
+    $id = [guid]::NewGuid().ToString()
     $okButton.Add_Click({
-        $doctor = [PSCustomObject]@{
-            id            = Generate-UUID
-            nome          = $boxes[0].Text
-            telefone      = $boxes[1].Text
-            email         = $boxes[2].Text
-            especialidade = $boxes[3].Text
+        $doctor = @{
+            ID           = $boxes[0].Text
+            nome         = $boxes[1].Text
+            telefone     = $boxes[2].Text
+            email        = $boxes[3].Text
+            especialidade= $boxes[4].Text
         }
+        $file = "doctors.json"
+        $data = Load-JsonData $file
+        $data += $doctor
+        Save-JsonData $data $file
 
-        Save-JsonData -FilePath "doctors.json" -NewData $doctor
-        [System.Windows.Forms.MessageBox]::Show("Doutor '$($doctor.nome)' adicionado com sucesso!")
+        [System.Windows.Forms.MessageBox]::Show("Doutor '$($boxes[0].Text)' adicionado com sucesso!")
         $inputForm.Close()
     })
     $inputForm.Controls.Add($okButton)
     $inputForm.ShowDialog()
+}
+
+function RegisterVisit {
+    $idForm = New-Object System.Windows.Forms.Form
+    $idForm.Text = "Registrar Visita"
+    $idForm.Size = New-Object System.Drawing.Size(280, 180)
+    $idForm.StartPosition = "CenterScreen"
+
+    $lbl1 = New-Object System.Windows.Forms.Label
+    $lbl1.Text = "ID Paciente:"
+    $lbl1.Location = New-Object System.Drawing.Point(10, 20)
+    $txt1 = New-Object System.Windows.Forms.TextBox
+    $txt1.Location = New-Object System.Drawing.Point(100, 20)
+
+    $lbl2 = New-Object System.Windows.Forms.Label
+    $lbl2.Text = "ID Doutor:"
+    $lbl2.Location = New-Object System.Drawing.Point(10, 60)
+    $txt2 = New-Object System.Windows.Forms.TextBox
+    $txt2.Location = New-Object System.Drawing.Point(100, 60)
+
+    $btn = New-Object System.Windows.Forms.Button
+    $btn.Text = "Registrar"
+    $btn.Location = New-Object System.Drawing.Point(80, 100)
+    $btn.Add_Click({
+        $visita = @{
+            paciente_id = $txt1.Text
+            doutor_id   = $txt2.Text
+            timestamp   = (Get-Date).ToString("s")
+        }
+        $file = "visits.json"
+        $data = Load-JsonData $file
+        $data += $visita
+        Save-JsonData $data $file
+
+        [System.Windows.Forms.MessageBox]::Show("Visita registrada com sucesso!")
+        $idForm.Close()
+    })
+
+    $idForm.Controls.AddRange(@($lbl1, $txt1, $lbl2, $txt2, $btn))
+    $idForm.ShowDialog()
 }
 
 function ScheduleAppointment {
@@ -92,18 +146,20 @@ function ScheduleAppointment {
     $submitBtn.Text = "Agendar"
     $submitBtn.Location = New-Object System.Drawing.Point(120, 280)
     $submitBtn.Add_Click({
-        $appointment = [PSCustomObject]@{
-            id           = Generate-UUID
-            paciente_id  = $inputs[0].Text
-            doutor_id    = $inputs[1].Text
-            titulo       = $inputs[2].Text
-            data         = $inputs[3].Text
-            hora         = $inputs[4].Text
-            motivo       = $inputs[5].Text
-            status       = $inputs[6].Text
+        $appointment = @{
+            paciente_id = $inputs[0].Text
+            doutor_id   = $inputs[1].Text
+            titulo      = $inputs[2].Text
+            data        = $inputs[3].Text
+            hora        = $inputs[4].Text
+            motivo      = $inputs[5].Text
+            status      = $inputs[6].Text
         }
+        $file = "appointments.json"
+        $data = Load-JsonData $file
+        $data += $appointment
+        Save-JsonData $data $file
 
-        Save-JsonData -FilePath "appointments.json" -NewData $appointment
         [System.Windows.Forms.MessageBox]::Show("Consulta agendada com sucesso!")
         $form2.Close()
     })
@@ -112,55 +168,41 @@ function ScheduleAppointment {
     $form2.ShowDialog()
 }
 
-function RegisterVisit {
-    $idForm = New-Object System.Windows.Forms.Form
-    $idForm.Text = "Registrar Visita"
-    $idForm.Size = New-Object System.Drawing.Size(280, 180)
-    $idForm.StartPosition = "CenterScreen"
+# Janela principal
+$form = New-Object System.Windows.Forms.Form
+$form.Text = "Painel de Consulta Medica"
+$form.Size = New-Object System.Drawing.Size(400, 300)
+$form.StartPosition = "CenterScreen"
 
-    $lbl1 = New-Object System.Windows.Forms.Label
-    $lbl1.Text = "ID Paciente:"
-    $lbl1.Location = New-Object System.Drawing.Point(10, 20)
-    $txt1 = New-Object System.Windows.Forms.TextBox
-    $txt1.Location = New-Object System.Drawing.Point(100, 20)
+$btn1 = New-Object System.Windows.Forms.Button
+$btn1.Text = "1. Listar Consultas"
+$btn1.Size = New-Object System.Drawing.Size(150, 30)
+$btn1.Location = New-Object System.Drawing.Point(120, 20)
+$btn1.Add_Click({ ListAppointments })
 
-    $lbl2 = New-Object System.Windows.Forms.Label
-    $lbl2.Text = "ID Doutor:"
-    $lbl2.Location = New-Object System.Drawing.Point(10, 60)
-    $txt2 = New-Object System.Windows.Forms.TextBox
-    $txt2.Location = New-Object System.Drawing.Point(100, 60)
+$btn2 = New-Object System.Windows.Forms.Button
+$btn2.Text = "2. Adicionar Doutor"
+$btn2.Size = New-Object System.Drawing.Size(150, 30)
+$btn2.Location = New-Object System.Drawing.Point(120, 60)
+$btn2.Add_Click({ AddDoctor })
 
-    $btn = New-Object System.Windows.Forms.Button
-    $btn.Text = "Registrar"
-    $btn.Location = New-Object System.Drawing.Point(80, 100)
-    $btn.Add_Click({
-        $prescription = [PSCustomObject]@{
-            id            = Generate-UUID
-            paciente_id   = $txt1.Text
-            doutor_id     = $txt2.Text
-            medicamentos  = "Medicamento padrão"
-            observacoes   = "Sem observações"
-            data          = (Get-Date).ToString("yyyy-MM-dd HH:mm")
-        }
+$btn3 = New-Object System.Windows.Forms.Button
+$btn3.Text = "3. Registrar Visita"
+$btn3.Size = New-Object System.Drawing.Size(150, 30)
+$btn3.Location = New-Object System.Drawing.Point(120, 100)
+$btn3.Add_Click({ RegisterVisit })
 
-        Save-JsonData -FilePath "prescriptions.json" -NewData $prescription
-        [System.Windows.Forms.MessageBox]::Show("Visita registrada com sucesso!")
-        $idForm.Close()
-    })
+$btn4 = New-Object System.Windows.Forms.Button
+$btn4.Text = "4. Agendar Consulta"
+$btn4.Size = New-Object System.Drawing.Size(150, 30)
+$btn4.Location = New-Object System.Drawing.Point(120, 140)
+$btn4.Add_Click({ ScheduleAppointment })
 
-    $idForm.Controls.AddRange(@($lbl1, $txt1, $lbl2, $txt2, $btn))
-    $idForm.ShowDialog()
-}
+$btnExit = New-Object System.Windows.Forms.Button
+$btnExit.Text = "Voltar"
+$btnExit.Size = New-Object System.Drawing.Size(150, 30)
+$btnExit.Location = New-Object System.Drawing.Point(120, 180)
+$btnExit.Add_Click({ $form.Close() })
 
-function ListAppointments {
-    if (Test-Path "appointments.json") {
-        $data = Get-Content "appointments.json" -Raw | ConvertFrom-Json
-        $message = ""
-        foreach ($item in $data) {
-            $message += "ID: $($item.id)`nPaciente: $($item.paciente_id)`nDoutor: $($item.doutor_id)`nData: $($item.data)`n---`n"
-        }
-        [System.Windows.Forms.MessageBox]::Show($message, "Consultas Agendadas")
-    } else {
-        [System.Windows.Forms.MessageBox]::Show("Nenhuma consulta encontrada.")
-    }
-}
+$form.Controls.AddRange(@($btn1, $btn2, $btn3, $btn4, $btnExit))
+[void]$form.ShowDialog()

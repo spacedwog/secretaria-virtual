@@ -1,118 +1,187 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-# Função auxiliar para gerar UUID
-function Generate-UUID {
-    return [guid]::NewGuid().ToString()
+$arquivoJson = ".\pacientes.json"
+
+function Carregar-Pacientes {
+    if (-not (Test-Path $arquivoJson)) {
+        return @()
+    }
+    $pacientes = Get-Content $arquivoJson | ConvertFrom-Json
+    if ($pacientes -isnot [System.Collections.IEnumerable]) {
+        $pacientes = @($pacientes)
+    }
+    return $pacientes
 }
 
-# Função auxiliar para salvar dados em JSON
-function Save-JsonData {
-    param (
-        [string]$FilePath,
-        [object]$NewData
-    )
-    $existingData = @()
-    if (Test-Path $FilePath) {
-        try {
-            $existingData = Get-Content $FilePath -Raw | ConvertFrom-Json
-        } catch {
-            $existingData = @()
-        }
-    }
-    if ($existingData -eq $null) {
-        $existingData = @()
-    }
-    $existingData += $NewData
-    $existingData | ConvertTo-Json -Depth 5 | Set-Content $FilePath
+function Salvar-Pacientes($pacientes) {
+    $pacientes | ConvertTo-Json -Depth 10 | Out-File -Encoding UTF8 $arquivoJson
 }
 
-# Função para adicionar paciente
-function AddPatient {
-    $form = New-Object System.Windows.Forms.Form
-    $form.Text = "Adicionar Paciente"
-    $form.Size = New-Object System.Drawing.Size(320, 300)
-    $form.StartPosition = "CenterScreen"
+function Listar-Pacientes {
+    $pacientes = Carregar-Pacientes
 
-    $labels = "Nome", "Telefone", "Email", "Endereço", "Data de Nascimento"
-    $boxes = @()
+    $formList = New-Object System.Windows.Forms.Form
+    $formList.Text = "Lista de Pacientes"
+    $formList.Size = New-Object System.Drawing.Size(600,450)
+    $formList.StartPosition = "CenterScreen"
 
-    for ($i = 0; $i -lt $labels.Length; $i++) {
-        $label = New-Object System.Windows.Forms.Label
-        $label.Text = "$($labels[$i]):"
-        $label.Location = [System.Drawing.Point]::new(10, 20 + ($i * 35))
-        $label.Size = New-Object System.Drawing.Size(120, 20)
-        $form.Controls.Add($label)
+    $listView = New-Object System.Windows.Forms.ListView
+    $listView.View = [System.Windows.Forms.View]::Details
+    $listView.FullRowSelect = $true
+    $listView.GridLines = $true
+    $listView.MultiSelect = $false
+    $listView.Size = New-Object System.Drawing.Size(580, 350)
+    $listView.Location = New-Object System.Drawing.Point(10, 10)
 
-        $textBox = New-Object System.Windows.Forms.TextBox
-        $textBox.Location = [System.Drawing.Point]::new(140, 20 + ($i * 35))
-        $textBox.Size = New-Object System.Drawing.Size(150, 20)
-        $form.Controls.Add($textBox)
+    $listView.Columns.Add("Nome", 150) | Out-Null
+    $listView.Columns.Add("Idade", 50) | Out-Null
+    $listView.Columns.Add("Telefone", 120) | Out-Null
+    $listView.Columns.Add("Email", 150) | Out-Null
+    $listView.Columns.Add("Endereco", 200) | Out-Null
 
-        $boxes += $textBox
+    foreach ($paciente in $pacientes) {
+        $item = New-Object System.Windows.Forms.ListViewItem($paciente.Nome)
+        $item.SubItems.Add($paciente.Idade) | Out-Null
+        $item.SubItems.Add($paciente.Telefone) | Out-Null
+        $item.SubItems.Add($paciente.Email) | Out-Null
+        $item.SubItems.Add($paciente.Endereco) | Out-Null
+        $listView.Items.Add($item) | Out-Null
     }
 
-    $btn = New-Object System.Windows.Forms.Button
-    $btn.Text = "Salvar"
-    $btn.Location = New-Object System.Drawing.Point(100, 220)
-    $btn.Add_Click({
-        $patient = [PSCustomObject]@{
-            id                = Generate-UUID
-            nome              = $boxes[0].Text
-            telefone          = $boxes[1].Text
-            email             = $boxes[2].Text
-            endereco          = $boxes[3].Text
-            data_nascimento   = $boxes[4].Text
-        }
+    $btnClose = New-Object System.Windows.Forms.Button
+    $btnClose.Text = "Fechar"
+    $btnClose.Size = New-Object System.Drawing.Size(100,30)
+    $btnClose.Location = New-Object System.Drawing.Point(10, 370)
+    $btnClose.Add_Click({ $formList.Close() })
 
-        Save-JsonData -FilePath "pacientes.json" -NewData $patient
-        [System.Windows.Forms.MessageBox]::Show("Paciente '$($patient.nome)' adicionado com sucesso!")
-        $form.Close()
+    $btnExcluir = New-Object System.Windows.Forms.Button
+    $btnExcluir.Text = "Excluir"
+    $btnExcluir.Size = New-Object System.Drawing.Size(100,30)
+    $btnExcluir.Location = New-Object System.Drawing.Point(120, 370)
+    $btnExcluir.Add_Click({
+        if ($listView.SelectedItems.Count -eq 0) {
+            [System.Windows.Forms.MessageBox]::Show("Selecione um paciente para excluir.")
+            return
+        }
+        $index = $listView.SelectedItems[0].Index
+        $confirm = [System.Windows.Forms.MessageBox]::Show("Confirma exclusão do paciente '$($pacientes[$index].Nome)'?", "Confirmação", [System.Windows.Forms.MessageBoxButtons]::YesNo)
+        if ($confirm -eq [System.Windows.Forms.DialogResult]::Yes) {
+            $pacientes = Carregar-Pacientes
+            $pacientes = $pacientes | Where-Object { $_ -ne $pacientes[$index] }
+            Salvar-Pacientes $pacientes
+            [System.Windows.Forms.MessageBox]::Show("Paciente excluido com sucesso.")
+            $formList.Close()
+            Listar-Pacientes
+        }
     })
 
-    $form.Controls.Add($btn)
-    $form.ShowDialog()
+    $formList.Controls.AddRange(@($listView, $btnClose, $btnExcluir))
+    $formList.ShowDialog()
 }
 
-# Função para listar pacientes
-function ListPatients {
-    if (Test-Path "pacientes.json") {
-        $data = Get-Content "pacientes.json" -Raw | ConvertFrom-Json
-        $message = ""
-        foreach ($p in $data) {
-            $message += "ID: $($p.id)`nNome: $($p.nome)`nTelefone: $($p.telefone)`n---`n"
-        }
-        [System.Windows.Forms.MessageBox]::Show($message, "Pacientes Cadastrados")
-    } else {
-        [System.Windows.Forms.MessageBox]::Show("Nenhum paciente cadastrado ainda.")
+function Adicionar-Paciente {
+    Abrir-Formulario-Paciente
+}
+
+function Abrir-Formulario-Paciente {
+    $formAdd = New-Object System.Windows.Forms.Form
+    $formAdd.Text = "Adicionar Paciente"
+    $formAdd.Size = New-Object System.Drawing.Size(300,350)
+    $formAdd.StartPosition = "CenterScreen"
+
+    $labels = "Nome", "Idade", "Telefone", "Email", "Endereco"
+    $textboxes = @()
+
+    for ($i = 0; $i -lt $labels.Length; $i++) {
+        $lbl = New-Object System.Windows.Forms.Label
+        $lbl.Text = $labels[$i]
+        $lbl.Location = [System.Drawing.Point]::new(10, ($i * 40) + 10)
+        $lbl.Size = [System.Drawing.Size]::new(280, 20)
+
+        $txt = New-Object System.Windows.Forms.TextBox
+        $txt.Location = [System.Drawing.Point]::new(10, ($i * 40) + 30)
+        $txt.Size = [System.Drawing.Size]::new(260, 20)
+
+        $formAdd.Controls.Add($lbl)
+        $formAdd.Controls.Add($txt)
+        $textboxes += $txt
     }
+
+    $btnSave = New-Object System.Windows.Forms.Button
+    $btnSave.Text = "Salvar"
+    $btnSave.Size = New-Object System.Drawing.Size(260,30)
+    $btnSave.Location = New-Object System.Drawing.Point(10,240)
+    $btnSave.Add_Click({
+        $nome = $textboxes[0].Text.Trim()
+        $idade = $textboxes[1].Text.Trim()
+        $telefone = $textboxes[2].Text.Trim()
+        $email = $textboxes[3].Text.Trim()
+        $endereco = $textboxes[4].Text.Trim()
+
+        if ([string]::IsNullOrWhiteSpace($nome)) {
+            [System.Windows.Forms.MessageBox]::Show("Nome obrigatório.")
+            return
+        }
+
+        $pacientes = Carregar-Pacientes
+
+        $novoPaciente = [PSCustomObject]@{
+            Nome     = $nome
+            Idade    = $idade
+            Telefone = $telefone
+            Email    = $email
+            Endereco = $endereco
+        }
+
+        $pacientes += $novoPaciente
+
+        Salvar-Pacientes $pacientes
+
+        [System.Windows.Forms.MessageBox]::Show("Paciente salvo com sucesso!")
+        $formAdd.Close()
+    })
+
+    $formAdd.Controls.Add($btnSave)
+    $formAdd.ShowDialog()
 }
 
-# Função para exibir o menu de paciente
-function ShowPatientMenu {
-    $form = New-Object System.Windows.Forms.Form
-    $form.Text = "Menu de Paciente"
-    $form.Size = New-Object System.Drawing.Size(350, 250)
-    $form.StartPosition = "CenterScreen"
-
-    $btnAdd = New-Object System.Windows.Forms.Button
-    $btnAdd.Text = "Adicionar Paciente"
-    $btnAdd.Size = New-Object System.Drawing.Size(180, 30)
-    $btnAdd.Location = New-Object System.Drawing.Point(80, 30)
-    $btnAdd.Add_Click({ AddPatient })
-
-    $btnList = New-Object System.Windows.Forms.Button
-    $btnList.Text = "Listar Pacientes"
-    $btnList.Size = New-Object System.Drawing.Size(180, 30)
-    $btnList.Location = New-Object System.Drawing.Point(80, 70)
-    $btnList.Add_Click({ ListPatients })
-
-    $btnBack = New-Object System.Windows.Forms.Button
-    $btnBack.Text = "Voltar"
-    $btnBack.Size = New-Object System.Drawing.Size(180, 30)
-    $btnBack.Location = New-Object System.Drawing.Point(80, 110)
-    $btnBack.Add_Click({ $form.Close() })
-
-    $form.Controls.AddRange(@($btnAdd, $btnList, $btnBack))
-    $form.ShowDialog()
+function Excluir-Paciente {
+    [System.Windows.Forms.MessageBox]::Show("Use o botão 'Excluir' na lista de pacientes para remover.")
 }
+
+# Janela principal do menu paciente
+$form = New-Object System.Windows.Forms.Form
+$form.Text = "Menu de Pacientes"
+$form.Size = New-Object System.Drawing.Size(400,250)
+$form.StartPosition = "CenterScreen"
+
+$btn1 = New-Object System.Windows.Forms.Button
+$btn1.Text = "1. Listar Pacientes"
+$btn1.Size = New-Object System.Drawing.Size(300,40)
+$btn1.Location = New-Object System.Drawing.Point(50,30)
+$btn1.Add_Click({ Listar-Pacientes })
+
+$btn2 = New-Object System.Windows.Forms.Button
+$btn2.Text = "2. Adicionar Paciente"
+$btn2.Size = New-Object System.Drawing.Size(300,40)
+$btn2.Location = New-Object System.Drawing.Point(50,80)
+$btn2.Add_Click({ Adicionar-Paciente })
+
+$btn4 = New-Object System.Windows.Forms.Button
+$btn4.Text = "3. Excluir Paciente"
+$btn4.Size = New-Object System.Drawing.Size(300,40)
+$btn4.Location = New-Object System.Drawing.Point(50,130)
+$btn4.Add_Click({ 
+    [System.Windows.Forms.MessageBox]::Show("Para excluir, use o botão 'Excluir' na lista de pacientes.")
+})
+
+$btnBack = New-Object System.Windows.Forms.Button
+$btnBack.Text = "Voltar"
+$btnBack.Size = New-Object System.Drawing.Size(300,40)
+$btnBack.Location = New-Object System.Drawing.Point(50,180)
+$btnBack.Add_Click({ $form.Close() })
+
+$form.Controls.AddRange(@($btn1, $btn2, $btn4, $btnBack))
+
+[void]$form.ShowDialog()
