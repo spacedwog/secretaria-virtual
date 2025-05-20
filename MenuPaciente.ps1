@@ -4,22 +4,23 @@ Add-Type -AssemblyName System.Drawing
 $arquivoJson = "pacientes.json"
 
 function Carregar-Pacientes {
+    $arquivoJson = "$PSScriptRoot\pacientes.json"
+
     if (Test-Path $arquivoJson) {
         $dados = Get-Content $arquivoJson -Raw | ConvertFrom-Json
 
-        # Se for um array, devolve como está
         if ($dados -is [System.Collections.IEnumerable] -and $dados -isnot [string]) {
             return @($dados)
-        }
-        # Se for único objeto, converte para array com um item
-        else {
-            return ,$dados
+        } else {
+            return ,$dados  # Força um array de 1 item
         }
     }
+
     return @()
 }
 
 function Salvar-Pacientes($pacientes) {
+    $arquivoJson = "$PSScriptRoot\pacientes.json"
     $pacientes | ConvertTo-Json -Depth 3 | Set-Content $arquivoJson
 }
 
