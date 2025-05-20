@@ -127,7 +127,7 @@ function RegisterVisit {
     $btnRegistrar.Size = New-Object System.Drawing.Size(100, 30)
 
     # Carregar pacientes e doutores para popular os comboboxes
-    $pacientes = Load-JsonData "patients.json"
+    $pacientes = Load-JsonData "pacientes.json"
     $doutores = Load-JsonData "doctors.json"
 
     # Popula pacientes: texto exibido = "ID - Nome", valor armazenado = id
