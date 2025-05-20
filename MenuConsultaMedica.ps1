@@ -7,14 +7,14 @@ function Save-JsonData($data, $filePath) {
     Set-Content -Path $filePath -Value $json -Encoding UTF8
 }
 
-function Load-JsonData($filePath) {
+function Load-JsonData {
+    param($filePath)
     if (Test-Path $filePath) {
-        $content = Get-Content $filePath -Raw
-        if ($content.Trim()) {
-            return [System.Web.Script.Serialization.JavaScriptSerializer]::new().DeserializeObject($content)
-        }
+        $jsonText = Get-Content $filePath -Raw
+        return $jsonText | ConvertFrom-Json
+    } else {
+        return @()
     }
-    return @()
 }
 
 function Get-NextId {
@@ -93,12 +93,15 @@ function AddDoctor {
 }
 
 function RegisterVisit {
+    Add-Type -AssemblyName System.Windows.Forms
+    Add-Type -AssemblyName System.Drawing
+
     $idForm = New-Object System.Windows.Forms.Form
     $idForm.Text = "Registrar Visita"
     $idForm.Size = New-Object System.Drawing.Size(350, 220)
     $idForm.StartPosition = "CenterScreen"
 
-    # Label e ComboBox para Paciente
+    # Labels e Comboboxes
     $lblPaciente = New-Object System.Windows.Forms.Label
     $lblPaciente.Text = "Paciente:"
     $lblPaciente.Location = New-Object System.Drawing.Point(10, 20)
@@ -109,7 +112,6 @@ function RegisterVisit {
     $cmbPaciente.Size = New-Object System.Drawing.Size(220, 20)
     $cmbPaciente.DropDownStyle = 'DropDownList'
 
-    # Label e ComboBox para Doutor
     $lblDoutor = New-Object System.Windows.Forms.Label
     $lblDoutor.Text = "Doutor:"
     $lblDoutor.Location = New-Object System.Drawing.Point(10, 60)
@@ -120,27 +122,28 @@ function RegisterVisit {
     $cmbDoutor.Size = New-Object System.Drawing.Size(220, 20)
     $cmbDoutor.DropDownStyle = 'DropDownList'
 
-    # Botão Registrar
     $btnRegistrar = New-Object System.Windows.Forms.Button
     $btnRegistrar.Text = "Registrar"
     $btnRegistrar.Location = New-Object System.Drawing.Point(120, 110)
     $btnRegistrar.Size = New-Object System.Drawing.Size(100, 30)
 
-    # Carregar pacientes e doutores para popular os comboboxes
+    # Carregar dados JSON
     $pacientes = Load-JsonData "pacientes.json"
     $doutores = Load-JsonData "doctors.json"
 
-    # Popula pacientes: texto exibido = "ID - Nome", valor armazenado = id
+    Write-Host "Pacientes carregados:"
+    $pacientes | ForEach-Object { Write-Host "ID: $($_.id), Nome: $($_.nome)" }
+
+    # Preencher combobox pacientes
     foreach ($p in $pacientes) {
         $cmbPaciente.Items.Add("$($p.id) - $($p.nome)")
     }
 
-    # Popula doutores: texto exibido = "ID - Nome", valor armazenado = id
+    # Preencher combobox doutores
     foreach ($d in $doutores) {
         $cmbDoutor.Items.Add("$($d.id) - $($d.nome)")
     }
 
-    # Seleciona o primeiro item para evitar erro de seleção vazia
     if ($cmbPaciente.Items.Count -gt 0) { $cmbPaciente.SelectedIndex = 0 }
     if ($cmbDoutor.Items.Count -gt 0) { $cmbDoutor.SelectedIndex = 0 }
 
@@ -153,8 +156,6 @@ function RegisterVisit {
             [System.Windows.Forms.MessageBox]::Show("Selecione um doutor.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
             return
         }
-
-        # Extrair ID da string selecionada no formato "ID - Nome"
         $paciente_id = ($cmbPaciente.SelectedItem -split ' - ')[0]
         $doutor_id = ($cmbDoutor.SelectedItem -split ' - ')[0]
 
