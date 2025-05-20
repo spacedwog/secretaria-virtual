@@ -883,7 +883,7 @@ function runPowerShellScriptInThread(scriptPath: string, params: Record<string, 
         });
     } else {
         // Código que será executado na thread
-        const { scriptPath, params } = workerData;
+        const { scriptPath, params } = workerData ?? {};
 
         // Aqui, fazemos uma simulação de execução do PowerShell.
         // Substitua esse código por sua lógica interna para rodar PowerShell sem `child_process`.
