@@ -15,6 +15,10 @@ function ReceitaMedica {
     & .\MenuReceitaMedica.ps1
 }
 
+function Configuracao {
+    & config\MenuConfiguracao.ps1
+}
+
 # Janela principal
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Sistema de Secretaria Virtual"
@@ -41,11 +45,17 @@ $btn3.Location = New-Object System.Drawing.Point(50,130)
 $btn3.Add_Click({ ReceitaMedica })
 
 $btn4 = New-Object System.Windows.Forms.Button
-$btn4.Text = "4. Sair"
+$btn4.Text = "5. Sair"
 $btn4.Size = New-Object System.Drawing.Size(300,40)
-$btn4.Location = New-Object System.Drawing.Point(50,180)
-$btn4.Add_Click({ $form.Close() })
+$btn4.Location = New-Object System.Drawing.Point(50,230)
+$btn4.Add_Click({ Configuracao })
 
-$form.Controls.AddRange(@($btn1, $btn2, $btn3, $btn4))
+$btn5 = New-Object System.Windows.Forms.Button
+$btn5.Text = "5. Sair"
+$btn5.Size = New-Object System.Drawing.Size(300,40)
+$btn5.Location = New-Object System.Drawing.Point(50,230)
+$btn5.Add_Click({ $form.Close() })
+
+$form.Controls.AddRange(@($btn1, $btn2, $btn3, $btn4, $btn5))
 
 [void]$form.ShowDialog()
