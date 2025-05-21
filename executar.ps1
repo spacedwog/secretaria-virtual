@@ -1,27 +1,22 @@
-# Caminho completo para o executável que você quer iniciar
+# Caminho completo para o executável que você quer verificar
 $exePath = "C:\Users\felip\secretaria-virtual\secretaria_virtual.exe"
 
 # Verifica se o executável existe
 if (-Not (Test-Path $exePath)) {
-    Write-Host "❌ O executável '$exePath' não foi encontrado." -ForegroundColor Red
+    Write-Host "[FALHA] O executável '$exePath' não foi encontrado." -ForegroundColor Red
     exit
 }
 
-# Inicia o processo e captura o objeto retornado
+# Extrai o nome do executável (sem extensão)
+$exeName = [System.IO.Path]::GetFileNameWithoutExtension($exePath)
+
+# Tenta obter o processo pelo nome
 try {
-    Write-Host "[BEGIN] Iniciando o processo '$exePath'..." -ForegroundColor Cyan
-    $processo = Start-Process -FilePath $exePath -PassThru
-    Write-Host "[OK] Processo iniciado com sucesso. ID do processo: $($processo.Id)" -ForegroundColor Green
+    $processos = Get-Process -Name $exeName -ErrorAction Stop
+    foreach ($proc in $processos) {
+        Write-Host "[OK] Processo '$exeName' encontrado. ID do processo: $($proc.Id)" -ForegroundColor Green
+    }
 }
 catch {
-    Write-Host "[FALHA] Erro ao iniciar o processo: $_" -ForegroundColor Red
-    exit
+    Write-Host "[FALHA] O processo '$exeName' não está em execução." -ForegroundColor Red
 }
-
-# Aguarda o término do processo
-Write-Host "[ESPERA] Aguardando o processo terminar..."
-$processo.WaitForExit()
-
-# Exibe a saída final
-Write-Host "[OK] O processo terminou em: $($processo.ExitTime)" -ForegroundColor Green
-Write-Host "Código de saída: $($processo.ExitCode)" -ForegroundColor Yellow
