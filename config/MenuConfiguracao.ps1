@@ -26,13 +26,13 @@ function MenuConfiguracao {
     for ($i = 0; $i -lt $labels.Count; $i++) {
         $label = New-Object System.Windows.Forms.Label
         $label.Text = $labels[$i]
-        $label.Location = New-Object System.Drawing.Point(10, 20 + ($i * 40))
+        $label.Location = [System.Drawing.Point]::new(10, 20 + ($i * 40))
         $label.Size = New-Object System.Drawing.Size(150, 20)
         $form.Controls.Add($label)
 
         $textbox = New-Object System.Windows.Forms.TextBox
         $textbox.Text = $defaultValues[$i]
-        $textbox.Location = New-Object System.Drawing.Point(170, 20 + ($i * 40))
+        $textbox.Location = [System.Drawing.Point]::new(170, 20 + ($i * 40))
         $textbox.Size = New-Object System.Drawing.Size(400, 20)
         $form.Controls.Add($textbox)
         $textboxes += $textbox
