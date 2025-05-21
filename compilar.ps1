@@ -8,5 +8,5 @@ Invoke-PS2EXE `
   -Version "1.0.0.0" `
   -Copyright "© 2025 Felipe Rodrigues dos Santos (felipersantos1988@gmail.com). Todos os direitos reservados." `
   -noConsole `
-  -IconFile "icone.ico" `
+  -IconFile "icone.png" `
   -Verbose
