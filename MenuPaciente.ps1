@@ -3,7 +3,7 @@ Add-Type -AssemblyName System.Drawing
 
 $arquivoJson = ".\pacientes.json"
 
-function Get-NextId {
+function Get_NextId {
     param (
         [string]$filePath
     )
@@ -27,7 +27,7 @@ function Get-NextId {
     }
 }
 
-function Carregar-Pacientes {
+function Carregar_Pacientes {
     if (-not (Test-Path $arquivoJson)) {
         return @()
     }
@@ -45,12 +45,12 @@ function Carregar-Pacientes {
     return $pacientes
 }
 
-function Salvar-Pacientes($pacientes) {
+function Salvar_Pacientes($pacientes) {
     $pacientes | ConvertTo-Json -Depth 10 | Out-File -Encoding UTF8 $arquivoJson
 }
 
-function Listar-Pacientes {
-    $pacientes = Carregar-Pacientes
+function Listar_Pacientes {
+    $pacientes = Carregar_Pacientes
 
     $formList = New-Object System.Windows.Forms.Form
     $formList.Text = "Lista de Pacientes"
@@ -102,10 +102,10 @@ function Listar-Pacientes {
         $confirm = [System.Windows.Forms.MessageBox]::Show("Confirma exclusão do paciente '$($pacienteSelecionado.Nome)'?", "Confirmação", [System.Windows.Forms.MessageBoxButtons]::YesNo)
         if ($confirm -eq [System.Windows.Forms.DialogResult]::Yes) {
             $pacientes = $pacientes | Where-Object { $_.ID -ne $pacienteSelecionado.ID }
-            Salvar-Pacientes $pacientes
+            Salvar_Pacientes $pacientes
             [System.Windows.Forms.MessageBox]::Show("Paciente excluído com sucesso.")
             $formList.Close()
-            Listar-Pacientes
+            Listar_Pacientes
         }
     })
 
@@ -113,11 +113,11 @@ function Listar-Pacientes {
     $formList.ShowDialog()
 }
 
-function Adicionar-Paciente {
-    Abrir-Formulario-Paciente
+function Adicionar_Paciente {
+    Formulario_Paciente
 }
 
-function Abrir-Formulario-Paciente {
+function Formulario_Paciente {
     $formAdd = New-Object System.Windows.Forms.Form
     $formAdd.Text = "Adicionar Paciente"
     $formAdd.Size = New-Object System.Drawing.Size(300,350)
@@ -157,17 +157,17 @@ function Abrir-Formulario-Paciente {
             return
         }
 
-        $pacientes = Carregar-Pacientes
+        $pacientes = Carregar_Pacientes
 
         # Garante que $pacientes seja sempre um array antes de adicionar
-        if ($pacientes -eq $null) {
+        if ($null -eq $pacientes) {
             $pacientes = @()
         } elseif ($pacientes -isnot [System.Collections.IEnumerable]) {
             $pacientes = @($pacientes)
         }
 
         $novoPaciente = [PSCustomObject]@{
-            ID       = Get-NextId -filePath $arquivoJson
+            ID       = Get_NextId -filePath $arquivoJson
             Nome     = $nome
             Idade    = $idade
             Telefone = $telefone
@@ -176,7 +176,7 @@ function Abrir-Formulario-Paciente {
         }
 
         $pacientes += $novoPaciente
-        Salvar-Pacientes $pacientes
+        Salvar_Pacientes $pacientes
 
         [System.Windows.Forms.MessageBox]::Show("Paciente salvo com sucesso!")
         $formAdd.Close()
@@ -186,7 +186,7 @@ function Abrir-Formulario-Paciente {
     $formAdd.ShowDialog()
 }
 
-function Excluir-Paciente {
+function Excluir_Paciente {
     [System.Windows.Forms.MessageBox]::Show("Use o botão 'Excluir' na lista de pacientes para remover.")
 }
 
@@ -200,13 +200,13 @@ $btn1 = New-Object System.Windows.Forms.Button
 $btn1.Text = "1. Listar Pacientes"
 $btn1.Size = New-Object System.Drawing.Size(300,40)
 $btn1.Location = New-Object System.Drawing.Point(50,30)
-$btn1.Add_Click({ Listar-Pacientes })
+$btn1.Add_Click({ Listar_Pacientes })
 
 $btn2 = New-Object System.Windows.Forms.Button
 $btn2.Text = "2. Adicionar Paciente"
 $btn2.Size = New-Object System.Drawing.Size(300,40)
 $btn2.Location = New-Object System.Drawing.Point(50,80)
-$btn2.Add_Click({ Adicionar-Paciente })
+$btn2.Add_Click({ Adicionar_Paciente })
 
 $btn4 = New-Object System.Windows.Forms.Button
 $btn4.Text = "3. Excluir Paciente"

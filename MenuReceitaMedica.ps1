@@ -1,7 +1,7 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-function Load-JsonData {
+function Load_JsonData {
     param([string]$filePath)
     if (Test-Path $filePath) {
         $json = Get-Content $filePath -Raw
@@ -24,7 +24,7 @@ function Save-JsonData {
 
 function Get-NextId {
     param([string]$filePath)
-    $items = @(Load-JsonData $filePath)
+    $items = @(Load_JsonData $filePath)
 
     # Filtra apenas objetos com id numérico válido
     $validItems = $items | Where-Object { ($_ -ne $null) -and ($_ | Get-Member -Name "id") -and ([int]::TryParse($_.id.ToString(), [ref]$null)) }
@@ -34,15 +34,15 @@ function Get-NextId {
     return ($validItems | Measure-Object -Property id -Maximum).Maximum + 1
 }
 
-function Registrar-Receita {
+function Registrar_Receita {
     $form = New-Object System.Windows.Forms.Form
     $form.Text = "Registrar Receita Medica"
     $form.Size = New-Object System.Drawing.Size(380, 430)
     $form.StartPosition = "CenterScreen"
 
     # Carregar dados JSON
-    $pacientes = Load-JsonData "pacientes.json"
-    $doutores = Load-JsonData "doctors.json"
+    $pacientes = Load_JsonData "pacientes.json"
+    $doutores = Load_JsonData "doctors.json"
 
     # Label e ComboBox para Paciente
     $lblPaciente = New-Object System.Windows.Forms.Label
@@ -103,7 +103,7 @@ function Registrar-Receita {
         $doutorId = [int]($cbDoutor.SelectedItem -split '[()]')[1]
 
         $file = "prescriptions.json"
-        $data = @(Load-JsonData $file)  # Garante que seja array
+        $data = @(Load_JsonData $file)  # Garante que seja array
 
         $receita = [PSCustomObject]@{
             id           = Get-NextId -filePath $file
@@ -126,7 +126,7 @@ function Registrar-Receita {
     $form.ShowDialog()
 }
 
-function Imprimir-Receita {
+function Imprimir_Receita {
     $formPrint = New-Object System.Windows.Forms.Form
     $formPrint.Text = "Imprimir Receita Medica"
     $formPrint.Size = New-Object System.Drawing.Size(350, 250)
@@ -153,9 +153,9 @@ function Imprimir-Receita {
             return
         }
 
-        $receitas = Load-JsonData "prescriptions.json"
-        $pacientes = Load-JsonData "pacientes.json"
-        $doutores = Load-JsonData "doctors.json"
+        $receitas = Load_JsonData "prescriptions.json"
+        $pacientes = Load_JsonData "pacientes.json"
+        $doutores = Load_JsonData "doctors.json"
 
         $receita = $receitas | Where-Object { $_.id -eq [int]$idBusca }
 
@@ -223,13 +223,13 @@ $btnReg = New-Object System.Windows.Forms.Button
 $btnReg.Text = "1. Registrar Receita Medica"
 $btnReg.Size = New-Object System.Drawing.Size(300, 40)
 $btnReg.Location = New-Object System.Drawing.Point(20, 30)
-$btnReg.Add_Click({ Registrar-Receita })
+$btnReg.Add_Click({ Registrar_Receita })
 
 $btnPrint = New-Object System.Windows.Forms.Button
 $btnPrint.Text = "2. Imprimir Receita Medica"
 $btnPrint.Size = New-Object System.Drawing.Size(300, 40)
 $btnPrint.Location = New-Object System.Drawing.Point(20, 90)
-$btnPrint.Add_Click({ Imprimir-Receita })
+$btnPrint.Add_Click({ Imprimir_Receita })
 
 $btnBack = New-Object System.Windows.Forms.Button
 $btnBack.Text = "Voltar"

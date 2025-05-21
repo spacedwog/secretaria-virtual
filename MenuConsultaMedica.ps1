@@ -2,12 +2,12 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 Add-Type -AssemblyName System.Web.Extensions  # Para conversão JSON
 
-function Save-JsonData($data, $filePath) {
+function Save_JsonData($data, $filePath) {
     $json = [System.Web.Script.Serialization.JavaScriptSerializer]::new().Serialize($data)
     Set-Content -Path $filePath -Value $json -Encoding UTF8
 }
 
-function Load-JsonData {
+function Load_JsonData {
     param($filePath)
     if (Test-Path $filePath) {
         $jsonText = Get-Content $filePath -Raw
@@ -22,7 +22,7 @@ function Get-NextId {
         [string]$filePath,
         [string]$idField = "id"
     )
-    $data = Load-JsonData $filePath
+    $data = Load_JsonData $filePath
     if ($data.Count -eq 0) {
         return 1
     } else {
@@ -33,7 +33,7 @@ function Get-NextId {
 
 function ListAppointments {
     $file = "appointments.json"
-    $data = Load-JsonData $file
+    $data = Load_JsonData $file
     if ($data.Count -eq 0) {
         [System.Windows.Forms.MessageBox]::Show("Nenhuma consulta encontrada.")
     } else {
@@ -74,16 +74,16 @@ function AddDoctor {
     $okButton.Location = New-Object System.Drawing.Point(90, 150)
     $okButton.Add_Click({
         $doctor = @{
-            id            = Get-NextId -filePath "doctors.json"
+            id            = Get_NextId -filePath "doctors.json"
             nome          = $boxes[0].Text
             telefone      = $boxes[1].Text
             email         = $boxes[2].Text
             especialidade = $boxes[3].Text
         }
         $file = "doctors.json"
-        $data = Load-JsonData $file
+        $data = Load_JsonData $file
         $data += $doctor
-        Save-JsonData $data $file
+        Save_JsonData $data $file
 
         [System.Windows.Forms.MessageBox]::Show("Doutor '$($boxes[0].Text)' adicionado com sucesso!")
         $inputForm.Close()
@@ -128,8 +128,8 @@ function RegisterVisit {
     $btnRegistrar.Size = New-Object System.Drawing.Size(100, 30)
 
     # Carregar dados JSON
-    $pacientes = Load-JsonData "pacientes.json"
-    $doutores = Load-JsonData "doctors.json"
+    $pacientes = Load_JsonData "pacientes.json"
+    $doutores = Load_JsonData "doctors.json"
 
     Write-Host "Pacientes carregados:"
     $pacientes | ForEach-Object { Write-Host "ID: $($_.id), Nome: $($_.nome)" }
@@ -160,16 +160,16 @@ function RegisterVisit {
         $doutor_id = ($cmbDoutor.SelectedItem -split ' - ')[0]
 
         $visita = @{
-            id          = Get-NextId -filePath "visits.json"
+            id          = Get_NextId -filePath "visits.json"
             paciente_id = [int]$paciente_id
             doutor_id   = [int]$doutor_id
             timestamp   = (Get-Date).ToString("s")
         }
 
         $file = "visits.json"
-        $data = Load-JsonData $file
+        $data = Load_JsonData $file
         $data += $visita
-        Save-JsonData $data $file
+        Save_JsonData $data $file
 
         [System.Windows.Forms.MessageBox]::Show("Visita registrada com sucesso!")
         $idForm.Close()
@@ -235,8 +235,8 @@ function ScheduleAppointment {
     $submitBtn.Size = New-Object System.Drawing.Size(100, 30)
 
     # Carregar dados pacientes e doutores para popular os comboboxes
-    $pacientes = Load-JsonData "pacientes.json"
-    $doutores = Load-JsonData "doctors.json"
+    $pacientes = Load_JsonData "pacientes.json"
+    $doutores = Load_JsonData "doctors.json"
 
     foreach ($p in $pacientes) {
         $cmbPaciente.Items.Add("$($p.id) - $($p.nome)")
@@ -272,7 +272,7 @@ function ScheduleAppointment {
         }
 
         $appointment = @{
-            id          = Get-NextId -filePath "appointments.json"
+            id          = Get_NextId -filePath "appointments.json"
             paciente_id = [int]$paciente_id
             doutor_id   = [int]$doutor_id
             titulo      = $inputs[0].Text
@@ -283,9 +283,9 @@ function ScheduleAppointment {
         }
 
         $file = "appointments.json"
-        $data = Load-JsonData $file
+        $data = Load_JsonData $file
         $data += $appointment
-        Save-JsonData $data $file
+        Save_JsonData $data $file
 
         [System.Windows.Forms.MessageBox]::Show("Consulta agendada com sucesso!")
         $form2.Close()
