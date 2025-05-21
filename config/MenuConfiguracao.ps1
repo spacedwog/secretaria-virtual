@@ -1,24 +1,22 @@
 Add-Type -AssemblyName System.Windows.Forms
 
-function MenuConfiguracao {
+function MenuConfiguracaoAuditoria {
     [System.Windows.Forms.Application]::EnableVisualStyles()
 
     $form = New-Object System.Windows.Forms.Form
-    $form.Text = "Menu de Configuracao"
-    $form.Size = [System.Drawing.Size]::new(600, 300)
+    $form.Text = "Configuração do Relatório de Auditoria"
+    $form.Size = [System.Drawing.Size]::new(600, 220)
     $form.StartPosition = "CenterScreen"
 
     $labels = @(
-        "Diretorio Alvo:",
-        "Relatorio JSON:",
-        "Log de Auditoria:",
-        "Caminho do Executável:"
+        "Diretório Alvo:",
+        "Relatório JSON:",
+        "Log de Auditoria:"
     )
     $defaultValues = @(
         "C:\Users\felip\secretaria-virtual",
         "relatorios\json\relatorio_auditoria.json",
-        "relatorios\log\auditoria_log.txt",
-        "C:\Users\felip\secretaria-virtual\secretaria_virtual.exe"
+        "relatorios\log\auditoria_log.txt"
     )
 
     $textboxes = @()
@@ -40,7 +38,7 @@ function MenuConfiguracao {
 
     $okButton = New-Object System.Windows.Forms.Button
     $okButton.Text = "Salvar e Executar"
-    $okButton.Location = [System.Drawing.Point]::new(370, 200)
+    $okButton.Location = [System.Drawing.Point]::new(370, 150)
     $okButton.Add_Click({
         $form.DialogResult = [System.Windows.Forms.DialogResult]::OK
         $form.Close()
@@ -49,7 +47,7 @@ function MenuConfiguracao {
 
     $cancelButton = New-Object System.Windows.Forms.Button
     $cancelButton.Text = "Cancelar"
-    $cancelButton.Location = [System.Drawing.Point]::new(470, 200)
+    $cancelButton.Location = [System.Drawing.Point]::new(470, 150)
     $cancelButton.Add_Click({
         $form.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
         $form.Close()
@@ -63,36 +61,27 @@ function MenuConfiguracao {
             DiretorioAlvo   = $textboxes[0].Text
             RelatorioSaida  = $textboxes[1].Text
             LogSaida        = $textboxes[2].Text
-            Executavel      = $textboxes[3].Text
         }
     } else {
-        Write-Host "[CANCELADO] Configuracao cancelada pelo usuario." -ForegroundColor Yellow
+        Write-Host "[CANCELADO] Configuração cancelada pelo usuário." -ForegroundColor Yellow
         exit
     }
 }
 
 # === EXECUÇÃO ===
-$config = MenuConfiguracao
+$config = MenuConfiguracaoAuditoria
 
-# Passa os parâmetros aos scripts principais
+# Define variáveis de ambiente
 $env:CONFIG_DIRETORIO = $config.DiretorioAlvo
 $env:CONFIG_RELATORIO = $config.RelatorioSaida
 $env:CONFIG_LOG = $config.LogSaida
-$env:CONFIG_EXE = $config.Executavel
 
-# Executa os scripts principais com os parâmetros escolhidos
-Write-Host "`n[INFO] Executando scripts com configuracoes personalizadas..." -ForegroundColor Cyan
+# Executa somente o script de auditoria
+Write-Host "`n[INFO] Gerando relatório de auditoria..." -ForegroundColor Cyan
 
-# AUDITORIA
 powershell -ExecutionPolicy Bypass -Command @"
 `$DiretorioAlvo = `"$env:CONFIG_DIRETORIO`"
 `$RelatorioSaida = `"$env:CONFIG_RELATORIO`"
 `$LogSaida = `"$env:CONFIG_LOG`"
 . .\config\auditoria.ps1
 "@
-
-# EXECUTAR
-powershell -ExecutionPolicy Bypass -File .\config\executar.ps1 --% "$env:CONFIG_EXE"
-
-# HOMOLOGAR
-powershell -ExecutionPolicy Bypass -File .\config\homologar.ps1
