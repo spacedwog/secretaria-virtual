@@ -3,7 +3,11 @@ $scriptPath = "MenuPrincipal.ps1"
 $outputExe = "secretaria_virtual.exe"
 $iconPath = "icone.ico"
 
-# SHA1 do certificado desejado
+# Informações do certificado
+$subjectName = "CN=Felipe Rodrigues"
+$email = "felipersantos1988@gmail.com"
+
+# SHA1 desejado (se você já possui o hash e quer reutilizar)
 $certThumbprint = "53901640F943B6D0C913399A290D00F923AD0472"
 
 # Compilar o script para EXE
@@ -15,7 +19,7 @@ Invoke-PS2EXE `
   -Company "Spacedwog" `
   -Product "Sistema de Secretaria Virtual" `
   -Version "1.0.0.0" `
-  -Copyright "Copyright (c) 2025 Felipe Rodrigues dos Santos (felipersantos1988@gmail.com). Licenciado sob MIT License." `
+  -Copyright "Copyright (c) 2025 Felipe Rodrigues dos Santos ($email). Licenciado sob MIT License." `
   -NoConsole `
   -IconFile $iconPath `
   -Verbose
@@ -27,21 +31,25 @@ if (-not (Test-Path $signTool)) {
     exit 1
 }
 
-# Verifica se o certificado com o SHA1 existe
-$cert = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Thumbprint -eq $certThumbprint }
+# Procurar certificado existente
+$cert = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Subject -eq $subjectName -and $_.EnhancedKeyUsageList.FriendlyName -contains "Assinatura de Código" }
 
+# Se não existir, criar certificado com e-mail
 if (-not $cert) {
-    Write-Host "Certificado com thumbprint $certThumbprint não encontrado. Criando novo..."
+    Write-Host "Criando certificado autoassinado com e-mail..."
     $cert = New-SelfSignedCertificate `
         -Type CodeSigningCert `
-        -Subject "CN=Felipe Rodrigues" `
-        -CertStoreLocation "Cert:\CurrentUser\My"
+        -Subject $subjectName `
+        -CertStoreLocation "Cert:\CurrentUser\My" `
+        -KeyUsage DigitalSignature `
+        -TextExtension @("2.5.29.17={text}email=$email")  # Subject Alternative Name: email
     $certThumbprint = $cert.Thumbprint
 } else {
-    Write-Host "Certificado encontrado: $($cert.Subject)"
+    Write-Host "Certificado existente encontrado."
+    $certThumbprint = $cert.Thumbprint
 }
 
-# Assinar o executável com o certificado específico
+# Assinar o executável
 Write-Host "Assinando o arquivo..."
 & $signTool sign `
     /fd SHA256 `
