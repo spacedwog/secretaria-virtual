@@ -1,6 +1,17 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+Invoke-PS2EXE `
+  -InputFile "interface.ps1" `
+  -OutputFile "interface.exe" `
+  -Title "Nome do Aplicativo" `
+  -Description "Descrição curta ou propósito do sistema" `
+  -Company "Nome da empresa ou autor" `
+  -Product "Sistema Médico Virtual" `
+  -Version "1.0.0.0" `
+  -Copyright "© 2025 Seu Nome" `
+  -noConsole
+
 # Funções simuladas para os menus
 function Abrir-MenuPaciente {
     # Aqui você pode chamar o MenuPaciente.ps1 ou chamar a função diretamente
