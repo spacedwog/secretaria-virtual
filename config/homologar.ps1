@@ -163,4 +163,6 @@ Test-CommandOutput -Command "Get-Date" -ExpectedPattern "\d{4}"
 # 5. Mede tempo de resposta de um comando simples
 Test-ResponseTime -ScriptBlock { Get-Process | Out-Null } -MaxMilliseconds 500
 
+& .\config\auditoria.ps1
+
 Write-Host "`n=== Fim da Homologacao ===`n"
