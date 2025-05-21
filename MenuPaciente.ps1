@@ -52,26 +52,30 @@ function Salvar_Pacientes($pacientes) {
 function Listar_Pacientes {
     $pacientes = Carregar_Pacientes
 
+    # Janela principal
     $formList = New-Object System.Windows.Forms.Form
     $formList.Text = "Lista de Pacientes"
-    $formList.Size = New-Object System.Drawing.Size(700, 450)
+    $formList.Size = New-Object System.Drawing.Size(720, 460)
     $formList.StartPosition = "CenterScreen"
+    $formList.Topmost = $true
 
+    # ListView de pacientes
     $listView = New-Object System.Windows.Forms.ListView
     $listView.View = [System.Windows.Forms.View]::Details
     $listView.FullRowSelect = $true
     $listView.GridLines = $true
     $listView.MultiSelect = $false
-    $listView.Size = New-Object System.Drawing.Size(680, 350)
+    $listView.Size = New-Object System.Drawing.Size(690, 350)
     $listView.Location = New-Object System.Drawing.Point(10, 10)
 
-    $listView.Columns.Add("ID", 100) | Out-Null
-    $listView.Columns.Add("Nome", 150) | Out-Null
-    $listView.Columns.Add("Idade", 50) | Out-Null
+    $listView.Columns.Add("ID", 60)        | Out-Null
+    $listView.Columns.Add("Nome", 150)     | Out-Null
+    $listView.Columns.Add("Idade", 60)     | Out-Null
     $listView.Columns.Add("Telefone", 120) | Out-Null
-    $listView.Columns.Add("Email", 150) | Out-Null
-    $listView.Columns.Add("Endereco", 200) | Out-Null
+    $listView.Columns.Add("Email", 150)    | Out-Null
+    $listView.Columns.Add("Endereço", 150) | Out-Null
 
+    # Preenche os dados
     foreach ($paciente in $pacientes) {
         $item = New-Object System.Windows.Forms.ListViewItem($paciente.ID.ToString())
         $item.SubItems.Add($paciente.Nome)     | Out-Null
@@ -82,34 +86,41 @@ function Listar_Pacientes {
         $listView.Items.Add($item) | Out-Null
     }
 
-    $btnClose = New-Object System.Windows.Forms.Button
-    $btnClose.Text = "Fechar"
-    $btnClose.Size = New-Object System.Drawing.Size(100,30)
-    $btnClose.Location = New-Object System.Drawing.Point(10, 370)
-    $btnClose.Add_Click({ $formList.Close() })
+    # Botão Fechar
+    $btnFechar = New-Object System.Windows.Forms.Button
+    $btnFechar.Text = "Fechar"
+    $btnFechar.Size = New-Object System.Drawing.Size(100,30)
+    $btnFechar.Location = New-Object System.Drawing.Point(10, 370)
+    $btnFechar.Add_Click({ $formList.Close() })
 
+    # Botão Excluir
     $btnExcluir = New-Object System.Windows.Forms.Button
     $btnExcluir.Text = "Excluir"
     $btnExcluir.Size = New-Object System.Drawing.Size(100,30)
     $btnExcluir.Location = New-Object System.Drawing.Point(120, 370)
     $btnExcluir.Add_Click({
         if ($listView.SelectedItems.Count -eq 0) {
-            [System.Windows.Forms.MessageBox]::Show("Selecione um paciente para excluir.")
+            [System.Windows.Forms.MessageBox]::Show("Selecione um paciente para excluir.", "Aviso")
             return
         }
         $index = $listView.SelectedItems[0].Index
         $pacienteSelecionado = $pacientes[$index]
-        $confirm = [System.Windows.Forms.MessageBox]::Show("Confirma exclusão do paciente '$($pacienteSelecionado.Nome)'?", "Confirmação", [System.Windows.Forms.MessageBoxButtons]::YesNo)
+        $confirm = [System.Windows.Forms.MessageBox]::Show(
+            "Confirma exclusão do paciente '$($pacienteSelecionado.Nome)'?",
+            "Confirmação",
+            [System.Windows.Forms.MessageBoxButtons]::YesNo,
+            [System.Windows.Forms.MessageBoxIcon]::Question
+        )
         if ($confirm -eq [System.Windows.Forms.DialogResult]::Yes) {
             $pacientes = $pacientes | Where-Object { $_.ID -ne $pacienteSelecionado.ID }
             Salvar_Pacientes $pacientes
-            [System.Windows.Forms.MessageBox]::Show("Paciente excluído com sucesso.")
+            [System.Windows.Forms.MessageBox]::Show("Paciente excluído com sucesso.", "Sucesso")
             $formList.Close()
-            Listar_Pacientes
+            Listar_Pacientes  # Recarrega a lista após exclusão
         }
     })
 
-    $formList.Controls.AddRange(@($listView, $btnClose, $btnExcluir))
+    $formList.Controls.AddRange(@($listView, $btnFechar, $btnExcluir))
     $formList.ShowDialog()
 }
 
