@@ -83,19 +83,18 @@ $env:CONFIG_EXE = $config.Executavel
 # Executa os scripts principais com os parâmetros escolhidos
 Write-Host "`n[INFO] Executando scripts com configuracoes personalizadas..." -ForegroundColor Cyan
 
-powershell -ExecutionPolicy Bypass -Command "& {
-    param(
-        [string]`$DiretorioAlvo = `"$env:CONFIG_DIRETORIO`",
-        [string]`$RelatorioSaida = `"$env:CONFIG_RELATORIO`",
-        [string]`$LogSaida = `"$env:CONFIG_LOG`"
-    )
-    .\config\auditoria.ps1
-}"
+# Correção aqui: uso de string com interpolação para passar o conteúdo adequadamente
+$p1 = @"
+param(
+    [string]\$DiretorioAlvo = `"$env:CONFIG_DIRETORIO`",
+    [string]\$RelatorioSaida = `"$env:CONFIG_RELATORIO`",
+    [string]\$LogSaida = `"$env:CONFIG_LOG`"
+)
+.\config\auditoria.ps1
+"@
 
-powershell -ExecutionPolicy Bypass -Command "& {
-    .\config\executar.ps1 `"$env:CONFIG_EXE`"
-}"
+powershell -ExecutionPolicy Bypass -Command $p1
 
-powershell -ExecutionPolicy Bypass -Command "& {
-    .\config\homologar.ps1
-}"
+powershell -ExecutionPolicy Bypass -Command "`".\config\executar.ps1 `"$env:CONFIG_EXE`"`""
+
+powershell -ExecutionPolicy Bypass -Command "`".\config\homologar.ps1`""
