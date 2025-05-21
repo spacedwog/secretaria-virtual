@@ -16,7 +16,7 @@ function ReceitaMedica {
 }
 
 function Configuracao {
-    & config\MenuConfiguracao.ps1
+    & .\config\MenuConfiguracao.ps1
 }
 
 # Janela principal
