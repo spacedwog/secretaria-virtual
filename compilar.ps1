@@ -12,7 +12,7 @@ Invoke-PS2EXE `
   -Company "Spacedwog" `
   -Product "Sistema de Secretaria Virtual" `
   -Version "1.0.0.0" `
-  -Copyright "Copyright © 2025 Felipe Rodrigues dos Santos (felipersantos1988@gmail.com). Licenciado sob MIT License." `
+  -Copyright "Copyright (c) 2025 Felipe Rodrigues dos Santos (felipersantos1988@gmail.com). Licenciado sob MIT License." `
   -NoConsole `
   -IconFile $iconPath `
   -Verbose
