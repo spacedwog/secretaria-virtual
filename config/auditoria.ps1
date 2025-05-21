@@ -58,7 +58,7 @@ Registrar_Log "[REPORT] Relatorio JSON salvo em: $RelatorioSaidaJSON"
 $relatorioTexto = $resultados | ForEach-Object {
     "$($_.NomeArquivo) | $($_.TamanhoKB) KB | $($_.DataUltimaModificacao) | $($_.HashSHA256.Substring(0,8))..."
 }
-$relatorioTexto | Out-File -FilePath ($RelatorioSaidaJSON -replace '.json$', '.txt')
+$relatorioTexto | Out-File -FilePath ($RelatorioSaidaWORD -replace '.json$', '.txt')
 Registrar_Log "[REPORT] Relatorio TXT salvo em: $($RelatorioSaidaWORD -replace '.json$', '.txt')"
 
 Registrar_Log "[OK] Auditoria concluida."
