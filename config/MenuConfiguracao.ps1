@@ -14,7 +14,7 @@ function MenuConfiguracaoAuditoria {
         "Log de Auditoria:"
     )
     $defaultValues = @(
-        "C:\Users\felip\secretaria-virtual",
+        "'C:\Users\felip\secretaria-virtual'",
         "relatorios\json\relatorio_auditoria.json",
         "relatorios\log\auditoria_log.txt"
     )
