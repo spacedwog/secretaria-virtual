@@ -3,11 +3,10 @@ $scriptPath = "MenuPrincipal.ps1"
 $outputExe = "secretaria_virtual.exe"
 $iconPath = "icone.ico"
 
-# Finaliza processo anterior se necessário
-Stop-Process -Name "secretaria_virtual" -Force -ErrorAction SilentlyContinue
-Start-Sleep -Seconds 1
+# SHA1 do certificado desejado
+$certThumbprint = "53901640F943B6D0C913399A290D00F923AD0472"
 
-# Compilação do PowerShell para EXE
+# Compilar o script para EXE
 Invoke-PS2EXE `
   -InputFile $scriptPath `
   -OutputFile $outputExe `
@@ -21,41 +20,36 @@ Invoke-PS2EXE `
   -IconFile $iconPath `
   -Verbose
 
-# Caminho para o SignTool
+# Verifica se signtool está instalado
 $signTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe"
-
-# Verifica existência do SignTool
-if (-Not (Test-Path $signTool)) {
-    Write-Error "signtool.exe nao encontrado. Instale o Windows SDK para utilizar assinatura digital."
+if (-not (Test-Path $signTool)) {
+    Write-Error "signtool.exe não encontrado. Instale o Windows SDK para utilizar assinatura digital."
     exit 1
 }
 
-$certPath = (Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Subject -eq "CN=Felipe Rodrigues dos Santos" }).Thumbprint
-$cert = Get-Item "Cert:\CurrentUser\My\$certPath"
-Export-Certificate -Cert $cert -FilePath "$env:TEMP\cert.cer"
-Import-Certificate -FilePath "$env:TEMP\cert.cer" -CertStoreLocation "Cert:\CurrentUser\Root"
-
-# Certificado autoassinado (se não existir)
-$subjectName = "CN=Felipe Rodrigues dos Santos"
-$cert = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Subject -eq $subjectName }
+# Verifica se o certificado com o SHA1 existe
+$cert = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Thumbprint -eq $certThumbprint }
 
 if (-not $cert) {
-    Write-Host "Criando certificado autoassinado..."
-    $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject $subjectName -CertStoreLocation "Cert:\CurrentUser\My"
+    Write-Host "Certificado com thumbprint $certThumbprint não encontrado. Criando novo..."
+    $cert = New-SelfSignedCertificate `
+        -Type CodeSigningCert `
+        -Subject "CN=Felipe Rodrigues" `
+        -CertStoreLocation "Cert:\CurrentUser\My"
+    $certThumbprint = $cert.Thumbprint
 } else {
-    Write-Host "Certificado existente."
+    Write-Host "Certificado encontrado: $($cert.Subject)"
 }
 
-# Assina o executável
-Write-Host "`nAssinando o arquivo..."
+# Assinar o executável com o certificado específico
+Write-Host "Assinando o arquivo..."
 & $signTool sign `
-    /n "Felipe Rodrigues dos Santos" `
     /fd SHA256 `
     /tr http://timestamp.digicert.com `
     /td SHA256 `
-    /c "CN=Felipe Rodrigues dos Santos" `
+    /sha1 "$certThumbprint" `
     "$outputExe"
 
-# Verifica assinatura
-Write-Host "`nVerificando assinatura..."
+# Verificar assinatura
+Write-Host "Verificando assinatura..."
 & $signTool verify /pa /v "$outputExe"
