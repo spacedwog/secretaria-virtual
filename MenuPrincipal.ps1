@@ -7,7 +7,7 @@ Add-Type -AssemblyName System.Drawing
 
 Invoke-PS2EXE `
   -InputFile "MenuPrincipal.ps1" `
-  -OutputFile "Secretaria Virtual.exe" `
+  -OutputFile "Secretaria_Virtual.exe" `
   -Title "Sistema Secretaria Virtual" `
   -Description "Aplicativo para gerenciamento de pacientes e consultas." `
   -Company "Spacedwog(CORP)" `
