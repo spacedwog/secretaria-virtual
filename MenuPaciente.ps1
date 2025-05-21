@@ -153,7 +153,7 @@ function Formulario_Paciente {
         $endereco = $textboxes[4].Text.Trim()
 
         if ([string]::IsNullOrWhiteSpace($nome)) {
-            [System.Windows.Forms.MessageBox]::Show("Nome obrigatório.")
+            [System.Windows.Forms.MessageBox]::Show("Nome obrigatorio.")
             return
         }
 
@@ -187,7 +187,7 @@ function Formulario_Paciente {
 }
 
 function Excluir_Paciente {
-    [System.Windows.Forms.MessageBox]::Show("Use o botão 'Excluir' na lista de pacientes para remover.")
+    [System.Windows.Forms.MessageBox]::Show("Use o botao 'Excluir' na lista de pacientes para remover.")
 }
 
 # Janela principal do menu paciente

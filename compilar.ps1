@@ -8,6 +8,9 @@ $subjectName = "CN=Felipe Rodrigues"
 $email = "felipersantos1988@gmail.com"
 $certThumbprint = "53901640F943B6D0C913399A290D00F923AD0472"  # SHA1 opcional, para reutilização
 
+[System.Threading.Thread]::CurrentThread.CurrentCulture = 'pt-BR'
+[System.Threading.Thread]::CurrentThread.CurrentUICulture = 'pt-BR'
+
 # Compilar o script para EXE
 Invoke-PS2EXE `
   -InputFile $scriptPath `
@@ -72,7 +75,7 @@ Write-Host "Verificando assinatura..."
 
 # Resultado final
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "`n🎉 EXE compilado e assinado com sucesso! Caminho: $outputExe" -ForegroundColor Green
+    Write-Host "`n[OK] EXE compilado e assinado com sucesso! Caminho: $outputExe" -ForegroundColor Green
 } else {
-    Write-Error "❌ Falha ao assinar/verificar o executavel."
+    Write-Error "[FALHA] Falha ao assinar/verificar o executavel."
 }

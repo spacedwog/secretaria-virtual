@@ -1,9 +1,6 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-[System.Threading.Thread]::CurrentThread.CurrentCulture = 'pt-BR'
-[System.Threading.Thread]::CurrentThread.CurrentUICulture = 'pt-BR'
-
 # Funções simuladas para os menus
 function MenuPaciente {
     # Aqui você pode chamar o MenuPaciente.ps1 ou chamar a função diretamente
