@@ -18,7 +18,7 @@ Invoke-PS2EXE `
   -Verbose
 
 # Verifica se signtool está instalado
-$signTool = (Get-Command "signtool.exe" -ErrorAction SilentlyContinue).Source
+$signTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe"
 if (-not $signTool) {
     Write-Error "signtool.exe não encontrado. Instale o Windows SDK para utilizar assinatura digital."
     exit 1
