@@ -1,13 +1,14 @@
 param (
-    [string]$DiretorioAlvo,
-    [string]$RelatorioSaida,
-    [string]$LogSaida
+    [string]$DiretorioAlvo = "C:\Users\felip\secretaria-virtual",
+    [string]$RelatorioSaida = "relatorios\json\relatorio_auditoria.json",
+    [string]$LogSaida = "relatorios\log\auditoria_log.txt"
 )
 
 # Exemplo de uso
 Write-Host "Diretório Alvo: $DiretorioAlvo"
 Write-Host "Relatório JSON: $RelatorioSaida"
 Write-Host "Log de Auditoria: $LogSaida"
+
 
 function Get_FileHashInfo {
     param (
