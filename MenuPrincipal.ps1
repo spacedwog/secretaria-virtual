@@ -1,9 +1,6 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-[System.Threading.Thread]::CurrentThread.CurrentCulture = 'pt-BR'
-[System.Threading.Thread]::CurrentThread.CurrentUICulture = 'pt-BR'
-
 Invoke-PS2EXE `
   -InputFile "MenuPrincipal.ps1" `
   -OutputFile "secretaria_virtual.exe" `
