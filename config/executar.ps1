@@ -10,7 +10,7 @@ if (-Not (Test-Path $exePath)) {
 # Inicia o processo e captura o objeto retornado
 try {
 
-    Write-Host "`n=== Inicio da Execucao ===`n"
+    Write-Host "`n=== Inicio da Execucaog ===`n"
     Write-Host "[BEGIN] Iniciando o processo '$exePath'..." -ForegroundColor Cyan
     $processo = Start-Process -FilePath $exePath -PassThru
     Write-Host "[OK] Processo iniciado com sucesso. ID do processo: $($processo.Id)" -ForegroundColor Green
@@ -28,3 +28,5 @@ $processo.WaitForExit()
 # Exibe a saída final
 Write-Host "[OK] O processo terminou em: $($processo.ExitTime)" -ForegroundColor Green
 Write-Host "Codigo de saida: $($processo.ExitCode)" -ForegroundColor Yellow
+
+Write-Host "`n=== Fim da Execucao ===`n"
