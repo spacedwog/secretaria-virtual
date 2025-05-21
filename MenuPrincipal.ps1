@@ -9,7 +9,7 @@ Invoke-PS2EXE `
   -Company "Spacedwog" `
   -Product "Sistema Medico Virtual" `
   -Version "1.0.0.0" `
-  -Copyright "© 2025 Felipe Rodrigues dos Santos" `
+  -Copyright "© 2025 Felipe Rodrigues dos Santos (felipersantos1988@gmail.com). Todos os direitos reservados." `
   -noConsole
 
 # Funções simuladas para os menus
