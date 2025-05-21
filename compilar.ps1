@@ -26,7 +26,7 @@ $signTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\signtoo
 
 # Verifica existência do SignTool
 if (-Not (Test-Path $signTool)) {
-    Write-Error "signtool.exe não encontrado. Instale o Windows SDK para utilizar assinatura digital."
+    Write-Error "signtool.exe nao encontrado. Instale o Windows SDK para utilizar assinatura digital."
     exit 1
 }
 
@@ -38,7 +38,7 @@ if (-not $cert) {
     Write-Host "Criando certificado autoassinado..."
     $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject $subjectName -CertStoreLocation "Cert:\CurrentUser\My"
 } else {
-    Write-Host "Certificado já existente."
+    Write-Host "Certificado existente."
 }
 
 # Assina o executável
