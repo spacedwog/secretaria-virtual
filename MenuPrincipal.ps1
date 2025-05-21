@@ -7,9 +7,9 @@ Invoke-PS2EXE `
   -Title "Secretaria Virtual" `
   -Description "IA - Software para uma secretaria virtual com Nuvem." `
   -Company "Spacedwog" `
-  -Product "Sistema Médico Virtual" `
+  -Product "Sistema Medico Virtual" `
   -Version "1.0.0.0" `
-  -Copyright "© 2025 Seu Nome" `
+  -Copyright "© 2025 Felipe Rodrigues dos Santos" `
   -noConsole
 
 # Funções simuladas para os menus
