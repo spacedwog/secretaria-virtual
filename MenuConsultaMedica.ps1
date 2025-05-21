@@ -56,7 +56,7 @@ function ListAppointments {
     $listView.Size = New-Object System.Drawing.Size(720, 340)
     $listView.Location = New-Object System.Drawing.Point(10, 10)
 
-    $listView.Columns.Add("Título", 150)       | Out-Null
+    $listView.Columns.Add("Titulo", 150)       | Out-Null
     $listView.Columns.Add("Paciente ID", 100)  | Out-Null
     $listView.Columns.Add("Doutor ID", 100)    | Out-Null
     $listView.Columns.Add("Data", 100)         | Out-Null
