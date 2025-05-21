@@ -5,14 +5,14 @@ function MenuConfiguracao {
 
     $form = New-Object System.Windows.Forms.Form
     $form.Text = "Menu de Configuracao"
-    $form.Size = New-Object System.Drawing.Size(600, 300)
+    $form.Size = [System.Drawing.Size]::new(600, 300)
     $form.StartPosition = "CenterScreen"
 
     $labels = @(
         "Diretorio Alvo:",
         "Relatorio JSON:",
         "Log de Auditoria:",
-        "Caminho do Executavel:"
+        "Caminho do Executável:"
     )
     $defaultValues = @(
         "C:\Users\felip\secretaria-virtual",
@@ -27,20 +27,20 @@ function MenuConfiguracao {
         $label = New-Object System.Windows.Forms.Label
         $label.Text = $labels[$i]
         $label.Location = [System.Drawing.Point]::new(10, 20 + ($i * 40))
-        $label.Size = New-Object System.Drawing.Size(150, 20)
+        $label.Size = [System.Drawing.Size]::new(150, 20)
         $form.Controls.Add($label)
 
         $textbox = New-Object System.Windows.Forms.TextBox
         $textbox.Text = $defaultValues[$i]
         $textbox.Location = [System.Drawing.Point]::new(170, 20 + ($i * 40))
-        $textbox.Size = New-Object System.Drawing.Size(400, 20)
+        $textbox.Size = [System.Drawing.Size]::new(400, 20)
         $form.Controls.Add($textbox)
         $textboxes += $textbox
     }
 
     $okButton = New-Object System.Windows.Forms.Button
     $okButton.Text = "Salvar e Executar"
-    $okButton.Location = New-Object System.Drawing.Point(370, 200)
+    $okButton.Location = [System.Drawing.Point]::new(370, 200)
     $okButton.Add_Click({
         $form.DialogResult = [System.Windows.Forms.DialogResult]::OK
         $form.Close()
@@ -49,7 +49,7 @@ function MenuConfiguracao {
 
     $cancelButton = New-Object System.Windows.Forms.Button
     $cancelButton.Text = "Cancelar"
-    $cancelButton.Location = New-Object System.Drawing.Point(470, 200)
+    $cancelButton.Location = [System.Drawing.Point]::new(470, 200)
     $cancelButton.Add_Click({
         $form.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
         $form.Close()
