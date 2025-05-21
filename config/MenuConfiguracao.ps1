@@ -4,13 +4,13 @@ function MenuConfiguracao {
     [System.Windows.Forms.Application]::EnableVisualStyles()
 
     $form = New-Object System.Windows.Forms.Form
-    $form.Text = "Menu de Configuração"
+    $form.Text = "Menu de Configuracao"
     $form.Size = New-Object System.Drawing.Size(600, 300)
     $form.StartPosition = "CenterScreen"
 
     $labels = @(
-        "Diretório Alvo:",
-        "Relatório JSON:",
+        "Diretorio Alvo:",
+        "Relatorio JSON:",
         "Log de Auditoria:",
         "Caminho do Executável:"
     )
@@ -66,7 +66,7 @@ function MenuConfiguracao {
             Executavel      = $textboxes[3].Text
         }
     } else {
-        Write-Host "[CANCELADO] Configuração cancelada pelo usuário." -ForegroundColor Yellow
+        Write-Host "[CANCELADO] Configuracao cancelada pelo usuario." -ForegroundColor Yellow
         exit
     }
 }
@@ -81,7 +81,7 @@ $env:CONFIG_LOG = $config.LogSaida
 $env:CONFIG_EXE = $config.Executavel
 
 # Executa os scripts principais com os parâmetros escolhidos
-Write-Host "`n[INFO] Executando scripts com configurações personalizadas..." -ForegroundColor Cyan
+Write-Host "`n[INFO] Executando scripts com configuracoes personalizadas..." -ForegroundColor Cyan
 
 powershell -ExecutionPolicy Bypass -Command "& {
     param(
