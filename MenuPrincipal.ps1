@@ -1,6 +1,10 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+
+[System.Threading.Thread]::CurrentThread.CurrentCulture = 'pt-BR'
+[System.Threading.Thread]::CurrentThread.CurrentUICulture = 'pt-BR'
+
 Invoke-PS2EXE `
   -InputFile "MenuPrincipalps1" `
   -OutputFile "Secretaria Virtual.exe" `
@@ -10,7 +14,6 @@ Invoke-PS2EXE `
   -Product "Sistema Secretaria Virtual" `
   -Version "1.0.0.0" `
   -Copyright "© 2025 Felipe Rodrigues dos Santos. Todos os direitos reservados." `
-  -Culture pt-BR `
   -noConsole `
   -IconFile "icone.ico"
 
