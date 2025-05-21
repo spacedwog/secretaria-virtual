@@ -1,7 +1,7 @@
 param (
     [string]$DiretorioAlvo = "C:\Users\felip\secretaria-virtual",
-    [string]$RelatorioSaida = "relatorios\relatorio_auditoria.json",
-    [string]$LogSaida = "relatorios\auditoria_log.txt"
+    [string]$RelatorioSaida = "relatorios\json\relatorio_auditoria.json",
+    [string]$LogSaida = "relatorios\word\auditoria_log.txt"
 )
 
 function Get_FileHashInfo {
