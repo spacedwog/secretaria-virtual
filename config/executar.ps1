@@ -10,7 +10,7 @@ if (-Not (Test-Path $exePath)) {
 # Inicia o processo e captura o objeto retornado
 try {
 
-    Write-Host "`n=== Inicio da Execucaog ===`n"
+    Write-Host "`n=== Inicio da Execucao ===`n"
     Write-Host "[BEGIN] Iniciando o processo '$exePath'..." -ForegroundColor Cyan
     $processo = Start-Process -FilePath $exePath -PassThru
     Write-Host "[OK] Processo iniciado com sucesso. ID do processo: $($processo.Id)" -ForegroundColor Green

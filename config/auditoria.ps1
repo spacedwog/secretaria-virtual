@@ -32,7 +32,7 @@ if (-Not (Test-Path $DiretorioAlvo)) {
     Write-Host "[FALHA] Diretorio nao encontrado: $DiretorioAlvo" -ForegroundColor Red
     exit 1
 }
-
+Write-Host "`n=== Inicio da Auditoria ===`n"
 Registrar_Log "[BUSCA] Iniciando auditoria em: $DiretorioAlvo"
 $arquivos = Get-ChildItem -Path $DiretorioAlvo -File -Recurse
 
@@ -61,3 +61,5 @@ $relatorioTexto | Out-File -FilePath ($RelatorioSaida -replace '.json$', '.txt')
 Registrar_Log "[REPORT] Relatorio TXT salvo em: $($RelatorioSaida -replace '.json$', '.txt')"
 
 Registrar_Log "[OK] Auditoria concluida."
+
+Write-Host "`n=== Fim da Auditoria ===`n"
