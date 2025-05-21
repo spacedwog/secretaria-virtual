@@ -3,7 +3,11 @@ $scriptPath = "MenuPrincipal.ps1"
 $outputExe = "secretaria_virtual.exe"
 $iconPath = "icone.ico"
 
-# Configuração do executável
+# Finaliza processo anterior se necessário
+Stop-Process -Name "secretaria_virtual" -Force -ErrorAction SilentlyContinue
+Start-Sleep -Seconds 1
+
+# Compilação do PowerShell para EXE
 Invoke-PS2EXE `
   -InputFile $scriptPath `
   -OutputFile $outputExe `
@@ -17,14 +21,16 @@ Invoke-PS2EXE `
   -IconFile $iconPath `
   -Verbose
 
-# Verifica se signtool está instalado
+# Caminho para o SignTool
 $signTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe"
-if (-not $signTool) {
+
+# Verifica existência do SignTool
+if (-Not (Test-Path $signTool)) {
     Write-Error "signtool.exe não encontrado. Instale o Windows SDK para utilizar assinatura digital."
     exit 1
 }
 
-# Certificado autoassinado (caso não exista)
+# Certificado autoassinado (se não existir)
 $subjectName = "CN=Felipe Rodrigues"
 $cert = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Subject -eq $subjectName }
 
@@ -35,8 +41,8 @@ if (-not $cert) {
     Write-Host "Certificado já existente."
 }
 
-# Assinar o executável
-Write-Host "Assinando o arquivo..."
+# Assina o executável
+Write-Host "`nAssinando o arquivo..."
 & $signTool sign `
     /n "Felipe Rodrigues" `
     /fd SHA256 `
@@ -44,6 +50,6 @@ Write-Host "Assinando o arquivo..."
     /td SHA256 `
     "$outputExe"
 
-# Verificar assinatura
-Write-Host "Verificando assinatura..."
+# Verifica assinatura
+Write-Host "`nVerificando assinatura..."
 & $signTool verify /pa /v "$outputExe"
