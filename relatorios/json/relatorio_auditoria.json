@@ -58,9 +58,9 @@
     {
         "NomeArquivo":  "secretaria_virtual.exe",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\secretaria_virtual.exe",
-        "DataUltimaModificacao":  "\/Date(1747867987197)\/",
+        "DataUltimaModificacao":  "\/Date(1747868401056)\/",
         "TamanhoKB":  47.68,
-        "HashSHA256":  "371D8C3265A27436A55F2D9B4328C698EDFD70497B8B555DED0577501CFEF10D"
+        "HashSHA256":  "1F5C5C804E4DF5FCE7A38D1068BA0AAB7AE8388B18B5A6E825BA91B4FD0319DA"
     },
     {
         "NomeArquivo":  "auditoria.ps1",
@@ -121,16 +121,16 @@
     {
         "NomeArquivo":  "relatorio_auditoria.json",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\relatorios\\json\\relatorio_auditoria.json",
-        "DataUltimaModificacao":  "\/Date(1747868018387)\/",
+        "DataUltimaModificacao":  "\/Date(1747869209149)\/",
         "TamanhoKB":  7.09,
-        "HashSHA256":  "01F8D88C9978AA4E0F377C48EB1AF78EE95B1E848BA1C33B806FE97CDB92220E"
+        "HashSHA256":  "B1F24153EB184C806A3ADC7EE1327A105AD336BA9831955D611E7FC1F679E890"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\relatorios\\json\\relatorio_auditoria.txt",
-        "DataUltimaModificacao":  "\/Date(1747868018410)\/",
+        "DataUltimaModificacao":  "\/Date(1747869209170)\/",
         "TamanhoKB":  2.74,
-        "HashSHA256":  "6664C4E43A86C7859BAEC1996A56515B4AF2A9FE2F381E4C67513767EBCFF996"
+        "HashSHA256":  "243A6632B0C4DB0DCE6DB956D66F656E5E8FE71693132CE01A98B05C3660A339"
     },
     {
         "NomeArquivo":  "visits.json",
@@ -142,9 +142,9 @@
     {
         "NomeArquivo":  "auditoria_log.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\relatorios\\log\\auditoria_log.txt",
-        "DataUltimaModificacao":  "\/Date(1747868021182)\/",
-        "TamanhoKB":  70.66,
-        "HashSHA256":  "5541CECCB2CEF9B23D801AEC91B55A7D61DF634A255AEFBE351BD9050B2BB47A"
+        "DataUltimaModificacao":  "\/Date(1747869211329)\/",
+        "TamanhoKB":  76.45,
+        "HashSHA256":  "B4EFEC9D34D84F228139A5F6BE673EB274946B324F927C48D20F5FCC9CFA6B28"
     },
     {
         "NomeArquivo":  "Receita_1.html",
