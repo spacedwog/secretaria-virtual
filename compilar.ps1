@@ -49,10 +49,12 @@ if (-not $cert) {
 # Assina o executável
 Write-Host "`nAssinando o arquivo..."
 & $signTool sign `
-    /n "Felipe Rodrigues" `
+    /n "Felipe Rodrigues dos Santos" `
     /fd SHA256 `
     /tr http://timestamp.digicert.com `
     /td SHA256 `
+    /c "CN=Felipe Rodrigues dos Santos" `
+    /e "felipersantos1988@gmail.com" `
     "$outputExe"
 
 # Verifica assinatura
