@@ -45,9 +45,9 @@ $btn3.Location = New-Object System.Drawing.Point(50,130)
 $btn3.Add_Click({ ReceitaMedica })
 
 $btn4 = New-Object System.Windows.Forms.Button
-$btn4.Text = "5. Sair"
+$btn4.Text = "4. Configuracoes"
 $btn4.Size = New-Object System.Drawing.Size(300,40)
-$btn4.Location = New-Object System.Drawing.Point(50,230)
+$btn4.Location = New-Object System.Drawing.Point(50,180)
 $btn4.Add_Click({ Configuracao })
 
 $btn5 = New-Object System.Windows.Forms.Button
