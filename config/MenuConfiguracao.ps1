@@ -4,13 +4,13 @@ function MenuConfiguracaoAuditoria {
     [System.Windows.Forms.Application]::EnableVisualStyles()
 
     $form = New-Object System.Windows.Forms.Form
-    $form.Text = "Configuracao do Relatorio de Auditoria"
+    $form.Text = "Configuração do Relatório de Auditoria"
     $form.Size = [System.Drawing.Size]::new(600, 220)
     $form.StartPosition = "CenterScreen"
 
     $labels = @(
-        "Diretorio Alvo:",
-        "Relatorio JSON:",
+        "Diretório Alvo:",
+        "Relatório JSON:",
         "Log de Auditoria:"
     )
     $defaultValues = @(
@@ -63,7 +63,7 @@ function MenuConfiguracaoAuditoria {
             LogSaida        = $textboxes[2].Text.Trim()
         }
     } else {
-        Write-Host "[CANCELADO] Configuracao cancelada pelo usuario." -ForegroundColor Yellow
+        Write-Host "[CANCELADO] Configuração cancelada pelo usuário." -ForegroundColor Yellow
         exit
     }
 }
@@ -71,23 +71,15 @@ function MenuConfiguracaoAuditoria {
 # === EXECUÇÃO ===
 $config = MenuConfiguracaoAuditoria
 
-# Constrói caminhos absolutos se necessário
+# Constrói caminhos absolutos
 $diretorio = $config.DiretorioAlvo
 $relatorioCompleto = Join-Path $diretorio $config.RelatorioSaida
 $logCompleto = Join-Path $diretorio $config.LogSaida
 
-# Escapa os caminhos corretamente para uso inline
-$diretorioEscapado = $diretorio.Replace('"', '""')
-$relatorioEscapado = $relatorioCompleto.Replace('"', '""')
-$logEscapado = $logCompleto.Replace('"', '""')
+Write-Host "`n[INFO] Executando script de auditoria com os parâmetros fornecidos..." -ForegroundColor Cyan
 
-# Log
-Write-Host "`n[INFO] Gerando relatorio de auditoria..." -ForegroundColor Cyan
-
-# Chamada segura do script com variáveis escapadas
-powershell -ExecutionPolicy Bypass -Command @"
-`$DiretorioAlvo = `"$diretorioEscapado`"
-`$RelatorioSaida = `"$relatorioEscapado`"
-`$LogSaida = `"$logEscapado`"
-. .\config\auditoria.ps1
-"@
+# Executa o script externo passando parâmetros corretamente
+powershell -ExecutionPolicy Bypass -File ".\config\auditoria.ps1" `
+    -DiretorioAlvo "$diretorio" `
+    -RelatorioSaida "$relatorioCompleto" `
+    -LogSaida "$logCompleto"
