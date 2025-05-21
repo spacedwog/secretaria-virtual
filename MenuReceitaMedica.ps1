@@ -41,8 +41,8 @@ function Registrar_Receita {
     $form.StartPosition = "CenterScreen"
 
     # Carregar dados JSON
-    $pacientes = Load_JsonData "pacientes.json"
-    $doutores = Load_JsonData "doctors.json"
+    $pacientes = Load_JsonData "relatorios/json/pacientes.json"
+    $doutores = Load_JsonData "relatorios/json/doctors.json"
 
     # Label e ComboBox para Paciente
     $lblPaciente = New-Object System.Windows.Forms.Label
@@ -102,7 +102,7 @@ function Registrar_Receita {
         $pacienteId = [int]($cbPaciente.SelectedItem -split '[()]')[1]
         $doutorId = [int]($cbDoutor.SelectedItem -split '[()]')[1]
 
-        $file = "prescriptions.json"
+        $file = "relatorios/json/prescriptions.json"
         $data = @(Load_JsonData $file)  # Garante que seja array
 
         $receita = [PSCustomObject]@{
@@ -153,9 +153,9 @@ function Imprimir_Receita {
             return
         }
 
-        $receitas = Load_JsonData "prescriptions.json"
-        $pacientes = Load_JsonData "pacientes.json"
-        $doutores = Load_JsonData "doctors.json"
+        $receitas = Load_JsonData "relatorios/json/prescriptions.json"
+        $pacientes = Load_JsonData "relatorios/json/pacientes.json"
+        $doutores = Load_JsonData "relatorios/json/doctors.json"
 
         $receita = $receitas | Where-Object { $_.id -eq [int]$idBusca }
 
@@ -200,7 +200,7 @@ function Imprimir_Receita {
 </html>
 "@
 
-        $filePath = "Receita_$($receita.id).html"
+        $filePath = "relatorios/webpage/Receita_$($receita.id).html"
         $htmlContent | Out-File -FilePath $filePath -Encoding UTF8
         Start-Process $filePath
 

@@ -1,7 +1,7 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-$arquivoJson = ".\pacientes.json"
+$arquivoJson = "relatorios/json/pacientes.json"
 
 function Get_NextId {
     param (

@@ -1,9 +1,0 @@
-﻿{
-    "id":  1,
-    "paciente_id":  1,
-    "doutor_id":  1,
-    "data":  "2025-11-25",
-    "medicamento":  "Hidantal",
-    "dosagem":  "30mg/dia",
-    "instrucoes":  "Armazenar em um lugar arejado"
-}

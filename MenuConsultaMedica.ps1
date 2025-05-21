@@ -32,7 +32,7 @@ function Get_NextId {
 }
 
 function ListAppointments {
-    $file = "appointments.json"
+    $file = "relatorios/json/appointments.json"
     $data = Load_JsonData $file
 
     if (-not $data -or $data.Count -eq 0) {
@@ -115,13 +115,13 @@ function AddDoctor {
     $okButton.Location = New-Object System.Drawing.Point(90, 150)
     $okButton.Add_Click({
         $doctor = @{
-            id            = Get_NextId -filePath "doctors.json"
+            id            = Get_NextId -filePath "relatorios/json/doctors.json"
             nome          = $boxes[0].Text
             telefone      = $boxes[1].Text
             email         = $boxes[2].Text
             especialidade = $boxes[3].Text
         }
-        $file = "doctors.json"
+        $file = "relatorios/json/doctors.json"
         $data = Load_JsonData $file
         $data += $doctor
         Save_JsonData $data $file
@@ -169,8 +169,8 @@ function RegisterVisit {
     $btnRegistrar.Size = New-Object System.Drawing.Size(100, 30)
 
     # Carregar dados JSON
-    $pacientes = Load_JsonData "pacientes.json"
-    $doutores = Load_JsonData "doctors.json"
+    $pacientes = Load_JsonData "relatorios/json/pacientes.json"
+    $doutores = Load_JsonData "relatorios/json/doctors.json"
 
     Write-Host "Pacientes carregados:"
     $pacientes | ForEach-Object { Write-Host "ID: $($_.id), Nome: $($_.nome)" }
@@ -201,13 +201,13 @@ function RegisterVisit {
         $doutor_id = ($cmbDoutor.SelectedItem -split ' - ')[0]
 
         $visita = @{
-            id          = Get_NextId -filePath "visits.json"
+            id          = Get_NextId -filePath "relatorios/json/visits.json"
             paciente_id = [int]$paciente_id
             doutor_id   = [int]$doutor_id
             timestamp   = (Get-Date).ToString("s")
         }
 
-        $file = "visits.json"
+        $file = "relatorios/json/visits.json"
         $data = Load_JsonData $file
         $data += $visita
         Save_JsonData $data $file
@@ -276,8 +276,8 @@ function ScheduleAppointment {
     $submitBtn.Size = New-Object System.Drawing.Size(100, 30)
 
     # Carregar dados pacientes e doutores para popular os comboboxes
-    $pacientes = Load_JsonData "pacientes.json"
-    $doutores = Load_JsonData "doctors.json"
+    $pacientes = Load_JsonData "relatorios/json/pacientes.json"
+    $doutores = Load_JsonData "relatorios/json/doctors.json"
 
     foreach ($p in $pacientes) {
         $cmbPaciente.Items.Add("$($p.id) - $($p.nome)")
@@ -313,7 +313,7 @@ function ScheduleAppointment {
         }
 
         $appointment = @{
-            id          = Get_NextId -filePath "appointments.json"
+            id          = Get_NextId -filePath "relatorios/json/appointments.json"
             paciente_id = [int]$paciente_id
             doutor_id   = [int]$doutor_id
             titulo      = $inputs[0].Text
@@ -323,7 +323,7 @@ function ScheduleAppointment {
             status      = $inputs[4].Text
         }
 
-        $file = "appointments.json"
+        $file = "relatorios/json/appointments.json"
         $data = Load_JsonData $file
         $data += $appointment
         Save_JsonData $data $file
