@@ -20,6 +20,7 @@ catch {
 
 # Aguarda o término do processo
 Write-Host "[ESPERA] Aguardando o processo terminar..."
+& .\homologar.ps1
 $processo.WaitForExit()
 
 # Exibe a saída final
