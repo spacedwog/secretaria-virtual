@@ -1,5 +1,5 @@
 # Caminhos
-$executablePath = "executar.ps1"
+$executablePath = "& .\executar.ps1"
 $scriptPath = "MenuPrincipal.ps1"
 $outputExe = "secretaria_virtual.exe"
 $iconPath = "icone.ico"
