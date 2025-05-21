@@ -30,13 +30,13 @@ if (-Not (Test-Path $signTool)) {
     exit 1
 }
 
-$certPath = (Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Subject -eq "CN=Felipe Rodrigues" }).Thumbprint
+$certPath = (Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Subject -eq "CN=Felipe Rodrigues dos Santos" }).Thumbprint
 $cert = Get-Item "Cert:\CurrentUser\My\$certPath"
 Export-Certificate -Cert $cert -FilePath "$env:TEMP\cert.cer"
 Import-Certificate -FilePath "$env:TEMP\cert.cer" -CertStoreLocation "Cert:\CurrentUser\Root"
 
 # Certificado autoassinado (se não existir)
-$subjectName = "CN=Felipe Rodrigues"
+$subjectName = "CN=Felipe Rodrigues dos Santos"
 $cert = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Subject -eq $subjectName }
 
 if (-not $cert) {
@@ -53,6 +53,7 @@ Write-Host "`nAssinando o arquivo..."
     /fd SHA256 `
     /tr http://timestamp.digicert.com `
     /td SHA256 `
+    /c "CN=Felipe Rodrigues dos Santos" `
     "$outputExe"
 
 # Verifica assinatura
