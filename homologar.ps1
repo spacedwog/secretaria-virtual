@@ -46,12 +46,29 @@ function Test-ExecutePermission {
         }
 
         $acl = Get-Acl -Path $FilePath
-        $user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+        $userIdentity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+        $user = $userIdentity.Name
+        $userGroups = $userIdentity.Groups | ForEach-Object {
+            try {
+                $_.Translate([System.Security.Principal.NTAccount])
+            } catch {
+                # Ignora grupos que não podem ser traduzidos
+                $null
+            }
+        }
+
         $hasExecute = $false
 
         foreach ($access in $acl.Access) {
-            if ($access.IdentityReference -eq $user -or $access.IdentityReference -like "$($env:USERDOMAIN)\Users") {
-                if ($access.FileSystemRights.ToString().Contains("ReadAndExecute") -and $access.AccessControlType -eq "Allow") {
+            $target = $access.IdentityReference
+
+            # Verifica se a entrada de acesso se aplica ao usuário ou a um dos seus grupos
+            $isMatch = ($target -eq $user) -or ($userGroups -contains $target)
+
+            if ($isMatch -and $access.AccessControlType -eq "Allow") {
+                if ($access.FileSystemRights.ToString().Contains("ReadAndExecute") -or
+                    $access.FileSystemRights.ToString().Contains("FullControl") -or
+                    $access.FileSystemRights.ToString().Contains("ExecuteFile")) {
                     $hasExecute = $true
                     break
                 }
@@ -59,11 +76,10 @@ function Test-ExecutePermission {
         }
 
         if ($hasExecute) {
-            Write-Host "[OK] Usuario '$user' tem permissao de execucao em: $FilePath" -ForegroundColor Green
+            Write-Host "[OK] Permissao de execucao concedida para '$user' (ou grupo relacionado) em: $FilePath" -ForegroundColor Green
             return $true
-        }
-        else {
-            Write-Host "[FALHA] Usuario '$user' NAO tem permissao de execucao em: $FilePath" -ForegroundColor Red
+        } else {
+            Write-Host "[FALHA] Permissao de execucao NAO encontrada para '$user' ou seus grupos em: $FilePath" -ForegroundColor Red
             return $false
         }
     }
