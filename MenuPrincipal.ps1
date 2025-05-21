@@ -6,7 +6,7 @@ Add-Type -AssemblyName System.Drawing
 [System.Threading.Thread]::CurrentThread.CurrentUICulture = 'pt-BR'
 
 Invoke-PS2EXE `
-  -InputFile "MenuPrincipalps1" `
+  -InputFile "MenuPrincipal.ps1" `
   -OutputFile "Secretaria Virtual.exe" `
   -Title "Sistema Secretaria Virtual" `
   -Description "Aplicativo para gerenciamento de pacientes e consultas." `
