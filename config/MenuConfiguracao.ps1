@@ -4,13 +4,13 @@ function MenuConfiguracaoAuditoria {
     [System.Windows.Forms.Application]::EnableVisualStyles()
 
     $form = New-Object System.Windows.Forms.Form
-    $form.Text = "Configuração do Relatorio de Auditoria"
+    $form.Text = "Configuração do Relatório de Auditoria"
     $form.Size = [System.Drawing.Size]::new(600, 220)
     $form.StartPosition = "CenterScreen"
 
     $labels = @(
-        "Diretorio Alvo:",
-        "Relatorio JSON:",
+        "Diretório Alvo:",
+        "Relatório JSON:",
         "Log de Auditoria:"
     )
     $defaultValues = @(
@@ -58,12 +58,12 @@ function MenuConfiguracaoAuditoria {
 
     if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
         return @{
-            DiretorioAlvo   = $textboxes[0].Text
-            RelatorioSaida  = $textboxes[1].Text
-            LogSaida        = $textboxes[2].Text
+            DiretorioAlvo   = $textboxes[0].Text.Trim()
+            RelatorioSaida  = $textboxes[1].Text.Trim()
+            LogSaida        = $textboxes[2].Text.Trim()
         }
     } else {
-        Write-Host "[CANCELADO] Configuracao cancelada pelo usuario." -ForegroundColor Yellow
+        Write-Host "[CANCELADO] Configuração cancelada pelo usuário." -ForegroundColor Yellow
         exit
     }
 }
@@ -71,19 +71,23 @@ function MenuConfiguracaoAuditoria {
 # === EXECUÇÃO ===
 $config = MenuConfiguracaoAuditoria
 
-# Variáveis de ambiente
-$env:CONFIG_DIRETORIO = $config.DiretorioAlvo
-$env:CONFIG_RELATORIO = $config.RelatorioSaida
-$env:CONFIG_LOG = $config.LogSaida
+# Constrói caminhos absolutos se necessário
+$diretorio = $config.DiretorioAlvo
+$relatorioCompleto = Join-Path $diretorio $config.RelatorioSaida
+$logCompleto = Join-Path $diretorio $config.LogSaida
 
-# Executa o script auditoria com variáveis corretamente entre aspas
+# Escapa os caminhos corretamente para uso inline
+$diretorioEscapado = $diretorio.Replace('"', '""')
+$relatorioEscapado = $relatorioCompleto.Replace('"', '""')
+$logEscapado = $logCompleto.Replace('"', '""')
+
+# Log
 Write-Host "`n[INFO] Gerando relatório de auditoria..." -ForegroundColor Cyan
 
-$scriptAuditoria = @"
-`$DiretorioAlvo = `"$env:CONFIG_DIRETORIO`"
-`$RelatorioSaida = `"$env:CONFIG_RELATORIO`"
-`$LogSaida = `"$env:CONFIG_LOG`"
+# Chamada segura do script com variáveis escapadas
+powershell -ExecutionPolicy Bypass -Command @"
+`$DiretorioAlvo = `"$diretorioEscapado`"
+`$RelatorioSaida = `"$relatorioEscapado`"
+`$LogSaida = `"$logEscapado`"
 . .\config\auditoria.ps1
 "@
-
-powershell -ExecutionPolicy Bypass -Command $scriptAuditoria
