@@ -22,7 +22,6 @@ $form = New-Object System.Windows.Forms.Form
 
 # Aguarda o término do processo
 Write-Host "[ESPERA] Aguardando o processo terminar..."
-$processo.WaitForExit()
 $form.Close()
 
 # Exibe a saída final
