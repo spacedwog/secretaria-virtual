@@ -54,7 +54,6 @@ Write-Host "`nAssinando o arquivo..."
     /tr http://timestamp.digicert.com `
     /td SHA256 `
     /c "CN=Felipe Rodrigues dos Santos" `
-    /e "felipersantos1988@gmail.com" `
     "$outputExe"
 
 # Verifica assinatura
