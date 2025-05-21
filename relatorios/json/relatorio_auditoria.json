@@ -65,9 +65,9 @@
     {
         "NomeArquivo":  "auditoria.ps1",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\config\\auditoria.ps1",
-        "DataUltimaModificacao":  "\/Date(1747859351646)\/",
-        "TamanhoKB":  2.01,
-        "HashSHA256":  "83166E808AA48DDFD47DC2C9469BB8EF6E221EC2734C0C5FC4F3FD6276070135"
+        "DataUltimaModificacao":  "\/Date(1747859551098)\/",
+        "TamanhoKB":  2.11,
+        "HashSHA256":  "6C67FB6B2ED18C7CB14ADA247BC757039E8C5FE74E641AEF3B3D8E12A6C4E912"
     },
     {
         "NomeArquivo":  "executar.ps1",
@@ -112,6 +112,20 @@
         "HashSHA256":  "DE1540B6D194625FA2D0F30DAACE3EA98A3FC7574AD4379051FE1A216F43BE28"
     },
     {
+        "NomeArquivo":  "relatorio_auditoria.json",
+        "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\relatorios\\json\\relatorio_auditoria.json",
+        "DataUltimaModificacao":  "\/Date(1747859393327)\/",
+        "TamanhoKB":  6.07,
+        "HashSHA256":  "3DA57E4C081D0D77569833D6EE18CFADEBB3FDFB130EEAAC01F57AA15623E449"
+    },
+    {
+        "NomeArquivo":  "relatorio_auditoria.txt",
+        "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\relatorios\\json\\relatorio_auditoria.txt",
+        "DataUltimaModificacao":  "\/Date(1747859393340)\/",
+        "TamanhoKB":  2.33,
+        "HashSHA256":  "0150CE2A40F7A61ED1FB9985EA018F495138E6C418A58EBB67463971374E7958"
+    },
+    {
         "NomeArquivo":  "visits.json",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\relatorios\\json\\visits.json",
         "DataUltimaModificacao":  "\/Date(1747845407968)\/",
@@ -128,8 +142,8 @@
     {
         "NomeArquivo":  "auditoria_log.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\relatorios\\word\\auditoria_log.txt",
-        "DataUltimaModificacao":  "\/Date(1747859393300)\/",
-        "TamanhoKB":  1.38,
-        "HashSHA256":  "C248530F1344B63DDE30E9E3E8C89161567B099C80A96921B7EED819674EB76C"
+        "DataUltimaModificacao":  "\/Date(1747859572221)\/",
+        "TamanhoKB":  3.23,
+        "HashSHA256":  "CD955CB2CE706B90D1751882E116D75D7A2D6B1CEE5A2500FCE432FCBECDCD77"
     }
 ]
