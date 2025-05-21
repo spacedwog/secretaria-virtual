@@ -5,8 +5,9 @@ param (
 )
 
 # Exemplo de uso
-Write-Host "Diretório Alvo: $DiretorioAlvo"
-Write-Host "Relatório JSON: $RelatorioSaida"
+Write-Host "`n=== Inicio da Auditoria ===`n"
+Write-Host "Diretorio Alvo: $DiretorioAlvo"
+Write-Host "Relatorio JSON: $RelatorioSaida"
 Write-Host "Log de Auditoria: $LogSaida"
 
 
@@ -38,7 +39,6 @@ if (-Not (Test-Path $DiretorioAlvo)) {
     Write-Host "[FALHA] Diretorio nao encontrado: $DiretorioAlvo" -ForegroundColor Red
     exit 1
 }
-Write-Host "`n=== Inicio da Auditoria ===`n"
 Registrar_Log "[BUSCA] Iniciando auditoria em: $DiretorioAlvo"
 $arquivos = Get-ChildItem -Path $DiretorioAlvo -File -Recurse
 

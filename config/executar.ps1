@@ -3,7 +3,7 @@ $exePath = "C:\Users\felip\secretaria-virtual\secretaria_virtual.exe"
 
 # Verifica se o executável existe
 if (-Not (Test-Path $exePath)) {
-    Write-Host "❌ O executavel '$exePath' não foi encontrado." -ForegroundColor Red
+    Write-Host "[FALHA] O executavel '$exePath' nao foi encontrado." -ForegroundColor Red
     exit
 }
 
