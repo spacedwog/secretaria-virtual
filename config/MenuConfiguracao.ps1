@@ -4,13 +4,13 @@ function MenuConfiguracaoAuditoria {
     [System.Windows.Forms.Application]::EnableVisualStyles()
 
     $form = New-Object System.Windows.Forms.Form
-    $form.Text = "Configuração do Relatório de Auditoria"
+    $form.Text = "Configuracao do Relatorio de Auditoria"
     $form.Size = [System.Drawing.Size]::new(600, 220)
     $form.StartPosition = "CenterScreen"
 
     $labels = @(
-        "Diretório Alvo:",
-        "Relatório JSON:",
+        "Diretorio Alvo:",
+        "Relatorio JSON:",
         "Log de Auditoria:"
     )
     $defaultValues = @(
@@ -63,7 +63,7 @@ function MenuConfiguracaoAuditoria {
             LogSaida        = $textboxes[2].Text.Trim()
         }
     } else {
-        Write-Host "[CANCELADO] Configuração cancelada pelo usuário." -ForegroundColor Yellow
+        Write-Host "[CANCELADO] Configuracao cancelada pelo usuario." -ForegroundColor Yellow
         exit
     }
 }
@@ -76,7 +76,7 @@ $diretorio = $config.DiretorioAlvo
 $relatorioCompleto = Join-Path $diretorio $config.RelatorioSaida
 $logCompleto = Join-Path $diretorio $config.LogSaida
 
-Write-Host "`n[INFO] Executando script de auditoria com os parâmetros fornecidos..." -ForegroundColor Cyan
+Write-Host "`n[INFO] Executando script de auditoria com os parametros fornecidos..." -ForegroundColor Cyan
 
 # Executa o script externo passando parâmetros corretamente
 powershell -ExecutionPolicy Bypass -File ".\config\auditoria.ps1" `
