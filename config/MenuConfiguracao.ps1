@@ -12,7 +12,7 @@ function MenuConfiguracao {
         "Diretorio Alvo:",
         "Relatorio JSON:",
         "Log de Auditoria:",
-        "Caminho do Executável:"
+        "Caminho do Executavel:"
     )
     $defaultValues = @(
         "C:\Users\felip\secretaria-virtual",
