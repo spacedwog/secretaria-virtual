@@ -4,13 +4,13 @@ function MenuConfiguracaoAuditoria {
     [System.Windows.Forms.Application]::EnableVisualStyles()
 
     $form = New-Object System.Windows.Forms.Form
-    $form.Text = "Configuração do Relatório de Auditoria"
+    $form.Text = "Configuração do Relatorio de Auditoria"
     $form.Size = [System.Drawing.Size]::new(600, 220)
     $form.StartPosition = "CenterScreen"
 
     $labels = @(
-        "Diretório Alvo:",
-        "Relatório JSON:",
+        "Diretorio Alvo:",
+        "Relatorio JSON:",
         "Log de Auditoria:"
     )
     $defaultValues = @(
@@ -63,7 +63,7 @@ function MenuConfiguracaoAuditoria {
             LogSaida        = $textboxes[2].Text
         }
     } else {
-        Write-Host "[CANCELADO] Configuração cancelada pelo usuário." -ForegroundColor Yellow
+        Write-Host "[CANCELADO] Configuracao cancelada pelo usuario." -ForegroundColor Yellow
         exit
     }
 }
@@ -77,7 +77,7 @@ $env:CONFIG_RELATORIO = $config.RelatorioSaida
 $env:CONFIG_LOG = $config.LogSaida
 
 # Executa somente o script de auditoria
-Write-Host "`n[INFO] Gerando relatório de auditoria..." -ForegroundColor Cyan
+Write-Host "`n[INFO] Gerando relatorio de auditoria..." -ForegroundColor Cyan
 
 powershell -ExecutionPolicy Bypass -Command @"
 `$DiretorioAlvo = `"$env:CONFIG_DIRETORIO`"
