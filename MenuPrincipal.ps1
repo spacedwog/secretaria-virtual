@@ -10,7 +10,9 @@ Invoke-PS2EXE `
   -Product "Sistema Medico Virtual" `
   -Version "1.0.0.0" `
   -Copyright "© 2025 Felipe Rodrigues dos Santos (felipersantos1988@gmail.com). Todos os direitos reservados." `
+  -Culture pt-BR `
   -noConsole
+  -IconFile "icone.ico"
 
 # Funções simuladas para os menus
 function MenuPaciente {
