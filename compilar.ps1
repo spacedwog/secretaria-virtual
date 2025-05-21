@@ -1,5 +1,4 @@
 # Caminhos
-$executablePath = "& .\executar.ps1"
 $scriptPath = "MenuPrincipal.ps1"
 $outputExe = "secretaria_virtual.exe"
 $iconPath = "icone.ico"
@@ -77,7 +76,7 @@ Write-Host "Verificando assinatura..."
 # Resultado final
 if ($LASTEXITCODE -eq 0) {
     Write-Host "`n[OK] EXE compilado e assinado com sucesso! Caminho: $outputExe" -ForegroundColor Green
-    $executablePath
+    & .\executar.ps1
 } else {
     Write-Error "[FALHA] Falha ao assinar/verificar o executavel."
 }
