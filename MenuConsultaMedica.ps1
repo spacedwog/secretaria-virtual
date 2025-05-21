@@ -17,7 +17,7 @@ function Load_JsonData {
     }
 }
 
-function Get-NextId {
+function Get_NextId {
     param (
         [string]$filePath,
         [string]$idField = "id"
