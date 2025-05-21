@@ -73,7 +73,7 @@ function Listar_Pacientes {
     $listView.Columns.Add("Idade", 60)     | Out-Null
     $listView.Columns.Add("Telefone", 120) | Out-Null
     $listView.Columns.Add("Email", 150)    | Out-Null
-    $listView.Columns.Add("Endereço", 150) | Out-Null
+    $listView.Columns.Add("Endereco", 150) | Out-Null
 
     # Preenche os dados
     foreach ($paciente in $pacientes) {
