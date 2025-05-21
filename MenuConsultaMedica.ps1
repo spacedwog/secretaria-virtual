@@ -34,15 +34,56 @@ function Get_NextId {
 function ListAppointments {
     $file = "appointments.json"
     $data = Load_JsonData $file
-    if ($data.Count -eq 0) {
-        [System.Windows.Forms.MessageBox]::Show("Nenhuma consulta encontrada.")
-    } else {
-        $msg = "Consultas Registradas:`n"
-        foreach ($item in $data) {
-            $msg += "`nTitulo: $($item.titulo)`nPaciente: $($item.paciente_id)`nDoutor: $($item.doutor_id)`nData: $($item.data) $($item.hora)`nStatus: $($item.status)`n---"
-        }
-        [System.Windows.Forms.MessageBox]::Show($msg, "Consultas")
+
+    if (-not $data -or $data.Count -eq 0) {
+        [System.Windows.Forms.MessageBox]::Show("Nenhuma consulta encontrada.", "Consultas")
+        return
     }
+
+    # Cria a janela
+    $form = New-Object System.Windows.Forms.Form
+    $form.Text = "Lista de Consultas"
+    $form.Size = New-Object System.Drawing.Size(750, 450)
+    $form.StartPosition = "CenterScreen"
+    $form.Topmost = $true
+
+    # ListView
+    $listView = New-Object System.Windows.Forms.ListView
+    $listView.View = [System.Windows.Forms.View]::Details
+    $listView.FullRowSelect = $true
+    $listView.GridLines = $true
+    $listView.MultiSelect = $false
+    $listView.Size = New-Object System.Drawing.Size(720, 340)
+    $listView.Location = New-Object System.Drawing.Point(10, 10)
+
+    $listView.Columns.Add("Título", 150)       | Out-Null
+    $listView.Columns.Add("Paciente ID", 100)  | Out-Null
+    $listView.Columns.Add("Doutor ID", 100)    | Out-Null
+    $listView.Columns.Add("Data", 100)         | Out-Null
+    $listView.Columns.Add("Hora", 100)         | Out-Null
+    $listView.Columns.Add("Status", 150)       | Out-Null
+
+    # Preenche com dados do arquivo JSON
+    foreach ($item in $data) {
+        $line = New-Object System.Windows.Forms.ListViewItem($item.titulo)
+        $line.SubItems.Add($item.paciente_id) | Out-Null
+        $line.SubItems.Add($item.doutor_id)   | Out-Null
+        $line.SubItems.Add($item.data)        | Out-Null
+        $line.SubItems.Add($item.hora)        | Out-Null
+        $line.SubItems.Add($item.status)      | Out-Null
+        $listView.Items.Add($line) | Out-Null
+    }
+
+    # Botão Fechar
+    $btnClose = New-Object System.Windows.Forms.Button
+    $btnClose.Text = "Fechar"
+    $btnClose.Size = New-Object System.Drawing.Size(100, 30)
+    $btnClose.Location = New-Object System.Drawing.Point(10, 360)
+    $btnClose.Add_Click({ $form.Close() })
+
+    # Adiciona ao formulário
+    $form.Controls.AddRange(@($listView, $btnClose))
+    $form.ShowDialog()
 }
 
 function AddDoctor {
