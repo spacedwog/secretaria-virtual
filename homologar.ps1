@@ -38,20 +38,37 @@ function Test-ExecutePermission {
         [Parameter(Mandatory)]
         [string]$FilePath
     )
+
     try {
+        if (-Not (Test-Path $FilePath)) {
+            Write-Host "❌ Arquivo não encontrado: $FilePath" -ForegroundColor Red
+            return $false
+        }
+
         $acl = Get-Acl -Path $FilePath
-        # Para simplificar, só verifica se o arquivo não está bloqueado e é executável (extensão .exe, .bat, .ps1)
-        if ($FilePath -match "\.(exe|bat|ps1)$") {
-            Write-Host "[OK] Permissao para executar arquivo confirmada: $FilePath" -ForegroundColor Green
+        $user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+        $hasExecute = $false
+
+        foreach ($access in $acl.Access) {
+            if ($access.IdentityReference -eq $user -or $access.IdentityReference -like "$($env:USERDOMAIN)\Users") {
+                if ($access.FileSystemRights.ToString().Contains("ReadAndExecute") -and $access.AccessControlType -eq "Allow") {
+                    $hasExecute = $true
+                    break
+                }
+            }
+        }
+
+        if ($hasExecute) {
+            Write-Host "✅ Usuário '$user' tem permissão de execução em: $FilePath" -ForegroundColor Green
             return $true
         }
         else {
-            Write-Host "[AVISO] Arquivo nao tem extensão tipica executavel: $FilePath" -ForegroundColor Yellow
+            Write-Host "❌ Usuário '$user' NÃO tem permissão de execução em: $FilePath" -ForegroundColor Red
             return $false
         }
     }
     catch {
-        Write-Host "[FALHA] Erro ao verificar permissao: $_" -ForegroundColor Red
+        Write-Host "❌ Erro ao verificar permissão: $_" -ForegroundColor Red
         return $false
     }
 }
