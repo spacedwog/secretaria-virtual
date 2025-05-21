@@ -2,23 +2,23 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 Invoke-PS2EXE `
-  -InputFile "interface.ps1" `
-  -OutputFile "interface.exe" `
-  -Title "Nome do Aplicativo" `
-  -Description "Descrição curta ou propósito do sistema" `
-  -Company "Nome da empresa ou autor" `
+  -InputFile "MenuPrincipal.ps1" `
+  -OutputFile "secretaria_virtual.exe" `
+  -Title "Secretaria Virtual" `
+  -Description "IA - Software para uma secretaria virtual com Nuvem." `
+  -Company "Spacedwog" `
   -Product "Sistema Médico Virtual" `
   -Version "1.0.0.0" `
   -Copyright "© 2025 Seu Nome" `
   -noConsole
 
 # Funções simuladas para os menus
-function Abrir-MenuPaciente {
+function MenuPaciente {
     # Aqui você pode chamar o MenuPaciente.ps1 ou chamar a função diretamente
     & .\MenuPaciente.ps1
 }
 
-function Abrir-MenuConsultaMedica {
+function MenuConsultaMedica {
     & .\MenuConsultaMedica.ps1
 }
 
@@ -37,13 +37,13 @@ $btn1 = New-Object System.Windows.Forms.Button
 $btn1.Text = "1. Menu Paciente"
 $btn1.Size = New-Object System.Drawing.Size(300,40)
 $btn1.Location = New-Object System.Drawing.Point(50,30)
-$btn1.Add_Click({ Abrir-MenuPaciente })
+$btn1.Add_Click({ MenuPaciente })
 
 $btn2 = New-Object System.Windows.Forms.Button
 $btn2.Text = "2. Menu Consulta Medica"
 $btn2.Size = New-Object System.Drawing.Size(300,40)
 $btn2.Location = New-Object System.Drawing.Point(50,80)
-$btn2.Add_Click({ Abrir-MenuConsultaMedica })
+$btn2.Add_Click({ MenuConsultaMedica })
 
 $btn3 = New-Object System.Windows.Forms.Button
 $btn3.Text = "3. Receita Medica"
