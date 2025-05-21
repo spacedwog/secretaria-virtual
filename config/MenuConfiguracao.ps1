@@ -14,7 +14,7 @@ function MenuConfiguracaoAuditoria {
         "Log de Auditoria:"
     )
     $defaultValues = @(
-        "C:\Users\felip\secretaria-virtual",
+        "'C:\Users\felip\secretaria-virtual'",
         "relatorios\json\relatorio_auditoria.json",
         "relatorios\log\auditoria_log.txt"
     )
@@ -71,17 +71,19 @@ function MenuConfiguracaoAuditoria {
 # === EXECUÇÃO ===
 $config = MenuConfiguracaoAuditoria
 
-# Define variáveis de ambiente
+# Variáveis de ambiente
 $env:CONFIG_DIRETORIO = $config.DiretorioAlvo
 $env:CONFIG_RELATORIO = $config.RelatorioSaida
 $env:CONFIG_LOG = $config.LogSaida
 
-# Executa somente o script de auditoria
-Write-Host "`n[INFO] Gerando relatorio de auditoria..." -ForegroundColor Cyan
+# Executa o script auditoria com variáveis corretamente entre aspas
+Write-Host "`n[INFO] Gerando relatório de auditoria..." -ForegroundColor Cyan
 
-powershell -ExecutionPolicy Bypass -Command @"
+$scriptAuditoria = @"
 `$DiretorioAlvo = `"$env:CONFIG_DIRETORIO`"
 `$RelatorioSaida = `"$env:CONFIG_RELATORIO`"
 `$LogSaida = `"$env:CONFIG_LOG`"
 . .\config\auditoria.ps1
 "@
+
+powershell -ExecutionPolicy Bypass -Command $scriptAuditoria
