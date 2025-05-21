@@ -1,22 +1,27 @@
-# Caminho completo para o executável que você quer verificar
+# Caminho completo para o executável
 $exePath = "C:\Users\felip\secretaria-virtual\secretaria_virtual.exe"
 
 # Verifica se o executável existe
 if (-Not (Test-Path $exePath)) {
-    Write-Host "[FALHA] O executável '$exePath' não foi encontrado." -ForegroundColor Red
+    Write-Host "❌ O executavel '$exePath' nao foi encontrado." -ForegroundColor Red
     exit
 }
 
-# Extrai o nome do executável (sem extensão)
-$exeName = [System.IO.Path]::GetFileNameWithoutExtension($exePath)
-
-# Tenta obter o processo pelo nome
+# Procura o processo com caminho correspondente ao executável
 try {
-    $processos = Get-Process -Name $exeName -ErrorAction Stop
-    foreach ($proc in $processos) {
-        Write-Host "[OK] Processo '$exeName' encontrado. ID do processo: $($proc.Id)" -ForegroundColor Green
+    $processos = Get-Process | Where-Object {
+        $_.Path -eq $exePath
+    }
+
+    if ($processos) {
+        foreach ($proc in $processos) {
+            Write-Host "[OK] Processo encontrado. ID do processo: $($proc.Id)" -ForegroundColor Green
+        }
+    }
+    else {
+        Write-Host "[FALHA] O processo com caminho '$exePath' nao esta em execucao." -ForegroundColor Red
     }
 }
 catch {
-    Write-Host "[FALHA] O processo '$exeName' não está em execução." -ForegroundColor Red
+    Write-Host "[FALHA] Erro ao buscar o processo: $_" -ForegroundColor Red
 }
