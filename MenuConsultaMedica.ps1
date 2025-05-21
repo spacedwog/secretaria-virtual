@@ -39,7 +39,7 @@ function ListAppointments {
     } else {
         $msg = "Consultas Registradas:`n"
         foreach ($item in $data) {
-            $msg += "`nTítulo: $($item.titulo)`nPaciente: $($item.paciente_id)`nDoutor: $($item.doutor_id)`nData: $($item.data) $($item.hora)`nStatus: $($item.status)`n---"
+            $msg += "`nTitulo: $($item.titulo)`nPaciente: $($item.paciente_id)`nDoutor: $($item.doutor_id)`nData: $($item.data) $($item.hora)`nStatus: $($item.status)`n---"
         }
         [System.Windows.Forms.MessageBox]::Show($msg, "Consultas")
     }
