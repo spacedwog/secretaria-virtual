@@ -23,11 +23,11 @@ function Test-ProcessRunning {
     )
     $proc = Get-Process -Name $ProcessName -ErrorAction SilentlyContinue
     if ($proc) {
-        Write-Host "✅ Processo '$ProcessName' está rodando." -ForegroundColor Green
+        Write-Host "✅ Processo '$ProcessName' esta rodando." -ForegroundColor Green
         return $true
     }
     else {
-        Write-Host "❌ Processo '$ProcessName' NÃO está rodando." -ForegroundColor Red
+        Write-Host "❌ Processo '$ProcessName' NAO esta rodando." -ForegroundColor Red
         return $false
     }
 }
@@ -42,16 +42,16 @@ function Test-ExecutePermission {
         $acl = Get-Acl -Path $FilePath
         # Para simplificar, só verifica se o arquivo não está bloqueado e é executável (extensão .exe, .bat, .ps1)
         if ($FilePath -match "\.(exe|bat|ps1)$") {
-            Write-Host "✅ Permissão para executar arquivo confirmada: $FilePath" -ForegroundColor Green
+            Write-Host "✅ Permissao para executar arquivo confirmada: $FilePath" -ForegroundColor Green
             return $true
         }
         else {
-            Write-Host "⚠️ Arquivo não tem extensão típica executável: $FilePath" -ForegroundColor Yellow
+            Write-Host "⚠️ Arquivo nao tem extensão tipica executavel: $FilePath" -ForegroundColor Yellow
             return $false
         }
     }
     catch {
-        Write-Host "❌ Erro ao verificar permissão: $_" -ForegroundColor Red
+        Write-Host "❌ Erro ao verificar permissao: $_" -ForegroundColor Red
         return $false
     }
 }
@@ -67,11 +67,11 @@ function Test-CommandOutput {
     try {
         $output = Invoke-Expression $Command
         if ($output -match $ExpectedPattern) {
-            Write-Host "✅ Comando '$Command' retornou saída esperada." -ForegroundColor Green
+            Write-Host "✅ Comando '$Command' retornou saida esperada." -ForegroundColor Green
             return $true
         }
         else {
-            Write-Host "❌ Comando '$Command' NÃO retornou saída esperada." -ForegroundColor Red
+            Write-Host "❌ Comando '$Command' NAO retornou saida esperada." -ForegroundColor Red
             return $false
         }
     }
@@ -110,7 +110,7 @@ function Test-ResponseTime {
 
 # --- Exemplo de execução das funções para homologação ---
 
-Write-Host "`n=== Início da Homologação ===`n"
+Write-Host "`n=== Inicio da Homologacao ===`n"
 
 $exePath = "C:\Users\felip\secretaria-virtual\secretaria_virtual.exe"
 
@@ -130,4 +130,4 @@ Test-CommandOutput -Command "Get-Date" -ExpectedPattern "\d{4}"
 # 5. Mede tempo de resposta de um comando simples
 Test-ResponseTime -ScriptBlock { Get-Process | Out-Null } -MaxMilliseconds 500
 
-Write-Host "`n=== Fim da Homologação ===`n"
+Write-Host "`n=== Fim da Homologacao ===`n"
