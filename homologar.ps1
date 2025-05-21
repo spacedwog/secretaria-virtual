@@ -6,11 +6,11 @@ function Test-FileExists {
         [string]$FilePath
     )
     if (Test-Path $FilePath) {
-        Write-Host "✅ Arquivo encontrado: $FilePath" -ForegroundColor Green
+        Write-Host "[OK] Arquivo encontrado: $FilePath" -ForegroundColor Green
         return $true
     }
     else {
-        Write-Host "❌ Arquivo NÃO encontrado: $FilePath" -ForegroundColor Red
+        Write-Host "[FALHA] Arquivo NÃO encontrado: $FilePath" -ForegroundColor Red
         return $false
     }
 }
@@ -23,11 +23,11 @@ function Test-ProcessRunning {
     )
     $proc = Get-Process -Name $ProcessName -ErrorAction SilentlyContinue
     if ($proc) {
-        Write-Host "✅ Processo '$ProcessName' esta rodando." -ForegroundColor Green
+        Write-Host "[OK] Processo '$ProcessName' esta rodando." -ForegroundColor Green
         return $true
     }
     else {
-        Write-Host "❌ Processo '$ProcessName' NAO esta rodando." -ForegroundColor Red
+        Write-Host "[FALHA] Processo '$ProcessName' NAO esta rodando." -ForegroundColor Red
         return $false
     }
 }
@@ -42,16 +42,16 @@ function Test-ExecutePermission {
         $acl = Get-Acl -Path $FilePath
         # Para simplificar, só verifica se o arquivo não está bloqueado e é executável (extensão .exe, .bat, .ps1)
         if ($FilePath -match "\.(exe|bat|ps1)$") {
-            Write-Host "✅ Permissao para executar arquivo confirmada: $FilePath" -ForegroundColor Green
+            Write-Host "[OK] Permissao para executar arquivo confirmada: $FilePath" -ForegroundColor Green
             return $true
         }
         else {
-            Write-Host "⚠️ Arquivo nao tem extensão tipica executavel: $FilePath" -ForegroundColor Yellow
+            Write-Host "[AVISO] Arquivo nao tem extensão tipica executavel: $FilePath" -ForegroundColor Yellow
             return $false
         }
     }
     catch {
-        Write-Host "❌ Erro ao verificar permissao: $_" -ForegroundColor Red
+        Write-Host "[FALHA] Erro ao verificar permissao: $_" -ForegroundColor Red
         return $false
     }
 }
@@ -67,16 +67,16 @@ function Test-CommandOutput {
     try {
         $output = Invoke-Expression $Command
         if ($output -match $ExpectedPattern) {
-            Write-Host "✅ Comando '$Command' retornou saida esperada." -ForegroundColor Green
+            Write-Host "[OK] Comando '$Command' retornou saida esperada." -ForegroundColor Green
             return $true
         }
         else {
-            Write-Host "❌ Comando '$Command' NAO retornou saida esperada." -ForegroundColor Red
+            Write-Host "[FALHA] Comando '$Command' NAO retornou saida esperada." -ForegroundColor Red
             return $false
         }
     }
     catch {
-        Write-Host "❌ Erro ao executar comando: $_" -ForegroundColor Red
+        Write-Host "[FALHA] Erro ao executar comando: $_" -ForegroundColor Red
         return $false
     }
 }
@@ -94,16 +94,16 @@ function Test-ResponseTime {
         $stopwatch.Stop()
         $elapsed = $stopwatch.ElapsedMilliseconds
         if ($elapsed -le $MaxMilliseconds) {
-            Write-Host "✅ Resposta dentro do tempo ($elapsed ms ≤ $MaxMilliseconds ms)" -ForegroundColor Green
+            Write-Host "[OK] Resposta dentro do tempo ($elapsed ms ≤ $MaxMilliseconds ms)" -ForegroundColor Green
             return $true
         }
         else {
-            Write-Host "❌ Resposta lenta ($elapsed ms > $MaxMilliseconds ms)" -ForegroundColor Red
+            Write-Host "[FALHA] Resposta lenta ($elapsed ms > $MaxMilliseconds ms)" -ForegroundColor Red
             return $false
         }
     }
     catch {
-        Write-Host "❌ Erro ao medir tempo de resposta: $_" -ForegroundColor Red
+        Write-Host "[FALHA] Erro ao medir tempo de resposta: $_" -ForegroundColor Red
         return $false
     }
 }
