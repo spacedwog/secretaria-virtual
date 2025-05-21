@@ -10,7 +10,7 @@ function Test-FileExists {
         return $true
     }
     else {
-        Write-Host "[FALHA] Arquivo NÃO encontrado: $FilePath" -ForegroundColor Red
+        Write-Host "[FALHA] Arquivo NAO encontrado: $FilePath" -ForegroundColor Red
         return $false
     }
 }
@@ -41,7 +41,7 @@ function Test-ExecutePermission {
 
     try {
         if (-Not (Test-Path $FilePath)) {
-            Write-Host "❌ Arquivo não encontrado: $FilePath" -ForegroundColor Red
+            Write-Host "[FALHA] Arquivo nao encontrado: $FilePath" -ForegroundColor Red
             return $false
         }
 
@@ -59,16 +59,16 @@ function Test-ExecutePermission {
         }
 
         if ($hasExecute) {
-            Write-Host "✅ Usuário '$user' tem permissão de execução em: $FilePath" -ForegroundColor Green
+            Write-Host "[OK] Usuario '$user' tem permissao de execucao em: $FilePath" -ForegroundColor Green
             return $true
         }
         else {
-            Write-Host "❌ Usuário '$user' NÃO tem permissão de execução em: $FilePath" -ForegroundColor Red
+            Write-Host "[FALHA] Usuario '$user' NAO tem permissAo de execucao em: $FilePath" -ForegroundColor Red
             return $false
         }
     }
     catch {
-        Write-Host "❌ Erro ao verificar permissão: $_" -ForegroundColor Red
+        Write-Host "[FALHA] Erro ao verificar permissao: $_" -ForegroundColor Red
         return $false
     }
 }
