@@ -63,7 +63,7 @@ function Test-ExecutePermission {
             return $true
         }
         else {
-            Write-Host "[FALHA] Usuario '$user' NAO tem permissAo de execucao em: $FilePath" -ForegroundColor Red
+            Write-Host "[FALHA] Usuario '$user' NAO tem permissao de execucao em: $FilePath" -ForegroundColor Red
             return $false
         }
     }
