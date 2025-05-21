@@ -1,8 +1,7 @@
 param (
     [string]$DiretorioAlvo = "C:\Users\felip\secretaria-virtual",
-    [string]$RelatorioSaidaJSON = "relatorios\json\relatorio_auditoria.json",
-    [string]$RelatorioSaidaWORD = "relatorios\word\relatorio_auditoria.json",
-    [string]$LogSaida = "relatorios\word\auditoria_log.txt"
+    [string]$RelatorioSaida = "relatorios\json\relatorio_auditoria.json",
+    [string]$LogSaida = "relatorios\log\auditoria_log.txt"
 )
 
 function Get_FileHashInfo {
@@ -51,14 +50,14 @@ foreach ($arquivo in $arquivos) {
 }
 
 # Exportar para JSON
-$resultados | ConvertTo-Json -Depth 3 | Out-File -FilePath $RelatorioSaidaJSON -Encoding UTF8
-Registrar_Log "[REPORT] Relatorio JSON salvo em: $RelatorioSaidaJSON"
+$resultados | ConvertTo-Json -Depth 3 | Out-File -FilePath $RelatorioSaida -Encoding UTF8
+Registrar_Log "[REPORT] Relatorio JSON salvo em: $RelatorioSaida"
 
 # Também salva um relatório texto simples
 $relatorioTexto = $resultados | ForEach-Object {
     "$($_.NomeArquivo) | $($_.TamanhoKB) KB | $($_.DataUltimaModificacao) | $($_.HashSHA256.Substring(0,8))..."
 }
-$relatorioTexto | Out-File -FilePath ($RelatorioSaidaWORD -replace '.json$', '.txt')
-Registrar_Log "[REPORT] Relatorio TXT salvo em: $($RelatorioSaidaWORD -replace '.json$', '.txt')"
+$relatorioTexto | Out-File -FilePath ($RelatorioSaida -replace '.json$', '.txt')
+Registrar_Log "[REPORT] Relatorio TXT salvo em: $($RelatorioSaida -replace '.json$', '.txt')"
 
 Registrar_Log "[OK] Auditoria concluida."
