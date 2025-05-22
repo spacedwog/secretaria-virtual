@@ -1,7 +1,7 @@
 param (
     [string]$DiretorioAlvo = "C:\Users\felip\secretaria-virtual",
-    [string]$RelatorioSaida = "relatorios\json\relatorio_auditoria.json",
-    [string]$LogSaida = "relatorios\log\auditoria_log.txt"
+    [string]$RelatorioSaida = "logs\auditoria\relatorio_auditoria.json",
+    [string]$LogSaida = "logs\report\auditoria_log.txt"
 )
 
 # Exemplo de uso

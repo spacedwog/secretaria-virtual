@@ -1,10 +1,10 @@
 ﻿[
     {
-        "NomeArquivo":  "compilar.ps1",
-        "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\compilar.ps1",
-        "DataUltimaModificacao":  "\/Date(1747858262882)\/",
-        "TamanhoKB":  2.85,
-        "HashSHA256":  "69D7C5B8CB34F716A861AA1F8F0CC852A145A1868633FEE21344427B0ECF2F9B"
+        "NomeArquivo":  "configuracao_auditoria.json",
+        "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\configuracao_auditoria.json",
+        "DataUltimaModificacao":  "\/Date(1747933868568)\/",
+        "TamanhoKB":  0.19,
+        "HashSHA256":  "BB27311E6C834303CD524CF2A3C6E3C3D3C7CD5ACE170D8F2E251675879456FB"
     },
     {
         "NomeArquivo":  "icone.ico",
@@ -12,6 +12,13 @@
         "DataUltimaModificacao":  "\/Date(1747836863550)\/",
         "TamanhoKB":  4.19,
         "HashSHA256":  "5B55AA299FEEE2BF17934D4A541786572647CCBF639D86E18F040F30C930B5B7"
+    },
+    {
+        "NomeArquivo":  "instalar.ps1",
+        "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\instalar.ps1",
+        "DataUltimaModificacao":  "\/Date(1747933832386)\/",
+        "TamanhoKB":  2.85,
+        "HashSHA256":  "69D7C5B8CB34F716A861AA1F8F0CC852A145A1868633FEE21344427B0ECF2F9B"
     },
     {
         "NomeArquivo":  "LICENSE.txt",
@@ -58,9 +65,9 @@
     {
         "NomeArquivo":  "secretaria_virtual.exe",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\secretaria_virtual.exe",
-        "DataUltimaModificacao":  "\/Date(1747871527927)\/",
+        "DataUltimaModificacao":  "\/Date(1747933852905)\/",
         "TamanhoKB":  47.68,
-        "HashSHA256":  "EDAA674295E88B9FCFB24F484A0E83E4E84332707C24A8DB93F28A48ACDD4EE1"
+        "HashSHA256":  "C4C67B72CA6B62B7AA0B3651F68E4E71C10EE9B584D0D78C1AFF4B655DB57140"
     },
     {
         "NomeArquivo":  "auditoria.ps1",
@@ -86,9 +93,9 @@
     {
         "NomeArquivo":  "MenuConfiguracao.ps1",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\config\\MenuConfiguracao.ps1",
-        "DataUltimaModificacao":  "\/Date(1747871309908)\/",
-        "TamanhoKB":  2.85,
-        "HashSHA256":  "A956845E079F733EA8B775D66CE45DA2AC69395FB0CD5172905B13FD5AD8EDB8"
+        "DataUltimaModificacao":  "\/Date(1747933803172)\/",
+        "TamanhoKB":  3.43,
+        "HashSHA256":  "DD8985AA57D4452632419E1420809457A69201568FA926FF4AD8FE5CC64B2B89"
     },
     {
         "NomeArquivo":  "appointments.json",
@@ -121,16 +128,16 @@
     {
         "NomeArquivo":  "relatorio_auditoria.json",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\relatorios\\json\\relatorio_auditoria.json",
-        "DataUltimaModificacao":  "\/Date(1747871531141)\/",
+        "DataUltimaModificacao":  "\/Date(1747933855959)\/",
         "TamanhoKB":  7.09,
-        "HashSHA256":  "012E4BFAECF6ACC4B778AF525023ED709BDC7A4D64946CDF2B664718E8529F07"
+        "HashSHA256":  "7964DF1B4ED2CDC9D2E790CF332A97E06B1D9E6FFB7AF36BE3FF8A3FBC6DFEE1"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\relatorios\\json\\relatorio_auditoria.txt",
-        "DataUltimaModificacao":  "\/Date(1747871531161)\/",
+        "DataUltimaModificacao":  "\/Date(1747933856002)\/",
         "TamanhoKB":  2.75,
-        "HashSHA256":  "9A068681D64D3C27DADC644A26AAA445C939CC754FDB2E835E180666001576E6"
+        "HashSHA256":  "24EB747C3ACE44045EB68FC4D78AD2DFC8E29330755F1F875ADE4918C70ABD56"
     },
     {
         "NomeArquivo":  "visits.json",
@@ -142,9 +149,9 @@
     {
         "NomeArquivo":  "auditoria_log.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\relatorios\\log\\auditoria_log.txt",
-        "DataUltimaModificacao":  "\/Date(1747871542058)\/",
-        "TamanhoKB":  119.18,
-        "HashSHA256":  "8E98483DB010BF74C2F99704C955B2A5689BA66D80A61302E5A5971537280703"
+        "DataUltimaModificacao":  "\/Date(1747933882368)\/",
+        "TamanhoKB":  123.19,
+        "HashSHA256":  "29D088885823DF22A6B02998DCA9ECD8AF15877E40A0564BD741977E28A05BFC"
     },
     {
         "NomeArquivo":  "Receita_1.html",

@@ -1,0 +1,5 @@
+﻿{
+    "DiretorioAlvo":  "C:\\Users\\felip\\secretaria-virtual",
+    "RelatorioSaida":  "relatorios\\json\\relatorio_auditoria.json",
+    "LogSaida":  "relatorios\\log\\auditoria_log.txt"
+}
