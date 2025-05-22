@@ -40,6 +40,8 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     File "config\executar.ps1"
     File "config\homologar.ps1"
 
+    SetOutPath "$INSTDIR"
+
     ; === Atalho na área de trabalho ===
     CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}" "" "$INSTDIR\${ICON_FILE}"
 
