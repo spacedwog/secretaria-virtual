@@ -76,6 +76,21 @@ $diretorio = $config.DiretorioAlvo
 $relatorioCompleto = Join-Path $diretorio $config.RelatorioSaida
 $logCompleto = Join-Path $diretorio $config.LogSaida
 
+# Exibe um resumo das configurações
+Write-Host "`n[RESUMO DA CONFIGURACAO]"
+Write-Host "Diretorio Alvo   : $diretorio"
+Write-Host "Relatorio JSON   : $relatorioCompleto"
+Write-Host "Log de Auditoria : $logCompleto"
+
+# Persiste as configurações em um arquivo JSON
+$configPath = Join-Path $diretorio "configuracao_auditoria.json"
+try {
+    $config | ConvertTo-Json -Depth 3 | Out-File $configPath -Encoding UTF8
+    Write-Host "[INFO] Configuracao salva em: $configPath" -ForegroundColor Green
+} catch {
+    Write-Host "[ERRO] Falha ao salvar configuracao em JSON." -ForegroundColor Red
+}
+
 Write-Host "`n[INFO] Executando script de auditoria com os parametros fornecidos..." -ForegroundColor Cyan
 
 # Executa o script externo passando parâmetros corretamente
