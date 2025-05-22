@@ -1,5 +1,5 @@
 ﻿{
     "DiretorioAlvo":  "C:\\Users\\felip\\secretaria-virtual",
-    "RelatorioSaida":  "logs\\auditoria\\relatorio_auditoria.json",
-    "LogSaida":  "logs\\report\\auditoria_log.txt"
+    "RelatorioSaida":  "logs\\report\\relatorio_auditoria.json",
+    "LogSaida":  "logs\\auditoria\\auditoria_log.txt"
 }
