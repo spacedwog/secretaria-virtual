@@ -20,6 +20,8 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
 
     ; === Criação de pastas necessárias ===
     CreateDirectory "$INSTDIR\config"
+    CreateDirectory "$INSTDIR\logs"
+    CreateDirectory "$INSTDIR\relatorios"
     CreateDirectory "$INSTDIR\logs\auditoria"
     CreateDirectory "$INSTDIR\logs\report"
     CreateDirectory "$INSTDIR\relatorios\json"
@@ -27,10 +29,10 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
 
     ; === Instalação dos arquivos ===
     File /oname=$INSTDIR\${EXE_NAME} "secretaria_virtual.exe"
-    File /oname=$INSTDIR\config\MenuConfiguracao.ps1 "MenuConfiguracao.ps1"
-    File /oname=$INSTDIR\config\auditoria.ps1 "auditoria.ps1"
-    File /oname=$INSTDIR\config\executar.ps1 "executar.ps1"
-    File /oname=$INSTDIR\config\homologar.ps1 "homologar.ps1"
+    File /oname=$INSTDIR\config\MenuConfiguracao.ps1 "config\MenuConfiguracao.ps1"
+    File /oname=$INSTDIR\config\auditoria.ps1 "config\auditoria.ps1"
+    File /oname=$INSTDIR\config\executar.ps1 "config\executar.ps1"
+    File /oname=$INSTDIR\config\homologar.ps1 "config\homologar.ps1"
     File /oname=$INSTDIR\${ICON_FILE} "icone.ico"
     File /oname=$INSTDIR\ "MenuConsultaMedica.ps1"
     File /oname=$INSTDIR\ "MenuPaciente.ps1"
