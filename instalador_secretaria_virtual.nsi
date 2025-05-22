@@ -18,6 +18,8 @@ UninstPage instfiles
 Section "Instalar ${PRODUCT_NAME}" SEC01
     ; === Criação de pastas e cópia dos arquivos ===
     CreateDirectory "$INSTDIR\config"
+    CreateDirectory "$INSTDIR\logs"
+    CreateDirectory "$INSTDIR\relatorios"
     CreateDirectory "$INSTDIR\logs\auditoria"
     CreateDirectory "$INSTDIR\logs\report"
     CreateDirectory "$INSTDIR\relatorios\json"

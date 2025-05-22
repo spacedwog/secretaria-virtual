@@ -23,7 +23,7 @@ function MenuConsultaMedica {
 }
 
 function ReceitaMedica {
-    $configPath = "$basePath\config\ReceitaMedica.ps1"
+    $configPath = "$basePath\ReceitaMedica.ps1"
     if (Test-Path $configPath) {
         & $configPath
     } else {
