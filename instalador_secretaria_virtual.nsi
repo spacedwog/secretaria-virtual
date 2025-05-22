@@ -16,27 +16,25 @@ UninstPage uninstConfirm
 UninstPage instfiles
 
 Section "Instalar ${PRODUCT_NAME}" SEC01
-    SetOutPath "$INSTDIR"
-
-    ; === Criação de pastas necessárias ===
+    ; === Criação de pastas e cópia dos arquivos ===
     CreateDirectory "$INSTDIR\config"
-    CreateDirectory "$INSTDIR\logs"
-    CreateDirectory "$INSTDIR\relatorios"
     CreateDirectory "$INSTDIR\logs\auditoria"
     CreateDirectory "$INSTDIR\logs\report"
     CreateDirectory "$INSTDIR\relatorios\json"
     CreateDirectory "$INSTDIR\relatorios\webpage"
 
-    ; === Instalação dos arquivos ===
-    File /oname=$INSTDIR\${EXE_NAME} "secretaria_virtual.exe"
-    File /oname=$INSTDIR\config\MenuConfiguracao.ps1 "config\MenuConfiguracao.ps1"
-    File /oname=$INSTDIR\config\auditoria.ps1 "config\auditoria.ps1"
-    File /oname=$INSTDIR\config\executar.ps1 "config\executar.ps1"
-    File /oname=$INSTDIR\config\homologar.ps1 "config\homologar.ps1"
-    File /oname=$INSTDIR\${ICON_FILE} "icone.ico"
-    File /oname=$INSTDIR\ "MenuConsultaMedica.ps1"
-    File /oname=$INSTDIR\ "MenuPaciente.ps1"
-    File /oname=$INSTDIR\ "MenuReceitaMedica.ps1"
+    SetOutPath "$INSTDIR"
+    File "${EXE_NAME}"
+    File "${ICON_FILE}"
+    File "MenuConsultaMedica.ps1"
+    File "MenuPaciente.ps1"
+    File "MenuReceitaMedica.ps1"
+
+    SetOutPath "$INSTDIR\config"
+    File "config\MenuConfiguracao.ps1"
+    File "config\auditoria.ps1"
+    File "config\executar.ps1"
+    File "config\homologar.ps1"
 
     ; === Atalho na área de trabalho ===
     CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}" "" "$INSTDIR\${ICON_FILE}"
@@ -56,15 +54,19 @@ SectionEnd
 Section "Uninstall" uninstall
     Delete "$INSTDIR\${EXE_NAME}"
     Delete "$INSTDIR\${ICON_FILE}"
+    Delete "$INSTDIR\MenuConsultaMedica.ps1"
+    Delete "$INSTDIR\MenuPaciente.ps1"
+    Delete "$INSTDIR\MenuReceitaMedica.ps1"
     Delete "$INSTDIR\Uninstall.exe"
     Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
 
-    ; Apagar arquivos e pastas criadas
     Delete "$INSTDIR\config\MenuConfiguracao.ps1"
     Delete "$INSTDIR\config\auditoria.ps1"
     Delete "$INSTDIR\config\executar.ps1"
     Delete "$INSTDIR\config\homologar.ps1"
-    RMDir "$INSTDIR\config"
+
+    RMDir /r "$INSTDIR\config"
+    RMDir /r "$INSTDIR\logs"
     RMDir /r "$INSTDIR\relatorios"
     RMDir "$INSTDIR"
 
