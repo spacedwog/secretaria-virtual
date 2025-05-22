@@ -15,8 +15,8 @@ function MenuConfiguracaoAuditoria {
     )
     $defaultValues = @(
         "C:\Users\felip\secretaria-virtual",
-        "logs\auditoria\relatorio_auditoria.json",
-        "logs\report\auditoria_log.txt"
+        "logs\report\relatorio_auditoria.json",
+        "logs\auditoria\auditoria_log.txt"
     )
 
     $textboxes = @()
