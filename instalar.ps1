@@ -11,7 +11,7 @@ $certThumbprint = "53901640F943B6D0C913399A290D00F923AD0472"  # SHA1 opcional, p
 [System.Threading.Thread]::CurrentThread.CurrentCulture = 'pt-BR'
 [System.Threading.Thread]::CurrentThread.CurrentUICulture = 'pt-BR'
 
-# Compilar o script para EXE
+# Compilar o script para EXE com privilégios de administrador
 Invoke-PS2EXE `
   -InputFile $scriptPath `
   -OutputFile $outputExe `
@@ -23,6 +23,7 @@ Invoke-PS2EXE `
   -Copyright "Copyright (c) 2025 Felipe Rodrigues dos Santos ($email). Licenciado sob MIT License." `
   -NoConsole `
   -IconFile $iconPath `
+  -Manifest requireAdmin `
   -Verbose
 
 # Verifica se signtool está disponível
