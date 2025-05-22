@@ -2,16 +2,18 @@
 $scriptPath = "MenuPrincipal.ps1"
 $outputExe = "secretaria_virtual.exe"
 $iconPath = "icone.ico"
+$mtTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\mt.exe"
+$signTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe"
 
 # Informações do certificado
 $subjectName = "CN=Felipe Rodrigues"
 $email = "felipersantos1988@gmail.com"
-$certThumbprint = "53901640F943B6D0C913399A290D00F923AD0472"  # SHA1 opcional, para reutilização
+$certThumbprint = "53901640F943B6D0C913399A290D00F923AD0472"
 
 [System.Threading.Thread]::CurrentThread.CurrentCulture = 'pt-BR'
 [System.Threading.Thread]::CurrentThread.CurrentUICulture = 'pt-BR'
 
-# Compilar o script para EXE com privilégios de administrador
+# Compilar o script para EXE
 Invoke-PS2EXE `
   -InputFile $scriptPath `
   -OutputFile $outputExe `
@@ -23,17 +25,40 @@ Invoke-PS2EXE `
   -Copyright "Copyright (c) 2025 Felipe Rodrigues dos Santos ($email). Licenciado sob MIT License." `
   -NoConsole `
   -IconFile $iconPath `
-  -Manifest requireAdmin `
   -Verbose
 
+# Validar existência do mt.exe
+if (-not (Test-Path $mtTool)) {
+    Write-Error "mt.exe não encontrado. Instale o Windows SDK."
+    exit 1
+}
+
+# Criar manifesto para execução como administrador
+$manifestPath = "$env:TEMP\admin.manifest.xml"
+@"
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+    <security>
+      <requestedPrivileges>
+        <requestedExecutionLevel level="requireAdministrator" uiAccess="false"/>
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+</assembly>
+"@ | Set-Content -Encoding UTF8 -Path $manifestPath
+
+# Embutir o manifesto
+Write-Host "Adicionando manifesto ao EXE..."
+& "$mtTool" -manifest "$manifestPath" -outputresource:"$outputExe;#1"
+
 # Verifica se signtool está disponível
-$signTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe"
 if (-not (Test-Path $signTool)) {
     Write-Error "signtool.exe nao encontrado. Instale o Windows SDK para utilizar assinatura digital."
     exit 1
 }
 
-# Procurar certificado existente
+# Procurar certificado
 if ($certThumbprint) {
     $cert = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Thumbprint -eq $certThumbprint }
 } else {
@@ -42,7 +67,7 @@ if ($certThumbprint) {
     }
 }
 
-# Se não existir, criar certificado com e-mail
+# Criar certificado se não existir
 if (-not $cert) {
     Write-Host "Criando certificado autoassinado com e-mail..."
     $cert = New-SelfSignedCertificate `
@@ -57,11 +82,11 @@ if (-not $cert) {
     $certThumbprint = $cert.Thumbprint
 }
 
-# Exportar o certificado público (opcional)
+# Exportar certificado público
 Export-Certificate -Cert $cert -FilePath "$env:TEMP\cert.cer" | Out-Null
 Write-Host "Certificado exportado para: $env:TEMP\cert.cer"
 
-# Assinar o executável
+# Assinar o EXE
 Write-Host "`n=== Inicio da Compilacao ===`n"
 Write-Host "Assinando o arquivo..."
 & $signTool sign `
@@ -75,11 +100,11 @@ Write-Host "Assinando o arquivo..."
 Write-Host "Verificando assinatura..."
 & $signTool verify /pa /v "$outputExe"
 
-# Resultado final
+# Resultado
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "`n[OK] EXE compilado e assinado com sucesso! Caminho: $outputExe" -ForegroundColor Green
+    Write-Host "`n[OK] EXE compilado, assinado e com manifesto de administrador embutido: $outputExe" -ForegroundColor Green
     Write-Host "`n=== Fim da Compilacao ===`n"
     & .\config\executar.ps1
 } else {
-    Write-Error "[FALHA] Falha ao assinar/verificar o executavel."
+    Write-Error "[FALHA] Falha ao assinar/verificar o executável."
 }
