@@ -1,10 +1,9 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-# Caminho base absoluto do script atual
-$basePath = Split-Path -Parent $MyInvocation.MyCommand.Definition
+# Detecta caminho absoluto corretamente, mesmo se for .exe
+$basePath = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
 
-# Funções com caminhos absolutos
 function MenuPaciente {
     & "$basePath\MenuPaciente.ps1"
 }
@@ -21,13 +20,12 @@ function Configuracao {
     & "$basePath\config\MenuConfiguracao.ps1"
 }
 
-# Janela principal
+# Interface
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Sistema de Secretaria Virtual"
 $form.Size = New-Object System.Drawing.Size(400,350)
 $form.StartPosition = "CenterScreen"
 
-# Botões
 $btn1 = New-Object System.Windows.Forms.Button
 $btn1.Text = "1. Menu Paciente"
 $btn1.Size = New-Object System.Drawing.Size(300,40)
