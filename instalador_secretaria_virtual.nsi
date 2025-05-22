@@ -3,6 +3,8 @@
 !define INSTALL_DIR "$PROGRAMFILES\Secretaria Virtual"
 !define ICON_FILE "icone.ico"
 
+RequestExecutionLevel admin ; <--- Esta linha ativa execução como administrador
+
 OutFile "Instalador_Secretaria_Virtual.exe"
 InstallDir "${INSTALL_DIR}"
 SetCompressor /SOLID lzma
