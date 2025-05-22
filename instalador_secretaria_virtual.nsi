@@ -34,7 +34,7 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     File "Paciente.ps1"
     File "ReceitaMedica.ps1"
 
-    SetOutPath "$INSTDIR"
+    SetOutPath "$INSTDIR\config"
     File "config\Configuracao.ps1"
     File "config\auditoria.ps1"
     File "config\executar.ps1"
