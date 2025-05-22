@@ -60,7 +60,7 @@ Section "Uninstall" uninstall
     Delete "$INSTDIR\Uninstall.exe"
     Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
 
-    Delete "$INSTDIR\config\MenuConfiguracao.ps1"
+    Delete "$INSTDIR\config\Configuracao.ps1"
     Delete "$INSTDIR\config\auditoria.ps1"
     Delete "$INSTDIR\config\executar.ps1"
     Delete "$INSTDIR\config\homologar.ps1"
