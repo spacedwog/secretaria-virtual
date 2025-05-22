@@ -5,19 +5,39 @@ Add-Type -AssemblyName System.Drawing
 $basePath = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
 
 function MenuPaciente {
-    & "$basePath\MenuPaciente.ps1"
+    $configPath = "$basePath\Paciente.ps1"
+    if (Test-Path $configPath) {
+        & $configPath
+    } else {
+        [System.Windows.Forms.MessageBox]::Show("Arquivo de pacientes nao encontrado em: `n$configPath", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+    }
 }
 
 function MenuConsultaMedica {
-    & "$basePath\MenuConsultaMedica.ps1"
+    $configPath = "$basePath\ConsultaMedica.ps1"
+    if (Test-Path $configPath) {
+        & $configPath
+    } else {
+        [System.Windows.Forms.MessageBox]::Show("Arquivo de consulta medica nao encontrado em: `n$configPath", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+    }
 }
 
 function ReceitaMedica {
-    & "$basePath\MenuReceitaMedica.ps1"
+    $configPath = "$basePath\config\ReceitaMedica.ps1"
+    if (Test-Path $configPath) {
+        & $configPath
+    } else {
+        [System.Windows.Forms.MessageBox]::Show("Arquivo de receita medica nao encontrado em: `n$configPath", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+    }
 }
 
 function Configuracao {
-    & "$basePath\config\MenuConfiguracao.ps1"
+    $configPath = "$basePath\config\Configuracao.ps1"
+    if (Test-Path $configPath) {
+        & $configPath
+    } else {
+        [System.Windows.Forms.MessageBox]::Show("Arquivo de configuracao nao encontrado em: `n$configPath", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
+    }
 }
 
 # Interface
