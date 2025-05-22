@@ -1,22 +1,24 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-# Funções simuladas para os menus
+# Caminho base absoluto do script atual
+$basePath = Split-Path -Parent $MyInvocation.MyCommand.Definition
+
+# Funções com caminhos absolutos
 function MenuPaciente {
-    # Aqui você pode chamar o MenuPaciente.ps1 ou chamar a função diretamente
-    & .\MenuPaciente.ps1
+    & "$basePath\MenuPaciente.ps1"
 }
 
 function MenuConsultaMedica {
-    & .\MenuConsultaMedica.ps1
+    & "$basePath\MenuConsultaMedica.ps1"
 }
 
 function ReceitaMedica {
-    & .\MenuReceitaMedica.ps1
+    & "$basePath\MenuReceitaMedica.ps1"
 }
 
 function Configuracao {
-    & .\config\MenuConfiguracao.ps1
+    & "$basePath\config\MenuConfiguracao.ps1"
 }
 
 # Janela principal
