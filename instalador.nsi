@@ -75,7 +75,7 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     nsExec::ExecToLog '"$INSTDIR\driver\devcon.exe" install "$INSTDIR\driver\seu_driver.inf" ROOT\MyVirtualDevice'
     Pop $0
     ${If} $0 != 0
-        MessageBox MB_ICONEXCLAMATION "A instalação do driver falhou. Código de erro: $0"
+        MessageBox MB_ICONEXCLAMATION "A instalacao do driver falhou. Codigo de erro: $0"
     ${EndIf}
 
     SetOutPath "$INSTDIR"
