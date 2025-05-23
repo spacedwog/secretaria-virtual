@@ -1,5 +1,8 @@
 Add-Type -AssemblyName System.Windows.Forms
 
+# Detecta caminho absoluto corretamente, mesmo se for .exe
+$basePath = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
+
 function MenuConfiguracaoAuditoria {
     [System.Windows.Forms.Application]::EnableVisualStyles()
 
@@ -14,7 +17,7 @@ function MenuConfiguracaoAuditoria {
         "Log de Auditoria:"
     )
     $defaultValues = @(
-        "C:\Program Files (x86)\Secretaria Virtual",
+        "$basePath",
         "logs\report\relatorio_auditoria.json",
         "logs\auditoria\auditoria_log.txt"
     )

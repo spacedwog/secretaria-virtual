@@ -1,8 +1,11 @@
 param (
-    [string]$DiretorioAlvo = "C:\Users\felip\secretaria-virtual",
-    [string]$RelatorioSaida = "logs\report\relatorio_auditoria.json",
-    [string]$LogSaida = "logs\auditoria\auditoria_log.txt"
+    [string]$DiretorioAlvo = "$basePath",
+    [string]$RelatorioSaida = "$basePath\logs\report\relatorio_auditoria.json",
+    [string]$LogSaida = "$basePath\logs\auditoria\auditoria_log.txt"
 )
+
+# Detecta caminho absoluto corretamente, mesmo se for .exe
+$basePath = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
 
 # Exemplo de uso
 Write-Host "`n=== Inicio da Auditoria ===`n"

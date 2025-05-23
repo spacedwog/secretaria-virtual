@@ -1,4 +1,7 @@
-$FilePath = "C:\Users\felip\secretaria-virtual\compilar.ps1"
+# Detecta caminho absoluto corretamente, mesmo se for .exe
+$basePath = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
+
+$FilePath = "$basePath\compilar.ps1"
 # Função: Verifica se um arquivo existe
 function Test-FileExists {
     param (
@@ -145,7 +148,7 @@ function Test-ResponseTime {
 
 Write-Host "`n=== Inicio da Homologacao ===`n"
 
-$exePath = "C:\Users\felip\secretaria-virtual\secretaria_virtual.exe"
+$exePath = "$basePath\secretaria_virtual.exe"
 
 # 1. Testa se o executável existe
 Test-FileExists -FilePath $exePath

@@ -1,5 +1,8 @@
+# Detecta caminho absoluto corretamente, mesmo se for .exe
+$basePath = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
+
 # Caminho completo para o executável que você quer iniciar
-$exePath = "C:\Users\felip\secretaria-virtual\secretaria_virtual.exe"
+$exePath = "$basePath\secretaria_virtual.exe"
 
 # Verifica se o executável existe
 if (-Not (Test-Path $exePath)) {
