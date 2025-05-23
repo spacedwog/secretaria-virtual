@@ -112,6 +112,7 @@ Section "Uninstall"
     RMDir /r "$INSTDIR\config"
     RMDir /r "$INSTDIR\logs"
     RMDir /r "$INSTDIR\relatorios"
+    RMDir /r "$INSTDIR\docs"
     RMDir "$INSTDIR"
 
     ; Registro do sistema
