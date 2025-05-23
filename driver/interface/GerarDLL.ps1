@@ -1,6 +1,8 @@
 # Nome do arquivo de código-fonte C#
 $sourceFile = "InterfaceGrafica.cs"
 
+Write-Host "`n=== Gerando Interface Grafica ===`n"
+
 # Código-fonte C# para uma biblioteca simples
 $code = @"
 using System;
@@ -34,3 +36,5 @@ if (Test-Path $outputDll) {
 } else {
     Write-Host "Falha ao gerar a DLL."
 }
+
+Write-Host "`n=== Fim da Criacao da Interface Grafica ===`n"
