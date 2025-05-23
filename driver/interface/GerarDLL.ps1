@@ -28,8 +28,12 @@ namespace InterfaceVisual
 # Salva o arquivo .cs
 $code | Out-File -Encoding UTF8 $sourceFile
 
-# Compila o código
-& $cscPath /target:library /out:$outputDll $sourceFile
+# Converte para caminhos absolutos
+$sourcePath = Resolve-Path $sourceFile
+$outputPath = Resolve-Path $outputDll -ErrorAction SilentlyContinue
+
+# Compila usando caminho absoluto
+& $cscPath /target:library /out:$outputDll $sourcePath
 
 if (Test-Path $outputDll) {
     Write-Host "DLL gerada com sucesso: $outputDll"
