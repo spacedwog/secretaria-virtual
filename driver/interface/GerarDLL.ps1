@@ -1,11 +1,11 @@
-$sourceFile = "driver/interface/InterfaceGrafica.cs"
+$sourceFile = "driver/interface/InterfaceVisual.cs"
 
-Write-Host "`n=== Gerando Interface Grafica ===`n"
+Write-Host "`n=== Gerando Interface Visual ===`n"
 
 $code = @"
 using System;
 
-namespace InterfaceGrafica
+namespace InterfaceVisual
 {
     public class Saudacao
     {
@@ -20,7 +20,7 @@ namespace InterfaceGrafica
 $code | Out-File -Encoding UTF8 $sourceFile
 
 $cscPath = "$env:WINDIR\Microsoft.NET\Framework\v4.0.30319\csc.exe"
-$outputDll = "driver/interface/InterfaceGrafica.dll"
+$outputDll = "driver/interface/InterfaceVisual.dll"
 
 & $cscPath /target:library /out:$outputDll $sourceFile
 
@@ -30,4 +30,4 @@ if (Test-Path $outputDll) {
     Write-Host "Falha ao gerar a DLL."
 }
 
-Write-Host "`n=== Fim da Criacao da Interface Grafica ===`n"
+Write-Host "`n=== Fim da Criacao da Interface Visual ===`n"
