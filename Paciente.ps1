@@ -236,19 +236,6 @@ function Mostrar_Detalhes_Paciente {
 
     $detalhesCompletos = ""
 
-    # Mapeamento dos doutores
-    $doctoresPath = "relatorios/json/doctors.json"
-    $doutoresMap = @{}
-    if (Test-Path $doctoresPath) {
-        $doutoresData = Get-Content $doctoresPath -Raw | ConvertFrom-Json
-        if ($doutoresData -isnot [System.Collections.IEnumerable]) {
-            $doutoresData = @($doutoresData)
-        }
-        foreach ($d in $doutoresData) {
-            $doutoresMap[$d.id] = "$($d.nome) ($($d.especialidade))"
-        }
-    }
-
     # Dados do paciente
     $pacientesPath = "relatorios/json/pacientes.json"
     if (Test-Path $pacientesPath) {
@@ -266,69 +253,6 @@ function Mostrar_Detalhes_Paciente {
             $detalhesCompletos += "Email: $($pacienteInfo.Email)`r`n"
             $detalhesCompletos += "Endereco: $($pacienteInfo.Endereco)`r`n"
             $detalhesCompletos += "`r`n"
-        }
-    }
-
-    # Visitas
-    $visitasPath = "relatorios/json/visits.json"
-    if (Test-Path $visitasPath) {
-        $visitasData = Get-Content $visitasPath -Raw | ConvertFrom-Json
-        if ($visitasData -isnot [System.Collections.IEnumerable]) {
-            $visitasData = @($visitasData)
-        }
-
-        $visitasPaciente = $visitasData | Where-Object { $_.paciente_id -eq $pacienteId }
-        if ($visitasPaciente.Count -gt 0) {
-            $detalhesCompletos += "[OK] VISITAS:`r`n"
-            foreach ($v in $visitasPaciente) {
-                $dataHora = Get-Date $v.timestamp -Format "dd/MM/yyyy HH:mm"
-                $doutorNome = $doutoresMap[$v.doutor_id]
-                $detalhesCompletos += "- ID: $($v.id), Doutor: $doutorNome, Data: $dataHora`r`n"
-            }
-        } else {
-            $detalhesCompletos += "[OK] VISITAS: Nenhuma registrada.`r`n"
-        }
-        $detalhesCompletos += "`r`n"
-    }
-
-    # Agendamentos
-    $agendamentosPath = "relatorios/json/appointments.json"
-    if (Test-Path $agendamentosPath) {
-        $agendamentosData = Get-Content $agendamentosPath -Raw | ConvertFrom-Json
-        if ($agendamentosData -isnot [System.Collections.IEnumerable]) {
-            $agendamentosData = @($agendamentosData)
-        }
-
-        $agendamentosPaciente = $agendamentosData | Where-Object { $_.paciente_id -eq $pacienteId }
-        if ($agendamentosPaciente.Count -gt 0) {
-            $detalhesCompletos += "[OK] AGENDAMENTOS:`r`n"
-            foreach ($a in $agendamentosPaciente) {
-                $doutorNome = $doutoresMap[$a.doutor_id]
-                $detalhesCompletos += "- ID: $($a.id), Titulo: $($a.titulo), Motivo: $($a.motivo), Data: $($a.data) as $($a.hora), Status: $($a.status), Doutor: $doutorNome`r`n"
-            }
-        } else {
-            $detalhesCompletos += "[OK] AGENDAMENTOS: Nenhum agendamento encontrado.`r`n"
-        }
-        $detalhesCompletos += "`r`n"
-    }
-
-    # Prescrições
-    $prescricoesPath = "relatorios/json/prescriptions.json"
-    if (Test-Path $prescricoesPath) {
-        $prescricoesData = Get-Content $prescricoesPath -Raw | ConvertFrom-Json
-        if ($prescricoesData -isnot [System.Collections.IEnumerable]) {
-            $prescricoesData = @($prescricoesData)
-        }
-
-        $prescricoesPaciente = $prescricoesData | Where-Object { $_.paciente_id -eq $pacienteId }
-        if ($prescricoesPaciente.Count -gt 0) {
-            $detalhesCompletos += "[OK] PRESCRICOES:`r`n"
-            foreach ($p in $prescricoesPaciente) {
-                $doutorNome = $doutoresMap[$p.doutor_id]
-                $detalhesCompletos += "- ID: $($p.id), Medicamento: $($p.medicamento), Dosagem: $($p.dosagem), Instrucoes: $($p.instrucoes), Data: $($p.data), Doutor: $doutorNome`r`n"
-            }
-        } else {
-            $detalhesCompletos += "[OK] PRESCRICOES: Nenhuma prescricao encontrada.`r`n"
         }
     }
 
