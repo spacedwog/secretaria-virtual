@@ -26,10 +26,6 @@ ShowUnInstDetails show
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
-Function LaunchApp
-    Exec '"$INSTDIR\${EXE_NAME}"'
-FunctionEnd
-
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 
