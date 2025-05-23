@@ -213,11 +213,13 @@ function Mostrar_Detalhes_Paciente {
         [string]$pacienteNome
     )
 
+    # Cria o formulário para exibir os detalhes do paciente
     $formDetalhes = New-Object System.Windows.Forms.Form
     $formDetalhes.Text = "Detalhes do Paciente: $pacienteNome"
     $formDetalhes.Size = New-Object System.Drawing.Size(500, 650)
     $formDetalhes.StartPosition = "CenterScreen"
 
+    # Caixa de texto para mostrar as informações
     $textbox = New-Object System.Windows.Forms.TextBox
     $textbox.Multiline = $true
     $textbox.ScrollBars = "Vertical"
@@ -225,6 +227,7 @@ function Mostrar_Detalhes_Paciente {
     $textbox.Size = New-Object System.Drawing.Size(460, 570)
     $textbox.Location = New-Object System.Drawing.Point(10, 10)
 
+    # Botão para fechar o formulário
     $btnFechar = New-Object System.Windows.Forms.Button
     $btnFechar.Text = "Fechar"
     $btnFechar.Size = New-Object System.Drawing.Size(460, 30)
@@ -233,7 +236,7 @@ function Mostrar_Detalhes_Paciente {
 
     $detalhesCompletos = ""
 
-    # MAPEAMENTO DOS DOUTORES
+    # Mapeamento dos doutores
     $doctoresPath = "relatorios/json/doctors.json"
     $doutoresMap = @{}
     if (Test-Path $doctoresPath) {
@@ -246,7 +249,7 @@ function Mostrar_Detalhes_Paciente {
         }
     }
 
-    # 🧾 DADOS DO PACIENTE
+    # Dados do paciente
     $pacientesPath = "relatorios/json/pacientes.json"
     if (Test-Path $pacientesPath) {
         $pacientesData = Get-Content $pacientesPath -Raw | ConvertFrom-Json
@@ -254,7 +257,7 @@ function Mostrar_Detalhes_Paciente {
             $pacientesData = @($pacientesData)
         }
 
-        $pacienteInfo = $pacientesData | Where-Object { $_.ID -eq $pacienteId }
+        $pacienteInfo = $pacientesData | Where-Object { $_.id -eq $pacienteId -or $_.ID -eq $pacienteId -or $_.Id -eq $pacienteId }
         if ($pacienteInfo) {
             $detalhesCompletos += "INFORMACOES DO PACIENTE:`r`n"
             $detalhesCompletos += "Nome: $($pacienteInfo.Nome)`r`n"
@@ -266,7 +269,7 @@ function Mostrar_Detalhes_Paciente {
         }
     }
 
-    # VISITAS
+    # Visitas
     $visitasPath = "relatorios/json/visits.json"
     if (Test-Path $visitasPath) {
         $visitasData = Get-Content $visitasPath -Raw | ConvertFrom-Json
@@ -288,7 +291,7 @@ function Mostrar_Detalhes_Paciente {
         $detalhesCompletos += "`r`n"
     }
 
-    # AGENDAMENTOS
+    # Agendamentos
     $agendamentosPath = "relatorios/json/appointments.json"
     if (Test-Path $agendamentosPath) {
         $agendamentosData = Get-Content $agendamentosPath -Raw | ConvertFrom-Json
@@ -309,7 +312,7 @@ function Mostrar_Detalhes_Paciente {
         $detalhesCompletos += "`r`n"
     }
 
-    # PRESCRIÇÕES
+    # Prescrições
     $prescricoesPath = "relatorios/json/prescriptions.json"
     if (Test-Path $prescricoesPath) {
         $prescricoesData = Get-Content $prescricoesPath -Raw | ConvertFrom-Json
@@ -329,8 +332,11 @@ function Mostrar_Detalhes_Paciente {
         }
     }
 
+    # Define o texto no textbox e adiciona controles ao formulário
     $textbox.Text = $detalhesCompletos
     $formDetalhes.Controls.AddRange(@($textbox, $btnFechar))
+
+    # Exibe o formulário
     $formDetalhes.ShowDialog()
 }
 
