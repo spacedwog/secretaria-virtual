@@ -3,6 +3,7 @@
 !include "FileFunc.nsh"
 !include "LogicLib.nsh"
 !include "WinVer.nsh"
+!define MUI_LICENSEPAGE_TEXT_TOP "Por favor, leia atentamente os documentos de contribuicao e conduta antes de continuar a instalacao."
 
 !define PRODUCT_NAME "Secretaria Virtual"
 !define PUBLISHER_NAME "Spacedwog"
@@ -26,6 +27,10 @@ Caption "${PRODUCT_NAME}"
 BrandingText "Desenvolvido por ${PUBLISHER_NAME}"
 
 !insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_LICENSE "docs\README.md"
+!insertmacro MUI_PAGE_LICENSE "docs\LICENSE.md"
+!insertmacro MUI_PAGE_LICENSE "docs\CONTRIBUTING.md"
+!insertmacro MUI_PAGE_LICENSE "docs\CODE_OF_CONDUCT.md"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
@@ -39,6 +44,7 @@ Function LaunchApp
 FunctionEnd
 
 Section "Instalar ${PRODUCT_NAME}" SEC01
+
     ; Arquivos principais
     SetOutPath "$INSTDIR"
     File "${EXE_NAME}"
@@ -60,6 +66,14 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     CreateDirectory "$INSTDIR\logs\report"
     CreateDirectory "$INSTDIR\relatorios\json"
     CreateDirectory "$INSTDIR\relatorios\webpage"
+
+    ; Documentação (CONTRIBUTING e CODE_OF_CONDUCT)
+    SetOutPath "$INSTDIR\docs"
+    CreateDirectory "$INSTDIR\docs"
+    File "docs\README.md"
+    File "docs\CONTRIBUTING.md"
+    File "docs\LICENSE.md"
+    File "docs\CODE_OF_CONDUCT.md"
 
     ; Atalhos
     SetOutPath "$INSTDIR"
