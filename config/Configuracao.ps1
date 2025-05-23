@@ -80,10 +80,10 @@ $relatorioCompleto = Join-Path $diretorio $config.RelatorioSaida
 $logCompleto = Join-Path $diretorio $config.LogSaida
 
 # Exibe um resumo das configurações
-Write-Host "`n[RESUMO DA CONFIGURACAO]"
-Write-Host "Diretorio Alvo   : $diretorio"
-Write-Host "Relatorio JSON   : $relatorioCompleto"
-Write-Host "Log de Auditoria : $logCompleto"
+Write-Host "`n[RESUMO DA CONFIGURACAO]" -ForegroundColor Green
+Write-Host "Diretorio Alvo   : $diretorio" -ForegroundColor Cyan
+Write-Host "Relatorio JSON   : $relatorioCompleto" -ForegroundColor Cyan
+Write-Host "Log de Auditoria : $logCompleto" -ForegroundColor Cyan
 
 # Persiste as configurações em um arquivo JSON
 $configPath = Join-Path $diretorio "configuracao_auditoria.json"

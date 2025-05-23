@@ -50,7 +50,7 @@ $manifestPath = "$env:TEMP\admin.manifest.xml"
 "@ | Set-Content -Encoding UTF8 -Path $manifestPath
 
 # Embutir o manifesto
-Write-Host "Adicionando manifesto ao EXE..."
+Write-Host "Adicionando manifesto ao EXE..." -ForegroundColor Green
 & "$mtTool" -manifest "$manifestPath" -outputresource:"$outputExe;#1"
 
 # Verifica se signtool está disponível
@@ -70,7 +70,7 @@ if ($certThumbprint) {
 
 # Criar certificado se não existir
 if (-not $cert) {
-    Write-Host "Criando certificado autoassinado com e-mail..."
+    Write-Host "Criando certificado autoassinado com e-mail..." -ForegroundColor Blue
     $cert = New-SelfSignedCertificate `
         -Type CodeSigningCert `
         -Subject $subjectName `
@@ -79,17 +79,17 @@ if (-not $cert) {
         -TextExtension @("2.5.29.17={text}email=$email&otherName=1.3.6.1.5.5.7.8.5;UTF8:$email")
     $certThumbprint = $cert.Thumbprint
 } else {
-    Write-Host "Certificado existente encontrado."
+    Write-Host "Certificado existente encontrado." -ForegroundColor Green
     $certThumbprint = $cert.Thumbprint
 }
 
 # Exportar certificado público
 Export-Certificate -Cert $cert -FilePath "$env:TEMP\cert.cer" | Out-Null
-Write-Host "Certificado exportado para: $env:TEMP\cert.cer"
+Write-Host "Certificado exportado para: $env:TEMP\cert.cer" -ForegroundColor Green
 
 # Assinar o EXE
-Write-Host "`n=== Inicio da Instalacao ===`n"
-Write-Host "Assinando o arquivo..."
+Write-Host "`n=== Inicio da Instalacao ===`n" -ForegroundColor Cyan
+Write-Host "Assinando o arquivo..." -ForegroundColor Green
 & $signTool sign `
     /fd SHA256 `
     /tr http://timestamp.digicert.com `
@@ -98,15 +98,15 @@ Write-Host "Assinando o arquivo..."
     "$outputExe"
 
 # Verificar assinatura
-Write-Host "Verificando assinatura..."
+Write-Host "Verificando assinatura..." -ForegroundColor Blue
 & $signTool verify /pa /v "$outputExe"
 
 # Resultado
 if ($LASTEXITCODE -eq 0) {
     Write-Host "`n[OK] EXE compilado, assinado e com manifesto de administrador embutido: $outputExe" -ForegroundColor Green
-    Write-Host "`n=== Fim da Instalacao ===`n"
+    Write-Host "`n=== Fim da Instalacao ===`n" -ForegroundColor Cyan
     & .\config\executar.ps1
     & .\driver\interface\GerarDLL.ps1
 } else {
-    Write-Error "[FALHA] Falha ao assinar/verificar o executável."
+    Write-Error "[FALHA] Falha ao assinar/verificar o executável." -ForegroundColor Red
 }

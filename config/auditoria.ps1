@@ -5,10 +5,10 @@ param (
 )
 
 # Exemplo de uso
-Write-Host "`n=== Inicio da Auditoria ===`n"
-Write-Host "Diretorio Alvo: $DiretorioAlvo"
-Write-Host "Relatorio JSON: $RelatorioSaida"
-Write-Host "Log de Auditoria: $LogSaida"
+Write-Host "`n=== Inicio da Auditoria ===`n" -ForegroundColor Cyan
+Write-Host "Diretorio Alvo: $DiretorioAlvo" -ForegroundColor Blue
+Write-Host "Relatorio JSON: $RelatorioSaida" -ForegroundColor Blue
+Write-Host "Log de Auditoria: $LogSaida" -ForegroundColor Blue
 
 
 function Get_FileHashInfo {
@@ -31,7 +31,7 @@ function Registrar_Log {
     )
     $linha = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - $Mensagem"
     Add-Content -Path $LogSaida -Value $linha
-    Write-Host $linha
+    Write-Host $linha -ForegroundColor White
 }
 
 # Verificação inicial
@@ -68,4 +68,4 @@ Registrar_Log "[REPORT] Relatorio TXT salvo em: $($RelatorioSaida -replace '.jso
 
 Registrar_Log "[OK] Auditoria concluida."
 
-Write-Host "`n=== Fim da Auditoria ===`n"
+Write-Host "`n=== Fim da Auditoria ===`n" -ForegroundColor Cyan

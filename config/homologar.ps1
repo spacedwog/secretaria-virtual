@@ -144,7 +144,7 @@ function Test-ResponseTime {
 
 # --- Exemplo de execução das funções para homologação ---
 
-Write-Host "`n=== Inicio da Homologacao ===`n"
+Write-Host "`n=== Inicio da Homologacao ===`n" -ForegroundColor Cyan
 
 $exePath = "./index.exe"
 
@@ -166,4 +166,4 @@ Test-ResponseTime -ScriptBlock { Get-Process | Out-Null } -MaxMilliseconds 500
 
 & .\config\auditoria.ps1
 
-Write-Host "`n=== Fim da Homologacao ===`n"
+Write-Host "`n=== Fim da Homologacao ===`n" -ForegroundColor Cyan
