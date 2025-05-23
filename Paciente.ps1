@@ -213,13 +213,14 @@ function Mostrar_Detalhes_Paciente {
         [string]$pacienteNome
     )
 
-    # Cria o formulário para exibir os detalhes do paciente
+    # Cria o formulário
     $formDetalhes = New-Object System.Windows.Forms.Form
     $formDetalhes.Text = "Detalhes do Paciente: $pacienteNome"
     $formDetalhes.Size = New-Object System.Drawing.Size(500, 650)
     $formDetalhes.StartPosition = "CenterScreen"
+    $formDetalhes.TopMost = $true  # Manter até exibir
 
-    # Caixa de texto para mostrar as informações
+    # Caixa de texto
     $textbox = New-Object System.Windows.Forms.TextBox
     $textbox.Multiline = $true
     $textbox.ScrollBars = "Vertical"
@@ -227,26 +228,15 @@ function Mostrar_Detalhes_Paciente {
     $textbox.Size = New-Object System.Drawing.Size(460, 570)
     $textbox.Location = New-Object System.Drawing.Point(10, 10)
 
-    # Forçar o formulário ficar em primeiro plano
-    $formDetalhes.TopMost = $true
-
-    $textbox = New-Object System.Windows.Forms.TextBox
-    $textbox.Multiline = $true
-    $textbox.ScrollBars = "Vertical"
-    $textbox.ReadOnly = $true
-    $textbox.Size = New-Object System.Drawing.Size(460, 570)
-    $textbox.Location = New-Object System.Drawing.Point(10, 10)
-
-    # Botão para fechar o formulário
+    # Botão fechar
     $btnFechar = New-Object System.Windows.Forms.Button
     $btnFechar.Text = "Fechar"
     $btnFechar.Size = New-Object System.Drawing.Size(460, 30)
     $btnFechar.Location = New-Object System.Drawing.Point(10, 590)
     $btnFechar.Add_Click({ $formDetalhes.Close() })
 
+    # Carrega os dados
     $detalhesCompletos = ""
-
-    # Dados do paciente
     $pacientesPath = "relatorios/json/pacientes.json"
     if (Test-Path $pacientesPath) {
         $pacientesData = Get-Content $pacientesPath -Raw | ConvertFrom-Json
@@ -266,19 +256,13 @@ function Mostrar_Detalhes_Paciente {
         }
     }
 
-    # Define o texto no textbox e adiciona controles ao formulário
+    # Atualiza o textbox e adiciona controles
     $textbox.Text = $detalhesCompletos
     $formDetalhes.Controls.AddRange(@($textbox, $btnFechar))
 
-    # Força o foco e traz para frente
-    $formDetalhes.BringToFront()
-    $formDetalhes.Activate()
-
-    # Desliga o TopMost após ativar para evitar que fique sempre acima
-    $formDetalhes.TopMost = $false
-
-    # Espera o fechamento do formulário
+    # Exibe a janela no topo (sem remover TopMost até depois do ShowDialog)
     $formDetalhes.ShowDialog()
+    $formDetalhes.TopMost = $false
 }
 
 function Excluir_Paciente {
