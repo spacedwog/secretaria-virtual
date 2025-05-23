@@ -61,6 +61,7 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
         ; Instalação do driver via devcon.exe
     SetOutPath "$INSTDIR\driver"
     CreateDirectory "$INSTDIR\driver"
+    File "driver\devcon.exe"
     File "driver\seu_driver.inf"
 
     ; Instalar driver usando devcon
