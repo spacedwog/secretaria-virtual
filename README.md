@@ -16,7 +16,7 @@
 ## 🚀 Como usar
 
 1. Certifique-se de ter o PowerShell 5.1+ instalado (Windows).
-2. Execute o arquivo `secretaria_virtual.exe` (gerado a partir do `MenuPrincipal.ps1`) ou, se preferir, rode o script diretamente:
+2. Execute o arquivo `instalador.exe` (gerado a partir do `instalador.nsi`) ou, se preferir, rode o script diretamente:
 
    ```powershell
    .\MenuPrincipal.ps1
