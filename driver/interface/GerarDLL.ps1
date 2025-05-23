@@ -9,7 +9,7 @@ if (-not (Test-Path $dir)) {
     New-Item -ItemType Directory -Path $dir -Force | Out-Null
 }
 
-Write-Host "`n=== Gerando DLL com Interface Gráfica (WinForms) ===`n"
+Write-Host "`n=== Gerando DLL com Interface Gráfica (WinForms) ===`n" -ForegroundColor Cyan
 
 # Código C# com GUI WinForms
 $code = @"
@@ -52,9 +52,9 @@ $sourcePath = Resolve-Path $sourceFile
 
 # Verifica resultado
 if (Test-Path $outputDll) {
-    Write-Host "[OK] DLL gerada com sucesso: $outputDll"
+    Write-Host "[OK] DLL gerada com sucesso: $outputDll" -ForegroundColor Green
 } else {
-    Write-Host "[FALHA] Falha ao gerar a DLL."
+    Write-Host "[FALHA] Falha ao gerar a DLL." -ForegroundColor Red
 }
 
-Write-Host "`n=== Fim da Criacao da Interface Virtual ===`n"
+Write-Host "`n=== Fim da Criacao da Interface Virtual ===`n" -ForegroundColor Cyan
