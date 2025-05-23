@@ -1,5 +1,5 @@
-$sourceFile = "driver/interface/InterfaceVisual.cs"
-$outputDll = "driver/interface/InterfaceVisual.dll"
+$sourceFile = "driver/interface/InterfaceVirtual.cs"
+$outputDll = "driver/interface/InterfaceVirtual.dll"
 $cscPath = "$env:WINDIR\Microsoft.NET\Framework\v4.0.30319\csc.exe"
 
 # Garante que o diretório exista
@@ -8,12 +8,12 @@ if (-not (Test-Path $dir)) {
     New-Item -ItemType Directory -Path $dir -Force | Out-Null
 }
 
-Write-Host "`n=== Gerando Interface Visual ===`n"
+Write-Host "`n=== Gerando Interface Virtual ===`n"
 
 $code = @"
 using System;
 
-namespace InterfaceVisual
+namespace InterfaceVirtual
 {
     public class Saudacao
     {
