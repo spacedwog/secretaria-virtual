@@ -1,0 +1,26 @@
+# Portuguese (Brazil) NSIS Language File
+# Traduções básicas da interface NSIS (Modern UI 2)
+
+LangString MUI_TEXT_WELCOME_INFO_TITLE ${LANG_PORTUGUESEBR} "Bem-vindo ao Assistente de Instalação do ${PRODUCT_NAME}"
+LangString MUI_TEXT_WELCOME_INFO_TEXT ${LANG_PORTUGUESEBR} "Este assistente irá guiá-lo pela instalação do ${PRODUCT_NAME}.\r\n\r\nRecomenda-se fechar todos os outros aplicativos antes de continuar."
+
+LangString MUI_TEXT_DIRECTORY_TITLE ${LANG_PORTUGUESEBR} "Escolher Diretório de Instalação"
+LangString MUI_TEXT_DIRECTORY_SUBTITLE ${LANG_PORTUGUESEBR} "Escolha onde instalar o ${PRODUCT_NAME}."
+
+LangString MUI_TEXT_INSTALLING_TITLE ${LANG_PORTUGUESEBR} "Instalando"
+LangString MUI_TEXT_INSTALLING_SUBTITLE ${LANG_PORTUGUESEBR} "Aguarde enquanto o ${PRODUCT_NAME} é instalado."
+
+LangString MUI_TEXT_FINISH_TITLE ${LANG_PORTUGUESEBR} "Instalação Concluída"
+LangString MUI_TEXT_FINISH_SUBTITLE ${LANG_PORTUGUESEBR} "A instalação foi concluída com sucesso."
+
+LangString MUI_TEXT_ABORT_TITLE ${LANG_PORTUGUESEBR} "Instalação Cancelada"
+LangString MUI_TEXT_ABORT_SUBTITLE ${LANG_PORTUGUESEBR} "A instalação foi cancelada."
+
+LangString MUI_BUTTONTEXT_FINISH ${LANG_PORTUGUESEBR} "Concluir"
+
+LangString MUI_TEXT_FINISH_INFO_TITLE ${LANG_PORTUGUESEBR} "Concluindo o Assistente de Instalação do ${PRODUCT_NAME}"
+LangString MUI_TEXT_FINISH_INFO_TEXT ${LANG_PORTUGUESEBR} "O ${PRODUCT_NAME} foi instalado no seu computador.\r\n\r\nClique em Concluir para fechar este assistente."
+
+LangString MUI_TEXT_FINISH_INFO_REBOOT ${LANG_PORTUGUESEBR} "O sistema precisa ser reiniciado para concluir a instalação."
+LangString MUI_TEXT_FINISH_REBOOTNOW ${LANG_PORTUGUESEBR} "Reiniciar agora"
+LangString MUI_TEXT_FINISH_REBOOTLATER ${LANG_PORTUGUESEBR} "Reiniciar manualmente depois"
