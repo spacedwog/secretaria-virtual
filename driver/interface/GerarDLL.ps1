@@ -41,4 +41,4 @@ if (Test-Path $outputDll) {
     Write-Host "Falha ao gerar a DLL."
 }
 
-Write-Host "`n=== Fim da Criacao da Interface Visual ===`n"
+Write-Host "`n=== Fim da Criacao da Interface Virtual ===`n"
