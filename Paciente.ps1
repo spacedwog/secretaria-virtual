@@ -260,6 +260,12 @@ function Mostrar_Detalhes_Paciente {
     $textbox.Text = $detalhesCompletos
     $formDetalhes.Controls.AddRange(@($textbox, $btnFechar))
 
+    # Força a janela ficar em primeiro plano e ativa ela
+    $formDetalhes.TopMost = $true
+    $formDetalhes.BringToFront()
+    $formDetalhes.Activate()
+    $formDetalhes.TopMost = $false
+
     # Exibe o formulário
     $formDetalhes.ShowDialog()
 }
