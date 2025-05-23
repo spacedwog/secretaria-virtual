@@ -58,6 +58,17 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     CreateDirectory "$INSTDIR\relatorios\json"
     CreateDirectory "$INSTDIR\relatorios\webpage"
 
+        ; Instalação do driver via devcon.exe
+    SetOutPath "$INSTDIR\driver"
+    CreateDirectory "$INSTDIR\driver"
+    File "driver\devcon.exe"
+    File "driver\seu_driver.inf"
+    File "driver\seu_driver.sys"
+    File "driver\seu_driver.cat" ; opcional, se houver
+
+    ; Instalar driver usando devcon
+    ExecWait '"$INSTDIR\driver\devcon.exe" install "$INSTDIR\driver\seu_driver.inf" ROOT\MyVirtualDevice"'
+
     SetOutPath "$INSTDIR"
 
     ; Atalho Desktop
@@ -81,6 +92,15 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
 SectionEnd
 
 Section "Uninstall"
+    ; Remoção do driver
+    ExecWait '"$INSTDIR\driver\devcon.exe" remove ROOT\SeuDispositivoID'
+    Delete "$INSTDIR\driver\devcon.exe"
+    Delete "$INSTDIR\driver\seu_driver.inf"
+    Delete "$INSTDIR\driver\seu_driver.sys"
+    Delete "$INSTDIR\driver\seu_driver.cat"
+    RMDir "$INSTDIR\driver"
+    Delete "$INSTDIR\Uninstall.exe"
+
     Delete "$INSTDIR\${EXE_NAME}"
     Delete "$INSTDIR\${ICON_FILE}"
     Delete "$INSTDIR\ConsultaMedica.ps1"
@@ -90,7 +110,6 @@ Section "Uninstall"
     Delete "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk"
     Delete "$SMPROGRAMS\${PRODUCT_NAME}\Desinstalar.lnk"
     RMDir "$SMPROGRAMS\${PRODUCT_NAME}"
-    Delete "$INSTDIR\Uninstall.exe"
 
     Delete "$INSTDIR\config\*.ps1"
     RMDir /r "$INSTDIR\config"

@@ -1,0 +1,37 @@
+; seu_driver.inf
+
+[Version]
+Signature="$Windows NT$"
+Class=System
+ClassGuid={4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider=%ProviderName%
+DriverVer=05/01/2025,1.0.0.0
+
+[Manufacturer]
+%MfgName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%DeviceName%=Install,ROOT\MyVirtualDevice
+
+[Install]
+CopyFiles=DummyCopyFiles
+
+[Install.Services]
+AddService=Null,0x00000002,Null_Service_Inst
+
+[Null_Service_Inst]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\null.sys
+
+[DestinationDirs]
+DefaultDestDir = 12
+DummyCopyFiles = 12
+
+[DummyCopyFiles]
+
+[Strings]
+ProviderName="Spacedwog"
+MfgName="Spacedwog Virtual Devices"
+DeviceName="Secretaria Virtual Driver"
