@@ -6,7 +6,7 @@ $mtTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\mt.exe"
 $signTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe"
 
 # Informações do certificado
-$subjectName = "CN=Felipe Rodrigues"
+$subjectName = "CN=Spacedwog"
 $email = "felipersantos1988@gmail.com"
 $certThumbprint = "53901640F943B6D0C913399A290D00F923AD0472"
 
@@ -38,13 +38,14 @@ $manifestPath = "$env:TEMP\admin.manifest.xml"
 @"
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
-    <security>
-      <requestedPrivileges>
-        <requestedExecutionLevel level="requireAdministrator" uiAccess="false"/>
-      </requestedPrivileges>
-    </security>
-  </trustInfo>
+    <description>Secretaria Virtual - Spacedwog</description>
+    <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+        <security>
+            <requestedPrivileges>
+                <requestedExecutionLevel level="requireAdministrator" uiAccess="false"/>
+            </requestedPrivileges>
+        </security>
+    </trustInfo>
 </assembly>
 "@ | Set-Content -Encoding UTF8 -Path $manifestPath
 
