@@ -64,8 +64,19 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     File "driver\devcon.exe"
     File "driver\seu_driver.inf"
 
-    ; Instalar driver usando devcon
-    ExecWait '"$INSTDIR\driver\devcon.exe" install "$INSTDIR\driver\seu_driver.inf" ROOT\MyVirtualDevice"'
+        ; Instalação do driver com devcon
+    SetOutPath "$INSTDIR\driver"
+    CreateDirectory "$INSTDIR\driver"
+    File "driver\seu_driver.inf"
+    File "driver\null.sys"
+    File "driver\devcon.exe"
+
+    DetailPrint "Instalando driver virtual..."
+    nsExec::ExecToLog '"$INSTDIR\driver\devcon.exe" install "$INSTDIR\driver\seu_driver.inf" ROOT\MyVirtualDevice'
+    Pop $0
+    ${If} $0 != 0
+        MessageBox MB_ICONEXCLAMATION "A instalação do driver falhou. Código de erro: $0"
+    ${EndIf}
 
     SetOutPath "$INSTDIR"
 
