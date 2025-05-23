@@ -38,7 +38,7 @@ $manifestPath = "$env:TEMP\admin.manifest.xml"
 @"
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-    <description>Secretaria Virtual - Spacedwog</description>
+    <description>Spacedwog - Secretaria Virtual(IA - SOFTWARE)</description>
     <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
         <security>
             <requestedPrivileges>
