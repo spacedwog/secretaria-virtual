@@ -1,4 +1,12 @@
-$sourceFile = "InterfaceVisual.cs"
+$sourceFile = "driver/interface/InterfaceVisual.cs"
+$outputDll = "driver/interface/InterfaceVisual.dll"
+$cscPath = "$env:WINDIR\Microsoft.NET\Framework\v4.0.30319\csc.exe"
+
+# Garante que o diretório exista
+$dir = Split-Path $sourceFile
+if (-not (Test-Path $dir)) {
+    New-Item -ItemType Directory -Path $dir -Force | Out-Null
+}
 
 Write-Host "`n=== Gerando Interface Visual ===`n"
 
@@ -17,11 +25,10 @@ namespace InterfaceVisual
 }
 "@
 
+# Salva o arquivo .cs
 $code | Out-File -Encoding UTF8 $sourceFile
 
-$cscPath = "$env:WINDIR\Microsoft.NET\Framework\v4.0.30319\csc.exe"
-$outputDll = "InterfaceVisual.dll"
-
+# Compila o código
 & $cscPath /target:library /out:$outputDll $sourceFile
 
 if (Test-Path $outputDll) {
