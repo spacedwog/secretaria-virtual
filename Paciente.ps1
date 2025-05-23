@@ -205,6 +205,65 @@ function Formulario_Paciente {
     $formAdd.ShowDialog()
 }
 
+function Mostrar_Detalhes_Paciente {
+    param (
+        [Parameter(Mandatory=$true)][object]$paciente
+    )
+
+    # Carrega dados externos
+    $visitas = @()
+    $consultas = @()
+    $agendamentos = @()
+
+    if (Test-Path "relatorios/json/visits.json") {
+        $visitas = Get-Content "relatorios/json/visits.json" -Raw | ConvertFrom-Json
+    }
+    if (Test-Path "relatorios/json/prescriptions.json") {
+        $consultas = Get-Content "relatorios/json/prescriptions.json" -Raw | ConvertFrom-Json
+    }
+    if (Test-Path "relatorios/json/appointments.json") {
+        $agendamentos = Get-Content "relatorios/json/appointments.json" -Raw | ConvertFrom-Json
+    }
+
+    $visitasDoPaciente = $visitas | Where-Object { $_.PacienteID -eq $paciente.ID }
+    $consultasDoPaciente = $consultas | Where-Object { $_.PacienteID -eq $paciente.ID }
+    $agendamentosDoPaciente = $agendamentos | Where-Object { $_.PacienteID -eq $paciente.ID }
+
+    # Criar formulário de detalhes
+    $formDetalhes = New-Object System.Windows.Forms.Form
+    $formDetalhes.Text = "Detalhes do Paciente: $($paciente.Nome)"
+    $formDetalhes.Size = New-Object System.Drawing.Size(500, 500)
+    $formDetalhes.StartPosition = "CenterScreen"
+
+    $textBox = New-Object System.Windows.Forms.TextBox
+    $textBox.Multiline = $true
+    $textBox.ScrollBars = "Vertical"
+    $textBox.ReadOnly = $true
+    $textBox.Size = New-Object System.Drawing.Size(460, 400)
+    $textBox.Location = New-Object System.Drawing.Point(10,10)
+
+    $detalhes = "ID: $($paciente.ID)`r`nNome: $($paciente.Nome)`r`nIdade: $($paciente.Idade)`r`nTelefone: $($paciente.Telefone)`r`nEmail: $($paciente.Email)`r`nEndereco: $($paciente.Endereco)`r`n"
+    $detalhes += "`r`n--- VISITAS ---`r`n"
+    $detalhes += ($visitasDoPaciente | ForEach-Object { "Data: $($_.Data), Motivo: $($_.Motivo)" }) -join "`r`n"
+    
+    $detalhes += "`r`n`r`n--- CONSULTAS ---`r`n"
+    $detalhes += ($consultasDoPaciente | ForEach-Object { "Data: $($_.Data), Doutor: $($_.Doutor), Diagnóstico: $($_.Diagnostico)" }) -join "`r`n"
+
+    $detalhes += "`r`n`r`n--- AGENDAMENTOS ---`r`n"
+    $detalhes += ($agendamentosDoPaciente | ForEach-Object { "Data: $($_.Data), Especialidade: $($_.Especialidade)" }) -join "`r`n"
+
+    $textBox.Text = $detalhes
+
+    $btnFechar = New-Object System.Windows.Forms.Button
+    $btnFechar.Text = "Fechar"
+    $btnFechar.Size = New-Object System.Drawing.Size(100, 30)
+    $btnFechar.Location = New-Object System.Drawing.Point(370, 420)
+    $btnFechar.Add_Click({ $formDetalhes.Close() })
+
+    $formDetalhes.Controls.AddRange(@($textBox, $btnFechar))
+    $formDetalhes.ShowDialog()
+}
+
 function Excluir_Paciente {
     [System.Windows.Forms.MessageBox]::Show("Use o botao 'Excluir' na lista de pacientes para remover.")
 }
