@@ -153,7 +153,6 @@ function Listar_Pacientes {
         }
     })
 
-    EstilizarBotao $listView
     EstilizarBotao $btnFechar
     EstilizarBotao $btnExcluir
 
@@ -284,13 +283,11 @@ function Mostrar_Detalhes_Paciente {
             $detalhesCompletos += "`r`n"
         }
     }
+    
+    EstilizarBotao $btnFechar
 
     # Atualiza o textbox e adiciona controles
     $textbox.Text = $detalhesCompletos
-
-    EstilizarBotao $textbox
-    EstilizarBotao $btnFechar
-    
     $formDetalhes.Controls.AddRange(@($textbox, $btnFechar))
 
     # Exibe a janela no topo (sem remover TopMost até depois do ShowDialog)
