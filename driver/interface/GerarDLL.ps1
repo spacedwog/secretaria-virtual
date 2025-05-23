@@ -1,9 +1,7 @@
-# Nome do arquivo de código-fonte C#
 $sourceFile = "InterfaceGrafica.cs"
 
 Write-Host "`n=== Gerando Interface Grafica ===`n"
 
-# Código-fonte C# para uma biblioteca simples
 $code = @"
 using System;
 
@@ -13,22 +11,17 @@ namespace InterfaceGrafica
     {
         public static string DizerOla(string nome)
         {
-            return $"Olá, {nome}!";
+            return "Olá, " + nome + "!";
         }
     }
 }
 "@
 
-# Salva o código-fonte no arquivo
 $code | Out-File -Encoding UTF8 $sourceFile
 
-# Caminho do compilador C# (csc.exe) - ajuste se necessário
 $cscPath = "$env:WINDIR\Microsoft.NET\Framework\v4.0.30319\csc.exe"
-
-# Nome do arquivo DLL de saída
 $outputDll = "MinhaBiblioteca.dll"
 
-# Comando para compilar o arquivo em DLL
 & $cscPath /target:library /out:$outputDll $sourceFile
 
 if (Test-Path $outputDll) {
