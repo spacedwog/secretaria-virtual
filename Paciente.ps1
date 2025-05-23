@@ -215,23 +215,56 @@ function Mostrar_Detalhes_Paciente {
 
     $formDetalhes = New-Object System.Windows.Forms.Form
     $formDetalhes.Text = "Detalhes do Paciente: $pacienteNome"
-    $formDetalhes.Size = New-Object System.Drawing.Size(500, 600)
+    $formDetalhes.Size = New-Object System.Drawing.Size(500, 650)
     $formDetalhes.StartPosition = "CenterScreen"
 
     $textbox = New-Object System.Windows.Forms.TextBox
     $textbox.Multiline = $true
     $textbox.ScrollBars = "Vertical"
     $textbox.ReadOnly = $true
-    $textbox.Size = New-Object System.Drawing.Size(460, 520)
+    $textbox.Size = New-Object System.Drawing.Size(460, 570)
     $textbox.Location = New-Object System.Drawing.Point(10, 10)
 
     $btnFechar = New-Object System.Windows.Forms.Button
     $btnFechar.Text = "Fechar"
     $btnFechar.Size = New-Object System.Drawing.Size(460, 30)
-    $btnFechar.Location = New-Object System.Drawing.Point(10, 540)
+    $btnFechar.Location = New-Object System.Drawing.Point(10, 590)
     $btnFechar.Add_Click({ $formDetalhes.Close() })
 
-    $detalhesCompletos = "Detalhes do Paciente: $pacienteNome`r`n`r`n"
+    $detalhesCompletos = ""
+
+    # MAPEAMENTO DOS DOUTORES
+    $doctoresPath = "relatorios/json/doctors.json"
+    $doutoresMap = @{}
+    if (Test-Path $doctoresPath) {
+        $doutoresData = Get-Content $doctoresPath -Raw | ConvertFrom-Json
+        if ($doutoresData -isnot [System.Collections.IEnumerable]) {
+            $doutoresData = @($doutoresData)
+        }
+        foreach ($d in $doutoresData) {
+            $doutoresMap[$d.id] = "$($d.nome) ($($d.especialidade))"
+        }
+    }
+
+    # 🧾 DADOS DO PACIENTE
+    $pacientesPath = "relatorios/json/pacientes.json"
+    if (Test-Path $pacientesPath) {
+        $pacientesData = Get-Content $pacientesPath -Raw | ConvertFrom-Json
+        if ($pacientesData -isnot [System.Collections.IEnumerable]) {
+            $pacientesData = @($pacientesData)
+        }
+
+        $pacienteInfo = $pacientesData | Where-Object { $_.ID -eq $pacienteId }
+        if ($pacienteInfo) {
+            $detalhesCompletos += "INFORMAÇÕES DO PACIENTE:`r`n"
+            $detalhesCompletos += "Nome: $($pacienteInfo.Nome)`r`n"
+            $detalhesCompletos += "Idade: $($pacienteInfo.Idade)`r`n"
+            $detalhesCompletos += "Telefone: $($pacienteInfo.Telefone)`r`n"
+            $detalhesCompletos += "Email: $($pacienteInfo.Email)`r`n"
+            $detalhesCompletos += "Endereço: $($pacienteInfo.Endereco)`r`n"
+            $detalhesCompletos += "`r`n"
+        }
+    }
 
     # VISITAS
     $visitasPath = "relatorios/json/visits.json"
@@ -246,7 +279,8 @@ function Mostrar_Detalhes_Paciente {
             $detalhesCompletos += "[OK] VISITAS:`r`n"
             foreach ($v in $visitasPaciente) {
                 $dataHora = Get-Date $v.timestamp -Format "dd/MM/yyyy HH:mm"
-                $detalhesCompletos += "- ID: $($v.id), Doutor ID: $($v.doutor_id), Data: $dataHora`r`n"
+                $doutorNome = $doutoresMap[$v.doutor_id]
+                $detalhesCompletos += "- ID: $($v.id), Doutor: $doutorNome, Data: $dataHora`r`n"
             }
         } else {
             $detalhesCompletos += "[OK] VISITAS: Nenhuma registrada.`r`n"
@@ -266,7 +300,8 @@ function Mostrar_Detalhes_Paciente {
         if ($agendamentosPaciente.Count -gt 0) {
             $detalhesCompletos += "[OK] AGENDAMENTOS:`r`n"
             foreach ($a in $agendamentosPaciente) {
-                $detalhesCompletos += "- ID: $($a.id), Título: $($a.titulo), Motivo: $($a.motivo), Data: $($a.data) às $($a.hora), Status: $($a.status), Doutor ID: $($a.doutor_id)`r`n"
+                $doutorNome = $doutoresMap[$a.doutor_id]
+                $detalhesCompletos += "- ID: $($a.id), Título: $($a.titulo), Motivo: $($a.motivo), Data: $($a.data) às $($a.hora), Status: $($a.status), Doutor: $doutorNome`r`n"
             }
         } else {
             $detalhesCompletos += "[OK] AGENDAMENTOS: Nenhum agendamento encontrado.`r`n"
@@ -286,7 +321,8 @@ function Mostrar_Detalhes_Paciente {
         if ($prescricoesPaciente.Count -gt 0) {
             $detalhesCompletos += "[OK] PRESCRIÇÕES:`r`n"
             foreach ($p in $prescricoesPaciente) {
-                $detalhesCompletos += "- ID: $($p.id), Medicamento: $($p.medicamento), Dosagem: $($p.dosagem), Instruções: $($p.instrucoes), Data: $($p.data), Doutor ID: $($p.doutor_id)`r`n"
+                $doutorNome = $doutoresMap[$p.doutor_id]
+                $detalhesCompletos += "- ID: $($p.id), Medicamento: $($p.medicamento), Dosagem: $($p.dosagem), Instruções: $($p.instrucoes), Data: $($p.data), Doutor: $doutorNome`r`n"
             }
         } else {
             $detalhesCompletos += "[OK] PRESCRIÇÕES: Nenhuma prescrição encontrada.`r`n"
