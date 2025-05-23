@@ -1,6 +1,18 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+# Criação da função auxiliar para cantos arredondados
+Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+public class Win32 {
+    [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+    public static extern IntPtr CreateRoundRectRgn(
+        int nLeftRect, int nTopRect, int nRightRect, int nBottomRect,
+        int nWidthEllipse, int nHeightEllipse);
+}
+"@
+
 $arquivoJson = "relatorios/json/pacientes.json"
 
 function Get_NextId {
@@ -25,6 +37,17 @@ function Get_NextId {
     } else {
         return 1
     }
+}
+
+function EstilizarBotao($botao) {
+    $botao.FlatStyle = 'Flat'
+    $botao.BackColor = [System.Drawing.Color]::FromArgb(173, 216, 230) # Azul pastel
+    $botao.ForeColor = [System.Drawing.Color]::Black
+    $botao.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
+    $botao.FlatAppearance.BorderSize = 0
+    $botao.Region = [System.Drawing.Region]::FromHrgn(
+        [Win32]::CreateRoundRectRgn(0, 0, $botao.Width, $botao.Height, 20, 20)
+    )
 }
 
 function Carregar_Pacientes {
@@ -101,14 +124,14 @@ function Listar_Pacientes {
     $btnFechar.Text = "Fechar"
     $btnFechar.Size = New-Object System.Drawing.Size(100,30)
     $btnFechar.Location = New-Object System.Drawing.Point(10, 370)
-    $btnFechar.Add_Click({ $formList.Close() })
+    EstilizarBotao $btnFechar.Add_Click({ $formList.Close() })
 
     # Botão Excluir
     $btnExcluir = New-Object System.Windows.Forms.Button
     $btnExcluir.Text = "Excluir"
     $btnExcluir.Size = New-Object System.Drawing.Size(100,30)
     $btnExcluir.Location = New-Object System.Drawing.Point(120, 370)
-    $btnExcluir.Add_Click({
+    EstilizarBotao $btnExcluir.Add_Click({
         if ($listView.SelectedItems.Count -eq 0) {
             [System.Windows.Forms.MessageBox]::Show("Selecione um paciente para excluir.", "Aviso")
             return
@@ -166,7 +189,7 @@ function Formulario_Paciente {
     $btnSave.Text = "Salvar"
     $btnSave.Size = New-Object System.Drawing.Size(260,30)
     $btnSave.Location = New-Object System.Drawing.Point(10,240)
-    $btnSave.Add_Click({
+    EstilizarBotao $btnSave.Add_Click({
         $nome = $textboxes[0].Text.Trim()
         $idade = $textboxes[1].Text.Trim()
         $telefone = $textboxes[2].Text.Trim()
@@ -233,7 +256,7 @@ function Mostrar_Detalhes_Paciente {
     $btnFechar.Text = "Fechar"
     $btnFechar.Size = New-Object System.Drawing.Size(460, 30)
     $btnFechar.Location = New-Object System.Drawing.Point(10, 590)
-    $btnFechar.Add_Click({ $formDetalhes.Close() })
+    EstilizarBotao $btnFechar.Add_Click({ $formDetalhes.Close() })
 
     # Carrega os dados
     $detalhesCompletos = ""
@@ -279,19 +302,19 @@ $btn1 = New-Object System.Windows.Forms.Button
 $btn1.Text = "1. Listar Pacientes"
 $btn1.Size = New-Object System.Drawing.Size(300,40)
 $btn1.Location = New-Object System.Drawing.Point(50,30)
-$btn1.Add_Click({ Listar_Pacientes })
+EstilizarBotao $btn1.Add_Click({ Listar_Pacientes })
 
 $btn2 = New-Object System.Windows.Forms.Button
 $btn2.Text = "2. Adicionar Paciente"
 $btn2.Size = New-Object System.Drawing.Size(300,40)
 $btn2.Location = New-Object System.Drawing.Point(50,80)
-$btn2.Add_Click({ Adicionar_Paciente })
+EstilizarBotao $btn2.Add_Click({ Adicionar_Paciente })
 
-$btn4 = New-Object System.Windows.Forms.Button
-$btn4.Text = "3. Excluir Paciente"
-$btn4.Size = New-Object System.Drawing.Size(300,40)
-$btn4.Location = New-Object System.Drawing.Point(50,130)
-$btn4.Add_Click({ 
+$btn3 = New-Object System.Windows.Forms.Button
+$btn3.Text = "3. Excluir Paciente"
+$btn3.Size = New-Object System.Drawing.Size(300,40)
+$btn3.Location = New-Object System.Drawing.Point(50,130)
+EstilizarBotao $btn3.Add_Click({ 
     [System.Windows.Forms.MessageBox]::Show("Para excluir, use o botão 'Excluir' na lista de pacientes.")
 })
 
@@ -299,8 +322,8 @@ $btnBack = New-Object System.Windows.Forms.Button
 $btnBack.Text = "Voltar"
 $btnBack.Size = New-Object System.Drawing.Size(300,40)
 $btnBack.Location = New-Object System.Drawing.Point(50,180)
-$btnBack.Add_Click({ $form.Close() })
+EstilizarBotao $btnBack.Add_Click({ $form.Close() })
 
-$form.Controls.AddRange(@($btn1, $btn2, $btn4, $btnBack))
+$form.Controls.AddRange(@($btn1, $btn2, $btn3, $btnBack))
 
 [void]$form.ShowDialog()

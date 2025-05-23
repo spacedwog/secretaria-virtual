@@ -2,6 +2,18 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 Add-Type -AssemblyName System.Web.Extensions  # Para conversão JSON
 
+# Criação da função auxiliar para cantos arredondados
+Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+public class Win32 {
+    [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+    public static extern IntPtr CreateRoundRectRgn(
+        int nLeftRect, int nTopRect, int nRightRect, int nBottomRect,
+        int nWidthEllipse, int nHeightEllipse);
+}
+"@
+
 function Save_JsonData($data, $filePath) {
     $json = [System.Web.Script.Serialization.JavaScriptSerializer]::new().Serialize($data)
     Set-Content -Path $filePath -Value $json -Encoding UTF8

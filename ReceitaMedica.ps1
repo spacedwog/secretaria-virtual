@@ -1,6 +1,18 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+# Criação da função auxiliar para cantos arredondados
+Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+public class Win32 {
+    [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+    public static extern IntPtr CreateRoundRectRgn(
+        int nLeftRect, int nTopRect, int nRightRect, int nBottomRect,
+        int nWidthEllipse, int nHeightEllipse);
+}
+"@
+
 function Load_JsonData {
     param([string]$filePath)
     if (Test-Path $filePath) {
@@ -32,6 +44,17 @@ function Get-NextId {
     if ($validItems.Count -eq 0) { return 1 }
 
     return ($validItems | Measure-Object -Property id -Maximum).Maximum + 1
+}
+
+function EstilizarBotao($botao) {
+    $botao.FlatStyle = 'Flat'
+    $botao.BackColor = [System.Drawing.Color]::FromArgb(173, 216, 230) # Azul pastel
+    $botao.ForeColor = [System.Drawing.Color]::Black
+    $botao.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
+    $botao.FlatAppearance.BorderSize = 0
+    $botao.Region = [System.Drawing.Region]::FromHrgn(
+        [Win32]::CreateRoundRectRgn(0, 0, $botao.Width, $botao.Height, 20, 20)
+    )
 }
 
 function Registrar_Receita {
@@ -223,19 +246,19 @@ $btnReg = New-Object System.Windows.Forms.Button
 $btnReg.Text = "1. Registrar Receita Medica"
 $btnReg.Size = New-Object System.Drawing.Size(300, 40)
 $btnReg.Location = New-Object System.Drawing.Point(20, 30)
-$btnReg.Add_Click({ Registrar_Receita })
+EstilizarBotao $btnReg.Add_Click({ Registrar_Receita })
 
 $btnPrint = New-Object System.Windows.Forms.Button
 $btnPrint.Text = "2. Imprimir Receita Medica"
 $btnPrint.Size = New-Object System.Drawing.Size(300, 40)
 $btnPrint.Location = New-Object System.Drawing.Point(20, 90)
-$btnPrint.Add_Click({ Imprimir_Receita })
+EstilizarBotao $btnPrint.Add_Click({ Imprimir_Receita })
 
 $btnBack = New-Object System.Windows.Forms.Button
 $btnBack.Text = "Voltar"
 $btnBack.Size = New-Object System.Drawing.Size(300, 40)
 $btnBack.Location = New-Object System.Drawing.Point(20, 150)
-$btnBack.Add_Click({ $formMain.Close() })
+EstilizarBotao $btnBack.Add_Click({ $formMain.Close() })
 
 $formMain.Controls.AddRange(@($btnReg, $btnPrint, $btnBack))
 
