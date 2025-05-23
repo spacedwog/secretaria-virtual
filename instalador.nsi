@@ -2,7 +2,7 @@
 
 !define PRODUCT_NAME "Secretaria Virtual"
 !define PUBLISHER_NAME "Spacedwog"
-!define EXE_NAME "secretaria_virtual.exe"
+!define EXE_NAME "index.exe"
 !define INSTALL_DIR "$PROGRAMFILES\Secretaria Virtual"
 !define ICON_FILE "icone.ico"
 
