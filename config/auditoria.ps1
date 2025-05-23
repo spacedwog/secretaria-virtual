@@ -39,7 +39,7 @@ if (-Not (Test-Path $DiretorioAlvo)) {
     Write-Host "[FALHA] Diretorio nao encontrado: $DiretorioAlvo" -ForegroundColor Red
     exit 1
 }
-Registrar_Log "[BUSCA] Iniciando auditoria em: $DiretorioAlvo" -ForegroundColor Blue
+Registrar_Log "[BUSCA] Iniciando auditoria em: $DiretorioAlvo"
 $arquivos = Get-ChildItem -Path $DiretorioAlvo -File -Recurse
 
 $resultados = @()
