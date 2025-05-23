@@ -20,7 +20,7 @@ namespace InterfaceGrafica
 $code | Out-File -Encoding UTF8 $sourceFile
 
 $cscPath = "$env:WINDIR\Microsoft.NET\Framework\v4.0.30319\csc.exe"
-$outputDll = "MinhaBiblioteca.dll"
+$outputDll = "driver/interface/InterfaceGrafica.dll"
 
 & $cscPath /target:library /out:$outputDll $sourceFile
 
