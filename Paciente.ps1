@@ -243,13 +243,13 @@ function Mostrar_Detalhes_Paciente {
 
         $visitasPaciente = $visitasData | Where-Object { $_.paciente_id -eq $pacienteId }
         if ($visitasPaciente.Count -gt 0) {
-            $detalhesCompletos += "🔹 VISITAS:`r`n"
+            $detalhesCompletos += "[OK] VISITAS:`r`n"
             foreach ($v in $visitasPaciente) {
                 $dataHora = Get-Date $v.timestamp -Format "dd/MM/yyyy HH:mm"
                 $detalhesCompletos += "- ID: $($v.id), Doutor ID: $($v.doutor_id), Data: $dataHora`r`n"
             }
         } else {
-            $detalhesCompletos += "🔹 VISITAS: Nenhuma registrada.`r`n"
+            $detalhesCompletos += "[OK] VISITAS: Nenhuma registrada.`r`n"
         }
         $detalhesCompletos += "`r`n"
     }
@@ -264,12 +264,12 @@ function Mostrar_Detalhes_Paciente {
 
         $agendamentosPaciente = $agendamentosData | Where-Object { $_.paciente_id -eq $pacienteId }
         if ($agendamentosPaciente.Count -gt 0) {
-            $detalhesCompletos += "🔹 AGENDAMENTOS:`r`n"
+            $detalhesCompletos += "[OK] AGENDAMENTOS:`r`n"
             foreach ($a in $agendamentosPaciente) {
                 $detalhesCompletos += "- ID: $($a.id), Título: $($a.titulo), Motivo: $($a.motivo), Data: $($a.data) às $($a.hora), Status: $($a.status), Doutor ID: $($a.doutor_id)`r`n"
             }
         } else {
-            $detalhesCompletos += "🔹 AGENDAMENTOS: Nenhum agendamento encontrado.`r`n"
+            $detalhesCompletos += "[OK] AGENDAMENTOS: Nenhum agendamento encontrado.`r`n"
         }
         $detalhesCompletos += "`r`n"
     }
@@ -284,12 +284,12 @@ function Mostrar_Detalhes_Paciente {
 
         $prescricoesPaciente = $prescricoesData | Where-Object { $_.paciente_id -eq $pacienteId }
         if ($prescricoesPaciente.Count -gt 0) {
-            $detalhesCompletos += "🔹 PRESCRIÇÕES:`r`n"
+            $detalhesCompletos += "[OK] PRESCRIÇÕES:`r`n"
             foreach ($p in $prescricoesPaciente) {
                 $detalhesCompletos += "- ID: $($p.id), Medicamento: $($p.medicamento), Dosagem: $($p.dosagem), Instruções: $($p.instrucoes), Data: $($p.data), Doutor ID: $($p.doutor_id)`r`n"
             }
         } else {
-            $detalhesCompletos += "🔹 PRESCRIÇÕES: Nenhuma prescrição encontrada.`r`n"
+            $detalhesCompletos += "[OK] PRESCRIÇÕES: Nenhuma prescrição encontrada.`r`n"
         }
     }
 
