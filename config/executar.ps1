@@ -2,7 +2,7 @@
 $basePath = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
 
 # Caminho completo para o executável que você quer iniciar
-$exePath = "$basePath\secretaria_virtual.exe"
+$exePath = "./secretaria_virtual.exe"
 
 # Verifica se o executável existe
 if (-Not (Test-Path $exePath)) {
