@@ -106,7 +106,6 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "`n[OK] EXE compilado, assinado e com manifesto de administrador embutido: $outputExe" -ForegroundColor Green
     Write-Host "`n=== Fim da Instalacao ===`n" -ForegroundColor Cyan
     & .\config\executar.ps1
-    & .\driver\interface\GerarDLL.ps1
 } else {
     Write-Error "[FALHA] Falha ao assinar/verificar o executável." -ForegroundColor Red
 }

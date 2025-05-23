@@ -23,16 +23,16 @@
     {
         "NomeArquivo":  "index.exe",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\index.exe",
-        "DataUltimaModificacao":  "\/Date(1748022868379)\/",
-        "TamanhoKB":  49.18,
-        "HashSHA256":  "4C51AC6DE7A351B7FD966E2AD5C0AE90D326748A9EEC4295ED8F3E9AA639FB54"
+        "DataUltimaModificacao":  "\/Date(1748022996914)\/",
+        "TamanhoKB":  48.18,
+        "HashSHA256":  "B2C5A474A75FC85F25407F4EFD451EB1C5FF0924B47276864BDFBAA4D4C18D82"
     },
     {
         "NomeArquivo":  "instalador.nsi",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\instalador.nsi",
-        "DataUltimaModificacao":  "\/Date(1748015284169)\/",
-        "TamanhoKB":  4.22,
-        "HashSHA256":  "4FC00F359315A4F3008D3BBD191B6686E888419BA645AFABC68DC1913EE33AEA"
+        "DataUltimaModificacao":  "\/Date(1748022965088)\/",
+        "TamanhoKB":  3.76,
+        "HashSHA256":  "3430188F5E3E6409683BC30D829A7088D17F0A2C6726B13566D765523CE821C8"
     },
     {
         "NomeArquivo":  "instalar.ps1",
@@ -58,9 +58,9 @@
     {
         "NomeArquivo":  "MenuPrincipal.ps1",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\MenuPrincipal.ps1",
-        "DataUltimaModificacao":  "\/Date(1748022840031)\/",
-        "TamanhoKB":  3.93,
-        "HashSHA256":  "9BBC68D65C096FCA8FB306B2F5A8EBC4941CBD44CF15FCE753BA8722781611E8"
+        "DataUltimaModificacao":  "\/Date(1748022896683)\/",
+        "TamanhoKB":  3.01,
+        "HashSHA256":  "31AA5B6ECF73FBF2564C55F4319C42EEF1054EE23A61F11CE01C3EE2CBF5366F"
     },
     {
         "NomeArquivo":  "Paciente.ps1",
@@ -119,46 +119,25 @@
         "HashSHA256":  "689A69F5469E9FA677E38C9DCD550F02091ADE38C23C069ECBA7E453D4B5CA72"
     },
     {
-        "NomeArquivo":  "GerarDLL.ps1",
-        "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\driver\\interface\\GerarDLL.ps1",
-        "DataUltimaModificacao":  "\/Date(1748018964141)\/",
-        "TamanhoKB":  1.81,
-        "HashSHA256":  "DE341DFCABB4A068DEF688A2285C914C9D8994E9B73271D5735BFF112CF9E898"
-    },
-    {
-        "NomeArquivo":  "InterfaceVirtual.cs",
-        "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\driver\\interface\\InterfaceVirtual.cs",
-        "DataUltimaModificacao":  "\/Date(1748019380675)\/",
-        "TamanhoKB":  0.74,
-        "HashSHA256":  "602965F226E1EA7583767083E1790FDCBABA3CCE2E9B38679362785B31629BDE"
-    },
-    {
-        "NomeArquivo":  "InterfaceVirtual.dll",
-        "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\driver\\interface\\InterfaceVirtual.dll",
-        "DataUltimaModificacao":  "\/Date(1748019380983)\/",
-        "TamanhoKB":  3.5,
-        "HashSHA256":  "8B802BB080F34F75251F6B3E214591A1DD898D4A7891373BFBD22EF6FA852E90"
-    },
-    {
         "NomeArquivo":  "auditoria_log.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\auditoria\\auditoria_log.txt",
-        "DataUltimaModificacao":  "\/Date(1748022873151)\/",
-        "TamanhoKB":  97.84,
-        "HashSHA256":  "4A7DB8C8B8619D9E7E3BDFC3EC90AB9C1858D8582E38B4F738152E1DCBB1489D"
+        "DataUltimaModificacao":  "\/Date(1748023001029)\/",
+        "TamanhoKB":  100,
+        "HashSHA256":  "1C7F237F1CC8FE2E4B389C4F63B6B42A42B35406AA085C537870C51A08B28A35"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.json",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.json",
-        "DataUltimaModificacao":  "\/Date(1748019379575)\/",
+        "DataUltimaModificacao":  "\/Date(1748022873307)\/",
         "TamanhoKB":  9.29,
-        "HashSHA256":  "50C30135A48962A2E96AACEB132E0163C45D91B98C1C5BBC5E06FD6C06027455"
+        "HashSHA256":  "C597A21239C0F5B030A553D027F45C3075542BDC225AF8F1DCBFF98D7F94AB9C"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.txt",
-        "DataUltimaModificacao":  "\/Date(1748019379596)\/",
+        "DataUltimaModificacao":  "\/Date(1748022873321)\/",
         "TamanhoKB":  3.58,
-        "HashSHA256":  "686709FF4539A2ABF6F067EFFAF8C1AB18BD4AA6A57E229CC4504DCCA454B9CC"
+        "HashSHA256":  "38F839E462F7D3BEA5B9A08A4517BB91A952E90B4166B35AAC4A8B5856846F07"
     },
     {
         "NomeArquivo":  "appointments.json",
