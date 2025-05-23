@@ -15,7 +15,7 @@ SetCompressor /SOLID lzma
 RequestExecutionLevel admin
 
 Name "${PRODUCT_NAME}"
-Caption "${PRODUCT_NAME} Um Software para medicos excelsior"
+Caption "${PRODUCT_NAME}"
 BrandingText "Desenvolvido por ${PUBLISHER_NAME}"
 
 ShowInstDetails show
