@@ -261,7 +261,7 @@ function Mostrar_Detalhes_Paciente {
             $detalhesCompletos += "Idade: $($pacienteInfo.Idade)`r`n"
             $detalhesCompletos += "Telefone: $($pacienteInfo.Telefone)`r`n"
             $detalhesCompletos += "Email: $($pacienteInfo.Email)`r`n"
-            $detalhesCompletos += "Endereço: $($pacienteInfo.Endereco)`r`n"
+            $detalhesCompletos += "Endereco: $($pacienteInfo.Endereco)`r`n"
             $detalhesCompletos += "`r`n"
         }
     }
