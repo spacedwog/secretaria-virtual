@@ -87,7 +87,7 @@ Export-Certificate -Cert $cert -FilePath "$env:TEMP\cert.cer" | Out-Null
 Write-Host "Certificado exportado para: $env:TEMP\cert.cer"
 
 # Assinar o EXE
-Write-Host "`n=== Inicio da Compilacao ===`n"
+Write-Host "`n=== Inicio da Instalacao ===`n"
 Write-Host "Assinando o arquivo..."
 & $signTool sign `
     /fd SHA256 `
@@ -103,7 +103,7 @@ Write-Host "Verificando assinatura..."
 # Resultado
 if ($LASTEXITCODE -eq 0) {
     Write-Host "`n[OK] EXE compilado, assinado e com manifesto de administrador embutido: $outputExe" -ForegroundColor Green
-    Write-Host "`n=== Fim da Compilacao ===`n"
+    Write-Host "`n=== Fim da Instalacao ===`n"
     & .\config\executar.ps1
 } else {
     Write-Error "[FALHA] Falha ao assinar/verificar o executável."
