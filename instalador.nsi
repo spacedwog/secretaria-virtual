@@ -52,11 +52,17 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     File "config\executar.ps1"
     File "config\homologar.ps1"
 
+    SetOutPath "$INSTDIR\driver\interface"
+    File "driver\interface\InterfaceVirtual.dll"
+    ExecWait 'regsvr32 /s "$INSTDIR\driver\interface\InterfaceVirtual.dll"'
+
     CreateDirectory "$INSTDIR\logs\auditoria"
     CreateDirectory "$INSTDIR\logs\report"
 
     CreateDirectory "$INSTDIR\relatorios\json"
     CreateDirectory "$INSTDIR\relatorios\webpage"
+    
+    SetOutPath "$INSTDIR"
 
     ; Atalho Desktop
     CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}" "" "$INSTDIR\${ICON_FILE}"
@@ -76,6 +82,19 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "URLInfoAbout" "mailto:felipersantos1988@gmail.com"
 
     MessageBox MB_ICONINFORMATION|MB_OK "Instalacao concluida com sucesso!$\r$\nAcesse o Menu Iniciar ou Area de Trabalho para executar o software."
+SectionEnd
+
+Section "Instalar Interface Virtual" SEC02
+    SetOutPath "$INSTDIR"
+    File "InterfaceVirtual.dll"
+
+    ; Registrar a DLL (caso use COM/ActiveX)
+    ExecWait 'regsvr32 /s "$INSTDIR\InterfaceVirtual.dll"'
+SectionEnd
+
+Section "Uninstall Interface Virtual"
+    ExecWait 'regsvr32 /u /s "$INSTDIR\InterfaceVirtual.dll"'
+    Delete "$INSTDIR\InterfaceVirtual.dll"
 SectionEnd
 
 Section "Uninstall"
