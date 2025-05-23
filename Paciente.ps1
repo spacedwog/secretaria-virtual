@@ -153,6 +153,10 @@ function Listar_Pacientes {
         }
     })
 
+    EstilizarBotao $listView
+    EstilizarBotao $btnFechar
+    EstilizarBotao $btnExcluir
+
     $formList.Controls.AddRange(@($listView, $btnFechar, $btnExcluir))
     $formList.ShowDialog()
 }
@@ -226,6 +230,8 @@ function Formulario_Paciente {
         $formAdd.Close()
     })
 
+    EstilizarBotao $btnSave
+
     $formAdd.Controls.Add($btnSave)
     $formAdd.ShowDialog()
 }
@@ -279,6 +285,9 @@ function Mostrar_Detalhes_Paciente {
         }
     }
 
+    EstilizarBotao $textbox
+    EstilizarBotao $btnFechar
+
     # Atualiza o textbox e adiciona controles
     $textbox.Text = $detalhesCompletos
     $formDetalhes.Controls.AddRange(@($textbox, $btnFechar))
@@ -323,6 +332,11 @@ $btnBack.Text = "Voltar"
 $btnBack.Size = New-Object System.Drawing.Size(300,40)
 $btnBack.Location = New-Object System.Drawing.Point(50,180)
 $btnBack.Add_Click({ $form.Close() })
+
+EstilizarBotao $btn1
+EstilizarBotao $btn2
+EstilizarBotao $btn3
+EstilizarBotao $btnBack
 
 $form.Controls.AddRange(@($btn1, $btn2, $btn3, $btnBack))
 
