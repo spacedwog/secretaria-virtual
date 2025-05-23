@@ -77,7 +77,7 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayVersion" "1.0.0"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "URLInfoAbout" "mailto:felipersantos1988@gmail.com"
 
-    MessageBox MB_ICONINFORMATION|MB_OK "Instalacao concluida com sucesso!\nAcesse o Menu Iniciar ou Area de Trabalho para executar o software."
+    MessageBox MB_ICONINFORMATION|MB_OK "Instalacao concluida com sucesso!$\r$\nAcesse o Menu Iniciar ou Area de Trabalho para executar o software."
 SectionEnd
 
 Section "Uninstall"
