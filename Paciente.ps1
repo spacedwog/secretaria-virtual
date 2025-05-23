@@ -139,15 +139,15 @@ function Listar_Pacientes {
         $index = $listView.SelectedItems[0].Index
         $pacienteSelecionado = $pacientes[$index]
         $confirm = [System.Windows.Forms.MessageBox]::Show(
-            "Confirma exclusão do paciente '$($pacienteSelecionado.Nome)'?",
-            "Confirmação",
+            "Confirma exclusao do paciente '$($pacienteSelecionado.Nome)'?",
+            "Confirmacao",
             [System.Windows.Forms.MessageBoxButtons]::YesNo,
             [System.Windows.Forms.MessageBoxIcon]::Question
         )
         if ($confirm -eq [System.Windows.Forms.DialogResult]::Yes) {
             $pacientes = $pacientes | Where-Object { $_.ID -ne $pacienteSelecionado.ID }
             Salvar_Pacientes $pacientes
-            [System.Windows.Forms.MessageBox]::Show("Paciente excluído com sucesso.", "Sucesso")
+            [System.Windows.Forms.MessageBox]::Show("Paciente excluido com sucesso.", "Sucesso")
             $formList.Close()
             Listar_Pacientes  # Recarrega a lista após exclusão
         }
@@ -283,7 +283,7 @@ function Mostrar_Detalhes_Paciente {
             $detalhesCompletos += "`r`n"
         }
     }
-    
+
     EstilizarBotao $btnFechar
 
     # Atualiza o textbox e adiciona controles
@@ -322,7 +322,7 @@ $btn3.Text = "3. Excluir Paciente"
 $btn3.Size = New-Object System.Drawing.Size(300,40)
 $btn3.Location = New-Object System.Drawing.Point(50,130)
 $btn3.Add_Click({ 
-    [System.Windows.Forms.MessageBox]::Show("Para excluir, use o botão 'Excluir' na lista de pacientes.")
+    [System.Windows.Forms.MessageBox]::Show("Para excluir, use o botao 'Excluir' na lista de pacientes.")
 })
 
 $btnBack = New-Object System.Windows.Forms.Button
