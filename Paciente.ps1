@@ -322,10 +322,10 @@ function Mostrar_Detalhes_Paciente {
             $detalhesCompletos += "[OK] PRESCRICOES:`r`n"
             foreach ($p in $prescricoesPaciente) {
                 $doutorNome = $doutoresMap[$p.doutor_id]
-                $detalhesCompletos += "- ID: $($p.id), Medicamento: $($p.medicamento), Dosagem: $($p.dosagem), Instruções: $($p.instrucoes), Data: $($p.data), Doutor: $doutorNome`r`n"
+                $detalhesCompletos += "- ID: $($p.id), Medicamento: $($p.medicamento), Dosagem: $($p.dosagem), Instrucoes: $($p.instrucoes), Data: $($p.data), Doutor: $doutorNome`r`n"
             }
         } else {
-            $detalhesCompletos += "[OK] PRESCRIcoES: Nenhuma prescricao encontrada.`r`n"
+            $detalhesCompletos += "[OK] PRESCRICOES: Nenhuma prescricao encontrada.`r`n"
         }
     }
 
