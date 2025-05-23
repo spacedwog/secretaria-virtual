@@ -36,7 +36,7 @@ $outputPath = Resolve-Path $outputDll -ErrorAction SilentlyContinue
 & $cscPath /target:library /out:$outputDll $sourcePath
 
 if (Test-Path $outputDll) {
-    Write-Host "DLL gerada com sucesso: $outputDll"
+    Write-Host "DLL gerada com sucesso: $outputDll`nOutput Path: $outputPath"
 } else {
     Write-Host "Falha ao gerar a DLL."
 }
