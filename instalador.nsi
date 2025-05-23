@@ -64,7 +64,7 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     ; Instalar interface gráfica como DLL
     SetOutPath "$INSTDIR\driver\interface"
     CreateDirectory "$INSTDIR\driver\interface"
-    File "$INSTDIR\driver\interface\InterfaceVirtual.dll"
+    File "driver\interface\InterfaceVirtual.dll"
     ExecWait 'regsvr32 /s "$INSTDIR\driver\interface\InterfaceVirtual.dll"'
 
     ; Atalhos
