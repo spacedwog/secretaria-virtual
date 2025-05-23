@@ -1,4 +1,4 @@
-$sourceFile = "InterfaceGrafica.cs"
+$sourceFile = "driver/interface/InterfaceGrafica.cs"
 
 Write-Host "`n=== Gerando Interface Grafica ===`n"
 
