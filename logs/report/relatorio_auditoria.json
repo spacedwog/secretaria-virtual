@@ -79,9 +79,9 @@
     {
         "NomeArquivo":  "secretaria_virtual.exe",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\secretaria_virtual.exe",
-        "DataUltimaModificacao":  "\/Date(1747995573671)\/",
-        "TamanhoKB":  48.68,
-        "HashSHA256":  "C26BA12DDA9B2005319E47BEDB98E88C639B6C2C9C5FDEAD662489BDDD58B173"
+        "DataUltimaModificacao":  "\/Date(1747995729253)\/",
+        "TamanhoKB":  48.69,
+        "HashSHA256":  "17EBD0E7E5CA7D8B4B8C7235E1B86223A2D70A544A9D0F402CBE06CAB816417C"
     },
     {
         "NomeArquivo":  "auditoria.ps1",
@@ -114,23 +114,23 @@
     {
         "NomeArquivo":  "auditoria_log.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\auditoria\\auditoria_log.txt",
-        "DataUltimaModificacao":  "\/Date(1747995576326)\/",
-        "TamanhoKB":  31.39,
-        "HashSHA256":  "11DB694BA7689B46D1772A5C690379B9E442ACED8FEE4A89044420EAE521BD3D"
+        "DataUltimaModificacao":  "\/Date(1747995737212)\/",
+        "TamanhoKB":  33.51,
+        "HashSHA256":  "31F62F7401828161F5792ADFC2BE9E1A8034896669C305695012479F3B10DFCA"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.json",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.json",
-        "DataUltimaModificacao":  "\/Date(1747995082920)\/",
-        "TamanhoKB":  8.38,
-        "HashSHA256":  "1E7EECE2E225A0A554A127E51F0400337622C1BD051CFF295D6B82A316118A2C"
+        "DataUltimaModificacao":  "\/Date(1747995576466)\/",
+        "TamanhoKB":  8.04,
+        "HashSHA256":  "0C988251E2A441A462653B005BB1DED17C69C5A5E2D1CD5B99ABFEA09B3E440E"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.txt",
-        "DataUltimaModificacao":  "\/Date(1747995082948)\/",
-        "TamanhoKB":  3.3,
-        "HashSHA256":  "E288BE76F4384CE2BB4F41000CC2D6DA17DA9623E8A99DCC24A274389D4D6A08"
+        "DataUltimaModificacao":  "\/Date(1747995576483)\/",
+        "TamanhoKB":  3.13,
+        "HashSHA256":  "E122DD7AA372D0FA18DC07A248F59653D7071CF43108CEDAD99E8C1B0DE8E177"
     },
     {
         "NomeArquivo":  "appointments.json",
