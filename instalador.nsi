@@ -14,7 +14,7 @@ InstallDir "${INSTALL_DIR}"
 SetCompressor /SOLID lzma
 RequestExecutionLevel admin
 
-Name "${PRODUCT_NAME} - ${PUBLISHER_NAME}"
+Name "${PRODUCT_NAME}"
 Caption "${PRODUCT_NAME} Um Software para medicos excelsior"
 BrandingText "Desenvolvido por ${PUBLISHER_NAME}"
 
