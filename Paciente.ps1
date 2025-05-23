@@ -256,7 +256,7 @@ function Mostrar_Detalhes_Paciente {
 
         $pacienteInfo = $pacientesData | Where-Object { $_.ID -eq $pacienteId }
         if ($pacienteInfo) {
-            $detalhesCompletos += "INFORMAÇÕES DO PACIENTE:`r`n"
+            $detalhesCompletos += "INFORMACOES DO PACIENTE:`r`n"
             $detalhesCompletos += "Nome: $($pacienteInfo.Nome)`r`n"
             $detalhesCompletos += "Idade: $($pacienteInfo.Idade)`r`n"
             $detalhesCompletos += "Telefone: $($pacienteInfo.Telefone)`r`n"
@@ -301,7 +301,7 @@ function Mostrar_Detalhes_Paciente {
             $detalhesCompletos += "[OK] AGENDAMENTOS:`r`n"
             foreach ($a in $agendamentosPaciente) {
                 $doutorNome = $doutoresMap[$a.doutor_id]
-                $detalhesCompletos += "- ID: $($a.id), Título: $($a.titulo), Motivo: $($a.motivo), Data: $($a.data) às $($a.hora), Status: $($a.status), Doutor: $doutorNome`r`n"
+                $detalhesCompletos += "- ID: $($a.id), Titulo: $($a.titulo), Motivo: $($a.motivo), Data: $($a.data) as $($a.hora), Status: $($a.status), Doutor: $doutorNome`r`n"
             }
         } else {
             $detalhesCompletos += "[OK] AGENDAMENTOS: Nenhum agendamento encontrado.`r`n"
@@ -319,13 +319,13 @@ function Mostrar_Detalhes_Paciente {
 
         $prescricoesPaciente = $prescricoesData | Where-Object { $_.paciente_id -eq $pacienteId }
         if ($prescricoesPaciente.Count -gt 0) {
-            $detalhesCompletos += "[OK] PRESCRIÇÕES:`r`n"
+            $detalhesCompletos += "[OK] PRESCRICOES:`r`n"
             foreach ($p in $prescricoesPaciente) {
                 $doutorNome = $doutoresMap[$p.doutor_id]
                 $detalhesCompletos += "- ID: $($p.id), Medicamento: $($p.medicamento), Dosagem: $($p.dosagem), Instruções: $($p.instrucoes), Data: $($p.data), Doutor: $doutorNome`r`n"
             }
         } else {
-            $detalhesCompletos += "[OK] PRESCRIÇÕES: Nenhuma prescrição encontrada.`r`n"
+            $detalhesCompletos += "[OK] PRESCRIcoES: Nenhuma prescricao encontrada.`r`n"
         }
     }
 
