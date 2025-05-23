@@ -23,9 +23,9 @@
     {
         "NomeArquivo":  "Instalador_Secretaria_Virtual.exe",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\Instalador_Secretaria_Virtual.exe",
-        "DataUltimaModificacao":  "\/Date(1747946343138)\/",
-        "TamanhoKB":  68.03,
-        "HashSHA256":  "EA85B4205B11E53A3A35526CAD98BC6A65624872F23600CA1B97D77848CD36E1"
+        "DataUltimaModificacao":  "\/Date(1747958738832)\/",
+        "TamanhoKB":  68.5,
+        "HashSHA256":  "CA30368DEF1AEAD97CE05FB1D37B85762A74152CD61FE3013D548BFB961BEA1A"
     },
     {
         "NomeArquivo":  "instalador_secretaria_virtual.nsi",
@@ -65,9 +65,9 @@
     {
         "NomeArquivo":  "Paciente.ps1",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\Paciente.ps1",
-        "DataUltimaModificacao":  "\/Date(1747958584458)\/",
-        "TamanhoKB":  10.85,
-        "HashSHA256":  "7D11AA9C85246C24C1537F6D9473EC94D140B679398512D6DE6A63E64B12E1C4"
+        "DataUltimaModificacao":  "\/Date(1747959449628)\/",
+        "TamanhoKB":  12.14,
+        "HashSHA256":  "2DD850C9709077DB2DB10F6EC48DE4F298EFE38F94BDAF8AE9AE6C6D864C5F6C"
     },
     {
         "NomeArquivo":  "README.md",
@@ -86,9 +86,9 @@
     {
         "NomeArquivo":  "secretaria_virtual.exe",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\secretaria_virtual.exe",
-        "DataUltimaModificacao":  "\/Date(1747958704480)\/",
-        "TamanhoKB":  48.18,
-        "HashSHA256":  "D1809CE94CEA18FC2A634323221C2738C33B8D215DD2B16D486F1C0FA15D11FC"
+        "DataUltimaModificacao":  "\/Date(1747959477491)\/",
+        "TamanhoKB":  48.19,
+        "HashSHA256":  "5FE2EDCC39DC72FC54D7920CECE452A00A5A2AC5BA3F1B432A3743826445C53E"
     },
     {
         "NomeArquivo":  "auditoria.ps1",
@@ -121,23 +121,23 @@
     {
         "NomeArquivo":  "auditoria_log.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\auditoria\\auditoria_log.txt",
-        "DataUltimaModificacao":  "\/Date(1747958709423)\/",
-        "TamanhoKB":  16.16,
-        "HashSHA256":  "107892DA228966BCB0E5FB59BC6CC1D1CC7EB96C0E89EEBB29AAD4653073A797"
+        "DataUltimaModificacao":  "\/Date(1747959484472)\/",
+        "TamanhoKB":  18.4,
+        "HashSHA256":  "C0E530C66EFC6DB234EE72E9E1699D26DE0B7F7157D915BE86D8DD6477F12FF7"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.json",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.json",
-        "DataUltimaModificacao":  "\/Date(1747945734783)\/",
-        "TamanhoKB":  8.04,
-        "HashSHA256":  "F7D81ACAEA79DDD7DCC05A3E548C20B6FCBCC565BFF12A3804FDCC275C37EE74"
+        "DataUltimaModificacao":  "\/Date(1747958709577)\/",
+        "TamanhoKB":  8.38,
+        "HashSHA256":  "FF5E183C8B554D315FA9E68810B6E762B9CE68F2C3D07077063FB350436CAEC6"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.txt",
-        "DataUltimaModificacao":  "\/Date(1747945734802)\/",
-        "TamanhoKB":  3.13,
-        "HashSHA256":  "966ACF5E647C2AF43FD3D82C9E30027E503D4FD5880E61703A5559E178DA8261"
+        "DataUltimaModificacao":  "\/Date(1747958709606)\/",
+        "TamanhoKB":  3.3,
+        "HashSHA256":  "44D35800EC7D3744FC9A4136D360A98251035E4A0C56BFB3063580FD6709845B"
     },
     {
         "NomeArquivo":  "appointments.json",
