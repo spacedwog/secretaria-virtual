@@ -50,10 +50,10 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
 
     SetOutPath "$INSTDIR\config"
     CreateDirectory "$INSTDIR\config"
-    File "Configuracao.ps1"
-    File "auditoria.ps1"
-    File "executar.ps1"
-    File "homologar.ps1"
+    File "config/Configuracao.ps1"
+    File "config/auditoria.ps1"
+    File "config/executar.ps1"
+    File "config/homologar.ps1"
 
     CreateDirectory "$INSTDIR\logs"
     CreateDirectory "$INSTDIR\logs\auditoria"
