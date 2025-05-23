@@ -74,34 +74,35 @@ $btn1.Text = "1. Menu Paciente"
 $btn1.Size = New-Object System.Drawing.Size(300, 45)
 $btn1.Location = New-Object System.Drawing.Point(60, 30)
 $btn1.Add_Click({ MenuPaciente })
-EstilizarBotao $btn1
 
 $btn2 = New-Object System.Windows.Forms.Button
 $btn2.Text = "2. Menu Consulta Médica"
 $btn2.Size = New-Object System.Drawing.Size(300, 45)
 $btn2.Location = New-Object System.Drawing.Point(60, 85)
 $btn2.Add_Click({ MenuConsultaMedica })
-EstilizarBotao $btn2
 
 $btn3 = New-Object System.Windows.Forms.Button
 $btn3.Text = "3. Receita Médica"
 $btn3.Size = New-Object System.Drawing.Size(300, 45)
 $btn3.Location = New-Object System.Drawing.Point(60, 140)
 $btn3.Add_Click({ ReceitaMedica })
-EstilizarBotao $btn3
 
 $btn4 = New-Object System.Windows.Forms.Button
 $btn4.Text = "4. Configurações"
 $btn4.Size = New-Object System.Drawing.Size(300, 45)
 $btn4.Location = New-Object System.Drawing.Point(60, 195)
 $btn4.Add_Click({ Configuracao })
-EstilizarBotao $btn4
 
 $btn5 = New-Object System.Windows.Forms.Button
 $btn5.Text = "5. Sair"
 $btn5.Size = New-Object System.Drawing.Size(300, 45)
 $btn5.Location = New-Object System.Drawing.Point(60, 250)
 $btn5.Add_Click({ $form.Close() })
+
+EstilizarBotao $btn1
+EstilizarBotao $btn2
+EstilizarBotao $btn3
+EstilizarBotao $btn4
 EstilizarBotao $btn5
 
 # Adicionar botões ao formulário

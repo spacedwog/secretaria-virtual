@@ -145,6 +145,12 @@ function Registrar_Receita {
         $form.Close()
     })
 
+    EstilizarBotao $lblPaciente
+    EstilizarBotao $cbPaciente
+    EstilizarBotao $lblDoutor
+    EstilizarBotao $cbDoutor
+    EstilizarBotao $btnSave
+
     $form.Controls.AddRange(@($lblPaciente, $cbPaciente, $lblDoutor, $cbDoutor, $btnSave))
     $form.ShowDialog()
 }
@@ -232,6 +238,10 @@ function Imprimir_Receita {
         $formPrint.Close()
     })
 
+    EstilizarBotao $lbl
+    EstilizarBotao $txtID
+    EstilizarBotao $btnPrint
+
     $formPrint.Controls.AddRange(@($lbl, $txtID, $btnPrint))
     $formPrint.ShowDialog()
 }
@@ -246,19 +256,23 @@ $btnReg = New-Object System.Windows.Forms.Button
 $btnReg.Text = "1. Registrar Receita Medica"
 $btnReg.Size = New-Object System.Drawing.Size(300, 40)
 $btnReg.Location = New-Object System.Drawing.Point(20, 30)
-EstilizarBotao $btnReg.Add_Click({ Registrar_Receita })
+$btnReg.Add_Click({ Registrar_Receita })
 
 $btnPrint = New-Object System.Windows.Forms.Button
 $btnPrint.Text = "2. Imprimir Receita Medica"
 $btnPrint.Size = New-Object System.Drawing.Size(300, 40)
 $btnPrint.Location = New-Object System.Drawing.Point(20, 90)
-EstilizarBotao $btnPrint.Add_Click({ Imprimir_Receita })
+$btnPrint.Add_Click({ Imprimir_Receita })
 
 $btnBack = New-Object System.Windows.Forms.Button
 $btnBack.Text = "Voltar"
 $btnBack.Size = New-Object System.Drawing.Size(300, 40)
 $btnBack.Location = New-Object System.Drawing.Point(20, 150)
-EstilizarBotao $btnBack.Add_Click({ $formMain.Close() })
+$btnBack.Add_Click({ $formMain.Close() })
+
+EstilizarBotao $btnReg
+EstilizarBotao $btnPrint
+EstilizarBotao $btnBack
 
 $formMain.Controls.AddRange(@($btnReg, $btnPrint, $btnBack))
 

@@ -43,6 +43,17 @@ function Get_NextId {
     }
 }
 
+function EstilizarBotao($botao) {
+    $botao.FlatStyle = 'Flat'
+    $botao.BackColor = [System.Drawing.Color]::FromArgb(173, 216, 230) # Azul pastel
+    $botao.ForeColor = [System.Drawing.Color]::Black
+    $botao.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
+    $botao.FlatAppearance.BorderSize = 0
+    $botao.Region = [System.Drawing.Region]::FromHrgn(
+        [Win32]::CreateRoundRectRgn(0, 0, $botao.Width, $botao.Height, 20, 20)
+    )
+}
+
 function ListAppointments {
     $file = "relatorios/json/appointments.json"
     $data = Load_JsonData $file
@@ -92,6 +103,8 @@ function ListAppointments {
     $btnClose.Size = New-Object System.Drawing.Size(100, 30)
     $btnClose.Location = New-Object System.Drawing.Point(10, 360)
     $btnClose.Add_Click({ $form.Close() })
+    
+    EstilizarBotao $btnClose
 
     # Adiciona ao formulário
     $form.Controls.AddRange(@($listView, $btnClose))
@@ -141,6 +154,9 @@ function AddDoctor {
         [System.Windows.Forms.MessageBox]::Show("Doutor '$($boxes[0].Text)' adicionado com sucesso!")
         $inputForm.Close()
     })
+
+    EstilizarBotao $okButton
+
     $inputForm.Controls.Add($okButton)
     $inputForm.ShowDialog()
 }
@@ -227,6 +243,12 @@ function RegisterVisit {
         [System.Windows.Forms.MessageBox]::Show("Visita registrada com sucesso!")
         $idForm.Close()
     })
+
+    EstilizarBotao $lblPaciente
+    EstilizarBotao $cmbPaciente
+    EstilizarBotao $lblDoutor
+    EstilizarBotao $cmbDoutor
+    EstilizarBotao $btnRegistrar
 
     $idForm.Controls.AddRange(@($lblPaciente, $cmbPaciente, $lblDoutor, $cmbDoutor, $btnRegistrar))
     $idForm.ShowDialog()
@@ -344,6 +366,12 @@ function ScheduleAppointment {
         $form2.Close()
     })
 
+    EstilizarBotao $lblPaciente
+    EstilizarBotao $cmbPaciente
+    EstilizarBotao $lblDoutor
+    EstilizarBotao $cmbDoutor
+    EstilizarBotao $submitBtn
+
     $form2.Controls.AddRange(@($lblPaciente, $cmbPaciente, $lblDoutor, $cmbDoutor, $submitBtn))
     $form2.ShowDialog()
 }
@@ -383,6 +411,12 @@ $btnExit.Text = "Voltar"
 $btnExit.Size = New-Object System.Drawing.Size(150, 30)
 $btnExit.Location = New-Object System.Drawing.Point(120, 180)
 $btnExit.Add_Click({ $form.Close() })
+
+EstilizarBotao $btn1
+EstilizarBotao $btn2
+EstilizarBotao $btn3
+EstilizarBotao $btn4
+EstilizarBotao $btnExit
 
 $form.Controls.AddRange(@($btn1, $btn2, $btn3, $btn4, $btnExit))
 [void]$form.ShowDialog()
