@@ -215,25 +215,26 @@ function Mostrar_Detalhes_Paciente {
 
     $formDetalhes = New-Object System.Windows.Forms.Form
     $formDetalhes.Text = "Detalhes do Paciente: $pacienteNome"
-    $formDetalhes.Size = New-Object System.Drawing.Size(500, 400)
+    $formDetalhes.Size = New-Object System.Drawing.Size(500, 600)
     $formDetalhes.StartPosition = "CenterScreen"
 
     $textbox = New-Object System.Windows.Forms.TextBox
     $textbox.Multiline = $true
     $textbox.ScrollBars = "Vertical"
     $textbox.ReadOnly = $true
-    $textbox.Size = New-Object System.Drawing.Size(460, 300)
+    $textbox.Size = New-Object System.Drawing.Size(460, 520)
     $textbox.Location = New-Object System.Drawing.Point(10, 10)
 
     $btnFechar = New-Object System.Windows.Forms.Button
     $btnFechar.Text = "Fechar"
     $btnFechar.Size = New-Object System.Drawing.Size(460, 30)
-    $btnFechar.Location = New-Object System.Drawing.Point(10, 320)
+    $btnFechar.Location = New-Object System.Drawing.Point(10, 540)
     $btnFechar.Add_Click({ $formDetalhes.Close() })
 
-    # Carrega os arquivos de visitas (e futuramente consultas/agendamentos)
+    $detalhesCompletos = "Detalhes do Paciente: $pacienteNome`r`n`r`n"
+
+    # VISITAS
     $visitasPath = "relatorios/json/visits.json"
-    $visitasTexto = ""
     if (Test-Path $visitasPath) {
         $visitasData = Get-Content $visitasPath -Raw | ConvertFrom-Json
         if ($visitasData -isnot [System.Collections.IEnumerable]) {
@@ -242,20 +243,57 @@ function Mostrar_Detalhes_Paciente {
 
         $visitasPaciente = $visitasData | Where-Object { $_.paciente_id -eq $pacienteId }
         if ($visitasPaciente.Count -gt 0) {
-            $visitasTexto = "Visitas ao Doutor:`r`n"
-            foreach ($visita in $visitasPaciente) {
-                $dataHora = Get-Date $visita.timestamp -Format "dd/MM/yyyy HH:mm"
-                $visitasTexto += "- ID Visita: $($visita.id), Doutor ID: $($visita.doutor_id), Data: $dataHora`r`n"
+            $detalhesCompletos += "🔹 VISITAS:`r`n"
+            foreach ($v in $visitasPaciente) {
+                $dataHora = Get-Date $v.timestamp -Format "dd/MM/yyyy HH:mm"
+                $detalhesCompletos += "- ID: $($v.id), Doutor ID: $($v.doutor_id), Data: $dataHora`r`n"
             }
         } else {
-            $visitasTexto = "Nenhuma visita registrada.`r`n"
+            $detalhesCompletos += "🔹 VISITAS: Nenhuma registrada.`r`n"
+        }
+        $detalhesCompletos += "`r`n"
+    }
+
+    # AGENDAMENTOS
+    $agendamentosPath = "relatorios/json/appointments.json"
+    if (Test-Path $agendamentosPath) {
+        $agendamentosData = Get-Content $agendamentosPath -Raw | ConvertFrom-Json
+        if ($agendamentosData -isnot [System.Collections.IEnumerable]) {
+            $agendamentosData = @($agendamentosData)
+        }
+
+        $agendamentosPaciente = $agendamentosData | Where-Object { $_.paciente_id -eq $pacienteId }
+        if ($agendamentosPaciente.Count -gt 0) {
+            $detalhesCompletos += "🔹 AGENDAMENTOS:`r`n"
+            foreach ($a in $agendamentosPaciente) {
+                $detalhesCompletos += "- ID: $($a.id), Título: $($a.titulo), Motivo: $($a.motivo), Data: $($a.data) às $($a.hora), Status: $($a.status), Doutor ID: $($a.doutor_id)`r`n"
+            }
+        } else {
+            $detalhesCompletos += "🔹 AGENDAMENTOS: Nenhum agendamento encontrado.`r`n"
+        }
+        $detalhesCompletos += "`r`n"
+    }
+
+    # PRESCRIÇÕES
+    $prescricoesPath = "relatorios/json/prescriptions.json"
+    if (Test-Path $prescricoesPath) {
+        $prescricoesData = Get-Content $prescricoesPath -Raw | ConvertFrom-Json
+        if ($prescricoesData -isnot [System.Collections.IEnumerable]) {
+            $prescricoesData = @($prescricoesData)
+        }
+
+        $prescricoesPaciente = $prescricoesData | Where-Object { $_.paciente_id -eq $pacienteId }
+        if ($prescricoesPaciente.Count -gt 0) {
+            $detalhesCompletos += "🔹 PRESCRIÇÕES:`r`n"
+            foreach ($p in $prescricoesPaciente) {
+                $detalhesCompletos += "- ID: $($p.id), Medicamento: $($p.medicamento), Dosagem: $($p.dosagem), Instruções: $($p.instrucoes), Data: $($p.data), Doutor ID: $($p.doutor_id)`r`n"
+            }
+        } else {
+            $detalhesCompletos += "🔹 PRESCRIÇÕES: Nenhuma prescrição encontrada.`r`n"
         }
     }
 
-    # Adicione futuras seções de consultas e agendamentos aqui
-    $detalhesCompletos = "Detalhes do Paciente: $pacienteNome`r`n`r`n$visitasTexto"
     $textbox.Text = $detalhesCompletos
-
     $formDetalhes.Controls.AddRange(@($textbox, $btnFechar))
     $formDetalhes.ShowDialog()
 }
