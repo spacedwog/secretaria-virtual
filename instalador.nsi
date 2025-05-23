@@ -50,10 +50,10 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
 
     SetOutPath "$INSTDIR\config"
     CreateDirectory "$INSTDIR\config"
-    File "config/Configuracao.ps1"
-    File "config/auditoria.ps1"
-    File "config/executar.ps1"
-    File "config/homologar.ps1"
+    File "config\Configuracao.ps1"
+    File "config\auditoria.ps1"
+    File "config\executar.ps1"
+    File "config\homologar.ps1"
 
     CreateDirectory "$INSTDIR\logs"
     CreateDirectory "$INSTDIR\logs\auditoria"
@@ -62,6 +62,8 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     CreateDirectory "$INSTDIR\relatorios"
     CreateDirectory "$INSTDIR\relatorios\json"
     CreateDirectory "$INSTDIR\relatorios\webpage"
+
+    SetOutPath "$INSTDIR"
 
     CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}" "$INSTDIR\${ICON_FILE}"
 
