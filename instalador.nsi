@@ -1,3 +1,4 @@
+; Cabeçalhos
 !include "MUI2.nsh"
 !include "FileFunc.nsh"
 !include "LogicLib.nsh"
@@ -38,6 +39,7 @@ Function LaunchApp
 FunctionEnd
 
 Section "Instalar ${PRODUCT_NAME}" SEC01
+    ; Arquivos principais
     SetOutPath "$INSTDIR"
     File "${EXE_NAME}"
     File "${ICON_FILE}"
@@ -45,6 +47,7 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     File "Paciente.ps1"
     File "ReceitaMedica.ps1"
 
+    ; Configurações
     SetOutPath "$INSTDIR\config"
     CreateDirectory "$INSTDIR\config"
     File "config\Configuracao.ps1"
@@ -52,22 +55,21 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     File "config\executar.ps1"
     File "config\homologar.ps1"
 
+    ; Logs e relatórios
+    CreateDirectory "$INSTDIR\logs\auditoria"
+    CreateDirectory "$INSTDIR\logs\report"
+    CreateDirectory "$INSTDIR\relatorios\json"
+    CreateDirectory "$INSTDIR\relatorios\webpage"
+
+    ; Instalar interface gráfica como DLL
     SetOutPath "$INSTDIR\driver\interface"
+    CreateDirectory "$INSTDIR\driver\interface"
     File "driver\interface\InterfaceVirtual.dll"
     ExecWait 'regsvr32 /s "$INSTDIR\driver\interface\InterfaceVirtual.dll"'
 
-    CreateDirectory "$INSTDIR\logs\auditoria"
-    CreateDirectory "$INSTDIR\logs\report"
-
-    CreateDirectory "$INSTDIR\relatorios\json"
-    CreateDirectory "$INSTDIR\relatorios\webpage"
-    
+    ; Atalhos
     SetOutPath "$INSTDIR"
-
-    ; Atalho Desktop
     CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}" "" "$INSTDIR\${ICON_FILE}"
-
-    ; Atalho Menu Iniciar
     CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
     CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}" "" "$INSTDIR\${ICON_FILE}"
     CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}\Desinstalar.lnk" "$INSTDIR\Uninstall.exe"
@@ -84,22 +86,13 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     MessageBox MB_ICONINFORMATION|MB_OK "Instalacao concluida com sucesso!$\r$\nAcesse o Menu Iniciar ou Area de Trabalho para executar o software."
 SectionEnd
 
-Section "Instalar Interface Virtual" SEC02
-    SetOutPath "$INSTDIR"
-    File "InterfaceVirtual.dll"
-
-    ; Registrar a DLL (caso use COM/ActiveX)
-    ExecWait 'regsvr32 /s "$INSTDIR\InterfaceVirtual.dll"'
-SectionEnd
-
-Section "Uninstall Interface Virtual"
-    ExecWait 'regsvr32 /u /s "$INSTDIR\InterfaceVirtual.dll"'
-    Delete "$INSTDIR\InterfaceVirtual.dll"
-SectionEnd
-
 Section "Uninstall"
-    Delete "$INSTDIR\Uninstall.exe"
+    ; Desinstalar interface gráfica
+    ExecWait 'regsvr32 /u /s "$INSTDIR\driver\interface\InterfaceVirtual.dll"'
+    Delete "$INSTDIR\driver\interface\InterfaceVirtual.dll"
+    RMDir "$INSTDIR\driver\interface"
 
+    ; Remover arquivos e atalhos
     Delete "$INSTDIR\${EXE_NAME}"
     Delete "$INSTDIR\${ICON_FILE}"
     Delete "$INSTDIR\ConsultaMedica.ps1"
@@ -110,11 +103,13 @@ Section "Uninstall"
     Delete "$SMPROGRAMS\${PRODUCT_NAME}\Desinstalar.lnk"
     RMDir "$SMPROGRAMS\${PRODUCT_NAME}"
 
+    ; Config e logs
     Delete "$INSTDIR\config\*.ps1"
     RMDir /r "$INSTDIR\config"
     RMDir /r "$INSTDIR\logs"
     RMDir /r "$INSTDIR\relatorios"
     RMDir "$INSTDIR"
 
+    ; Registro do sistema
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 SectionEnd
