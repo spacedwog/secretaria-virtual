@@ -86,6 +86,14 @@ function Listar_Pacientes {
         $listView.Items.Add($item) | Out-Null
     }
 
+    $listView.Add_DoubleClick({
+        if ($listView.SelectedItems.Count -eq 0) { return }
+
+        $index = $listView.SelectedItems[0].Index
+        $pacienteSelecionado = $pacientes[$index]
+        Mostrar_Detalhes_Paciente -paciente $pacienteSelecionado
+    })
+
     # Botão Fechar
     $btnFechar = New-Object System.Windows.Forms.Button
     $btnFechar.Text = "Fechar"
