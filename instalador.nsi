@@ -61,10 +61,7 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
         ; Instalação do driver via devcon.exe
     SetOutPath "$INSTDIR\driver"
     CreateDirectory "$INSTDIR\driver"
-    File "driver\devcon.exe"
     File "driver\seu_driver.inf"
-    File "driver\seu_driver.sys"
-    File "driver\seu_driver.cat" ; opcional, se houver
 
     ; Instalar driver usando devcon
     ExecWait '"$INSTDIR\driver\devcon.exe" install "$INSTDIR\driver\seu_driver.inf" ROOT\MyVirtualDevice"'
