@@ -68,6 +68,4 @@ Registrar_Log "[REPORT] Relatorio TXT salvo em: $($RelatorioSaida -replace '.jso
 
 Registrar_Log "[OK] Auditoria concluida."
 
-& ..\driver/interface/GerarDLL.ps1
-
 Write-Host "`n=== Fim da Auditoria ===`n"
