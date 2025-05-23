@@ -270,9 +270,6 @@ function Mostrar_Detalhes_Paciente {
     $textbox.Text = $detalhesCompletos
     $formDetalhes.Controls.AddRange(@($textbox, $btnFechar))
 
-    # Mostra o formulário de forma modal
-    $formDetalhes.Show()
-
     # Força o foco e traz para frente
     $formDetalhes.BringToFront()
     $formDetalhes.Activate()
