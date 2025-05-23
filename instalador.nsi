@@ -9,7 +9,7 @@
 !define MUI_ICON "${ICON_FILE}"
 !define MUI_UNICON "${ICON_FILE}"
 
-OutFile "Instalador_Secretaria_Virtual.exe"
+OutFile "Instalador.exe"
 InstallDir "${INSTALL_DIR}"
 SetCompressor /SOLID lzma
 RequestExecutionLevel admin
