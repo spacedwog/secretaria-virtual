@@ -1,5 +1,6 @@
 $FilePath = "./compilar.ps1"
 # Função: Verifica se um arquivo existe
+
 function Test-FileExists {
     param (
         [Parameter(Mandatory)]
@@ -145,7 +146,7 @@ function Test-ResponseTime {
 
 Write-Host "`n=== Inicio da Homologacao ===`n"
 
-$exePath = "C:\Users\felip\secretaria-virtual\secretaria_virtual.exe"
+$exePath = "./index.exe"
 
 # 1. Testa se o executável existe
 Test-FileExists -FilePath $exePath

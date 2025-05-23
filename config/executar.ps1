@@ -1,5 +1,5 @@
 # Caminho completo para o executável que você quer iniciar
-$exePath = "./secretaria_virtual.exe"
+$exePath = "./index.exe"
 
 # Verifica se o executável existe
 if (-Not (Test-Path $exePath)) {
