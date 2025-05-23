@@ -86,13 +86,15 @@ function Listar_Pacientes {
         $listView.Items.Add($item) | Out-Null
     }
 
+    # Clique duplo para ver detalhes
     $listView.Add_DoubleClick({
-        if ($listView.SelectedItems.Count -eq 0) { return }
-
-        $index = $listView.SelectedItems[0].Index
-        $pacienteSelecionado = $pacientes[$index]
-        Mostrar_Detalhes_Paciente -paciente $pacienteSelecionado
+        if ($listView.SelectedItems.Count -gt 0) {
+            $index = $listView.SelectedItems[0].Index
+            $pacienteSelecionado = $pacientes[$index]
+            Mostrar_Detalhes_Paciente -pacienteId $pacienteSelecionado.ID -pacienteNome $pacienteSelecionado.Nome
+        }
     })
+
 
     # Botão Fechar
     $btnFechar = New-Object System.Windows.Forms.Button
@@ -207,60 +209,54 @@ function Formulario_Paciente {
 
 function Mostrar_Detalhes_Paciente {
     param (
-        [Parameter(Mandatory=$true)][object]$paciente
+        [int]$pacienteId,
+        [string]$pacienteNome
     )
 
-    # Carrega dados externos
-    $visitas = @()
-    $consultas = @()
-    $agendamentos = @()
-
-    if (Test-Path "relatorios/json/visits.json") {
-        $visitas = Get-Content "relatorios/json/visits.json" -Raw | ConvertFrom-Json
-    }
-    if (Test-Path "relatorios/json/prescriptions.json") {
-        $consultas = Get-Content "relatorios/json/prescriptions.json" -Raw | ConvertFrom-Json
-    }
-    if (Test-Path "relatorios/json/appointments.json") {
-        $agendamentos = Get-Content "relatorios/json/appointments.json" -Raw | ConvertFrom-Json
-    }
-
-    $visitasDoPaciente = $visitas | Where-Object { $_.PacienteID -eq $paciente.ID }
-    $consultasDoPaciente = $consultas | Where-Object { $_.PacienteID -eq $paciente.ID }
-    $agendamentosDoPaciente = $agendamentos | Where-Object { $_.PacienteID -eq $paciente.ID }
-
-    # Criar formulário de detalhes
     $formDetalhes = New-Object System.Windows.Forms.Form
-    $formDetalhes.Text = "Detalhes do Paciente: $($paciente.Nome)"
-    $formDetalhes.Size = New-Object System.Drawing.Size(500, 500)
+    $formDetalhes.Text = "Detalhes do Paciente: $pacienteNome"
+    $formDetalhes.Size = New-Object System.Drawing.Size(500, 400)
     $formDetalhes.StartPosition = "CenterScreen"
 
-    $textBox = New-Object System.Windows.Forms.TextBox
-    $textBox.Multiline = $true
-    $textBox.ScrollBars = "Vertical"
-    $textBox.ReadOnly = $true
-    $textBox.Size = New-Object System.Drawing.Size(460, 400)
-    $textBox.Location = New-Object System.Drawing.Point(10,10)
-
-    $detalhes = "ID: $($paciente.ID)`r`nNome: $($paciente.Nome)`r`nIdade: $($paciente.Idade)`r`nTelefone: $($paciente.Telefone)`r`nEmail: $($paciente.Email)`r`nEndereco: $($paciente.Endereco)`r`n"
-    $detalhes += "`r`n--- VISITAS ---`r`n"
-    $detalhes += ($visitasDoPaciente | ForEach-Object { "Data: $($_.Data), Motivo: $($_.Motivo)" }) -join "`r`n"
-    
-    $detalhes += "`r`n`r`n--- CONSULTAS ---`r`n"
-    $detalhes += ($consultasDoPaciente | ForEach-Object { "Data: $($_.Data), Doutor: $($_.Doutor), Diagnóstico: $($_.Diagnostico)" }) -join "`r`n"
-
-    $detalhes += "`r`n`r`n--- AGENDAMENTOS ---`r`n"
-    $detalhes += ($agendamentosDoPaciente | ForEach-Object { "Data: $($_.Data), Especialidade: $($_.Especialidade)" }) -join "`r`n"
-
-    $textBox.Text = $detalhes
+    $textbox = New-Object System.Windows.Forms.TextBox
+    $textbox.Multiline = $true
+    $textbox.ScrollBars = "Vertical"
+    $textbox.ReadOnly = $true
+    $textbox.Size = New-Object System.Drawing.Size(460, 300)
+    $textbox.Location = New-Object System.Drawing.Point(10, 10)
 
     $btnFechar = New-Object System.Windows.Forms.Button
     $btnFechar.Text = "Fechar"
-    $btnFechar.Size = New-Object System.Drawing.Size(100, 30)
-    $btnFechar.Location = New-Object System.Drawing.Point(370, 420)
+    $btnFechar.Size = New-Object System.Drawing.Size(460, 30)
+    $btnFechar.Location = New-Object System.Drawing.Point(10, 320)
     $btnFechar.Add_Click({ $formDetalhes.Close() })
 
-    $formDetalhes.Controls.AddRange(@($textBox, $btnFechar))
+    # Carrega os arquivos de visitas (e futuramente consultas/agendamentos)
+    $visitasPath = "relatorios/json/visits.json"
+    $visitasTexto = ""
+    if (Test-Path $visitasPath) {
+        $visitasData = Get-Content $visitasPath -Raw | ConvertFrom-Json
+        if ($visitasData -isnot [System.Collections.IEnumerable]) {
+            $visitasData = @($visitasData)
+        }
+
+        $visitasPaciente = $visitasData | Where-Object { $_.paciente_id -eq $pacienteId }
+        if ($visitasPaciente.Count -gt 0) {
+            $visitasTexto = "Visitas ao Doutor:`r`n"
+            foreach ($visita in $visitasPaciente) {
+                $dataHora = Get-Date $visita.timestamp -Format "dd/MM/yyyy HH:mm"
+                $visitasTexto += "- ID Visita: $($visita.id), Doutor ID: $($visita.doutor_id), Data: $dataHora`r`n"
+            }
+        } else {
+            $visitasTexto = "Nenhuma visita registrada.`r`n"
+        }
+    }
+
+    # Adicione futuras seções de consultas e agendamentos aqui
+    $detalhesCompletos = "Detalhes do Paciente: $pacienteNome`r`n`r`n$visitasTexto"
+    $textbox.Text = $detalhesCompletos
+
+    $formDetalhes.Controls.AddRange(@($textbox, $btnFechar))
     $formDetalhes.ShowDialog()
 }
 
