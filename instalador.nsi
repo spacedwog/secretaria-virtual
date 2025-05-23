@@ -113,6 +113,11 @@ Section "Uninstall"
     RMDir /r "$INSTDIR\logs"
     RMDir /r "$INSTDIR\relatorios"
     RMDir /r "$INSTDIR\docs"
+
+    ; Apagar o próprio desinstalador
+    Delete "$INSTDIR\Uninstall.exe"
+
+    ; Remover pasta principal
     RMDir "$INSTDIR"
 
     ; Registro do sistema
