@@ -28,7 +28,7 @@ namespace InterfaceVirtual
             formulario.Height = 200;
 
             Label label = new Label();
-            label.Text = "Olá, " + nome + "!";
+            label.Text = "Ola, " + nome + "!";
             label.Dock = DockStyle.Fill;
             label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             label.Font = new System.Drawing.Font("Arial", 14);
