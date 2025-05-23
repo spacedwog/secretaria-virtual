@@ -227,6 +227,16 @@ function Mostrar_Detalhes_Paciente {
     $textbox.Size = New-Object System.Drawing.Size(460, 570)
     $textbox.Location = New-Object System.Drawing.Point(10, 10)
 
+    # Forçar o formulário ficar em primeiro plano
+    $formDetalhes.TopMost = $true
+
+    $textbox = New-Object System.Windows.Forms.TextBox
+    $textbox.Multiline = $true
+    $textbox.ScrollBars = "Vertical"
+    $textbox.ReadOnly = $true
+    $textbox.Size = New-Object System.Drawing.Size(460, 570)
+    $textbox.Location = New-Object System.Drawing.Point(10, 10)
+
     # Botão para fechar o formulário
     $btnFechar = New-Object System.Windows.Forms.Button
     $btnFechar.Text = "Fechar"
@@ -260,13 +270,17 @@ function Mostrar_Detalhes_Paciente {
     $textbox.Text = $detalhesCompletos
     $formDetalhes.Controls.AddRange(@($textbox, $btnFechar))
 
-    # Força a janela ficar em primeiro plano e ativa ela
-    $formDetalhes.TopMost = $true
+    # Mostra o formulário de forma modal
+    $formDetalhes.Show()
+
+    # Força o foco e traz para frente
     $formDetalhes.BringToFront()
     $formDetalhes.Activate()
+
+    # Desliga o TopMost após ativar para evitar que fique sempre acima
     $formDetalhes.TopMost = $false
 
-    # Exibe o formulário
+    # Espera o fechamento do formulário
     $formDetalhes.ShowDialog()
 }
 
