@@ -1,15 +1,6 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-# Caminho absoluto da DLL gerada
-$dllPath = Join-Path -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition) "driver\interface\InterfaceVirtual.dll"
-
-if (Test-Path $dllPath) {
-    Add-Type -Path $dllPath
-} else {
-    [System.Windows.Forms.MessageBox]::Show("DLL InterfaceVirtual.dll não encontrada em:`n$dllPath", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
-}
-
 # Detecta caminho absoluto corretamente, mesmo se for .exe
 $basePath = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
 
@@ -85,18 +76,6 @@ $btn5.Size = New-Object System.Drawing.Size(300,40)
 $btn5.Location = New-Object System.Drawing.Point(50,230)
 $btn5.Add_Click({ $form.Close() })
 
-$btn6 = New-Object System.Windows.Forms.Button
-$btn6.Text = "6. Saudação (Interface DLL)"
-$btn6.Size = New-Object System.Drawing.Size(300,40)
-$btn6.Location = New-Object System.Drawing.Point(50,280)
-$btn6.Add_Click({
-    try {
-        [InterfaceVirtual.Saudacao]::MostrarJanela("Secretária Virtual")
-    } catch {
-        [System.Windows.Forms.MessageBox]::Show("Erro ao chamar a DLL:`n$_", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
-    }
-})
-
-$form.Controls.AddRange(@($btn1, $btn2, $btn3, $btn4, $btn5, $btn6))
+$form.Controls.AddRange(@($btn1, $btn2, $btn3, $btn4, $btn5))
 
 [void]$form.ShowDialog()

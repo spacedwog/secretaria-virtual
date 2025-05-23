@@ -61,12 +61,6 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     CreateDirectory "$INSTDIR\relatorios\json"
     CreateDirectory "$INSTDIR\relatorios\webpage"
 
-    ; Instalar interface gráfica como DLL
-    SetOutPath "$INSTDIR\driver\interface"
-    CreateDirectory "$INSTDIR\driver\interface"
-    File "driver\interface\InterfaceVirtual.dll"
-    ExecWait 'regsvr32 /s "$INSTDIR\driver\interface\InterfaceVirtual.dll"'
-
     ; Atalhos
     SetOutPath "$INSTDIR"
     CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}" "" "$INSTDIR\${ICON_FILE}"
@@ -87,10 +81,6 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
 SectionEnd
 
 Section "Uninstall"
-    ; Desinstalar interface gráfica
-    ExecWait 'regsvr32 /u /s "$INSTDIR\driver\interface\InterfaceVirtual.dll"'
-    Delete "$INSTDIR\driver\interface\InterfaceVirtual.dll"
-    RMDir "$INSTDIR\driver\interface"
 
     ; Remover arquivos e atalhos
     Delete "$INSTDIR\${EXE_NAME}"
