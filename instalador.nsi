@@ -58,28 +58,6 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
     CreateDirectory "$INSTDIR\relatorios\json"
     CreateDirectory "$INSTDIR\relatorios\webpage"
 
-        ; Instalação do driver via devcon.exe
-    SetOutPath "$INSTDIR\driver"
-    CreateDirectory "$INSTDIR\driver"
-    File "driver\devcon.exe"
-    File "driver\seu_driver.inf"
-
-        ; Instalação do driver com devcon
-    SetOutPath "$INSTDIR\driver"
-    CreateDirectory "$INSTDIR\driver"
-    File "driver\seu_driver.inf"
-    File "driver\null.sys"
-    File "driver\devcon.exe"
-
-    DetailPrint "Instalando driver virtual..."
-    nsExec::ExecToLog '"$INSTDIR\driver\devcon.exe" install "$INSTDIR\driver\seu_driver.inf" ROOT\MyVirtualDevice'
-    Pop $0
-    ${If} $0 != 0
-        MessageBox MB_ICONEXCLAMATION "A instalacao do driver falhou. Codigo de erro: $0"
-    ${EndIf}
-
-    SetOutPath "$INSTDIR"
-
     ; Atalho Desktop
     CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXE_NAME}" "" "$INSTDIR\${ICON_FILE}"
 
@@ -101,13 +79,6 @@ Section "Instalar ${PRODUCT_NAME}" SEC01
 SectionEnd
 
 Section "Uninstall"
-    ; Remoção do driver
-    ExecWait '"$INSTDIR\driver\devcon.exe" remove ROOT\SeuDispositivoID'
-    Delete "$INSTDIR\driver\devcon.exe"
-    Delete "$INSTDIR\driver\seu_driver.inf"
-    Delete "$INSTDIR\driver\seu_driver.sys"
-    Delete "$INSTDIR\driver\seu_driver.cat"
-    RMDir "$INSTDIR\driver"
     Delete "$INSTDIR\Uninstall.exe"
 
     Delete "$INSTDIR\${EXE_NAME}"
