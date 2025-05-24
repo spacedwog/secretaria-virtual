@@ -69,6 +69,9 @@ function MenuConfiguracaoAuditoria {
         $form.DialogResult = [System.Windows.Forms.DialogResult]::OK
         $form.Close()
     })
+
+    EstilizarBotao $okButton
+
     $form.Controls.Add($okButton)
 
     $cancelButton = New-Object System.Windows.Forms.Button
@@ -78,6 +81,9 @@ function MenuConfiguracaoAuditoria {
         $form.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
         $form.Close()
     })
+
+    EstilizarBotao $cancelButton
+
     $form.Controls.Add($cancelButton)
 
     $result = $form.ShowDialog()
