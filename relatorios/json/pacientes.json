@@ -1,8 +1,8 @@
 ﻿{
     "ID":  1,
-    "Nome":  "Felipe Rodrigues dos Santos",
-    "Idade":  "36",
     "Telefone":  "(11)99171-9629",
+    "Endereco":  "Rua Zina",
     "Email":  "felipersantos1988@gmail.com",
-    "Endereco":  "Rua Zina nr.: 118, Jardim das Flores, Osasco/SP"
+    "Idade":  "36",
+    "Nome":  "Felipe Rodrigues dos Santos"
 }
