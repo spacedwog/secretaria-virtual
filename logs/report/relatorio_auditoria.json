@@ -23,9 +23,9 @@
     {
         "NomeArquivo":  "index.exe",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\index.exe",
-        "DataUltimaModificacao":  "\/Date(1748090811609)\/",
+        "DataUltimaModificacao":  "\/Date(1748103437425)\/",
         "TamanhoKB":  49.18,
-        "HashSHA256":  "7F171AEC8B3DDF95EB5D2C23B2F9A829258B1197080761415A4ED0313AF19611"
+        "HashSHA256":  "BCAFF4198B05F1EE42B3085D4B529A43676AFE6F14C49B1E1958D4CF265CB2D4"
     },
     {
         "NomeArquivo":  "instalador.nsi",
@@ -149,23 +149,23 @@
     {
         "NomeArquivo":  "auditoria_log.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\auditoria\\auditoria_log.txt",
-        "DataUltimaModificacao":  "\/Date(1748090815831)\/",
-        "TamanhoKB":  147.15,
-        "HashSHA256":  "C288CC83322BDD9C36AF3F8A898705BA569CAD5BD6F5FE7570446FE49A42BF63"
+        "DataUltimaModificacao":  "\/Date(1748103442443)\/",
+        "TamanhoKB":  149.6,
+        "HashSHA256":  "4521FD823AF1F86EAF423C96CDF568E6591373087690D68C7B26D0EEE96BF31A"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.json",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.json",
-        "DataUltimaModificacao":  "\/Date(1748089482749)\/",
+        "DataUltimaModificacao":  "\/Date(1748090816002)\/",
         "TamanhoKB":  9.58,
-        "HashSHA256":  "63120A81158B94CA64DC33B89E286EBEFA4E962398179CB7BC64519CA92F9CFB"
+        "HashSHA256":  "AD22438D49CFCBB0AF2070829C0ABF7D6203EF9462E022F27D3A84EB72E6DCE2"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.txt",
-        "DataUltimaModificacao":  "\/Date(1748089482801)\/",
+        "DataUltimaModificacao":  "\/Date(1748090816018)\/",
         "TamanhoKB":  3.69,
-        "HashSHA256":  "29A9D63327CD9085F57F89F3E0A979E155B6FC9638CFC5AEAD4FA53EEEE40B03"
+        "HashSHA256":  "775AD66BDCA26B63CA38D2A36F42C65F3ABBF8CC79FE5524E6CCB5FBBC9CE63F"
     },
     {
         "NomeArquivo":  "appointments.json",
