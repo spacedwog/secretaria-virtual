@@ -245,6 +245,7 @@ $formMain = New-Object System.Windows.Forms.Form
 $formMain.Text = "Menu Receita Medica"
 $formMain.Size = New-Object System.Drawing.Size(350, 220)
 $formMain.StartPosition = "CenterScreen"
+$form.BackColor = [System.Drawing.Color]::FromArgb(240, 248, 255) # Azul claro
 
 $btnReg = New-Object System.Windows.Forms.Button
 $btnReg.Text = "1. Registrar Receita Medica"
