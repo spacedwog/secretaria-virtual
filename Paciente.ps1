@@ -73,6 +73,9 @@ function Carregar_Pacientes {
 }
 
 function Salvar_Pacientes($pacientes) {
+    if ($pacientes -isnot [System.Collections.IEnumerable] -or $pacientes -is [string]) {
+        $pacientes = @($pacientes)
+    }
     $pacientes | ConvertTo-Json -Depth 10 | Out-File -Encoding UTF8 $pacienteJson
 }
 
@@ -258,7 +261,7 @@ function Mostrar_Detalhes_Paciente {
     $paciente = $pacientes | Where-Object { $_.ID -eq $idPaciente }
 
     if (-not $paciente) {
-        [System.Windows.Forms.MessageBox]::Show("Paciente não encontrado.")
+        [System.Windows.Forms.MessageBox]::Show("Paciente nao encontrado.")
         return
     }
 
@@ -285,16 +288,16 @@ function Mostrar_Detalhes_Paciente {
     $consultasPaciente = $consultas | Where-Object { $_.paciente_id -eq $idPaciente }
     foreach ($consulta in $consultasPaciente) {
         $medico = $medicos | Where-Object { $_.id -eq $consulta.doutor_id }
-        $nomeMedico = if ($medico) { $medico.nome } else { "Médico não encontrado" }
-        $texto += "Data: $($consulta.data), Hora: $($consulta.hora), Médico: $nomeMedico, Motivo: $($consulta.motivo), Status: $($consulta.status)`r`n"
+        $nomeMedico = if ($medico) { $medico.nome } else { "Medico nao encontrado" }
+        $texto += "Data: $($consulta.data), Hora: $($consulta.hora), Medico: $nomeMedico, Motivo: $($consulta.motivo), Status: $($consulta.status)`r`n"
     }
 
     $texto += "`r`n-- Receitas --`r`n"
     $receitasPaciente = $receitas | Where-Object { $_.paciente_id -eq $idPaciente }
     foreach ($receita in $receitasPaciente) {
         $medico = $medicos | Where-Object { $_.id -eq $receita.doutor_id }
-        $nomeMedico = if ($medico) { $medico.nome } else { "Médico não encontrado" }
-        $texto += "Data: $($receita.data), Médico: $nomeMedico`r`nMedicamento: $($receita.medicamento)`r`nDosagem: $($receita.dosagem)`r`nInstruções: $($receita.instrucoes)`r`n`r`n"
+        $nomeMedico = if ($medico) { $medico.nome } else { "Medico nao encontrado" }
+        $texto += "Data: $($receita.data), Medico: $nomeMedico`r`nMedicamento: $($receita.medicamento)`r`nDosagem: $($receita.dosagem)`r`nInstrucoes: $($receita.instrucoes)`r`n`r`n"
     }
 
     $txtDetalhes.Text = $texto
@@ -327,7 +330,7 @@ $btn3 = New-Object System.Windows.Forms.Button
 $btn3.Text = "3. Excluir Paciente"
 $btn3.Size = New-Object System.Drawing.Size(300,40)
 $btn3.Location = New-Object System.Drawing.Point(50,130)
-$btn3.Add_Click({ 
+$btn3.Add_Click({
     [System.Windows.Forms.MessageBox]::Show("Para excluir, use o botao 'Excluir' na lista de pacientes.")
 })
 

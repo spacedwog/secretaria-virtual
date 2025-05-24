@@ -144,11 +144,7 @@ function Registrar_Receita {
         [System.Windows.Forms.MessageBox]::Show("Receita registrada com sucesso!")
         $form.Close()
     })
-
-    EstilizarBotao $lblPaciente
-    EstilizarBotao $cbPaciente
-    EstilizarBotao $lblDoutor
-    EstilizarBotao $cbDoutor
+    
     EstilizarBotao $btnSave
 
     $form.Controls.AddRange(@($lblPaciente, $cbPaciente, $lblDoutor, $cbDoutor, $btnSave))
@@ -237,9 +233,7 @@ function Imprimir_Receita {
 
         $formPrint.Close()
     })
-
-    EstilizarBotao $lbl
-    EstilizarBotao $txtID
+    
     EstilizarBotao $btnPrint
 
     $formPrint.Controls.AddRange(@($lbl, $txtID, $btnPrint))
