@@ -241,7 +241,14 @@ function Formulario_Paciente {
 function Mostrar_Detalhes_Paciente {
     param ($idPaciente)
 
-    # Carregar os dados
+    # Arquivos JSON (ajuste os caminhos conforme necessário)
+    $pacienteJson = "relatorios/json/pacientes.json"
+    $visitaJson = "relatorios/json/visits.json"
+    $consultaJson = "relatorios/json/appointments.json"
+    $receitaJson = "relatorios/json/prescriptions.json"
+    $medicoJson = "relatorios/json/doctors.json"
+
+    # Carregar dados
     $pacientes = Get-Content $pacienteJson | ConvertFrom-Json
     $visitas = if (Test-Path $visitaJson) { Get-Content $visitaJson | ConvertFrom-Json } else { @() }
     $consultas = if (Test-Path $consultaJson) { Get-Content $consultaJson | ConvertFrom-Json } else { @() }
@@ -266,27 +273,28 @@ function Mostrar_Detalhes_Paciente {
     $txtDetalhes.Dock = "Fill"
     $formDetalhes.Controls.Add($txtDetalhes)
 
-    $texto = "Nome: $($paciente.Nome)`r`nCPF: $($paciente.CPF)`r`nContato: $($paciente.Contato)`r`nEmail: $($paciente.Email)`r`n"
+    $texto = "Nome: $($paciente.Nome)`r`nEmail: $($paciente.Email)`r`nTelefone: $($paciente.Telefone)`r`nEndereço: $($paciente.Endereco)`r`nIdade: $($paciente.Idade)`r`n"
 
     $texto += "`r`n-- Visitas --`r`n"
-    $visitasPaciente = $visitas | Where-Object { $_.IDPaciente -eq $idPaciente }
+    $visitasPaciente = $visitas | Where-Object { $_.paciente_id -eq $idPaciente }
     foreach ($visita in $visitasPaciente) {
-        $texto += "Data: $($visita.Data), Motivo: $($visita.Motivo)`r`n"
+        $texto += "Data: $($visita.timestamp), Doutor ID: $($visita.doutor_id)`r`n"
     }
 
     $texto += "`r`n-- Consultas --`r`n"
-    $consultasPaciente = $consultas | Where-Object { $_.IDPaciente -eq $idPaciente }
+    $consultasPaciente = $consultas | Where-Object { $_.paciente_id -eq $idPaciente }
     foreach ($consulta in $consultasPaciente) {
-        $texto += "Data: $($consulta.Data), Especialidade: $($consulta.Especialidade)`r`n"
+        $medico = $medicos | Where-Object { $_.id -eq $consulta.doutor_id }
+        $nomeMedico = if ($medico) { $medico.nome } else { "Médico não encontrado" }
+        $texto += "Data: $($consulta.data), Hora: $($consulta.hora), Médico: $nomeMedico, Motivo: $($consulta.motivo), Status: $($consulta.status)`r`n"
     }
 
     $texto += "`r`n-- Receitas --`r`n"
-    $receitasPaciente = $receitas | Where-Object { $_.IDPaciente -eq $idPaciente }
+    $receitasPaciente = $receitas | Where-Object { $_.paciente_id -eq $idPaciente }
     foreach ($receita in $receitasPaciente) {
-        $medico = $medicos | Where-Object { $_.ID -eq $receita.IDMedico }
-        $nomeMedico = if ($medico) { $medico.Nome } else { "Médico não encontrado" }
-
-        $texto += "Data: $($receita.Data), Médico: $nomeMedico`r`nPrescrição: $($receita.Prescricao)`r`n"
+        $medico = $medicos | Where-Object { $_.id -eq $receita.doutor_id }
+        $nomeMedico = if ($medico) { $medico.nome } else { "Médico não encontrado" }
+        $texto += "Data: $($receita.data), Médico: $nomeMedico`r`nMedicamento: $($receita.medicamento)`r`nDosagem: $($receita.dosagem)`r`nInstruções: $($receita.instrucoes)`r`n`r`n"
     }
 
     $txtDetalhes.Text = $texto
