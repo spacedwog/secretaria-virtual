@@ -23,9 +23,9 @@
     {
         "NomeArquivo":  "index.exe",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\index.exe",
-        "DataUltimaModificacao":  "\/Date(1748103437425)\/",
-        "TamanhoKB":  49.18,
-        "HashSHA256":  "BCAFF4198B05F1EE42B3085D4B529A43676AFE6F14C49B1E1958D4CF265CB2D4"
+        "DataUltimaModificacao":  "\/Date(1748123383364)\/",
+        "TamanhoKB":  49.68,
+        "HashSHA256":  "32822C436390F9C39BC094D6401C84D14B3347B1B234E9FE2CF268421C8A3333"
     },
     {
         "NomeArquivo":  "instalador.nsi",
@@ -114,58 +114,58 @@
     {
         "NomeArquivo":  "CODE_OF_CONDUCT.md",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\docs\\CODE_OF_CONDUCT.md",
-        "DataUltimaModificacao":  "\/Date(1748089440138)\/",
-        "TamanhoKB":  4.41,
-        "HashSHA256":  "264F69D2C853823880095984FDE9246AC2C93E8C820CD8909211530187C72DF0"
+        "DataUltimaModificacao":  "\/Date(1748119841845)\/",
+        "TamanhoKB":  4.54,
+        "HashSHA256":  "A800B1B44FD856BC5570737B98AC46AFFF074EE81715348234759C27FB3A0928"
     },
     {
         "NomeArquivo":  "CONTRIBUTING.md",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\docs\\CONTRIBUTING.md",
-        "DataUltimaModificacao":  "\/Date(1748025672797)\/",
-        "TamanhoKB":  0.85,
-        "HashSHA256":  "BA0F2A107975C61B4675ABD1625ACB2D1FEAD1A5169A52993450672B59B898AC"
+        "DataUltimaModificacao":  "\/Date(1748119840758)\/",
+        "TamanhoKB":  2.13,
+        "HashSHA256":  "6D3F5260E5E3C33A92583C8A6CECFE0811B67948E25F65F68362B89D2D6F5BF0"
     },
     {
         "NomeArquivo":  "LICENSE.md",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\docs\\LICENSE.md",
-        "DataUltimaModificacao":  "\/Date(1748024723674)\/",
-        "TamanhoKB":  1.11,
-        "HashSHA256":  "8E7E54A3F5CC82A6F69BC743CA40F8A80B1173D8831BA0C893F17794C2DE54D5"
+        "DataUltimaModificacao":  "\/Date(1748119844525)\/",
+        "TamanhoKB":  1.09,
+        "HashSHA256":  "941574D1C70CD6B69E4C2B7627333A09D39B3D237D87868EBB9823B829EFD190"
     },
     {
         "NomeArquivo":  "LICENSE.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\docs\\LICENSE.txt",
-        "DataUltimaModificacao":  "\/Date(1748024740832)\/",
-        "TamanhoKB":  1.11,
-        "HashSHA256":  "8E7E54A3F5CC82A6F69BC743CA40F8A80B1173D8831BA0C893F17794C2DE54D5"
+        "DataUltimaModificacao":  "\/Date(1748119772700)\/",
+        "TamanhoKB":  1.09,
+        "HashSHA256":  "FE9222916075C518943DC5DE2AB2454D7FEEE53FA2E845A28C8621831FF8E493"
     },
     {
         "NomeArquivo":  "README.md",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\docs\\README.md",
-        "DataUltimaModificacao":  "\/Date(1748025467068)\/",
-        "TamanhoKB":  0.91,
-        "HashSHA256":  "2192E6D884075C3D2ED33E5FD66461B057059358397CB200231BFAE311939B62"
+        "DataUltimaModificacao":  "\/Date(1748119762296)\/",
+        "TamanhoKB":  0.93,
+        "HashSHA256":  "4CE6281D82C5B94E0BDCA49AFED37897419C6BB3635AE65C94356E335E832591"
     },
     {
         "NomeArquivo":  "auditoria_log.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\auditoria\\auditoria_log.txt",
-        "DataUltimaModificacao":  "\/Date(1748103442443)\/",
-        "TamanhoKB":  149.6,
-        "HashSHA256":  "4521FD823AF1F86EAF423C96CDF568E6591373087690D68C7B26D0EEE96BF31A"
+        "DataUltimaModificacao":  "\/Date(1748123387310)\/",
+        "TamanhoKB":  152.05,
+        "HashSHA256":  "D7D83B4CD2827422B09BA004E3EB4FD04A81E144486110B7E4D678DF0E584091"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.json",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.json",
-        "DataUltimaModificacao":  "\/Date(1748090816002)\/",
+        "DataUltimaModificacao":  "\/Date(1748103442673)\/",
         "TamanhoKB":  9.58,
-        "HashSHA256":  "AD22438D49CFCBB0AF2070829C0ABF7D6203EF9462E022F27D3A84EB72E6DCE2"
+        "HashSHA256":  "891BA48C35C4A96CA35A0AD0E6585F60D37E5ED475B08393D85FB7EDB7CDD1AF"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.txt",
-        "DataUltimaModificacao":  "\/Date(1748090816018)\/",
+        "DataUltimaModificacao":  "\/Date(1748103442709)\/",
         "TamanhoKB":  3.69,
-        "HashSHA256":  "775AD66BDCA26B63CA38D2A36F42C65F3ABBF8CC79FE5524E6CCB5FBBC9CE63F"
+        "HashSHA256":  "01830CB6054F8B912B98EDC4E686DA085454EFE44F39735D9027A68EECFD8214"
     },
     {
         "NomeArquivo":  "appointments.json",
