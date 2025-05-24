@@ -17,15 +17,19 @@ Se você acredita que alguém está violando este código de conduta, pedimos qu
 ### **Seja amigável e paciente.**
 
 ### **Seja acolhedor.**
+
 Buscamos ser uma comunidade que acolhe e apoia pessoas de todas as origens e identidades. Isso inclui, mas não se limita a: raça, etnia, cultura, origem nacional, cor, status migratório, classe social e econômica, nível educacional, sexo, orientação sexual, identidade e expressão de gênero, idade, tipo físico, situação familiar, crenças políticas, religião e habilidades mentais ou físicas.
 
 ### **Seja atencioso.**
+
 O seu trabalho será utilizado por outras pessoas, e você também dependerá do trabalho de outros. Suas decisões afetarão usuários e colegas, e você deve considerar essas consequências ao tomar decisões. Lembre-se de que somos uma comunidade global — você pode estar se comunicando com alguém cujo idioma nativo não é o mesmo que o seu.
 
 ### **Seja respeitoso.**
+
 Nem sempre vamos concordar, mas o desacordo não justifica comportamento ou linguagem inapropriada. É normal sentir frustração, mas não podemos permitir que isso se transforme em ataque pessoal. Uma comunidade onde as pessoas se sentem desconfortáveis ou ameaçadas não é produtiva. Membros da Secretaria Virtual devem tratar os outros com respeito, inclusive pessoas de fora da comunidade.
 
 ### **Escolha bem suas palavras.**
+
 Somos uma comunidade profissional. Seja gentil. Não insulte ou rebaixe os outros participantes. Comportamentos de assédio e atitudes excludentes não são aceitáveis. Isso inclui, mas não se limita a:
 
 - Ameaças ou linguagem violenta contra outra pessoa.  
@@ -38,6 +42,7 @@ Somos uma comunidade profissional. Seja gentil. Não insulte ou rebaixe os outro
 - Assédio contínuo a outros membros. Em geral, se alguém pedir para você parar, pare.
 
 ### **Quando houver desacordo, busque compreender.**
+
 Desentendimentos acontecem, tanto sociais quanto técnicos — e na Secretaria Virtual não é diferente. É essencial que diferenças de opinião sejam resolvidas de forma construtiva. Nossa força está na diversidade de perspectivas. Não entender o ponto de vista de alguém não significa que essa pessoa esteja errada. Errar é humano; culpar os outros não leva a lugar algum. Foque em resolver o problema e aprender com a experiência.
 
 ---
