@@ -302,8 +302,9 @@ function Excluir_Paciente {
 # Janela principal do menu paciente
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Menu de Pacientes"
-$form.Size = New-Object System.Drawing.Size(400,250)
+$form.Size = New-Object System.Drawing.Size(400,360)
 $form.StartPosition = "CenterScreen"
+$form.BackColor = [System.Drawing.Color]::FromArgb(240, 248, 255) # Azul claro
 
 $btn1 = New-Object System.Windows.Forms.Button
 $btn1.Text = "1. Listar Pacientes"

@@ -23,9 +23,16 @@
     {
         "NomeArquivo":  "index.exe",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\index.exe",
-        "DataUltimaModificacao":  "\/Date(1748123383364)\/",
-        "TamanhoKB":  49.68,
-        "HashSHA256":  "32822C436390F9C39BC094D6401C84D14B3347B1B234E9FE2CF268421C8A3333"
+        "DataUltimaModificacao":  "\/Date(1748129806301)\/",
+        "TamanhoKB":  49.19,
+        "HashSHA256":  "E6EBE5BB7B3337BD0211A46981CDE8C00BA919F2CA6DA5F07AFD6113969EC6A3"
+    },
+    {
+        "NomeArquivo":  "Instalador.exe",
+        "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\Instalador.exe",
+        "DataUltimaModificacao":  "\/Date(1748123437754)\/",
+        "TamanhoKB":  94.45,
+        "HashSHA256":  "30FB47E920F324A11514D703869330AE04C6533CFB2949612F051F0E2FAEDC87"
     },
     {
         "NomeArquivo":  "instalador.nsi",
@@ -51,7 +58,7 @@
     {
         "NomeArquivo":  "MenuPrincipal.ps1",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\MenuPrincipal.ps1",
-        "DataUltimaModificacao":  "\/Date(1748090747016)\/",
+        "DataUltimaModificacao":  "\/Date(1748129478383)\/",
         "TamanhoKB":  3.84,
         "HashSHA256":  "596571A2A76FFF897BCCC79DE815C23959C631FDCB001EA0899AE4C0926EC7DB"
     },
@@ -72,9 +79,9 @@
     {
         "NomeArquivo":  "ReceitaMedica.ps1",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\ReceitaMedica.ps1",
-        "DataUltimaModificacao":  "\/Date(1748089831316)\/",
-        "TamanhoKB":  10.43,
-        "HashSHA256":  "1FE5EA334A757C53986123C00A2FBB64EE2C68AC597685CDFC4A35644120FBDD"
+        "DataUltimaModificacao":  "\/Date(1748129772912)\/",
+        "TamanhoKB":  10.5,
+        "HashSHA256":  "00B8AE3CD514E23AA38DBBE32D97222577AF04D6590019F50401F58BC7D4D446"
     },
     {
         "NomeArquivo":  "jekyll-docker.yml",
@@ -149,23 +156,23 @@
     {
         "NomeArquivo":  "auditoria_log.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\auditoria\\auditoria_log.txt",
-        "DataUltimaModificacao":  "\/Date(1748123387310)\/",
-        "TamanhoKB":  152.05,
-        "HashSHA256":  "D7D83B4CD2827422B09BA004E3EB4FD04A81E144486110B7E4D678DF0E584091"
+        "DataUltimaModificacao":  "\/Date(1748129811537)\/",
+        "TamanhoKB":  154.57,
+        "HashSHA256":  "70441AE2FD6503FE9315C7E3473A1EB83B737C54D2C4634EB7D3E4F0F2F5D4F7"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.json",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.json",
-        "DataUltimaModificacao":  "\/Date(1748103442673)\/",
+        "DataUltimaModificacao":  "\/Date(1748123387642)\/",
         "TamanhoKB":  9.58,
-        "HashSHA256":  "891BA48C35C4A96CA35A0AD0E6585F60D37E5ED475B08393D85FB7EDB7CDD1AF"
+        "HashSHA256":  "AEFAFDD20FAFA697F14E9BA623378454810B278B4F59AC11F2241B6AC48B6309"
     },
     {
         "NomeArquivo":  "relatorio_auditoria.txt",
         "Caminho":  "C:\\Users\\felip\\secretaria-virtual\\logs\\report\\relatorio_auditoria.txt",
-        "DataUltimaModificacao":  "\/Date(1748103442709)\/",
+        "DataUltimaModificacao":  "\/Date(1748123387682)\/",
         "TamanhoKB":  3.69,
-        "HashSHA256":  "01830CB6054F8B912B98EDC4E686DA085454EFE44F39735D9027A68EECFD8214"
+        "HashSHA256":  "F11BADEFB294212D7A13F11752BFE2EB06D56F356F09CB5E41E69A709926A772"
     },
     {
         "NomeArquivo":  "appointments.json",

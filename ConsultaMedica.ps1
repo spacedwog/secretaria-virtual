@@ -379,8 +379,9 @@ function ScheduleAppointment {
 # Janela principal
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Painel de Consulta Medica"
-$form.Size = New-Object System.Drawing.Size(400, 300)
+$form.Size = New-Object System.Drawing.Size(400, 360)
 $form.StartPosition = "CenterScreen"
+$form.BackColor = [System.Drawing.Color]::FromArgb(240, 248, 255) # Azul claro
 
 $btn1 = New-Object System.Windows.Forms.Button
 $btn1.Text = "1. Listar Consultas"
