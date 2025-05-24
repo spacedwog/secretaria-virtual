@@ -13,7 +13,11 @@ public class Win32 {
 }
 "@
 
-$arquivoJson = "relatorios/json/pacientes.json"
+$pacienteJson = "relatorios/json/pacientes.json"
+$medicoJson = "relatorios/json/doctors.json"
+$consultaJson = "relatorios/json/appointments.json"
+$receitaJson = "relatorios/json/prescriptions.json"
+$visitaJson = "relatorios/json/visits.json"
 
 function Get_NextId {
     param (
@@ -51,10 +55,10 @@ function EstilizarBotao($botao) {
 }
 
 function Carregar_Pacientes {
-    if (-not (Test-Path $arquivoJson)) {
+    if (-not (Test-Path $pacienteJson)) {
         return @()
     }
-    $content = Get-Content $arquivoJson -Raw
+    $content = Get-Content $pacienteJson -Raw
     if ([string]::IsNullOrWhiteSpace($content)) {
         return @()
     }
@@ -69,7 +73,7 @@ function Carregar_Pacientes {
 }
 
 function Salvar_Pacientes($pacientes) {
-    $pacientes | ConvertTo-Json -Depth 10 | Out-File -Encoding UTF8 $arquivoJson
+    $pacientes | ConvertTo-Json -Depth 10 | Out-File -Encoding UTF8 $pacienteJson
 }
 
 function Listar_Pacientes {
@@ -117,7 +121,6 @@ function Listar_Pacientes {
             Mostrar_Detalhes_Paciente -pacienteId $pacienteSelecionado.ID -pacienteNome $pacienteSelecionado.Nome
         }
     })
-
 
     # Botão Fechar
     $btnFechar = New-Object System.Windows.Forms.Button
@@ -214,7 +217,7 @@ function Formulario_Paciente {
         }
 
         $novoPaciente = [PSCustomObject]@{
-            ID       = Get_NextId -filePath $arquivoJson
+            ID       = Get_NextId -filePath $pacienteJson
             Nome     = $nome
             Idade    = $idade
             Telefone = $telefone
@@ -236,63 +239,58 @@ function Formulario_Paciente {
 }
 
 function Mostrar_Detalhes_Paciente {
-    param (
-        [int]$pacienteId,
-        [string]$pacienteNome
-    )
+    param ($idPaciente)
 
-    # Cria o formulário
-    $formDetalhes = New-Object System.Windows.Forms.Form
-    $formDetalhes.Text = "Detalhes do Paciente: $pacienteNome"
-    $formDetalhes.Size = New-Object System.Drawing.Size(500, 650)
-    $formDetalhes.StartPosition = "CenterScreen"
-    $formDetalhes.TopMost = $true  # Manter até exibir
+    # Carregar os dados
+    $pacientes = Get-Content $pacienteJson | ConvertFrom-Json
+    $visitas = if (Test-Path $visitaJson) { Get-Content $visitaJson | ConvertFrom-Json } else { @() }
+    $consultas = if (Test-Path $consultaJson) { Get-Content $consultaJson | ConvertFrom-Json } else { @() }
+    $receitas = if (Test-Path $receitaJson) { Get-Content $receitaJson | ConvertFrom-Json } else { @() }
+    $medicos = if (Test-Path $medicoJson) { Get-Content $medicoJson | ConvertFrom-Json } else { @() }
 
-    # Caixa de texto
-    $textbox = New-Object System.Windows.Forms.TextBox
-    $textbox.Multiline = $true
-    $textbox.ScrollBars = "Vertical"
-    $textbox.ReadOnly = $true
-    $textbox.Size = New-Object System.Drawing.Size(460, 570)
-    $textbox.Location = New-Object System.Drawing.Point(10, 10)
+    $paciente = $pacientes | Where-Object { $_.ID -eq $idPaciente }
 
-    # Botão fechar
-    $btnFechar = New-Object System.Windows.Forms.Button
-    $btnFechar.Text = "Fechar"
-    $btnFechar.Size = New-Object System.Drawing.Size(460, 30)
-    $btnFechar.Location = New-Object System.Drawing.Point(10, 590)
-    $btnFechar.Add_Click({ $formDetalhes.Close() })
-
-    # Carrega os dados
-    $detalhesCompletos = ""
-    $pacientesPath = "relatorios/json/pacientes.json"
-    if (Test-Path $pacientesPath) {
-        $pacientesData = Get-Content $pacientesPath -Raw | ConvertFrom-Json
-        if ($pacientesData -isnot [System.Collections.IEnumerable]) {
-            $pacientesData = @($pacientesData)
-        }
-
-        $pacienteInfo = $pacientesData | Where-Object { $_.id -eq $pacienteId -or $_.ID -eq $pacienteId -or $_.Id -eq $pacienteId }
-        if ($pacienteInfo) {
-            $detalhesCompletos += "INFORMACOES DO PACIENTE:`r`n"
-            $detalhesCompletos += "Nome: $($pacienteInfo.Nome)`r`n"
-            $detalhesCompletos += "Idade: $($pacienteInfo.Idade)`r`n"
-            $detalhesCompletos += "Telefone: $($pacienteInfo.Telefone)`r`n"
-            $detalhesCompletos += "Email: $($pacienteInfo.Email)`r`n"
-            $detalhesCompletos += "Endereco: $($pacienteInfo.Endereco)`r`n"
-            $detalhesCompletos += "`r`n"
-        }
+    if (-not $paciente) {
+        [System.Windows.Forms.MessageBox]::Show("Paciente não encontrado.")
+        return
     }
 
-    EstilizarBotao $btnFechar
+    $formDetalhes = New-Object System.Windows.Forms.Form
+    $formDetalhes.Text = "Detalhes do Paciente"
+    $formDetalhes.Size = New-Object System.Drawing.Size(800, 600)
 
-    # Atualiza o textbox e adiciona controles
-    $textbox.Text = $detalhesCompletos
-    $formDetalhes.Controls.AddRange(@($textbox, $btnFechar))
+    $txtDetalhes = New-Object System.Windows.Forms.TextBox
+    $txtDetalhes.Multiline = $true
+    $txtDetalhes.ReadOnly = $true
+    $txtDetalhes.ScrollBars = "Vertical"
+    $txtDetalhes.Dock = "Fill"
+    $formDetalhes.Controls.Add($txtDetalhes)
 
-    # Exibe a janela no topo (sem remover TopMost até depois do ShowDialog)
+    $texto = "Nome: $($paciente.Nome)`r`nCPF: $($paciente.CPF)`r`nContato: $($paciente.Contato)`r`nEmail: $($paciente.Email)`r`n"
+
+    $texto += "`r`n-- Visitas --`r`n"
+    $visitasPaciente = $visitas | Where-Object { $_.IDPaciente -eq $idPaciente }
+    foreach ($visita in $visitasPaciente) {
+        $texto += "Data: $($visita.Data), Motivo: $($visita.Motivo)`r`n"
+    }
+
+    $texto += "`r`n-- Consultas --`r`n"
+    $consultasPaciente = $consultas | Where-Object { $_.IDPaciente -eq $idPaciente }
+    foreach ($consulta in $consultasPaciente) {
+        $texto += "Data: $($consulta.Data), Especialidade: $($consulta.Especialidade)`r`n"
+    }
+
+    $texto += "`r`n-- Receitas --`r`n"
+    $receitasPaciente = $receitas | Where-Object { $_.IDPaciente -eq $idPaciente }
+    foreach ($receita in $receitasPaciente) {
+        $medico = $medicos | Where-Object { $_.ID -eq $receita.IDMedico }
+        $nomeMedico = if ($medico) { $medico.Nome } else { "Médico não encontrado" }
+
+        $texto += "Data: $($receita.Data), Médico: $nomeMedico`r`nPrescrição: $($receita.Prescricao)`r`n"
+    }
+
+    $txtDetalhes.Text = $texto
     $formDetalhes.ShowDialog()
-    $formDetalhes.TopMost = $false
 }
 
 function Excluir_Paciente {
@@ -331,11 +329,10 @@ $btnBack.Size = New-Object System.Drawing.Size(300,40)
 $btnBack.Location = New-Object System.Drawing.Point(50,180)
 $btnBack.Add_Click({ $form.Close() })
 
-EstilizarBotao $btn1
-EstilizarBotao $btn2
-EstilizarBotao $btn3
 EstilizarBotao $btnBack
 
+# Adiciona os botões ao formulário
 $form.Controls.AddRange(@($btn1, $btn2, $btn3, $btnBack))
 
-[void]$form.ShowDialog()
+# Exibe o formulário
+$form.ShowDialog()
