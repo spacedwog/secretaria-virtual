@@ -219,7 +219,7 @@ function Formulario_Paciente {
             $pacientes = @($pacientes)
         }
 
-        $novoPaciente = [PSCustomObject]@{
+        $novoPaciente = @{
             ID       = Get_NextId -filePath $pacienteJson
             Nome     = $nome
             Idade    = $idade
