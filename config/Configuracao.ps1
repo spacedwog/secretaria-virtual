@@ -1,7 +1,30 @@
 Add-Type -AssemblyName System.Windows.Forms
 
+# Criação da função auxiliar para cantos arredondados
+Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+public class Win32 {
+    [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+    public static extern IntPtr CreateRoundRectRgn(
+        int nLeftRect, int nTopRect, int nRightRect, int nBottomRect,
+        int nWidthEllipse, int nHeightEllipse);
+}
+"@
+
 # Detecta caminho absoluto corretamente, mesmo se for .exe
 $basePath = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
+
+function EstilizarBotao($botao) {
+    $botao.FlatStyle = 'Flat'
+    $botao.BackColor = [System.Drawing.Color]::FromArgb(173, 216, 230) # Azul pastel
+    $botao.ForeColor = [System.Drawing.Color]::Black
+    $botao.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
+    $botao.FlatAppearance.BorderSize = 0
+    $botao.Region = [System.Drawing.Region]::FromHrgn(
+        [Win32]::CreateRoundRectRgn(0, 0, $botao.Width, $botao.Height, 20, 20)
+    )
+}
 
 function MenuConfiguracaoAuditoria {
     [System.Windows.Forms.Application]::EnableVisualStyles()
