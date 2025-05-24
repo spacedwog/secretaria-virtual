@@ -1,32 +1,57 @@
-# Secretaria Virtual Code of Conduct
+# Secretaria Virtual – Código de Conduta
 
-Like the technical community as a whole, the Secretaria Virtual team and community is made up of a mixture of professionals and volunteers from all over the world, working on every aspect of the mission - including mentorship, teaching, and connecting people.
+Como a comunidade técnica como um todo, a equipe e comunidade da **Secretaria Virtual** é composta por uma mistura de profissionais e voluntários de todo o mundo, trabalhando em diversos aspectos da missão — incluindo mentoria, ensino e conexão entre pessoas.
 
-Diversity is one of our huge strengths, but it can also lead to communication issues and unhappiness. To that end, we have a few ground rules that we ask people to adhere to. This code applies equally to founders, mentors and those seeking help and guidance.
+A diversidade é uma das nossas maiores forças, mas também pode gerar desafios de comunicação e desconfortos. Por isso, estabelecemos algumas regras básicas que pedimos para que todos sigam. Este código se aplica igualmente a fundadores, mentores e qualquer pessoa buscando ajuda e orientação.
 
-This isn't an exhaustive list of things that you can't do. Rather, take it in the spirit in which it's intended - a guide to make it easier to enrich all of us and the technical communities in which we participate.
+Este não é um manual exaustivo sobre o que não se pode fazer. Em vez disso, é um guia com o intuito de tornar mais fácil para todos nós enriquecer mutuamente e fortalecer as comunidades técnicas em que participamos.
 
-This code of conduct applies to all spaces managed by the Secretaria Virtual project or Esse software, tem como funcao, em servir como uma secretaria virtual(AI). This includes IRC, the mailing lists, the issue tracker, DSF events, and any other forums created by the project team which the community uses for communication. In addition, violations of this code outside these spaces may affect a person's ability to participate within them.
+Este Código de Conduta aplica-se a todos os espaços gerenciados pelo projeto **Secretaria Virtual**, ou este software, que tem como função servir como uma secretaria virtual baseada em inteligência artificial (IA). Isso inclui IRC, listas de e-mail, rastreadores de issues, eventos da comunidade, e quaisquer outros fóruns criados pela equipe do projeto. Violações deste código, mesmo fora desses espaços, podem afetar a capacidade de uma pessoa de participar nesses ambientes.
 
-If you believe someone is violating the code of conduct, we ask that you report it by emailing [felipersantos1988@gmail.com](mailto:felipersantos1988@gmail.com). For more details please see our
+Se você acredita que alguém está violando este código de conduta, pedimos que denuncie enviando um e-mail para [felipersantos1988@gmail.com](mailto:felipersantos1988@gmail.com).
 
-- **Be friendly and patient.**
-- **Be welcoming.** We strive to be a community that welcomes and supports people of all backgrounds and identities. This includes, but is not limited to members of any race, ethnicity, culture, national origin, colour, immigration status, social and economic class, educational level, sex, sexual orientation, gender identity and expression, age, size, family status, political belief, religion, and mental and physical ability.
-- **Be considerate.** Your work will be used by other people, and you in turn will depend on the work of others. Any decision you take will affect users and colleagues, and you should take those consequences into account when making decisions. Remember that we're a world-wide community, so you might not be communicating in someone else's primary language.
-- **Be respectful.** Not all of us will agree all the time, but disagreement is no excuse for poor behavior and poor manners. We might all experience some frustration now and then, but we cannot allow that frustration to turn into a personal attack. It's important to remember that a community where people feel uncomfortable or threatened is not a productive one. Members of the Secretaria Virtual community should be respectful when dealing with other members as well as with people outside the Secretaria Virtual community.
-- **Be careful in the words that you choose.** We are a community of professionals, and we conduct ourselves professionally. Be kind to others. Do not insult or put down other participants. Harassment and other exclusionary behavior aren't acceptable. This includes, but is not limited to:
-- Violent threats or language directed against another person.
-- Discriminatory jokes and language.
-- Posting sexually explicit or violent material.
-- Posting (or threatening to post) other people's personally identifying information ("doxing").
-- Personal insults, especially those using racist or sexist terms.
-- Unwelcome sexual attention.
-- Advocating for, or encouraging, any of the above behavior.
-- Repeated harassment of others. In general, if someone asks you to stop, then stop.
-- **When we disagree, try to understand why.** Disagreements, both social and technical, happen all the time and Secretaria Virtual is no exception. It is important that we resolve disagreements and differing views constructively. Remember that we're different. The strength of Secretaria Virtual comes from its varied community, people from a wide range of backgrounds. Different people have different perspectives on issues. Being unable to understand why someone holds a viewpoint doesn't mean that they're wrong. Don't forget that it is human to err and blaming each other doesn't get us anywhere. Instead, focus on helping to resolve issues and learning from mistakes.
+---
 
-Original text courtesy of the [Speak Up! project](http://web.archive.org/web/20141109123859/http://speakup.io/coc.html).
+## Diretrizes de Comportamento
 
-## Questions?
+### **Seja amigável e paciente.**
 
-If you have questions, please see . If that doesn't answer your questions, feel free to [contact us](mailto:felipersantos1988@gmail.com).
+### **Seja acolhedor.**
+Buscamos ser uma comunidade que acolhe e apoia pessoas de todas as origens e identidades. Isso inclui, mas não se limita a: raça, etnia, cultura, origem nacional, cor, status migratório, classe social e econômica, nível educacional, sexo, orientação sexual, identidade e expressão de gênero, idade, tipo físico, situação familiar, crenças políticas, religião e habilidades mentais ou físicas.
+
+### **Seja atencioso.**
+O seu trabalho será utilizado por outras pessoas, e você também dependerá do trabalho de outros. Suas decisões afetarão usuários e colegas, e você deve considerar essas consequências ao tomar decisões. Lembre-se de que somos uma comunidade global — você pode estar se comunicando com alguém cujo idioma nativo não é o mesmo que o seu.
+
+### **Seja respeitoso.**
+Nem sempre vamos concordar, mas o desacordo não justifica comportamento ou linguagem inapropriada. É normal sentir frustração, mas não podemos permitir que isso se transforme em ataque pessoal. Uma comunidade onde as pessoas se sentem desconfortáveis ou ameaçadas não é produtiva. Membros da Secretaria Virtual devem tratar os outros com respeito, inclusive pessoas de fora da comunidade.
+
+### **Escolha bem suas palavras.**
+Somos uma comunidade profissional. Seja gentil. Não insulte ou rebaixe os outros participantes. Comportamentos de assédio e atitudes excludentes não são aceitáveis. Isso inclui, mas não se limita a:
+
+- Ameaças ou linguagem violenta contra outra pessoa.  
+- Piadas e linguagem discriminatória.  
+- Publicação de material sexualmente explícito ou violento.  
+- Divulgação (ou ameaça de divulgação) de informações pessoais de terceiros ("doxing").  
+- Insultos pessoais, especialmente de cunho racista ou sexista.  
+- Atenção sexual indesejada.  
+- Apoiar ou encorajar qualquer um dos comportamentos acima.  
+- Assédio contínuo a outros membros. Em geral, se alguém pedir para você parar, pare.
+
+### **Quando houver desacordo, busque compreender.**
+Desentendimentos acontecem, tanto sociais quanto técnicos — e na Secretaria Virtual não é diferente. É essencial que diferenças de opinião sejam resolvidas de forma construtiva. Nossa força está na diversidade de perspectivas. Não entender o ponto de vista de alguém não significa que essa pessoa esteja errada. Errar é humano; culpar os outros não leva a lugar algum. Foque em resolver o problema e aprender com a experiência.
+
+---
+
+## Consequências
+
+Violações deste Código de Conduta podem resultar em advertências, banimentos temporários ou exclusão permanente dos espaços da comunidade Secretaria Virtual, dependendo da gravidade e da recorrência do comportamento.
+
+---
+
+## Dúvidas?
+
+Se tiver dúvidas, fique à vontade para [entrar em contato conosco](mailto:felipersantos1988@gmail.com).
+
+---
+
+**Texto original adaptado a partir do projeto [Speak Up!](http://web.archive.org/web/20141109123859/http://speakup.io/coc.html).**
