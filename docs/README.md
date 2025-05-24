@@ -1,4 +1,4 @@
-# Secretaria Virtual
+﻿# Secretaria Virtual
 
 **Secretaria Virtual** é um sistema de interface gráfica codificado em PowerShell para auxiliar clínicas e consultórios médicos no gerenciamento de pacientes, consultas e receitas. O software foi projetado para ser simples, intuitivo e de fácil instalação, oferecendo suporte para múltiplos menus com salvamento automático em scripts JSON.
 

@@ -1,4 +1,4 @@
-# Secretaria Virtual – Código de Conduta
+﻿# Secretaria Virtual – Código de Conduta
 
 Como a comunidade técnica como um todo, a equipe e comunidade da **Secretaria Virtual** é composta por uma mistura de profissionais e voluntários de todo o mundo, trabalhando em diversos aspectos da missão — incluindo mentoria, ensino e conexão entre pessoas.
 

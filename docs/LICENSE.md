@@ -1,4 +1,4 @@
-# MIT License
+﻿# MIT License
 
 Copyright (c) 2025 Felipe Rodrigues dos Santos (<felipersantos1988@gmail.com>)
 

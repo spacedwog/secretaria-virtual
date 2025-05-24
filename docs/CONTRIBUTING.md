@@ -1,4 +1,4 @@
-# Contribuindo com a Secretaria Virtual AI
+﻿# Contribuindo com a Secretaria Virtual AI
 
 Obrigado por considerar contribuir com o projeto **Secretaria Virtual AI**! Esta assistente médica automatizada foi construída com foco em acessibilidade, organização e inteligência. Seja bem-vindo para contribuir — seja para corrigir bugs, melhorar a interface ou expandir funcionalidades.
 
