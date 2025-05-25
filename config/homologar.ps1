@@ -1,4 +1,4 @@
-$FilePath = "./compilar.ps1"
+﻿$FilePath = "./compilar.ps1"
 # Função: Verifica se um arquivo existe
 
 function Test-FileExists {

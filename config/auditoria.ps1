@@ -1,4 +1,4 @@
-param (
+﻿param (
     [string]$DiretorioAlvo = "./",
     [string]$RelatorioSaida = "logs\report\relatorio_auditoria.json",
     [string]$LogSaida = "logs\auditoria\auditoria_log.txt"

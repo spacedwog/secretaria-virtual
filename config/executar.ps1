@@ -1,4 +1,4 @@
-# Caminho completo para o executável que você quer iniciar
+﻿# Caminho completo para o executável que você quer iniciar
 $exePath = "./index.exe"
 
 # Verifica se o executável existe

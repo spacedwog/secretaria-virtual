@@ -1,4 +1,4 @@
-Add-Type -AssemblyName System.Windows.Forms
+﻿Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 Add-Type -AssemblyName System.Web.Extensions  # Para conversão JSON
 
@@ -66,7 +66,7 @@ function ListAppointments {
     # Cria a janela
     $form = New-Object System.Windows.Forms.Form
     $form.Text = "Lista de Consultas"
-    $form.Size = New-Object System.Drawing.Size(750, 450)
+    $form.Size = New-Object System.Drawing.Size(850, 450)
     $form.StartPosition = "CenterScreen"
     $form.Topmost = $true
 
@@ -76,7 +76,7 @@ function ListAppointments {
     $listView.FullRowSelect = $true
     $listView.GridLines = $true
     $listView.MultiSelect = $false
-    $listView.Size = New-Object System.Drawing.Size(720, 340)
+    $listView.Size = New-Object System.Drawing.Size(820, 340)
     $listView.Location = New-Object System.Drawing.Point(10, 10)
 
     $listView.Columns.Add("Titulo", 150)       | Out-Null
@@ -84,16 +84,21 @@ function ListAppointments {
     $listView.Columns.Add("Doutor ID", 100)    | Out-Null
     $listView.Columns.Add("Data", 100)         | Out-Null
     $listView.Columns.Add("Hora", 100)         | Out-Null
-    $listView.Columns.Add("Status", 150)       | Out-Null
+    $listView.Columns.Add("Status", 120)       | Out-Null
+    $listView.Columns.Add("Dias Restantes", 120) | Out-Null
 
     # Preenche com dados do arquivo JSON
     foreach ($item in $data) {
+        $dataConsulta = [datetime]::ParseExact($item.data, "yyyy-MM-dd", $null)
+        $diasRestantes = ($dataConsulta - (Get-Date)).Days
+
         $line = New-Object System.Windows.Forms.ListViewItem($item.titulo)
-        $line.SubItems.Add($item.paciente_id) | Out-Null
-        $line.SubItems.Add($item.doutor_id)   | Out-Null
-        $line.SubItems.Add($item.data)        | Out-Null
-        $line.SubItems.Add($item.hora)        | Out-Null
-        $line.SubItems.Add($item.status)      | Out-Null
+        $line.SubItems.Add($item.paciente_id)      | Out-Null
+        $line.SubItems.Add($item.doutor_id)        | Out-Null
+        $line.SubItems.Add($item.data)             | Out-Null
+        $line.SubItems.Add($item.hora)             | Out-Null
+        $line.SubItems.Add($item.status)           | Out-Null
+        $line.SubItems.Add("$diasRestantes dias")  | Out-Null
         $listView.Items.Add($line) | Out-Null
     }
 
@@ -117,7 +122,7 @@ function AddDoctor {
     $inputForm.Size = New-Object System.Drawing.Size(300, 250)
     $inputForm.StartPosition = "CenterScreen"
 
-    $labels = "Nome", "Telefone", "Email", "Especialidade"
+    $labels = "Nome", "CRM", "Telefone", "Email", "Especialidade"
     $boxes = @()
 
     for ($i = 0; $i -lt $labels.Length; $i++) {
@@ -137,14 +142,15 @@ function AddDoctor {
 
     $okButton = New-Object System.Windows.Forms.Button
     $okButton.Text = "Salvar"
-    $okButton.Location = New-Object System.Drawing.Point(90, 150)
+    $okButton.Location = New-Object System.Drawing.Point(90, 180)
     $okButton.Add_Click({
         $doctor = @{
             id            = Get_NextId -filePath "relatorios/json/doctors.json"
             nome          = $boxes[0].Text
-            telefone      = $boxes[1].Text
-            email         = $boxes[2].Text
-            especialidade = $boxes[3].Text
+            CRM           = $boxes[1].Text
+            telefone      = $boxes[2].Text
+            email         = $boxes[3].Text
+            especialidade = $boxes[4].Text
         }
         $file = "relatorios/json/doctors.json"
         $data = Load_JsonData $file

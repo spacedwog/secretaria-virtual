@@ -1,4 +1,4 @@
-# Caminhos
+﻿# Caminhos
 $scriptPath = "MenuPrincipal.ps1"
 $outputExe = "index.exe"
 $iconPath = "icone.ico"

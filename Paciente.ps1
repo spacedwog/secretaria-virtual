@@ -1,4 +1,4 @@
-Add-Type -AssemblyName System.Windows.Forms
+﻿Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 # Criação da função auxiliar para cantos arredondados
@@ -14,6 +14,7 @@ public class Win32 {
 "@
 
 $pacienteJson = "relatorios/json/pacientes.json"
+$auditoriaJson = "relatorios/json/auditoria.json"
 
 function Get_NextId {
     param (
@@ -50,6 +51,31 @@ function EstilizarBotao($botao) {
     )
 }
 
+function EstilizarTela {
+    param (
+        [System.Windows.Forms.Form]$form,
+        [string]$titulo,
+        [System.Drawing.Size]$tamanho = $(New-Object System.Drawing.Size(720, 460))
+    )
+
+    $form.Text = $titulo
+    $form.Size = $tamanho
+    $form.StartPosition = "CenterScreen"
+    $form.Topmost = $true
+    $form.BackColor = [System.Drawing.Color]::FromArgb(245, 245, 245) # Cor de fundo suave
+    $form.Font = New-Object System.Drawing.Font("Segoe UI", 10)
+    
+    # Ícone (opcional)
+    try {
+        $iconePath = Join-Path $PSScriptRoot "icone.ico"
+        if (Test-Path $iconePath) {
+            $form.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($iconePath)
+        }
+    } catch {
+        Write-Verbose "Ícone padrão não encontrado."
+    }
+}
+
 function Carregar_Pacientes {
     if (-not (Test-Path $pacienteJson)) {
         return @()
@@ -72,15 +98,35 @@ function Salvar_Pacientes($pacientes) {
     $pacientes | ConvertTo-Json -Depth 10 | Out-File -Encoding UTF8 $pacienteJson
 }
 
+function Auditoria_Paciente($pacientes){
+    
+    $registro = [PSCustomObject]@{
+        Timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+        Pacientes = $pacientes
+    }
+
+    $historico = @()
+
+    if (Test-Path $auditoriaJson) {
+        $conteudo = Get-Content $auditoriaJson -Raw
+        if (-not [string]::IsNullOrWhiteSpace($conteudo)) {
+            $historico = $conteudo | ConvertFrom-Json
+            if ($historico -isnot [System.Collections.IEnumerable]) {
+                $historico = @($historico)
+            }
+        }
+    }
+
+    $historico += $registro
+    $historico | ConvertTo-Json -Depth 10 | Out-File -Encoding UTF8 $auditoriaJson
+}
+
 function Listar_Pacientes {
     $pacientes = Carregar_Pacientes
 
     # Janela principal
     $formList = New-Object System.Windows.Forms.Form
-    $formList.Text = "Lista de Pacientes"
-    $formList.Size = New-Object System.Drawing.Size(720, 460)
-    $formList.StartPosition = "CenterScreen"
-    $formList.Topmost = $true
+    EstilizarTela -form $formList -titulo "Lista de Pacientes"
 
     # ListView de pacientes
     $listView = New-Object System.Windows.Forms.ListView
@@ -147,6 +193,7 @@ function Listar_Pacientes {
         if ($confirm -eq [System.Windows.Forms.DialogResult]::Yes) {
             $pacientes = $pacientes | Where-Object { $_.ID -ne $pacienteSelecionado.ID }
             Salvar_Pacientes $pacientes
+            Auditoria_Paciente $pacientes
             [System.Windows.Forms.MessageBox]::Show("Paciente excluido com sucesso.", "Sucesso")
             $formList.Close()
             Listar_Pacientes  # Recarrega a lista após exclusão
@@ -165,6 +212,7 @@ function Adicionar_Paciente {
 }
 
 function Formulario_Paciente {
+    
     $formAdd = New-Object System.Windows.Forms.Form
     $formAdd.Text = "Adicionar Paciente"
     $formAdd.Size = New-Object System.Drawing.Size(300,350)
@@ -200,13 +248,12 @@ function Formulario_Paciente {
         $endereco = $textboxes[4].Text.Trim()
 
         if ([string]::IsNullOrWhiteSpace($nome)) {
-            [System.Windows.Forms.MessageBox]::Show("Nome obrigatorio.")
+            [System.Windows.Forms.MessageBox]::Show("Nome obrigatório.", "Erro", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
             return
         }
 
         $pacientes = Carregar_Pacientes
 
-        # Garante que $pacientes seja sempre um array antes de adicionar
         if ($null -eq $pacientes) {
             $pacientes = @()
         } elseif ($pacientes -isnot [System.Collections.IEnumerable]) {
@@ -224,8 +271,9 @@ function Formulario_Paciente {
 
         $pacientes += $novoPaciente
         Salvar_Pacientes $pacientes
+        Auditoria_Paciente $pacientes
 
-        [System.Windows.Forms.MessageBox]::Show("Paciente salvo com sucesso!")
+        [System.Windows.Forms.MessageBox]::Show("Paciente salvo com sucesso!", "Confirmação", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
         $formAdd.Close()
     })
 
