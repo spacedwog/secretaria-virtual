@@ -54,7 +54,7 @@ function ReceitaMedica {
 }
 
 function Ouvidoria {
-    $configPath = "$basePath\Ouvidoria.ps1"
+    $configPath = "$basePath\OuvidoriaClinica.ps1"
     if (Test-Path $configPath) {
         & $configPath
     } else {
