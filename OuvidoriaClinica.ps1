@@ -1,4 +1,4 @@
-
+﻿
 <#
 Módulo de Ouvidoria da Secretaria Virtual
 Desenvolvido para registro, resposta, validação e exportação de manifestações, com suporte a envio por email.
