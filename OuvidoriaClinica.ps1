@@ -1,5 +1,4 @@
-﻿
-<#
+﻿<#
 Módulo de Ouvidoria da Secretaria Virtual
 Desenvolvido para registro, resposta, validação e exportação de manifestações, com suporte a envio por email.
 #>
@@ -7,7 +6,7 @@ Desenvolvido para registro, resposta, validação e exportação de manifestaç�
 # Requerimentos: Windows.Forms, SMTP configurado
 
 # --------------------- NOVA MANIFESTAÇÃO ---------------------
-function Show-OuvidoriaForm {
+function Registrar_Manifestacao {
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
 
@@ -16,20 +15,20 @@ function Show-OuvidoriaForm {
     $form.Size = New-Object Drawing.Size(400, 500)
     $form.StartPosition = "CenterScreen"
 
-    $campos = @{}
+    $campos = @{ }
     $labels = @("Nome", "Email", "Tipo", "Setor", "Descrição")
     $tipos = @("Elogio", "Reclamação", "Denúncia", "Sugestão", "Solicitação", "Outro")
 
     for ($i = 0; $i -lt $labels.Count; $i++) {
         $label = New-Object Windows.Forms.Label
         $label.Text = $labels[$i]
-        $label.Location = New-Object Drawing.Point(10, 20 + ($i*60))
+        $label.Location = New-Object Drawing.Point(10, 20 + ($i * 60))
         $label.Size = New-Object Drawing.Size(360, 20)
         $form.Controls.Add($label)
 
         if ($labels[$i] -eq "Tipo") {
             $combo = New-Object Windows.Forms.ComboBox
-            $combo.Location = New-Object Drawing.Point(10, 40 + ($i*60))
+            $combo.Location = New-Object Drawing.Point(10, 40 + ($i * 60))
             $combo.Size = New-Object Drawing.Size(360, 20)
             $combo.Items.AddRange($tipos)
             $campos[$labels[$i]] = $combo
@@ -39,14 +38,14 @@ function Show-OuvidoriaForm {
             $textBox = New-Object Windows.Forms.TextBox
             $textBox.Multiline = $true
             $textBox.ScrollBars = "Vertical"
-            $textBox.Location = New-Object Drawing.Point(10, 40 + ($i*60))
+            $textBox.Location = New-Object Drawing.Point(10, 40 + ($i * 60))
             $textBox.Size = New-Object Drawing.Size(360, 80)
             $campos[$labels[$i]] = $textBox
             $form.Controls.Add($textBox)
         }
         else {
             $textBox = New-Object Windows.Forms.TextBox
-            $textBox.Location = New-Object Drawing.Point(10, 40 + ($i*60))
+            $textBox.Location = New-Object Drawing.Point(10, 40 + ($i * 60))
             $textBox.Size = New-Object Drawing.Size(360, 20)
             $campos[$labels[$i]] = $textBox
             $form.Controls.Add($textBox)
@@ -85,11 +84,11 @@ function Show-OuvidoriaForm {
 }
 
 # --------------------- VALIDAÇÃO ---------------------
-function Validar-Manifestacao {
+function Validar_Manifestacao {
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Security
 
-    $file = (New-Object System.Windows.Forms.OpenFileDialog -Property @{InitialDirectory=".\ouvidoria"; Filter="JSON|*.json"})
+    $file = (New-Object System.Windows.Forms.OpenFileDialog -Property @{InitialDirectory = ".\ouvidoria"; Filter = "JSON|*.json"})
     if ($file.ShowDialog() -eq "OK") {
         $data = Get-Content $file.FileName -Raw | ConvertFrom-Json
         $hashOriginal = $data.assinatura
@@ -108,7 +107,7 @@ function Validar-Manifestacao {
 }
 
 # --------------------- VISUALIZAÇÃO ---------------------
-function Visualizar-Manifestacoes {
+function Visualizar_Manifestacoes {
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
 
@@ -146,7 +145,7 @@ function Visualizar-Manifestacoes {
 }
 
 # --------------------- EXPORTAÇÃO ---------------------
-function Exportar-Manifestacao {
+function Exportar_Manifestacao {
     Add-Type -AssemblyName System.Windows.Forms
     $dialog = New-Object System.Windows.Forms.OpenFileDialog
     $dialog.InitialDirectory = ".\ouvidoria"
@@ -173,7 +172,7 @@ function Exportar-Manifestacao {
 }
 
 # --------------------- RESPOSTA ---------------------
-function Responder-Manifestacao {
+function Responder_Manifestacao {
     Add-Type -AssemblyName System.Windows.Forms
     $dialog = New-Object System.Windows.Forms.OpenFileDialog
     $dialog.InitialDirectory = ".\ouvidoria"
@@ -213,8 +212,8 @@ function Responder-Manifestacao {
     }
 }
 
-# --------------------- EMAIL ---------------------
-function Enviar-Manifestacao-PorEmail {
+# --------------------- ENVIO POR EMAIL ---------------------
+function Enviar_ManifestacaoEmail {
     Add-Type -AssemblyName System.Windows.Forms
     $dialog = New-Object System.Windows.Forms.OpenFileDialog
     $dialog.InitialDirectory = ".\ouvidoria"
@@ -237,7 +236,7 @@ function Enviar-Manifestacao-PorEmail {
 }
 
 # --------------------- MENU ---------------------
-function Menu-Ouvidoria {
+function Menu_Ouvidoria {
     do {
         Clear-Host
         Write-Host "===== MENU OUVIDORIA =====" -ForegroundColor Cyan
@@ -250,11 +249,11 @@ function Menu-Ouvidoria {
         $opt = Read-Host "Escolha uma opção"
         
         switch ($opt) {
-            "1" { Registrar-Manifestacao }
-            "2" { Visualizar-Manifestacoes }
-            "3" { Exportar-Manifestacoes }
-            "4" { Responder-Manifestacao }
-            "5" { Enviar-ManifestacaoEmail }
+            "1" { Registrar_Manifestacao }
+            "2" { Visualizar_Manifestacoes }
+            "3" { Exportar_Manifestacao }
+            "4" { Responder_Manifestacao }
+            "5" { Enviar_ManifestacaoEmail }
             "0" { Write-Host "Voltando..." }
             default { Write-Host "Opção inválida." -ForegroundColor Red }
         }
@@ -264,4 +263,4 @@ function Menu-Ouvidoria {
 }
 
 # Executar menu ao carregar
-Menu-Ouvidoria
+Menu_Ouvidoria
