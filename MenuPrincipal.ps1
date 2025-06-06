@@ -52,6 +52,16 @@ function ReceitaMedica {
         [System.Windows.Forms.MessageBox]::Show("Arquivo de receita médica não encontrado:`n$configPath", "Erro", "OK", "Error")
     }
 }
+
+function Ouvidoria {
+    $configPath = "$basePath\Ouvidoria.ps1"
+    if (Test-Path $configPath) {
+        & $configPath
+    } else {
+        [System.Windows.Forms.MessageBox]::Show("Arquivo de ouvidoria não encontrado:`n$configPath", "Erro", "OK", "Error")
+    }
+}
+
 function Configuracao {
     $configPath = "$basePath\config\Configuracao.ps1"
     if (Test-Path $configPath) {
@@ -94,19 +104,26 @@ $btn4.Location = New-Object System.Drawing.Point(60, 195)
 $btn4.Add_Click({ Configuracao })
 
 $btn5 = New-Object System.Windows.Forms.Button
-$btn5.Text = "5. Sair"
+$btn5.Text = "5. Ouvidoria"
 $btn5.Size = New-Object System.Drawing.Size(300, 45)
 $btn5.Location = New-Object System.Drawing.Point(60, 250)
-$btn5.Add_Click({ $form.Close() })
+$btn5.Add_Click({ Ouvidoria })
+
+$btn6 = New-Object System.Windows.Forms.Button
+$btn6.Text = "5. Sair"
+$btn6.Size = New-Object System.Drawing.Size(300, 45)
+$btn6.Location = New-Object System.Drawing.Point(60, 250)
+$btn6.Add_Click({ $form.Close() })
 
 EstilizarBotao $btn1
 EstilizarBotao $btn2
 EstilizarBotao $btn3
 EstilizarBotao $btn4
 EstilizarBotao $btn5
+EstilizarBotao $btn6
 
 # Adicionar botões ao formulário
-$form.Controls.AddRange(@($btn1, $btn2, $btn3, $btn4, $btn5))
+$form.Controls.AddRange(@($btn1, $btn2, $btn3, $btn4, $btn5, $btn6))
 
 # Exibir interface
 [void]$form.ShowDialog()
