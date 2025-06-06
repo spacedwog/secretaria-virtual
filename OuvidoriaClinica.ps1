@@ -240,24 +240,26 @@ function Enviar-Manifestacao-PorEmail {
 function Menu-Ouvidoria {
     do {
         Clear-Host
-        Write-Host "==== MÓDULO DE OUVIDORIA ===="
-        Write-Host "1. Nova Manifestação"
-        Write-Host "2. Validar Manifestação"
-        Write-Host "3. Visualizar Manifestações"
-        Write-Host "4. Exportar Manifestação"
-        Write-Host "5. Responder Manifestação"
-        Write-Host "6. Enviar por Email"
-        Write-Host "0. Voltar"
+        Write-Host "===== MENU OUVIDORIA =====" -ForegroundColor Cyan
+        Write-Host "1. Registrar manifestação"
+        Write-Host "2. Visualizar manifestações"
+        Write-Host "3. Exportar para HTML/XML"
+        Write-Host "4. Responder manifestação"
+        Write-Host "5. Enviar por e-mail"
+        Write-Host "0. Voltar ao menu principal"
         $opt = Read-Host "Escolha uma opção"
-
+        
         switch ($opt) {
-            "1" { Show-OuvidoriaForm }
-            "2" { Validar-Manifestacao }
-            "3" { Visualizar-Manifestacoes }
-            "4" { Exportar-Manifestacao }
-            "5" { Responder-Manifestacao }
-            "6" { Enviar-Manifestacao-PorEmail }
+            "1" { Registrar-Manifestacao }
+            "2" { Visualizar-Manifestacoes }
+            "3" { Exportar-Manifestacoes }
+            "4" { Responder-Manifestacao }
+            "5" { Enviar-ManifestacaoEmail }
+            "0" { Write-Host "Voltando..." }
+            default { Write-Host "Opção inválida." -ForegroundColor Red }
         }
+
+        Pause
     } while ($opt -ne "0")
 }
 
